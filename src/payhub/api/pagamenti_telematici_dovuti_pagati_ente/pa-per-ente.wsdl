@@ -1870,9 +1870,9 @@
           <xsd:element minOccurs="1" name="azione" type="pay_i:stText1">
             <xsd:annotation>
               <xsd:documentation>Indica l'operazione da compiere sul dovuto. I
-						valori possibili e le relative descrizioni sono: 
-						'I' indica che il dovuto deve essere inserito 
-						'M' indica che il dovuto deve essere modificato 
+						valori possibili e le relative descrizioni sono:
+						'I' indica che il dovuto deve essere inserito
+						'M' indica che il dovuto deve essere modificato
 						'A' indica che il dovuto deve essere annullato
 						'9' indica codice 9 (annullamento dovuto)
 						'S' viene solo stampato l'avviso

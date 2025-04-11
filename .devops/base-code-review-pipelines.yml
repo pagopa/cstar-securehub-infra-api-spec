@@ -131,4 +131,3 @@ stages:
                 WORKINGDIR: ${{ parameters.WORKING_DIR_MODULE }}
                 AZURE_SERVICE_CONNECTION_NAME: "${{parameters.SC_PLAN_NAME}}"
                 TF_SUMMARIZE: true
-

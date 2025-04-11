@@ -63,4 +63,3 @@ variable "apim_diagnostics_enabled" {
   type        = bool
   description = "To enable or not APIm diagnostics data"
 }
-
