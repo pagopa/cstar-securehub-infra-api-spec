@@ -1,0 +1,2304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ppt="http://www.regione.veneto.it/pagamenti/ente/" xmlns:ppthead="http://www.regione.veneto.it/pagamenti/ente/ppthead" xmlns:pay_i="http://www.regione.veneto.it/schemas/2012/Pagamenti/Ente/" xmlns:tns="http://www.regione.veneto.it/pagamenti/ente/PagamentiTelematiciDovutiPagati" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="PagamentiTelematiciDovutiPagatiService" targetNamespace="http://www.regione.veneto.it/pagamenti/ente/PagamentiTelematiciDovutiPagati">
+  <wsdl:types>
+    <xsd:schema version="1.0" targetNamespace="http://www.regione.veneto.it/pagamenti/ente/ppthead">
+      <xsd:simpleType name="stText35">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="35" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:element name="intestazionePPT">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="codIpaEnte" type="ppthead:stText35" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema version="1.0" targetNamespace="http://www.regione.veneto.it/pagamenti/ente/">
+      <xsd:simpleType name="stText35">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="35" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText80">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="35" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText100">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="35" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText70">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="70" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stPassword">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="8" />
+          <xsd:maxLength value="15" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="hashSHA256">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="64" />
+          <xsd:maxLength value="64" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stShowMyPay">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="SHORT" />
+          <!-- (default) stesso funzionamento  -->
+          <xsd:enumeration value="NONE" />
+          <!-- per utente, mypay è trasparente  -->
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:element name="paaSILChiediEsitoCarrelloDovuti" type="ppt:paaSILChiediEsitoCarrelloDovuti" />
+      <xsd:element name="paaSILChiediEsitoCarrelloDovutiRisposta" type="ppt:paaSILChiediEsitoCarrelloDovutiRisposta" />
+      <xsd:element name="paaSILInviaDovuti" type="ppt:paaSILInviaDovuti" />
+      <xsd:element name="paaSILInviaDovutiRisposta" type="ppt:paaSILInviaDovutiRisposta" />
+      <xsd:element name="paaSILInviaCarrelloDovuti" type="ppt:paaSILInviaCarrelloDovuti" />
+      <xsd:element name="paaSILInviaCarrelloDovutiRisposta" type="ppt:paaSILInviaCarrelloDovutiRisposta" />
+      <xsd:element name="paaSILVerificaAvviso" type="ppt:paaSILVerificaAvviso" />
+      <xsd:element name="paaSILVerificaAvvisoRisposta" type="ppt:paaSILVerificaAvvisoRisposta" />
+      <xsd:element name="paaSILChiediPagati" type="ppt:paaSILChiediPagati" />
+      <xsd:element name="paaSILChiediPagatiRisposta" type="ppt:paaSILChiediPagatiRisposta" />
+      <xsd:element name="paaSILChiediPagatiConRicevuta" type="ppt:paaSILChiediPagatiConRicevuta" />
+      <xsd:element name="paaSILChiediPagatiConRicevutaRisposta" type="ppt:paaSILChiediPagatiConRicevutaRisposta" />
+      <xsd:element name="paaSILImportaDovuto" type="ppt:paaSILImportaDovuto" />
+      <xsd:element name="paaSILImportaDovutoRisposta" type="ppt:paaSILImportaDovutoRisposta" />
+      <xsd:element name="paaSILRegistraPagamento" type="ppt:paaSILRegistraPagamento" />
+      <xsd:element name="paaSILRegistraPagamentoRisposta" type="ppt:paaSILRegistraPagamentoRisposta" />
+      <xsd:element name="paaSILAutorizzaImportFlusso" type="ppt:paaSILAutorizzaImportFlusso" />
+      <xsd:element name="paaSILAutorizzaImportFlussoRisposta" type="ppt:paaSILAutorizzaImportFlussoRisposta" />
+      <xsd:element name="paaSILChiediStatoImportFlusso" type="ppt:paaSILChiediStatoImportFlusso" />
+      <xsd:element name="paaSILChiediStatoImportFlussoRisposta" type="ppt:paaSILChiediStatoImportFlussoRisposta" />
+      <xsd:element name="paaSILPrenotaExportFlusso" type="ppt:paaSILPrenotaExportFlusso" />
+      <xsd:element name="paaSILPrenotaExportFlussoRisposta" type="ppt:paaSILPrenotaExportFlussoRisposta" />
+      <xsd:element name="paaSILPrenotaExportFlussoIncrementaleConRicevuta" type="ppt:paaSILPrenotaExportFlussoIncrementaleConRicevuta" />
+      <xsd:element name="paaSILPrenotaExportFlussoIncrementaleConRicevutaRisposta" type="ppt:paaSILPrenotaExportFlussoIncrementaleConRicevutaRisposta" />
+      <xsd:element name="paaSILPrenotaExportFlussoScaduti" type="ppt:paaSILPrenotaExportFlussoScaduti" />
+      <xsd:element name="paaSILPrenotaExportFlussoScadutiRisposta" type="ppt:paaSILPrenotaExportFlussoScadutiRisposta" />
+      <xsd:element name="paaSILChiediStatoExportFlusso" type="ppt:paaSILChiediStatoExportFlusso" />
+      <xsd:element name="paaSILChiediStatoExportFlussoRisposta" type="ppt:paaSILChiediStatoExportFlussoRisposta" />
+      <xsd:element name="paaSILChiediStatoExportFlussoScaduti" type="ppt:paaSILChiediStatoExportFlussoScaduti" />
+      <xsd:element name="paaSILChiediStatoExportFlussoScadutiRisposta" type="ppt:paaSILChiediStatoExportFlussoScadutiRisposta" />
+      <xsd:element name="paaSILChiediAvvisiPendenti" type="ppt:paaSILChiediAvvisiPendenti" />
+      <xsd:element name="paaSILChiediAvvisiPendentiRisposta" type="ppt:paaSILChiediAvvisiPendentiRisposta" />
+      <xsd:element name="paaSILAvvisoPendente" type="ppt:paaSILAvvisoPendente" />
+      <xsd:complexType name="risposta">
+        <xsd:sequence>
+          <xsd:element name="fault" type="ppt:faultBean" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="faultBean">
+        <xsd:sequence>
+          <xsd:element name="faultCode" type="xsd:string" />
+          <xsd:element name="faultString" type="xsd:string" />
+          <xsd:element name="id" type="xsd:string" />
+          <xsd:element name="description" type="xsd:string" minOccurs="0" />
+          <xsd:element name="serial" type="xsd:int" minOccurs="0" />
+          <xsd:element name="originalFaultCode" type="xsd:string" minOccurs="0" />
+          <xsd:element name="originalFaultString" type="xsd:string" minOccurs="0" />
+          <xsd:element name="originalDescription" type="xsd:string" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILInviaDovuti">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="dovuti" type="xsd:base64Binary" />
+          <xsd:element name="enteSILInviaRispostaPagamentoUrl" type="xsd:string" default="" minOccurs="0" />
+          <xsd:element name="showMyPay" type="ppt:stShowMyPay" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILInviaDovutiRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="0" />
+              <xsd:element name="idSession" type="xsd:string" minOccurs="0" />
+              <xsd:element name="redirect" type="xsd:int" default="0" minOccurs="0" />
+              <xsd:element name="url" type="xsd:string" default="" minOccurs="0" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILInviaCarrelloDovuti">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword" />
+          <xsd:element name="listaDovuti" type="ppt:listaDovuti" />
+          <xsd:element name="listaDovutiEntiSecondari" type="ppt:listaDovutiEntiSecondari" minOccurs="0" />
+          <xsd:element name="enteSILInviaRispostaPagamentoUrl" type="xsd:string" default="" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="listaDovuti">
+        <xsd:sequence>
+          <xsd:element name="elementoListaDovuti" type="ppt:elementoListaDovuti" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="elementoListaDovuti">
+        <xsd:sequence>
+          <xsd:element name="codIpaEnte" type="ppthead:stText35" />
+          <xsd:element name="password" type="ppt:hashSHA256" />
+          <xsd:element name="dovuti" type="xsd:base64Binary" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="listaDovutiEntiSecondari">
+        <xsd:sequence>
+          <xsd:element name="elementoListaDovutiEntiSecondari" type="ppt:elementoListaDovutiEntiSecondari" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="elementoListaDovutiEntiSecondari">
+        <xsd:sequence>
+          <xsd:element name="dovutiEntiSecondari" type="xsd:base64Binary" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILInviaCarrelloDovutiRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="0" />
+              <xsd:element name="idSessionCarrello" type="xsd:string" minOccurs="0" />
+              <xsd:element name="redirect" type="xsd:int" default="0" minOccurs="0" />
+              <xsd:element name="url" type="xsd:string" default="" minOccurs="0" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILVerificaAvviso">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35" />
+          <xsd:element name="enteSILInviaRispostaPagamentoUrl" type="xsd:string" default="" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILVerificaAvvisoRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="0" />
+              <xsd:element name="idSession" type="xsd:string" minOccurs="0" />
+              <xsd:element name="redirect" type="xsd:int" default="0" minOccurs="0" />
+              <xsd:element name="url" type="xsd:string" default="" minOccurs="0" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediPagati">
+        <xsd:sequence>
+          <xsd:element name="codIpaEnte" type="ppthead:stText35" />
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="idSession" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediPagatiRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="pagati" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" minOccurs="0" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediPagatiConRicevuta">
+        <xsd:sequence>
+          <xsd:element name="codIpaEnte" type="ppthead:stText35" />
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="idSession" type="xsd:string" minOccurs="0" />
+          <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35" minOccurs="0" />
+          <xsd:element name="identificativoUnivocoDovuto" type="ppt:stText35" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediPagatiConRicevutaRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="pagati" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" minOccurs="0" />
+              <xsd:element name="tipoFirma" type="xsd:string" minOccurs="0" />
+              <xsd:element name="rt" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" minOccurs="0" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILImportaDovuto">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="dovuto" type="xsd:base64Binary" />
+          <xsd:element name="flagGeneraIuv" type="xsd:boolean" minOccurs="0" />
+          <xsd:element name="listaDovutiEntiSecondari" type="ppt:listaDovutiEntiSecondari" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILImportaDovutoRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="0" />
+              <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35" minOccurs="0" />
+              <xsd:element name="urlFileAvviso" type="xsd:string" minOccurs="0" />
+              <xsd:element name="base64ZipAvviso" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" minOccurs="0" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILRegistraPagamento">
+        <xsd:sequence>
+          <xsd:element name="codIpaEnte" type="ppthead:stText35" />
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="identificativoUnivocoVersamento" type="pay_i:stText35" minOccurs="1" />
+          <xsd:element name="codiceContestoPagamento" type="pay_i:stText35" minOccurs="0" />
+          <xsd:element name="singoloImportoPagato" type="pay_i:stImporto" minOccurs="1" />
+          <xsd:element name="dataEsitoSingoloPagamento" type="pay_i:stISODate" minOccurs="1" />
+          <xsd:element name="indiceDatiSingoloPagamento" type="pay_i:stIndice" minOccurs="0" />
+          <xsd:element name="identificativoUnivocoRiscossione" type="pay_i:stText35" minOccurs="1" />
+          <xsd:element name="tipoIstitutoAttestante" type="pay_i:stText1" minOccurs="1" />
+          <xsd:element name="codiceIstitutiAttestante" type="pay_i:stText35" minOccurs="1" />
+          <xsd:element name="denominazioneAttestante" type="pay_i:stText70" minOccurs="1" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILRegistraPagamentoRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="0" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILAutorizzaImportFlusso">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILAutorizzaImportFlussoRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="uploadUrl" type="xsd:string" />
+              <xsd:element name="authorizationToken" type="xsd:string" />
+              <xsd:element name="requestToken" type="xsd:string" />
+              <xsd:element name="importPath" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediStatoImportFlusso">
+        <xsd:sequence>
+          <xsd:element name="requestToken" type="xsd:string" />
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="fileScarti" type="xsd:boolean" minOccurs="0" />
+          <xsd:element name="fileIUV" type="xsd:boolean" minOccurs="0" />
+          <xsd:element name="fileAvvisi" type="xsd:boolean" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediStatoImportFlussoRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="stato" type="xsd:string" />
+              <xsd:element name="urlFileScarti" type="xsd:string" minOccurs="0" />
+              <xsd:element name="urlFileIUV" type="xsd:string" minOccurs="0" />
+              <xsd:element name="urlFileAvvisi" type="xsd:string" minOccurs="0" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILPrenotaExportFlusso">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="dateFrom" type="xsd:date" />
+          <xsd:element name="dateTo" type="xsd:date" />
+          <xsd:element name="identificativoTipoDovuto" type="pay_i:stText35" minOccurs="0" />
+          <xsd:element name="versioneTracciato" type="pay_i:stText35" minOccurs="0" default="1.0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILPrenotaExportFlussoRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="requestToken" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILPrenotaExportFlussoScaduti">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="dataScadenza" type="xsd:date" />
+          <xsd:element name="tipiDovuto" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILPrenotaExportFlussoScadutiRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="requestToken" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILPrenotaExportFlussoIncrementaleConRicevuta">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="dateFrom" type="xsd:dateTime" />
+          <xsd:element name="dateTo" type="xsd:dateTime" minOccurs="0" />
+          <xsd:element name="identificativoTipoDovuto" type="pay_i:stText35" minOccurs="0" />
+          <xsd:element name="ricevuta" type="xsd:boolean" />
+          <xsd:element name="incrementale" type="xsd:boolean" />
+          <xsd:element name="versioneTracciato" type="pay_i:stText35" minOccurs="0" default="1.0" />
+          <xsd:element name="passwordMypivot" type="ppt:stPassword" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILPrenotaExportFlussoIncrementaleConRicevutaRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="requestToken" type="xsd:string" />
+              <xsd:element name="dateTo" type="xsd:dateTime" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediStatoExportFlusso">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="requestToken" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediStatoExportFlussoRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="stato" type="xsd:string" />
+              <xsd:element name="downloadUrl" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediStatoExportFlussoScaduti">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="requestToken" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediStatoExportFlussoScadutiRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="stato" type="xsd:string" />
+              <xsd:element name="nomeFile" type="xsd:string" />
+              <xsd:element name="downloadUrl" type="xsd:string" />
+              <xsd:element name="pathFile" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediAvvisiPendenti">
+        <xsd:sequence>
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="codIpaEnte" type="ppthead:stText35" />
+          <xsd:element name="dateFrom" type="xsd:date" />
+          <xsd:element name="dateTo" type="xsd:date" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediAvvisiPendentiRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="paaSILAvvisoPendente" type="ppt:paaSILAvvisoPendente" minOccurs="0" maxOccurs="unbounded" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILAvvisoPendente">
+        <xsd:sequence>
+          <xsd:element name="dtCreazioneCodIuv" type="xsd:date" />
+          <xsd:element name="dovuti" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediEsitoCarrelloDovuti">
+        <xsd:sequence>
+          <xsd:element name="codIpaEnte" type="ppthead:stText35" />
+          <xsd:element name="password" type="ppt:stPassword" minOccurs="0" />
+          <xsd:element name="idSessionCarrello" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="paaSILChiediEsitoCarrelloDovutiRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="listaCarrelli" type="ppt:listaCarrelli" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="listaCarrelli">
+        <xsd:sequence>
+          <xsd:element name="rispostaCarrello" type="ppt:rispostaCarrello" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="rispostaCarrello">
+        <xsd:sequence>
+          <xsd:element name="esito" type="xsd:string" />
+          <xsd:element name="codIpaEnte" type="ppthead:stText35" />
+          <xsd:element name="codIdentificativoUnivocoCarrello" type="ppthead:stText35" />
+          <xsd:element name="pagati" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" minOccurs="0" />
+          <xsd:element name="rt" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns:pay_i="http://www.regione.veneto.it/schemas/2012/Pagamenti/Ente/" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.regione.veneto.it/schemas/2012/Pagamenti/Ente/" version="6.0.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--FROM: 'PagInf_Dovuti_Pagati_6_2_0.xsd' BEGIN-->
+      <xsd:annotation>
+        <xsd:documentation>Dovuti e Pagati</xsd:documentation>
+        <xsd:documentation>XSD Dovuti/Pagati</xsd:documentation>
+      </xsd:annotation>
+      <xsd:simpleType name="stISODate">
+        <xsd:restriction base="xs:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="stISODateTime">
+        <xsd:restriction base="xs:dateTime" />
+      </xsd:simpleType>
+      <xsd:simpleType name="stText12">
+        <xsd:restriction base="xs:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText15">
+        <xsd:restriction base="xs:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="15" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText16">
+        <xsd:restriction base="xs:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="16" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText32">
+        <xsd:restriction base="xs:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText35">
+        <xsd:restriction base="xs:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="35" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText64">
+        <xsd:restriction base="xs:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="64" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText70">
+        <xsd:restriction base="xs:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="70" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText140">
+        <xsd:restriction base="xs:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="140" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText512">
+        <xsd:restriction base="xs:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="512" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText1024">
+        <xsd:restriction base="xs:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="1024" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText1">
+        <xsd:restriction base="xs:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stText2">
+        <xsd:restriction base="xs:string">
+          <xsd:minLength value="2" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stCodiceEsitoPagamento">
+        <xsd:restriction base="xs:string">
+          <xsd:pattern value="[0-9]{1,1}" />
+          <xsd:enumeration value="0" />
+          <xsd:enumeration value="1" />
+          <xsd:enumeration value="2" />
+          <xsd:enumeration value="3" />
+          <xsd:enumeration value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stImporto">
+        <xsd:restriction base="xs:decimal">
+          <xsd:minInclusive value="0.00" />
+          <xsd:maxInclusive value="999999999.99" />
+          <xsd:pattern value="\d+\.\d{2}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stImportoPositivo">
+        <xsd:restriction base="xs:decimal">
+          <xsd:minInclusive value="0.01" />
+          <xsd:maxInclusive value="999999999.99" />
+          <xsd:pattern value="\d+\.\d{2}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stNazione">
+        <xsd:restriction base="xs:string">
+          <xsd:pattern value="[A-Z]{2,2}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stNazioneProvincia">
+        <xsd:restriction base="xs:string">
+          <xsd:pattern value="[A-Z]{2,2}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stDatiSpecificiRiscossione">
+        <xsd:restriction base="xs:string">
+          <xsd:pattern value="[0129]{1}\/\S{3,138}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stDatiSpecificiRiscossioneEnteSecondario">
+        <xsd:restriction base="xs:string">
+          <xsd:pattern value="9\/\d{2}\d{2}\d{3}\w{2}\/\S{0,129}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stIBANIdentifier">
+        <xsd:restriction base="xs:string">
+          <xsd:pattern value="[a-zA-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stTipoIdentificativoUnivoco">
+        <xsd:restriction base="xs:string">
+          <xsd:enumeration value="G" />
+          <xsd:enumeration value="A" />
+          <xsd:enumeration value="B" />
+          <xsd:length value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stTipoIdentificativoUnivocoPersFG">
+        <xsd:restriction base="xs:string">
+          <xsd:enumeration value="F" />
+          <xsd:enumeration value="G" />
+          <xsd:length value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stTipoIdentificativoUnivocoPersG">
+        <xsd:restriction base="xs:string">
+          <xsd:enumeration value="G" />
+          <xsd:length value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stBICIdentifier">
+        <xsd:restriction base="xs:string">
+          <xsd:pattern value="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stEMail">
+        <xsd:restriction base="xs:string">
+          <xsd:pattern value="[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+" />
+          <xsd:maxLength value="256" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stIndice">
+        <xsd:restriction base="xs:integer">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="5" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stTipoBollo">
+        <xsd:restriction base="xs:string">
+          <xsd:enumeration value="01" />
+          <xsd:length value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stTipoAllegatoRicevuta">
+        <xsd:restriction base="xs:string">
+          <xsd:enumeration value="ES" />
+          <xsd:enumeration value="BD" />
+          <xsd:length value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stBase64">
+        <xsd:restriction base="xs:base64Binary" />
+      </xsd:simpleType>
+      <xsd:complexType name="ctDominio">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="identificativoDominio" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Campo alfanumerico contenente il codice fiscale
+						della struttura che invia la richiesta di pagamento.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="identificativoStazioneRichiedente" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Identifica la stazione richiedente il pagamento.
+						Nella fattispecie assume il codice del PdA richiedente o quello
+						del Portale del
+						ministero.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctDatiMarcaBolloDigitale">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="tipoBollo" type="pay_i:stTipoBollo">
+            <xsd:annotation>
+              <xsd:documentation>Contiene la tipologia di Bollo Digitale.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="hashDocumento" type="pay_i:stText70">
+            <xsd:annotation>
+              <xsd:documentation>Contiene l’impronta informatica (digest), rappresentata in “base 64 binary”, del documento informatico o della segnatura di protocollo cui è associata la marca da bollo digitale</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="provinciaResidenza" type="pay_i:stNazioneProvincia">
+            <xsd:annotation>
+              <xsd:documentation>Sigla automobilistica della provincia di residenza del soggetto pagatore.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctAllegatoRicevuta">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="tipoAllegatoRicevuta" type="pay_i:stTipoAllegatoRicevuta">
+            <xsd:annotation>
+              <xsd:documentation>Identifica il tipo di allegato trasportato con
+						la RT.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="testoAllegato" type="pay_i:stBase64">
+            <xsd:annotation>
+              <xsd:documentation>Contiene l’allegato vero e proprio, il cui
+						significato è indicato dal dato tipoAllegatoRicevuta.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctIdentificativoUnivoco">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="tipoIdentificativoUnivoco" type="pay_i:stTipoIdentificativoUnivoco">
+            <xsd:annotation>
+              <xsd:documentation>Campo alfanumerico che indica la natura del
+						soggetto, può assumere i seguenti valori:
+					</xsd:documentation>
+              <xsd:documentation>G - Persona Giuridica</xsd:documentation>
+              <xsd:documentation>A - Codice ABI</xsd:documentation>
+              <xsd:documentation>B - Codice BIC</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="codiceIdentificativoUnivoco" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Campo alfanumerico che può contenere il codice
+						fiscale o la partita IVA del soggetto o il codice ABI o il codice
+						BIC
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctIdentificativoUnivocoPersonaFG">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="tipoIdentificativoUnivoco" type="pay_i:stTipoIdentificativoUnivocoPersFG">
+            <xsd:annotation>
+              <xsd:documentation>Campo alfanumerico che indica la natura del
+						soggetto, può assumere i seguenti valori:
+					</xsd:documentation>
+              <xsd:documentation>F - Persona Fisica</xsd:documentation>
+              <xsd:documentation>G - Persona Giuridica</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="codiceIdentificativoUnivoco" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Campo alfanumerico che può contenere il codice
+						fiscale o, in alternativa, la partita IVA del soggetto.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctIdentificativoUnivocoPersonaG">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="tipoIdentificativoUnivoco" type="pay_i:stTipoIdentificativoUnivocoPersG">
+            <xsd:annotation>
+              <xsd:documentation>Campo alfanumerico che indica la natura del
+						soggetto, può assumere i seguenti valori:
+					</xsd:documentation>
+              <xsd:documentation>G - Persona Giuridica</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="codiceIdentificativoUnivoco" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Campo alfanumerico che può contenere il codice
+						fiscale o, in alternativa, la partita IVA del soggetto.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctSoggettoPagatore">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="identificativoUnivocoPagatore" type="pay_i:ctIdentificativoUnivocoPersonaFG">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione che riporta le informazioni
+						concernenti l’identificazione fiscale del pagatore.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="anagraficaPagatore" type="pay_i:stText70">
+            <xsd:annotation>
+              <xsd:documentation>Indica il nominativo o la ragione sociale del
+						pagatore.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="indirizzoPagatore" type="pay_i:stText70">
+            <xsd:annotation>
+              <xsd:documentation>Indica l’indirizzo del pagatore.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="civicoPagatore" type="pay_i:stText16">
+            <xsd:annotation>
+              <xsd:documentation>Indica il numero civico del pagatore.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="capPagatore" type="pay_i:stText16">
+            <xsd:annotation>
+              <xsd:documentation>Indica il CAP del pagatore.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="localitaPagatore" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica la località del pagatore.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="provinciaPagatore" type="pay_i:stText2">
+            <xsd:annotation>
+              <xsd:documentation>Indica la provincia del pagatore.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="nazionePagatore" type="pay_i:stNazione">
+            <xsd:annotation>
+              <xsd:documentation>Indica il codice nazione del pagatore secondo lo
+						standard ISO 3166.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="e-mailPagatore" type="pay_i:stEMail">
+            <xsd:annotation>
+              <xsd:documentation>Indirizzo di posta elettronica del pagatore.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctEnteBeneficiario">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="identificativoUnivocoBeneficiario" type="pay_i:ctIdentificativoUnivocoPersonaG">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione che riporta le informazioni
+						concernenti l’identificazione fiscale dell’ente beneficiario.
+					</xsd:documentation>
+              <xsd:documentation>tipo_identificativo_univoco - se presente deve
+						assumere il valore ‘G’, Persona Giuridica.
+					</xsd:documentation>
+              <xsd:documentation>codice_identificativo_univoco - contenente il
+						codice fiscale dell’amministrazione destinataria del pagamento.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="denominazioneBeneficiario" type="pay_i:stText70">
+            <xsd:annotation>
+              <xsd:documentation>Contiene la denominazione della PA.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="codiceUnitOperBeneficiario" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica il codice dell’unità operativa
+						destinataria.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="denomUnitOperBeneficiario" type="pay_i:stText70">
+            <xsd:annotation>
+              <xsd:documentation>Contiene la denominazione dell’unità operativa
+						destinataria.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="indirizzoBeneficiario" type="pay_i:stText70">
+            <xsd:annotation>
+              <xsd:documentation>Indica l’indirizzo dell’ente beneficiario.
+					</xsd:documentation>
+              <xsd:documentation>Può coincidere con quello dell’unità operativa
+						destinataria.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="civicoBeneficiario" type="pay_i:stText16">
+            <xsd:annotation>
+              <xsd:documentation>Indica il numero civico del beneficiario.
+					</xsd:documentation>
+              <xsd:documentation>Può coincidere con quello dell’unità operativa
+						destinataria.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="capBeneficiario" type="pay_i:stText16">
+            <xsd:annotation>
+              <xsd:documentation>Indica il CAP dell’ente beneficiario.
+					</xsd:documentation>
+              <xsd:documentation>Può coincidere con quello dell’unità operativa
+						destinataria.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="localitaBeneficiario" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica la località dell’ente beneficiario.
+					</xsd:documentation>
+              <xsd:documentation>Può coincidere con quello dell’unità operativa
+						destinataria.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="provinciaBeneficiario" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica la provincia del beneficiario.
+					</xsd:documentation>
+              <xsd:documentation>Può coincidere con quello dell’unità operativa
+						destinataria.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="nazioneBeneficiario" type="pay_i:stNazione">
+            <xsd:annotation>
+              <xsd:documentation>Indica il codice nazione dell’ente beneficiario
+						secondo lo standard ISO 3166.
+					</xsd:documentation>
+              <xsd:documentation>Può coincidere con quello dell’unità operativa
+						destinataria.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctIstitutoAttestante">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="identificativoUnivocoAttestante" type="pay_i:ctIdentificativoUnivoco">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione che riporta le informazioni
+						concernenti l’identificazione fiscale dell’Istituto attestante il
+						pagamento.
+					</xsd:documentation>
+              <xsd:documentation>tipo_identificativo_univoco - deve assumere il
+						valore ‘G’, Persona Giuridica.
+					</xsd:documentation>
+              <xsd:documentation>codice_identificativo_univoco - Campo
+						alfanumerico che può contenere il codice fiscale o, in
+						alternativa, la partita IVA dell’Istituto
+						attestante il pagamento.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="denominazioneAttestante" type="pay_i:stText70">
+            <xsd:annotation>
+              <xsd:documentation>Contiene la denominazione dell’Istituto
+						finanziario che emette il documento di attestazione dell’avvenuto
+						versamento.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="codiceUnitOperAttestante" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica il codice dell’unità operativa che
+						rilascia la quietanza.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="denomUnitOperAttestante" type="pay_i:stText70">
+            <xsd:annotation>
+              <xsd:documentation>Contiene la denominazione dell’unità operativa
+						attestante.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="indirizzoAttestante" type="pay_i:stText70">
+            <xsd:annotation>
+              <xsd:documentation>Indica l’indirizzo dell’attestante.
+					</xsd:documentation>
+              <xsd:documentation>Può coincidere con quello dell’unità operativa
+						che rilascia la ricevuta
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="civicoAttestante" type="pay_i:stText16">
+            <xsd:annotation>
+              <xsd:documentation>Indica il numero civico dell'attestante.
+					</xsd:documentation>
+              <xsd:documentation>Può coincidere con quello dell’unità operativa
+						che rilascia la ricevuta
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="capAttestante" type="pay_i:stText16">
+            <xsd:annotation>
+              <xsd:documentation>Indica il CAP dell’attestante.
+					</xsd:documentation>
+              <xsd:documentation>Può coincidere con quello dell’unità operativa
+						che rilascia la ricevuta
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="localitaAttestante" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica la località dell’attestante.
+					</xsd:documentation>
+              <xsd:documentation>Può coincidere con quello dell’unità operativa
+						che rilascia la ricevuta
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="provinciaAttestante" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica la provincia dell’attestante.
+					</xsd:documentation>
+              <xsd:documentation>Può coincidere con quello dell’unità operativa
+						che rilascia la ricevuta
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="nazioneAttestante" type="pay_i:stNazione">
+            <xsd:annotation>
+              <xsd:documentation>Indica il codice nazione dell’attestante secondo
+						lo standard ISO 3166.
+					</xsd:documentation>
+              <xsd:documentation>Può coincidere con quello dell’unità operativa
+						che rilascia la ricevuta
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctDatiSingoloVersamentoDovuti">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="identificativoUnivocoDovuto" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica il codice univoco di un dovuto generato
+						dalla PA (Identificativo Unico Dovuto); non può essere ripetuto
+						all'interno dello stesso
+						flusso mentre si può ripetere in flussi
+						diversi per azioni di modifica od annullamento di un dovuto
+						precedentemente inviato (vedi campo 'azione'); i
+						primi tre
+						caratteri devono essere diversi da “000”
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="importoSingoloVersamento" type="pay_i:stImportoPositivo">
+            <xsd:annotation>
+              <xsd:documentation>Campo numerico (due cifre per la parte decimale,
+						il separatore dei centesimi è il punto “.”), indicante l’importo
+						relativo alla somma da
+						versare. Deve essere diverso da “0.00”.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="commissioneCaricoPA" type="pay_i:stImporto">
+            <xsd:annotation>
+              <xsd:documentation>Campo numerico (due cifre per la parte decimale,
+						il separatore dei centesimi è il punto “.”), indicante l’importo
+						relativo alla somma da
+						versare. Il data è riportato a solo titolo
+						indicativo e non comporta attività a carico del PSP. Se presente
+						deve essere diverso da “0.00”.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="identificativoTipoDovuto" type="pay_i:stText64">
+            <xsd:annotation>
+              <xsd:documentation>Riferimento alla tipologia del dovuto secondo la
+						classificazione data dal beneficiario.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="causaleVersamento" type="pay_i:stText1024">
+            <xsd:annotation>
+              <xsd:documentation>Rappresenta la descrizione estesa della causale
+						del versamento.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="datiSpecificiRiscossione" type="pay_i:stDatiSpecificiRiscossione">
+            <xsd:annotation>
+              <xsd:documentation>Rappresenta l’indicazione dell’imputazione della
+						specifica entrata ed è così articolato:
+					</xsd:documentation>
+              <xsd:documentation>"tipo contabilità"/"codice contabilità", dove
+						"tipo contabilità" può assumere i seguenti valori :
+					</xsd:documentation>
+              <xsd:documentation>0 Capitolo e articolo di Entrata del Bilancio
+						dello stato
+					</xsd:documentation>
+              <xsd:documentation>1 Numero della contabilità speciale
+					</xsd:documentation>
+              <xsd:documentation>2 Codice SIOPE</xsd:documentation>
+              <xsd:documentation>9 Altro codice ad uso dell’amministrazione
+					</xsd:documentation>
+              <xsd:documentation>Esempio: 0/3321.00 per indicare il Contributo
+						Unificato delle spese di giustizia
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="datiMarcaBolloDigitale" type="pay_i:ctDatiMarcaBolloDigitale">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione che contiene le informazioni necessarie al PSP per generare la marca da bollo digitale.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="bilancio" type="pay_i:ctBilancio">
+            <xsd:annotation>
+              <xsd:documentation>Bilancio opzionale del dovuto
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctDatiVersamentoDovuti">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="tipoVersamento" type="pay_i:stText32">
+            <xsd:annotation>
+              <xsd:documentation>Forma tecnica di pagamento delle somme dovute
+						presso la Tesoreria Statale. Può assumere i seguenti valori:
+					</xsd:documentation>
+              <xsd:documentation>- BBT - Bonifico Bancario di Tesoreria.
+					</xsd:documentation>
+              <xsd:documentation>- BP - Bonifico Postale.</xsd:documentation>
+              <xsd:documentation>- AD - Addebito diretto.</xsd:documentation>
+              <xsd:documentation>- CP - Carta di Pagamento.</xsd:documentation>
+              <xsd:documentation>- PO - Pagamento attivato presso PSP.
+					</xsd:documentation>
+              <xsd:documentation>- OBEP - On-line Banking E-Payment.
+					</xsd:documentation>
+              <xsd:documentation>La stringa può essere composta da più tipi
+						versamento, intervallati dal carattere 'pipe' ('|'), in
+						alternativa dal testo speciale 'ALL'
+						se prevede tutti e sei i tipi.
+						Se non indicato viene preso il default dalle configurazioni
+						dell'ente
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="identificativoUnivocoVersamento" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica il codice univoco versamento: è deprecato invio dello IUV
+						per pagamento immediato presso Ente, quindi non sara' più generato
+						dalla PA. Uno IUV può essere associato ad uno ed un solo IUD
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="5" name="datiSingoloVersamento" type="pay_i:ctDatiSingoloVersamentoDovuti">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione “dati dei singoli versamenti”, da
+						un minimo di uno ad un massimo di 5 occorrenze di versamento,
+						facenti capo ad un unico
+						identificativoUnivocoVersamento.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctDatiVersamentoDovutiEntiSecondari">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="codiceFiscaleBeneficiario" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica il codice fiscale dell'Ente
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="denominazioneBeneficiario" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica la denominazione dell'Ente beneficiario:
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="ibanAccreditoBeneficiario" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica IBAN dell'Ente beneficiario:
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="indirizzoBeneficiario" type="pay_i:stText70">
+            <xsd:annotation>
+              <xsd:documentation>Indica l'indirizzo dell'Ente beneficiario:
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="civicoBeneficiario" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica il civico dell'Ente beneficiario:
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="capBeneficiario" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica il cap dell'Ente beneficiario:
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="localitaBeneficiario" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica la località dell'Ente beneficiario:
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="provinciaBeneficiario" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica la provincia dell'Ente beneficiario:
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="nazioneBeneficiario" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica la nazione dell'Ente beneficiario:
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="causaleVersamento" type="pay_i:stText1024">
+            <xsd:annotation>
+              <xsd:documentation>Il dato deve essere riportato invariato, a cura
+						del PSP, così come presente nei Dovuti cui si riferisce il
+						messaggio dei Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="datiSpecificiRiscossione" type="pay_i:stDatiSpecificiRiscossioneEnteSecondario">
+            <xsd:annotation>
+              <xsd:documentation>Rappresenta l’indicazione dell’imputazione della
+						specifica entrata ed è così articolato:
+					</xsd:documentation>
+              <xsd:documentation>"tipo contabilità"/"codice tassonomico"/"codice contabilità", dove
+						"tipo contabilità" può assumere i seguenti valori :
+					</xsd:documentation>
+              <xsd:documentation>0 Capitolo e articolo di Entrata del Bilancio
+						dello stato
+					</xsd:documentation>
+              <xsd:documentation>1 Numero della contabilità speciale
+					</xsd:documentation>
+              <xsd:documentation>2 Codice SIOPE</xsd:documentation>
+              <xsd:documentation>9 Altro codice ad uso dell’amministrazione
+					</xsd:documentation>
+              <xsd:documentation>, e dove "codice tassonomico" riporta il valore desunto dalla Tassonomia in base al tipo di entrata richiesta
+					</xsd:documentation>
+              <xsd:documentation>Esempio: 0/0801100AP/3321.00 per indicare il Contributo
+						Unificato delle spese di giustizia
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="importoSingoloVersamento" type="pay_i:stImportoPositivo">
+            <xsd:annotation>
+              <xsd:documentation>Indica importo da pagare per l'Ente beneficiario:
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctDatiSingoloPagamentoPagati">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="identificativoUnivocoDovuto" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Il dato deve essere riportato invariato, a cura
+						del Nodo Regionale, così come presente nei Dovuti cui si riferisce
+						il messaggio dei
+						Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="singoloImportoPagato" type="pay_i:stImporto">
+            <xsd:annotation>
+              <xsd:documentation>Campo numerico (due cifre per la parte decimale,
+						il separatore dei centesimi è il punto “.”), indicante l’importo
+						relativo alla somma
+						versata.
+					</xsd:documentation>
+              <xsd:documentation>Se il singolo versamento non è stato effettuato
+						l’importo deve essere impostato a 0.00.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="esitoSingoloPagamento" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Contiene la descrizione in formato testo
+						dell’esito del singolo pagamento.
+					</xsd:documentation>
+              <xsd:documentation>Obbligatorio nel caso che l’elemento
+						singoloImportoVersato sia 0.00.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="dataEsitoSingoloPagamento" type="pay_i:stISODate">
+            <xsd:annotation>
+              <xsd:documentation>Indica la data di esecuzione o di rifiuto del
+						pagamento, nel formato iso 8601 [YYYY]-[MM]-[DD].
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="identificativoUnivocoRiscossione" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Riferimento univoco dell’operazione assegnato al
+						versamento dal Prestatore dei servizi di Pagamento. Può coincidere
+						con il CRO nel caso
+						di Bonifico Bancario o con il CODELINE nel caso
+						di bollettino postale.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="causaleVersamento" type="pay_i:stText140">
+            <xsd:annotation>
+              <xsd:documentation>Il dato deve essere riportato invariato, a cura
+						del PSP, così come presente nei Dovuti cui si riferisce il
+						messaggio dei Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="datiSpecificiRiscossione" type="pay_i:stDatiSpecificiRiscossione">
+            <xsd:annotation>
+              <xsd:documentation>Il dato, se presente, deve essere riportato
+						invariato, a cura del Psp, così come presente nei Dovuti cui si
+						riferisce il messaggio dei
+						Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctDatiSingoloPagamentoPagatiConRicevuta">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="identificativoUnivocoDovuto" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Il dato deve essere riportato invariato, a cura
+						del Nodo Regionale, così come presente nei Dovuti cui si riferisce
+						il messaggio dei
+						Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="singoloImportoPagato" type="pay_i:stImporto">
+            <xsd:annotation>
+              <xsd:documentation>Campo numerico (due cifre per la parte decimale,
+						il separatore dei centesimi è il punto “.”), indicante l’importo
+						relativo alla somma
+						versata.
+					</xsd:documentation>
+              <xsd:documentation>Se il singolo versamento non è stato effettuato
+						l’importo deve essere impostato a 0.00.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="esitoSingoloPagamento" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Contiene la descrizione in formato testo
+						dell’esito del singolo pagamento.
+					</xsd:documentation>
+              <xsd:documentation>Obbligatorio nel caso che l’elemento
+						singoloImportoVersato sia 0.00.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="dataEsitoSingoloPagamento" type="pay_i:stISODate">
+            <xsd:annotation>
+              <xsd:documentation>Indica la data di esecuzione o di rifiuto del
+						pagamento, nel formato iso 8601 [YYYY]-[MM]-[DD].
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="identificativoUnivocoRiscossione" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Riferimento univoco dell’operazione assegnato al
+						versamento dal Prestatore dei servizi di Pagamento. Può coincidere
+						con il CRO nel caso
+						di Bonifico Bancario o con il CODELINE nel caso
+						di bollettino postale.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="causaleVersamento" type="pay_i:stText140">
+            <xsd:annotation>
+              <xsd:documentation>Il dato deve essere riportato invariato, a cura
+						del PSP, così come presente nei Dovuti cui si riferisce il
+						messaggio dei Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="datiSpecificiRiscossione" type="pay_i:stDatiSpecificiRiscossione">
+            <xsd:annotation>
+              <xsd:documentation>Il dato, se presente, deve essere riportato
+						invariato, a cura del Psp, così come presente nei Dovuti cui si
+						riferisce il messaggio dei
+						Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="indiceDatiSingoloPagamento" type="pay_i:stIndice">
+            <xsd:annotation>
+              <xsd:documentation>Indice dell’occorrenza del pagamento all’interno
+						della struttura datiSingoloPagamento della Ricevuta Telematica.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="commissioniApplicatePSP" type="pay_i:stImporto">
+            <xsd:annotation>
+              <xsd:documentation>Campo numerico (due cifre per la parte decimale,
+						il separatore dei centesimi è il punto “.”), indicante l’importo
+						della commissione applicata dal PSP al proprio cliente (soggetto
+						versante o soggetto pagatore).</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="allegatoRicevuta" type="pay_i:ctAllegatoRicevuta">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione contenente l'allegato al singolo
+						pagamento.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctDatiVersamentoPagati">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="codiceEsitoPagamento" type="pay_i:stCodiceEsitoPagamento">
+            <xsd:annotation>
+              <xsd:documentation>Campo numerico indicante l’esito del pagamento.
+					</xsd:documentation>
+              <xsd:documentation>Può assumere i seguenti valori:
+					</xsd:documentation>
+              <xsd:documentation>0 - Pagamento eseguito</xsd:documentation>
+              <xsd:documentation>1 - Pagamento non eseguito</xsd:documentation>
+              <xsd:documentation>2 - Pagamento parzialmente eseguito
+					</xsd:documentation>
+              <xsd:documentation>3 - Decorrenza termini</xsd:documentation>
+              <xsd:documentation>4 - Decorrenza termini parziale
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="importoTotalePagato" type="pay_i:stImporto">
+            <xsd:annotation>
+              <xsd:documentation>Campo numerico (due cifre per la parte decimale,
+						il separatore dei centesimi è il punto “.”), indicante l’importo
+						relativo alla somma
+						versata.
+					</xsd:documentation>
+              <xsd:documentation>Deve essere uguale alla somma delle varie
+						occorrenze (da 1 a 5) dell’informazione singoloImportoVersato
+						presente nella struttura
+						DatiSingoloPagamento.
+					</xsd:documentation>
+              <xsd:documentation>Se il versamento non è stato effettuato
+						l’importo deve essere impostato a 0.00
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="identificativoUnivocoVersamento" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Il dato deve essere riportato invariato, a cura
+						del prestatore di servizi di pagamento, così come presente nei
+						Dovuti cui si riferisce
+						il messaggio dei Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="codiceContestoPagamento" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Il dato deve essere riportato invariato, a cura
+						del prestatore di servizi di pagamento, così come presente nei
+						Dovuti cui si riferisce
+						il messaggio dei Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="5" name="datiSingoloPagamento" type="pay_i:ctDatiSingoloPagamentoPagati">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione “dati dei singoli versamenti”, da
+						un minimo di uno ad un massimo di 5 occorrenze di versamento,
+						facenti capo ad un unico
+						identificativoUnivocoVersamento.
+					</xsd:documentation>
+              <xsd:documentation>Obbligatorio nel caso che l’elemento
+						codiceEsitoPagamento sia 0 o 2
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctDatiVersamentoPagatiConRicevuta">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="codiceEsitoPagamento" type="pay_i:stCodiceEsitoPagamento">
+            <xsd:annotation>
+              <xsd:documentation>Campo numerico indicante l’esito del pagamento.
+					</xsd:documentation>
+              <xsd:documentation>Può assumere i seguenti valori:
+					</xsd:documentation>
+              <xsd:documentation>0 - Pagamento eseguito</xsd:documentation>
+              <xsd:documentation>1 - Pagamento non eseguito</xsd:documentation>
+              <xsd:documentation>2 - Pagamento parzialmente eseguito
+					</xsd:documentation>
+              <xsd:documentation>3 - Decorrenza termini</xsd:documentation>
+              <xsd:documentation>4 - Decorrenza termini parziale
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="importoTotalePagato" type="pay_i:stImporto">
+            <xsd:annotation>
+              <xsd:documentation>Campo numerico (due cifre per la parte decimale,
+						il separatore dei centesimi è il punto “.”), indicante l’importo
+						relativo alla somma
+						versata.
+					</xsd:documentation>
+              <xsd:documentation>Deve essere uguale alla somma delle varie
+						occorrenze (da 1 a 5) dell’informazione singoloImportoVersato
+						presente nella struttura
+						DatiSingoloPagamento.
+					</xsd:documentation>
+              <xsd:documentation>Se il versamento non è stato effettuato
+						l’importo deve essere impostato a 0.00
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="identificativoUnivocoVersamento" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Il dato deve essere riportato invariato, a cura
+						del prestatore di servizi di pagamento, così come presente nei
+						Dovuti cui si riferisce
+						il messaggio dei Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="codiceContestoPagamento" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Il dato deve essere riportato invariato, a cura
+						del prestatore di servizi di pagamento, così come presente nei
+						Dovuti cui si riferisce
+						il messaggio dei Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" maxOccurs="5" name="datiSingoloPagamento" type="pay_i:ctDatiSingoloPagamentoPagatiConRicevuta">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione “dati dei singoli versamenti”, da
+						un minimo di uno ad un massimo di 5 occorrenze di versamento,
+						facenti capo ad un unico
+						identificativoUnivocoVersamento.
+					</xsd:documentation>
+              <xsd:documentation>Obbligatorio nel caso che l’elemento
+						codiceEsitoPagamento sia 0 o 2
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctDatiVersamento">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataEsecuzionePagamento" type="pay_i:stISODate">
+            <xsd:annotation>
+              <xsd:documentation>Indica la data in cui si richiede che venga
+						effettuato il pagamento secondo il formato ISO 8601
+						[YYYY]-[MM]-[DD].
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="tipoVersamento" type="pay_i:stText32">
+            <xsd:annotation>
+              <xsd:documentation>Forma tecnica di pagamento delle somme dovute
+						presso la Tesoreria Statale. Può assumere i seguenti valori:
+					</xsd:documentation>
+              <xsd:documentation>- BBT - Bonifico Bancario di Tesoreria.
+					</xsd:documentation>
+              <xsd:documentation>- BP - Bonifico Postale.</xsd:documentation>
+              <xsd:documentation>- AD - Addebito diretto.</xsd:documentation>
+              <xsd:documentation>- CP - Carta di Pagamento.</xsd:documentation>
+              <xsd:documentation>- PO - Pagamento attivato presso PSP.
+					</xsd:documentation>
+              <xsd:documentation>- OBEP - On-line Banking E-Payment.
+					</xsd:documentation>
+              <xsd:documentation>La stringa può essere composta da più tipi
+						versamento, intervallati dal carattere 'pipe' ('|'), in
+						alternativa dal testo speciale 'ALL'
+						se prevede tutti e sei i tipi.
+						Se non indicato viene preso il default dalle configurazioni
+						dell'ente
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="identificativoUnivocoVersamento" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica il codice univoco versamento
+						eventualmente generato (secondo il formato iuv
+						“Formato IUV 17 Ente”) dalla PA ed assegnato al dovuto;
+						uno IUV può essere associato ad uno ed un solo IUD
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="identificativoUnivocoDovuto" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Indica il codice univoco di un dovuto generato
+						dalla PA (Identificativo Unico Dovuto); non può essere ripetuto
+						all'interno dello stesso
+						flusso mentre si può ripetere in flussi
+						diversi per azioni di modifica od annullamento di un dovuto
+						precedentemente inviato (vedi campo 'azione'); i
+						primi tre
+						caratteri devono essere diversi da “000”
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="importoSingoloVersamento" type="pay_i:stImportoPositivo">
+            <xsd:annotation>
+              <xsd:documentation>Campo numerico (due cifre per la parte decimale,
+						il separatore dei centesimi è il punto “.”), indicante l’importo
+						relativo alla somma da
+						versare. Deve essere diverso da “0.00”.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="commissioneCaricoPA" type="pay_i:stImporto">
+            <xsd:annotation>
+              <xsd:documentation>Campo numerico (due cifre per la parte decimale,
+						il separatore dei centesimi è il punto “.”), indicante l’importo
+						relativo alla somma da
+						versare. Il data è riportato a solo titolo
+						indicativo e non comporta attività a carico del PSP. Se presente
+						deve essere diverso da “0.00”.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="identificativoTipoDovuto" type="pay_i:stText64">
+            <xsd:annotation>
+              <xsd:documentation>Riferimento alla tipologia del dovuto secondo la
+						classificazione data dal beneficiario.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="causaleVersamento" type="pay_i:stText1024">
+            <xsd:annotation>
+              <xsd:documentation>Rappresenta la descrizione estesa della causale
+						del versamento.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="datiSpecificiRiscossione" type="pay_i:stDatiSpecificiRiscossione">
+            <xsd:annotation>
+              <xsd:documentation>Rappresenta l’indicazione dell’imputazione della
+						specifica entrata ed è così articolato:
+					</xsd:documentation>
+              <xsd:documentation>"tipo contabilità"/"codice contabilità", dove
+						"tipo contabilità" può assumere i seguenti valori :
+					</xsd:documentation>
+              <xsd:documentation>0 Capitolo e articolo di Entrata del Bilancio
+						dello stato
+					</xsd:documentation>
+              <xsd:documentation>1 Numero della contabilità speciale
+					</xsd:documentation>
+              <xsd:documentation>2 Codice SIOPE</xsd:documentation>
+              <xsd:documentation>9 Altro codice ad uso dell’amministrazione
+					</xsd:documentation>
+              <xsd:documentation>Esempio: 0/3321.00 per indicare il Contributo
+						Unificato delle spese di giustizia
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="bilancio" type="pay_i:ctBilancio">
+            <xsd:annotation>
+              <xsd:documentation>Bilancio opzionale del dovuto
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctDovuti">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="versioneOggetto" type="pay_i:stText16">
+            <xsd:annotation>
+              <xsd:documentation>Versione che identifica l’oggetto scambiato.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="soggettoPagatore" type="pay_i:ctSoggettoPagatore">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione “soggetto pagatore” che riporta le
+						informazioni concernenti il soggetto che effettua il pagamento.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="datiVersamento" type="pay_i:ctDatiVersamentoDovuti">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione “dati del versamento”.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctDovutiEntiSecondari">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="versioneOggetto" type="pay_i:stText16">
+            <xsd:annotation>
+              <xsd:documentation>Versione che identifica l’oggetto scambiato.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="datiVersamentoEntiSecondari" type="pay_i:ctDatiVersamentoDovutiEntiSecondari">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione “dati del versamento” per un pagamento multibeneficiario.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctPagati">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="versioneOggetto" type="pay_i:stText16">
+            <xsd:annotation>
+              <xsd:documentation>Riporta la stessa informazione presente nel dato
+						“versioneOggetto” dei Dovuti.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="dominio" type="pay_i:ctDominio">
+            <xsd:annotation>
+              <xsd:documentation>Riporta le stesse informazioni presenti nel
+						blocco “Dominio” dei Dovuti
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="identificativoMessaggioRicevuta" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Identificativo legato alla trasmissione della
+						quietanza telematica.
+					</xsd:documentation>
+              <xsd:documentation>Deve essere univoco nell’ambito della stessa
+						data riferita all’elemento dataMessaggioRicevuta.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="dataOraMessaggioRicevuta" type="pay_i:stISODateTime">
+            <xsd:annotation>
+              <xsd:documentation>Indica la data del messaggio di quietanza,
+						secondo il formato ISO 8601
+					</xsd:documentation>
+              <xsd:documentation>[YYYY]-[MM]-[DD]T[hh]:[mm]:[ss]
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="riferimentoMessaggioRichiesta" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Con riferimento al messaggio dei Pagati
+						l’elemento contiene il dato identificativoMessaggioRichiesta
+						legato alla trasmissione dei
+						Dovuti.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="riferimentoDataRichiesta" type="pay_i:stISODate">
+            <xsd:annotation>
+              <xsd:documentation>Indica la data secondo il formato ISO 8601
+						[YYYY]-[MM]-[DD] cui si riferisce la generazione del dato
+						riferimentoMessaggioRichiesta.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="istitutoAttestante" type="pay_i:ctIstitutoAttestante">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione relativa al soggetto Prestatore dei
+						servizi di Pagamento che emette il documento di attestazione
+						dell’avvenuto versamento.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="enteBeneficiario" type="pay_i:ctEnteBeneficiario">
+            <xsd:annotation>
+              <xsd:documentation>Riporta le stesse informazioni presenti nel
+						blocco “Ente Beneficiario” dei Dovuti cui si riferisce il
+						messaggio dei Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="soggettoPagatore" type="pay_i:ctSoggettoPagatore">
+            <xsd:annotation>
+              <xsd:documentation>Riporta le stesse informazioni presenti nel
+						blocco “Soggetto Pagatore” dei Dovuti cui si riferisce il
+						messaggio dei Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="datiPagamento" type="pay_i:ctDatiVersamentoPagati">
+            <xsd:annotation xml:base="pay_i:stImporto">
+              <xsd:documentation>Aggregazione “dati del versamento”
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctPagatiConRicevuta">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="versioneOggetto" type="pay_i:stText16">
+            <xsd:annotation>
+              <xsd:documentation>Riporta la stessa informazione presente nel dato
+						“versioneOggetto” dei Dovuti.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="dominio" type="pay_i:ctDominio">
+            <xsd:annotation>
+              <xsd:documentation>Riporta le stesse informazioni presenti nel
+						blocco “Dominio” dei Dovuti
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="identificativoMessaggioRicevuta" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Identificativo legato alla trasmissione della
+						quietanza telematica.
+					</xsd:documentation>
+              <xsd:documentation>Deve essere univoco nell’ambito della stessa
+						data riferita all’elemento dataMessaggioRicevuta.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="dataOraMessaggioRicevuta" type="pay_i:stISODateTime">
+            <xsd:annotation>
+              <xsd:documentation>Indica la data del messaggio di quietanza,
+						secondo il formato ISO 8601
+					</xsd:documentation>
+              <xsd:documentation>[YYYY]-[MM]-[DD]T[hh]:[mm]:[ss]
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="riferimentoMessaggioRichiesta" type="pay_i:stText35">
+            <xsd:annotation>
+              <xsd:documentation>Con riferimento al messaggio dei Pagati
+						l’elemento contiene il dato identificativoMessaggioRichiesta
+						legato alla trasmissione dei
+						Dovuti.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="riferimentoDataRichiesta" type="pay_i:stISODate">
+            <xsd:annotation>
+              <xsd:documentation>Indica la data secondo il formato ISO 8601
+						[YYYY]-[MM]-[DD] cui si riferisce la generazione del dato
+						riferimentoMessaggioRichiesta.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="istitutoAttestante" type="pay_i:ctIstitutoAttestante">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione relativa al soggetto Prestatore dei
+						servizi di Pagamento che emette il documento di attestazione
+						dell’avvenuto versamento.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="enteBeneficiario" type="pay_i:ctEnteBeneficiario">
+            <xsd:annotation>
+              <xsd:documentation>Riporta le stesse informazioni presenti nel
+						blocco “Ente Beneficiario” dei Dovuti cui si riferisce il
+						messaggio dei Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="soggettoPagatore" type="pay_i:ctSoggettoPagatore">
+            <xsd:annotation>
+              <xsd:documentation>Riporta le stesse informazioni presenti nel
+						blocco “Soggetto Pagatore” dei Dovuti cui si riferisce il
+						messaggio dei Pagati.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="datiPagamento" type="pay_i:ctDatiVersamentoPagatiConRicevuta">
+            <xsd:annotation xml:base="pay_i:stImporto">
+              <xsd:documentation>Aggregazione “dati del versamento”
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctVersamento">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="versioneOggetto" type="pay_i:stText16">
+            <xsd:annotation>
+              <xsd:documentation>Versione che identifica l’oggetto scambiato.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="soggettoPagatore" type="pay_i:ctSoggettoPagatore">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione “soggetto pagatore” che riporta le
+						informazioni concernenti il soggetto che effettua il pagamento.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="datiVersamento" type="pay_i:ctDatiVersamento">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione “dati del versamento”.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="azione" type="pay_i:stText1">
+            <xsd:annotation>
+              <xsd:documentation>Indica l'operazione da compiere sul dovuto. I
+						valori possibili e le relative descrizioni sono: 
+						'I' indica che il dovuto deve essere inserito 
+						'M' indica che il dovuto deve essere modificato 
+						'A' indica che il dovuto deve essere annullato
+						'9' indica codice 9 (annullamento dovuto)
+						'S' viene solo stampato l'avviso
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctAccertamento">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="codAccertamento" type="pay_i:stText64">
+            <xsd:annotation>
+              <xsd:documentation>Codice dell' accertamento obbligatorio, al limite vuoto
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="importo" type="pay_i:stImportoPositivo">
+            <xsd:annotation>
+              <xsd:documentation>Importo dell' accertamento. Campo numerico (due cifre per la parte decimale,
+						il separatore dei centesimi è il punto “.”), indicante l’importo
+						relativo alla somma da
+						versare. Deve essere diverso da “0.00”.
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctCapitolo">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="codCapitolo" type="pay_i:stText64">
+            <xsd:annotation>
+              <xsd:documentation>Codice del capitolo, obbligatorio
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="codUfficio" type="pay_i:stText64">
+            <xsd:annotation>
+              <xsd:documentation>Codice dell' ufficio da cui il capitolo dipende, non obbligatorio
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="accertamento" type="pay_i:ctAccertamento">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione di "accertamento"
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ctBilancio">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="capitolo" type="pay_i:ctCapitolo">
+            <xsd:annotation>
+              <xsd:documentation>Aggregazione di "capitolo"
+					</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="Dovuti" type="pay_i:ctDovuti">
+        <xsd:annotation>
+          <xsd:documentation>Dovuti</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="DovutiEntiSecondari" type="pay_i:ctDovutiEntiSecondari">
+        <xsd:annotation>
+          <xsd:documentation>DovutiEntiSecondari</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Pagati" type="pay_i:ctPagati">
+        <xsd:annotation>
+          <xsd:documentation>Pagati</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="PagatiConRicevuta" type="pay_i:ctPagatiConRicevuta">
+        <xsd:annotation>
+          <xsd:documentation>Pagati</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Versamento" type="pay_i:ctVersamento">
+        <xsd:annotation>
+          <xsd:documentation>Versamento</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="bilancio" type="pay_i:ctBilancio">
+        <xsd:annotation>
+          <xsd:documentation>Bilancio</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <!--FROM: 'PagInf_Dovuti_Pagati_6_2_0.xsd' END-->
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="paaSILInviaDovuti">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILInviaDovuti"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILInviaDovutiResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILInviaDovutiRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILInviaCarrelloDovuti">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILInviaCarrelloDovuti"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILInviaCarrelloDovutiResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILInviaCarrelloDovutiRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILVerificaAvviso">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILVerificaAvviso"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILVerificaAvvisoResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILVerificaAvvisoRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediPagati">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILChiediPagati" />
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediPagatiResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILChiediPagatiRisposta" />
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediPagatiConRicevuta">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILChiediPagatiConRicevuta" />
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediPagatiConRicevutaResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILChiediPagatiConRicevutaRisposta" />
+  </wsdl:message>
+  <wsdl:message name="paaSILImportaDovuto">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILImportaDovuto"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILImportaDovutoResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILImportaDovutoRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILRegistraPagamento">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILRegistraPagamento" />
+  </wsdl:message>
+  <wsdl:message name="paaSILRegistraPagamentoResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILRegistraPagamentoRisposta" />
+  </wsdl:message>
+  <wsdl:message name="paaSILAutorizzaImportFlusso">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILAutorizzaImportFlusso"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILAutorizzaImportFlussoResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILAutorizzaImportFlussoRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediStatoImportFlusso">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILChiediStatoImportFlusso"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediStatoImportFlussoResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILChiediStatoImportFlussoRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILPrenotaExportFlusso">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILPrenotaExportFlusso"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILPrenotaExportFlussoResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILPrenotaExportFlussoRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILPrenotaExportFlussoScaduti">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILPrenotaExportFlussoScaduti"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILPrenotaExportFlussoScadutiResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILPrenotaExportFlussoScadutiRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILPrenotaExportFlussoIncrementaleConRicevuta">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILPrenotaExportFlussoIncrementaleConRicevuta"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILPrenotaExportFlussoIncrementaleConRicevutaResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILPrenotaExportFlussoIncrementaleConRicevutaRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediStatoExportFlusso">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILChiediStatoExportFlusso"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediStatoExportFlussoResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILChiediStatoExportFlussoRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediStatoExportFlussoScaduti">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILChiediStatoExportFlussoScaduti"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediStatoExportFlussoScadutiResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILChiediStatoExportFlussoScadutiRisposta"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediAvvisiPendenti">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILChiediAvvisiPendenti" />
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediAvvisiPendentiResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILChiediAvvisiPendentiRisposta" />
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediEsitoCarrelloDovuti">
+    <wsdl:part name="bodyrichiesta" element="ppt:paaSILChiediEsitoCarrelloDovuti" />
+  </wsdl:message>
+  <wsdl:message name="paaSILChiediEsitoCarrelloDovutiResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:paaSILChiediEsitoCarrelloDovutiRisposta" />
+  </wsdl:message>
+  <wsdl:portType name="PagamentiTelematiciDovutiPagati">
+    <wsdl:operation name="paaSILInviaDovuti">
+      <wsdl:input name="paaSILInviaDovuti" message="tns:paaSILInviaDovuti" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILInviaDovutiRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILInviaDovutiRichiesta"></wsdl:input>
+      <wsdl:output name="paaSILInviaDovutiResponse" message="tns:paaSILInviaDovutiResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILInviaDovutiRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILInviaDovutiRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILInviaCarrelloDovuti">
+      <wsdl:input name="paaSILInviaCarrelloDovuti" message="tns:paaSILInviaCarrelloDovuti" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILInviaCarrelloDovutiRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILInviaCarrelloDovutiRichiesta"></wsdl:input>
+      <wsdl:output name="paaSILInviaCarrelloDovutiResponse" message="tns:paaSILInviaCarrelloDovutiResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILInviaCarrelloDovutiRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILInviaCarrelloDovutiRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILVerificaAvviso">
+      <wsdl:input name="paaSILVerificaAvviso" message="tns:paaSILVerificaAvviso" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILVerificaAvvisoRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILVerificaAvvisoRichiesta"></wsdl:input>
+      <wsdl:output name="paaSILVerificaAvvisoResponse" message="tns:paaSILVerificaAvvisoResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILVerificaAvvisoRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILVerificaAvvisoRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediPagati">
+      <wsdl:input name="paaSILChiediPagati" message="tns:paaSILChiediPagati" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediPagatiRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediPagatiRichiesta" />
+      <wsdl:output name="paaSILChiediPagatiResponse" message="tns:paaSILChiediPagatiResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediPagatiRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediPagatiRisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediPagatiConRicevuta">
+      <wsdl:input name="paaSILChiediPagatiConRicevuta" message="tns:paaSILChiediPagatiConRicevuta" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediPagatiConRicevutaRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediPagatiConRicevutaRichiesta" />
+      <wsdl:output name="paaSILChiediPagatiConRicevutaResponse" message="tns:paaSILChiediPagatiConRicevutaResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediPagatiConRicevutaRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediPagatiConRicevutaRisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="paaSILImportaDovuto">
+      <wsdl:input name="paaSILImportaDovuto" message="tns:paaSILImportaDovuto" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILImportaDovutoRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILImportaDovutoRichiesta"></wsdl:input>
+      <wsdl:output name="paaSILImportaDovutoResponse" message="tns:paaSILImportaDovutoResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILImportaDovutoRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILImportaDovutoRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILRegistraPagamento">
+      <wsdl:input name="paaSILRegistraPagamento" message="tns:paaSILRegistraPagamento" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILRegistraPagamentoRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILRegistraPagamentoRichiesta"></wsdl:input>
+      <wsdl:output name="paaSILRegistraPagamentoResponse" message="tns:paaSILRegistraPagamentoResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILRegistraPagamentoRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILRegistraPagamentoRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILAutorizzaImportFlusso">
+      <wsdl:input name="paaSILAutorizzaImportFlusso" message="tns:paaSILAutorizzaImportFlusso" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILAutorizzaImportFlussoRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILAutorizzaImportFlussoRichiesta" />
+      <wsdl:output name="paaSILAutorizzaImportFlussoResponse" message="tns:paaSILAutorizzaImportFlussoResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILAutorizzaImportFlussoRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILAutorizzaImportFlussoRisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediStatoImportFlusso">
+      <wsdl:input name="paaSILChiediStatoImportFlusso" message="tns:paaSILChiediStatoImportFlusso" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediStatoImportFlussoRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediStatoImportFlussoRichiesta" />
+      <wsdl:output name="paaSILChiediStatoImportFlussoResponse" message="tns:paaSILChiediStatoImportFlussoResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediStatoImportFlussoRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediStatoImportFlussoRisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="paaSILPrenotaExportFlusso">
+      <wsdl:input name="paaSILPrenotaExportFlusso" message="tns:paaSILPrenotaExportFlusso" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILPrenotaExportFlussoRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILPrenotaExportFlussoRichiesta" />
+      <wsdl:output name="paaSILPrenotaExportFlussoResponse" message="tns:paaSILPrenotaExportFlussoResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILPrenotaExportFlussoRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILPrenotaExportFlussoRisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="paaSILPrenotaExportFlussoScaduti">
+      <wsdl:input name="paaSILPrenotaExportFlussoScaduti" message="tns:paaSILPrenotaExportFlussoScaduti" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILPrenotaExportFlussoScadutiRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILPrenotaExportFlussoScadutiRichiesta" />
+      <wsdl:output name="paaSILPrenotaExportFlussoScadutiResponse" message="tns:paaSILPrenotaExportFlussoScadutiResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILPrenotaExportFlussoScadutiRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILPrenotaExportFlussoScadutiRisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="paaSILPrenotaExportFlussoIncrementaleConRicevuta">
+      <wsdl:input name="paaSILPrenotaExportFlussoIncrementaleConRicevuta" message="tns:paaSILPrenotaExportFlussoIncrementaleConRicevuta" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILPrenotaExportFlussoIncrementaleConRicevutaRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILPrenotaExportFlussoIncrementaleConRicevutaRichiesta" />
+      <wsdl:output name="paaSILPrenotaExportFlussoIncrementaleConRicevutaResponse" message="tns:paaSILPrenotaExportFlussoIncrementaleConRicevutaResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILPrenotaExportFlussoIncrementaleConRicevutaRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILPrenotaExportFlussoIncrementaleConRicevutaRisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediStatoExportFlusso">
+      <wsdl:input name="paaSILChiediStatoExportFlusso" message="tns:paaSILChiediStatoExportFlusso" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediStatoExportFlussoRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediStatoExportFlussoRichiesta" />
+      <wsdl:output name="paaSILChiediStatoExportFlussoResponse" message="tns:paaSILChiediStatoExportFlussoResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediStatoExportFlussoRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediStatoExportFlussoRisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediStatoExportFlussoScaduti">
+      <wsdl:input name="paaSILChiediStatoExportFlussoScaduti" message="tns:paaSILChiediStatoExportFlussoScaduti" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediStatoExportFlussoScadutiRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediStatoExportFlussoScadutiRichiesta" />
+      <wsdl:output name="paaSILChiediStatoExportFlussoScadutiResponse" message="tns:paaSILChiediStatoExportFlussoScadutiResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediStatoExportFlussoScadutiRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediStatoExportFlussoScadutiRisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediAvvisiPendenti">
+      <wsdl:input name="paaSILChiediAvvisiPendenti" message="tns:paaSILChiediAvvisiPendenti" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediAvvisiPendentiRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediAvvisiPendentiRichiesta" />
+      <wsdl:output name="paaSILChiediAvvisiPendentiResponse" message="tns:paaSILChiediAvvisiPendentiResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediAvvisiPendentiRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediAvvisiPendentiRisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediEsitoCarrelloDovuti">
+      <wsdl:input name="paaSILChiediEsitoCarrelloDovuti" message="tns:paaSILChiediEsitoCarrelloDovuti" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediEsitoCarrelloDovutiRichiesta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediEsitoCarrelloDovutiRichiesta" />
+      <wsdl:output name="paaSILChiediEsitoCarrelloDovutiResponse" message="tns:paaSILChiediEsitoCarrelloDovutiResponse" wsam:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediEsitoCarrelloDovutiRisposta" wsaw:Action="http://www.regione.veneto.it/pagamenti/ente/PPT/paaSILChiediEsitoCarrelloDovutiRisposta" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PagamentiTelematiciDovutiPagatiBinding" type="tns:PagamentiTelematiciDovutiPagati">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="paaSILInviaDovuti">
+      <soap:operation soapAction="paaSILInviaDovuti" style="document" />
+      <wsdl:input name="paaSILInviaDovuti">
+        <soap:header message="tns:paaSILInviaDovuti" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILInviaDovutiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILInviaCarrelloDovuti">
+      <soap:operation soapAction="paaSILInviaCarrelloDovuti" style="document" />
+      <wsdl:input name="paaSILInviaCarrelloDovuti">
+        <soap:header message="tns:paaSILInviaCarrelloDovuti" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILInviaCarrelloDovutiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILVerificaAvviso">
+      <soap:operation soapAction="paaSILVerificaAvviso" style="document" />
+      <wsdl:input name="paaSILVerificaAvviso">
+        <soap:header message="tns:paaSILVerificaAvviso" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILVerificaAvvisoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediPagati">
+      <soap:operation soapAction="paaSILChiediPagati" style="document" />
+      <wsdl:input name="paaSILChiediPagati">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILChiediPagatiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediPagatiConRicevuta">
+      <soap:operation soapAction="paaSILChiediPagatiConRicevuta" style="document" />
+      <wsdl:input name="paaSILChiediPagatiConRicevuta">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILChiediPagatiConRicevutaResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILImportaDovuto">
+      <soap:operation soapAction="paaSILImportaDovuto" style="document" />
+      <wsdl:input name="paaSILImportaDovuto">
+        <soap:header message="tns:paaSILImportaDovuto" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILImportaDovutoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILRegistraPagamento">
+      <soap:operation soapAction="paaSILRegistraPagamento" style="document" />
+      <wsdl:input name="paaSILRegistraPagamento">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILRegistraPagamentoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILAutorizzaImportFlusso">
+      <soap:operation soapAction="paaSILAutorizzaImportFlusso" style="document" />
+      <wsdl:input name="paaSILAutorizzaImportFlusso">
+        <soap:header message="tns:paaSILAutorizzaImportFlusso" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILAutorizzaImportFlussoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediStatoImportFlusso">
+      <soap:operation soapAction="paaSILChiediStatoImportFlusso" style="document" />
+      <wsdl:input name="paaSILChiediStatoImportFlusso">
+        <soap:header message="tns:paaSILChiediStatoImportFlusso" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILChiediStatoImportFlussoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILPrenotaExportFlusso">
+      <soap:operation soapAction="paaSILPrenotaExportFlusso" style="document" />
+      <wsdl:input name="paaSILPrenotaExportFlusso">
+        <soap:header message="tns:paaSILPrenotaExportFlusso" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILPrenotaExportFlussoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILPrenotaExportFlussoScaduti">
+      <soap:operation soapAction="paaSILPrenotaExportFlussoScaduti" style="document" />
+      <wsdl:input name="paaSILPrenotaExportFlussoScaduti">
+        <soap:header message="tns:paaSILPrenotaExportFlussoScaduti" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILPrenotaExportFlussoScadutiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILPrenotaExportFlussoIncrementaleConRicevuta">
+      <soap:operation soapAction="paaSILPrenotaExportFlussoIncrementaleConRicevuta" style="document" />
+      <wsdl:input name="paaSILPrenotaExportFlussoIncrementaleConRicevuta">
+        <soap:header message="tns:paaSILPrenotaExportFlussoIncrementaleConRicevuta" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILPrenotaExportFlussoIncrementaleConRicevutaResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediStatoExportFlusso">
+      <soap:operation soapAction="paaSILChiediStatoExportFlusso" style="document" />
+      <wsdl:input name="paaSILChiediStatoExportFlusso">
+        <soap:header message="tns:paaSILChiediStatoExportFlusso" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILChiediStatoExportFlussoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediStatoExportFlussoScaduti">
+      <soap:operation soapAction="paaSILChiediStatoExportFlussoScaduti" style="document" />
+      <wsdl:input name="paaSILChiediStatoExportFlussoScaduti">
+        <soap:header message="tns:paaSILChiediStatoExportFlussoScaduti" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILChiediStatoExportFlussoScadutiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediAvvisiPendenti">
+      <soap:operation soapAction="paaSILChiediAvvisiPendenti" style="document" />
+      <wsdl:input name="paaSILChiediAvvisiPendenti">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILChiediAvvisiPendentiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paaSILChiediEsitoCarrelloDovuti">
+      <soap:operation soapAction="paaSILChiediEsitoCarrelloDovuti" style="document" />
+      <wsdl:input name="paaSILChiediEsitoCarrelloDovuti">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="paaSILChiediEsitoCarrelloDovutiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PagamentiTelematiciDovutiPagatiService">
+    <wsdl:port name="PagamentiTelematiciDovutiPagatiPort" binding="tns:PagamentiTelematiciDovutiPagatiBinding">
+      <soap:address location="http://pagopa-api.pagopa.gov.it/service/ws/pa/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

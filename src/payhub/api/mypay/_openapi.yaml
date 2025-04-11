@@ -1,0 +1,5442 @@
+openapi: 3.0.1
+info:
+  title: MyPay
+  description: MyPay API
+  version: 1.0.0
+servers:
+  - url: https://${hostname}
+    description: Generated server url
+security:
+  - MyPaySecurity: []
+tags:
+  - name: Autenticazione
+    description: Gestione dell'autenticazione
+  - name: Località
+    description: Gestione delle località (nazioni / province / comuni)
+  - name: Applicazione
+    description: Gestione generale dell'applicazione
+  - name: TipoDovuto
+    description: Backoffice - gestione dei Tipi dovuto
+  - name: Enti
+    description: Gestione degli enti beneficiari
+  - name: Validazione email
+    description: Gestione della validazione dell'email utente
+  - name: Flussi
+    description: Gestione dei flussi di pagamento e di rendicontazione
+  - name: MyBox
+    description: Gestione di upload e download dei file
+  - name: Operatori giornale degli eventi
+    description: Backoffice - giornale degli eventi
+  - name: Dovuti
+    description: Gestione dei dovuti da pagare
+  - name: Validazione mail
+    description: Gestione della validazione dell'indirizzo email (utenti non autenticati)
+  - name: BackofficeEnte
+    description: Backoffice Ente
+  - name: Operatori
+    description: Backoffice - gestione degli operatori
+  - name: BackofficeTassonomie
+    description: Backoffice Tassonomie
+  - name: Utente
+    description: Gestione dati personali utente
+  - name: Pagamenti effettuati
+    description: Gestione dei pagamenti effettuati
+  - name: Storage temporaneo
+    description: Gestione dello storage temporaneo di file sul server
+  - name: Avvisi
+    description: Gestione avvisi di pagamento
+  - name: BackofficeFlusso
+    description: Backoffice Flusso
+paths:
+  /utente:
+    post:
+      tags:
+        - Utente
+      operationId: update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UtenteTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+      security: []
+  /storage/file:
+    post:
+      tags:
+        - Storage temporaneo
+      operationId: uploadFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UploadTo'
+  /spontaneo/validate/{codIpaEnte}/{codTipo}:
+    post:
+      tags:
+        - spontaneo-controller
+      operationId: validateForm
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: codTipo
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpontaneoFormTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SpontaneoTo'
+  /spontaneo/prepareAvviso:
+    post:
+      tags:
+        - spontaneo-controller
+      operationId: prepareAvviso
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItem'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DovutoTo'
+  /public/storage/object/test:
+    post:
+      tags:
+        - Storage temporaneo
+      operationId: testAddObject
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /public/spontaneo/validate/{codIpaEnte}/{codTipo}:
+    post:
+      tags:
+        - spontaneo-controller
+      operationId: validateFormAnonymous
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: codTipo
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: recaptcha
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpontaneoFormTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SpontaneoTo'
+  /public/spontaneo/prepareAvviso:
+    post:
+      tags:
+        - spontaneo-controller
+      operationId: prepareAvvisoAnonymous
+      parameters:
+        - name: recaptcha
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItem'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DovutoTo'
+  /public/spontaneo/config/{codIpaEnte}/{codTipoDovuto}:
+    post:
+      tags:
+        - spontaneo-controller
+      operationId: getConfigSpontaneo
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: codTipoDovuto
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /public/mybox/uploadFlusso:
+    post:
+      tags:
+        - MyBox
+      operationId: uploadByWS
+      parameters:
+        - name: authorizationToken
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /public/mailvalidation/verify:
+    post:
+      tags:
+        - Validazione mail
+      operationId: verifyMailValidationAnonymous
+      parameters:
+        - name: recaptcha
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MailValidationRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MailValidationResponse'
+      security: []
+  /public/mailvalidation/request:
+    post:
+      tags:
+        - Validazione mail
+      operationId: requestMailValidationAnonymous
+      parameters:
+        - name: emailAddress
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: recaptcha
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: codIpaEnte
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MailValidationRequest'
+      security: []
+  /public/info/config:
+    post:
+      tags:
+        - Applicazione
+      summary: Configurazione applicativa
+      description: Ritorna i parametri della configurazione applicativa (usando l'intermediario di default)
+      operationId: configInfo
+      responses:
+        default:
+          description: I parametri della configurazione applicativa come mappa chiave/valore
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security: []
+  /public/info/config/{codFiscaleIntermediario}:
+    post:
+      tags:
+        - Applicazione
+      summary: Configurazione applicativa
+      description: Ritorna i parametri della configurazione applicativa
+      operationId: configInfoByBroker
+      parameters:
+        - name: codFiscaleIntermediario
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: I parametri della configurazione applicativa come mappa chiave/valore
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security: []
+  /public/info/configAndLogin:
+    post:
+      tags:
+        - Applicazione
+      summary: Configurazione applicativa
+      description: Ritorna i parametri della configurazione applicativa (usando il loginToken per risalire all'intermediario)
+      operationId: configInfoByToken
+      requestBody:
+        content:
+          text/plain: {}
+      responses:
+        default:
+          description: I parametri della configurazione applicativa come mappa chiave/valore
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security: []
+  /public/info/app:
+    post:
+      tags:
+        - Applicazione
+      summary: Informazioni applicazione
+      description: Ritorna le informazioni dell'applicazione (es. versione, build time, etc..)
+      operationId: appInfo
+      responses:
+        default:
+          description: Le informazioni dell'applicazione come mappa chiave/valore
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      security: []
+  /public/carrello/checkout:
+    post:
+      tags:
+        - carrello-controller
+      operationId: checkoutAnonymous
+      parameters:
+        - name: recaptcha
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: overrideCheckReplicaPayments
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasketTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EsitoTo'
+  /public/carrello/checkoutExtApp/{token}:
+    post:
+      tags:
+        - carrello-controller
+      operationId: checkoutAnonymousExternalApp
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: recaptcha
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: overrideCheckReplicaPayments
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpontaneoTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EsitoTo'
+  /public/authtoken:
+    post:
+      tags:
+        - Autenticazione
+      summary: Finalizza autenticazione
+      description: Finalizza la procedura di autenticazione trasformando un login-token in un jwt-token sotto forma di http-only cookie
+      operationId: authWithToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '401':
+          description: ritorna la descrizione dell'errore nel caso non sia stato possibile completare la procedura di autenticazione con successo
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          description: nel body l'oggetto contenente i dati dell'utente loggato; viene settato un cookie http-only con il token necessario per le chiamate protette
+          headers:
+            Set-Cookie:
+              style: simple
+              schema:
+                type: string
+                example: jwtToken=eyJhbGciOiJIUzU...; Path=/; Secure; HttpOnly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtenteTo'
+      security: []
+  /public/posttoken:
+    post:
+      tags:
+        - Autenticazione
+      summary: Scambio login token con jwt-token
+      description: Trasforma un login-token in un jwt-token
+      operationId: changeLoginTokenToAccessToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '401':
+          description: ritorna la descrizione dell'errore nel caso non sia stato possibile completare la procedura di autenticazione con successo
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          description: nel body l'oggetto contenente access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessTokenDTO'
+      security: [ ]
+  /operatore/dovuti/{mygovEnteId}/{mygovDovutoId}/askRT:
+    post:
+      tags:
+        - Dovuti
+      operationId: askRt
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: mygovDovutoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /operatore/dovuti/update/{mygovEnteId}/{mygovDovutoId}:
+    post:
+      tags:
+        - Dovuti
+      operationId: updateDovuto
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: mygovDovutoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DovutoOperatoreTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DovutoOperatoreTo'
+  /operatore/dovuti/remove/{mygovEnteId}/{mygovDovutoId}:
+    post:
+      tags:
+        - Dovuti
+      operationId: removeDovutoForOperatore
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: mygovDovutoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /operatore/dovuti/insert/{mygovEnteId}:
+    post:
+      tags:
+        - Dovuti
+      operationId: insertDovuto
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DovutoOperatoreTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DovutoOperatoreTo'
+  /operatore/admin/utenti/{username}/coupleEnte/{idEnte}:
+    post:
+      tags:
+        - Operatori
+      operationId: addAssociationOperatoreEnte
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idEnte
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: couplingMode
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: emailAddress
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EnteRolesTo'
+    delete:
+      tags:
+        - Operatori
+      operationId: deleteAssociationOperatoreEnte
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idEnte
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: decoupleOnlyTipiDovuto
+          in: query
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+  /operatore/admin/utenti/{id}/anagrafica:
+    post:
+      tags:
+        - Operatori
+      operationId: updateAnagraficaUtente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UtenteTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+  /operatore/admin/utenti/{idOperatore}/coupleTipo/{idTipo}:
+    post:
+      tags:
+        - Operatori
+      operationId: addAssociationOperatoreEnteTipoDovuto
+      parameters:
+        - name: idOperatore
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: idTipo
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EnteRolesTo'
+    delete:
+      tags:
+        - Operatori
+      operationId: deleteAssociationOperatoreEnteTipoDovuto
+      parameters:
+        - name: idOperatore
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: idTipo
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /operatore/admin/utenti/{idOperatore}/changeRuolo/{idEnte}:
+    post:
+      tags:
+        - Operatori
+      operationId: changeRuolo
+      parameters:
+        - name: idOperatore
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: idEnte
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: toAdmin
+          in: query
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+  /operatore/admin/utenti/{idOperatore}/changeEmail/{idEnte}:
+    post:
+      tags:
+        - Operatori
+      operationId: changeEmailAddress
+      parameters:
+        - name: idOperatore
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: idEnte
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: emailAddress
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /operatore/admin/utenti/anagrafica:
+    post:
+      tags:
+        - Operatori
+      operationId: insertAnagraficaUtente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UtenteTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+  /operatore/admin/tipiDovuto/update:
+    post:
+      tags:
+        - TipoDovuto
+      operationId: update_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnagraficaTipoDovutoTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AnagraficaTipoDovutoTo'
+  /operatore/admin/tipiDovuto/insert:
+    post:
+      tags:
+        - TipoDovuto
+      operationId: insert
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnagraficaTipoDovutoTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AnagraficaTipoDovutoTo'
+  /operatore/admin/taxonomy/update:
+    post:
+      tags:
+        - BackofficeTassonomie
+      operationId: updateTaxonomy
+      parameters:
+        - name: hash
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /operatore/admin/enti/{mygovEnteId}/update:
+    post:
+      tags:
+        - BackofficeEnte
+      operationId: updateEnte
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnagraficaEnteTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AnagraficaEnteTo'
+  /operatore/admin/enti/{mygovEnteId}/saveLogo:
+    post:
+      tags:
+        - BackofficeEnte
+      operationId: saveLogo
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EnteTo'
+  /operatore/admin/enti/ente/insert:
+    post:
+      tags:
+        - BackofficeEnte
+      operationId: insertEnte
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnagraficaEnteTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AnagraficaEnteTo'
+  /mybox/upload/{mygovEnteId}:
+    post:
+      tags:
+        - MyBox
+      operationId: uploadByWebapp
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /mailvalidation/verify:
+    post:
+      tags:
+        - Validazione mail
+      operationId: verifyMailValidationLoggedIn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MailValidationRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MailValidationResponse'
+      security: []
+  /mailvalidation/request:
+    post:
+      tags:
+        - Validazione mail
+      operationId: requestMailValidationLoggedIn
+      parameters:
+        - name: emailAddress
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: codIpaEnte
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MailValidationRequest'
+      security: []
+  /email/validate:
+    post:
+      tags:
+        - Validazione email
+      operationId: sendCode
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidazioneEmailTo'
+      security: []
+  /email/reset:
+    post:
+      tags:
+        - Validazione email
+      operationId: resetValidation
+      responses:
+        '200':
+          description: OK
+      security: []
+  /email/init:
+    post:
+      tags:
+        - Validazione email
+      operationId: initValidation
+      parameters:
+        - name: emailAddress
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: codIpaEnte
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidazioneEmailTo'
+      security: []
+  /email/confirmBackoffice:
+    post:
+      tags:
+        - Validazione email
+      operationId: updateSourceTypeFromBackofficeToUserConfirmed
+      responses:
+        '200':
+          description: OK
+      security: []
+  /dovuti/remove/{mygovDovutoId}:
+    post:
+      tags:
+        - Dovuti
+      operationId: removeDovutoForCittadino
+      parameters:
+        - name: mygovDovutoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /checkLoginCookie:
+    post:
+      tags:
+        - Autenticazione
+      summary: Effettua login utilizzando il cookie http-only
+      description: Verifica che esista il cookie http-only di autenticazione e, in caso, effettua il login con tale cookie
+      operationId: checkLoginCookie
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UtenteTo'
+  /carrello/checkout:
+    post:
+      tags:
+        - carrello-controller
+      operationId: checkoutLoggedIn
+      parameters:
+        - name: overrideCheckReplicaPayments
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasketTo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EsitoTo'
+  /storage/file/{tokenId}/{filename}:
+    get:
+      tags:
+        - Storage temporaneo
+      operationId: downloadFile
+      parameters:
+        - name: tokenId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: filename
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /spontaneo/initialize/{codIpaEnte}/{codTipo}:
+    get:
+      tags:
+        - spontaneo-controller
+      operationId: initializeForm
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: codTipo
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SpontaneoFormTo'
+  /public/storage/object/{tokenId}:
+    get:
+      tags:
+        - Storage temporaneo
+      operationId: getObject
+      parameters:
+        - name: tokenId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /public/spontaneo:
+    get:
+      tags:
+        - spontaneo-controller
+      operationId: getAllEntiSpontanei
+      parameters:
+        - name: logoMode
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteTo'
+  /public/spontaneo/{id}/tipiDovuto:
+    get:
+      tags:
+        - spontaneo-controller
+      operationId: getTipiDovutoByEnteId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteTipoDovutoTo'
+  /public/spontaneo/{codIpaEnte}/tipiDovutoByCodIpa:
+    get:
+      tags:
+        - spontaneo-controller
+      operationId: getTipiDovutoByCodIpaEnte
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteTipoDovutoTo'
+  /public/spontaneo/url/{codIpaEnte}:
+    get:
+      tags:
+        - spontaneo-controller
+      operationId: getUrlSpontaneo
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /public/spontaneo/url/{codIpaEnte}/{codTipoDovuto}:
+    get:
+      tags:
+        - spontaneo-controller
+      operationId: getUrlSpontaneo_1
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: codTipoDovuto
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /public/spontaneo/url:
+    get:
+      tags:
+        - spontaneo-controller
+      operationId: getUrlSpontaneo_2
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /public/spontaneo/initialize/{codIpaEnte}/{codTipo}:
+    get:
+      tags:
+        - spontaneo-controller
+      operationId: initializeFormAnonymous
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: codTipo
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: recaptcha
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /public/spontaneo/ente/{codIpaEnte}:
+    get:
+      tags:
+        - spontaneo-controller
+      operationId: getEnteSpontaneoByCodIpa
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: logoMode
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteTo'
+  /public/pagati/{id}/rt:
+    get:
+      tags:
+        - Pagamenti effettuati
+      operationId: downloadAnonymous
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: recaptcha
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: securityToken
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /public/mybox/download/{mygovEnteId}:
+    get:
+      tags:
+        - MyBox
+      operationId: downloadPublic
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: securityToken
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: filename
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /public/location/province:
+    get:
+      tags:
+        - Località
+      operationId: getProvince
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProvinciaTo'
+      security: []
+  /public/location/nazioni:
+    get:
+      tags:
+        - Località
+      operationId: getNazioni
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NazioneTo'
+      security: []
+  /public/location/comuni/{provinciaId}:
+    get:
+      tags:
+        - Località
+      operationId: getComuni
+      parameters:
+        - name: provinciaId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComuneTo'
+      security: []
+  /public/info/ping:
+    get:
+      tags:
+        - Applicazione
+      summary: Ping
+      description: Metodo per verificare che il server stia rispondendo correttamente
+      operationId: ping
+      responses:
+        default:
+          description: La data corrente in millisecondi dal 01/Gen/1970
+          content:
+            '*/*':
+              schema:
+                type: string
+      security: []
+  /public/info/check:
+    get:
+      tags:
+        - Applicazione
+      operationId: checkAppStatus
+      parameters:
+        - name: key
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      security: []
+  /public/enti:
+    get:
+      tags:
+        - Enti
+      operationId: getAllEnti
+      parameters:
+        - name: logoMode
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteTo'
+  /public/enti/{id}:
+    get:
+      tags:
+        - Enti
+      operationId: getEnteById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EnteTo'
+  /public/enti/{id}/tipiDovuto:
+    get:
+      tags:
+        - Enti
+      operationId: getTipiDovutoByEnteId_1
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteTipoDovutoTo'
+  /public/enti/{codIpa}/tipiDovutoByCodIpa:
+    get:
+      tags:
+        - Enti
+      operationId: getTipiDovutoByCodIpa
+      parameters:
+        - name: codIpa
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CodeDescriptionTo'
+  /public/enti/byCodIpa/{codIpa}:
+    get:
+      tags:
+        - Enti
+      operationId: getEnteByCodIpa
+      parameters:
+        - name: codIpa
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EnteTo'
+  /public/doLogout:
+    get:
+      tags:
+        - Autenticazione
+      summary: Finalizza logout
+      description: Finalizza la procedura di logout cancellando il cookie
+      operationId: logout
+      responses:
+        '200':
+          description: OK
+  /public/carrello/update:
+    get:
+      tags:
+        - carrello-controller
+      operationId: updateBasketPndAnonymous
+      parameters:
+        - name: codIpaEnte
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: codTipoDovuto
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: codIuv
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: recaptcha
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AttualizzazioneTo'
+  /public/carrello/outcome:
+    get:
+      tags:
+        - carrello-controller
+      operationId: getOutcomeAnonymous
+      parameters:
+        - name: pollingToken
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: recaptcha
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaymentOutcomeTo'
+  /public/avvisi/search:
+    get:
+      tags:
+        - Avvisi
+      operationId: searchAvvisoAnonymous
+      parameters:
+        - name: numeroAvviso
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: codIdUnivoco
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: anagrafica
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: codIpaEnte
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: codTipoDovuto
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: recaptcha
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+      security: []
+  /public/avvisi/download/{id}:
+    get:
+      tags:
+        - Avvisi
+      operationId: downloadAvvisoAnonymous
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: recaptcha
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: securityToken
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+      security: []
+  /pagati/{id}/rt:
+    get:
+      tags:
+        - Pagamenti effettuati
+      operationId: download
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: securityToken
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /pagati/search:
+    get:
+      tags:
+        - Pagamenti effettuati
+      summary: Ricerca pagamenti elaborati
+      description: Ricerca pagamenti effettuati, da parte dell'utente loggato, usando una serie di filtri opzionali
+      operationId: searchDovutoElaborato
+      parameters:
+        - name: from
+          in: query
+          description: Data pagamento DA
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          description: Data pagamento A
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: codIpaEnte
+          in: query
+          description: Codice ente beneficiario del pagamento
+          required: false
+          schema:
+            type: string
+        - name: causale
+          in: query
+          description: Causale del pagamento (filtro per sottostringa)
+          required: false
+          schema:
+            type: string
+        - name: codTipoDovuto
+          in: query
+          description: Codice tipo dovuto del pagamento
+          required: false
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: Codice stato del pagamento
+          required: false
+          schema:
+            type: string
+      responses:
+        default:
+          description: La lista dei pagamenti corrispondenti ai filtri di ricerca impostati
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DovutoElaboratoTo'
+  /pagati/last:
+    get:
+      tags:
+        - Pagamenti effettuati
+      summary: Ultimi pagamenti effettuati
+      description: Ritorna gli ultimi N pagamenti effettuati da parte dell'utente loggato
+      operationId: searchLastDovutoElaborato
+      parameters:
+        - name: num
+          in: query
+          description: numero degli ultimi pagamenti da ritornare
+          required: true
+          schema:
+            maximum: 10
+            minimum: 1
+            type: string
+      responses:
+        default:
+          description: La lista degli ultimi pagamenti effettuati
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DovutoElaboratoTo'
+  /operatore/pagati/{mygovEnteId}/{mygovPagatoId}:
+    get:
+      tags:
+        - Pagamenti effettuati
+      operationId: detailPagatoForOperatore
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: mygovPagatoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DovutoOperatoreTo'
+  /operatore/pagati/{mygovEnteId}/search:
+    get:
+      tags:
+        - Pagamenti effettuati
+      operationId: searchPagatoForOperatore
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: codStato
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: myGovEnteTipoDovutoId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: nomeFlusso
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: causale
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: codFiscale
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: iud
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: iuv
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DovutoOperatoreTo'
+  /operatore/pagati/{id}/rt:
+    get:
+      tags:
+        - Pagamenti effettuati
+      operationId: downloadForOperatore
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /operatore/flussi/spc/R/{mygovEnteId}:
+    get:
+      tags:
+        - Flussi
+      operationId: flussiRendicontazione
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: flgProdOrDisp
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileTo'
+  /operatore/flussi/remove/{mygovEnteId}/{mygovFlussoId}:
+    get:
+      tags:
+        - Flussi
+      operationId: flussiRemove
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: mygovFlussoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int32
+  /operatore/flussi/import/{mygovEnteId}:
+    get:
+      tags:
+        - Flussi
+      operationId: flussiImport
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: nomeFlusso
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FlussoImportTo'
+  /operatore/flussi/import/{mygovEnteId}/log:
+    get:
+      tags:
+        - Flussi
+      operationId: downloadLog
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: fileName
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /operatore/flussi/export/{mygovEnteId}:
+    get:
+      tags:
+        - Flussi
+      operationId: flussiExport
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: nomeFlusso
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileTo'
+  /operatore/flussi/export/insert/{mygovEnteId}:
+    get:
+      tags:
+        - Flussi
+      operationId: flussiExportInsert
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: tipoDovuto
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: versioneTracciato
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+  /operatore/flussi/export/conservazione/{mygovEnteId}:
+    get:
+      tags:
+        - Flussi
+      operationId: flussiExportConservazione
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: nomeFlusso
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileTo'
+  /operatore/flussi/export/conservazione/insert/{mygovEnteId}:
+    get:
+      tags:
+        - Flussi
+      operationId: flussiExportConservazioneInsert
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: tipoTracciato
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+  /operatore/flussi/conservazione/reload/{mygovEnteId}/{id}:
+    get:
+      tags:
+        - Flussi
+      operationId: reload
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /operatore/flussi/byEnteId/{mygovEnteId}:
+    get:
+      tags:
+        - Flussi
+      operationId: getByEnte
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FlussoTo'
+  /operatore/enti:
+    get:
+      tags:
+        - Enti
+      operationId: getEntiByOperatore
+      parameters:
+        - name: logoMode
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteTo'
+  /operatore/enti/{id}/tipiDovutoOperatore:
+    get:
+      tags:
+        - Enti
+      operationId: getByMygovEnteIdAndOperatoreUsername
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: enteSecondario
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteTipoDovutoTo'
+  /operatore/enti/extended:
+    get:
+      tags:
+        - Enti
+      operationId: getEnteExtendedByOperatore
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteExtedendTo'
+  /operatore/dovuti/{mygovEnteId}/{mygovDovutoId}:
+    get:
+      tags:
+        - Dovuti
+      operationId: detailDovutoForOperatore
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: mygovDovutoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DovutoOperatoreTo'
+  /operatore/dovuti/{mygovEnteId}/search:
+    get:
+      tags:
+        - Dovuti
+      operationId: searchDovutoForOperatore
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: codStato
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: myGovEnteTipoDovutoId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: nomeFlusso
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: causale
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: codFiscale
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: iud
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: iuv
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DovutoOperatoreTo'
+  /operatore/dovuti/gpd/{paFiscalCode}/{iupd}:
+    get:
+      tags:
+        - Dovuti
+      operationId: getIupdDetails
+      parameters:
+        - name: paFiscalCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: iupd
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /operatore/avvisi/{id}/pn:
+    get:
+      tags:
+        - Avvisi
+      operationId: downloadForOperatore_1
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /operatore/admin/utenti/{id}:
+    get:
+      tags:
+        - Operatori
+      operationId: getDetailUtente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OperatoreTo'
+  /operatore/admin/utenti/{idOperatore}/registro/{idTipo}:
+    get:
+      tags:
+        - Operatori
+      operationId: registroTipoDovutoOperatore
+      parameters:
+        - name: idOperatore
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: idTipo
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RegistroOperazioneTo'
+  /operatore/admin/utenti/username/{username}:
+    get:
+      tags:
+        - Operatori
+      operationId: checkExistingUsername
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+  /operatore/admin/utenti/search:
+    get:
+      tags:
+        - Operatori
+      operationId: searchUtenti
+      parameters:
+        - name: username
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: cognome
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: nome
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: onlyOper
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UtenteTo'
+  /operatore/admin/utenti/search/tipoDovuto/{mygovEnteId}/{mygovEnteTipoDovutoId}:
+    get:
+      tags:
+        - Operatori
+      operationId: searchUtentiForEnteTipoDovuto
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: mygovEnteTipoDovutoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: username
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: cognome
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: nome
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: flgAssociato
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UtenteTo'
+  /operatore/admin/utenti/search/ente/{mygovEnteId}:
+    get:
+      tags:
+        - Operatori
+      operationId: searchUtentiForEnte
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: username
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: cognome
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: nome
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UtenteTo'
+  /operatore/admin/tipiDovuto/{mygovEnteTipoDovutoId}:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: getTipoDovutoById
+      parameters:
+        - name: mygovEnteTipoDovutoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AnagraficaTipoDovutoTo'
+  /operatore/admin/tipiDovuto/{mygovEnteTipoDovutoId}/registro:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: registroTipoDovuto
+      parameters:
+        - name: mygovEnteTipoDovutoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RegistroOperazioneTo'
+  /operatore/admin/tipiDovuto/tipoServizio:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: getTipoServizio
+      parameters:
+        - name: tipoEnte
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: macroArea
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TassonomiaCodDescTo'
+  /operatore/admin/tipiDovuto/search:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: searchTipoDovuto
+      parameters:
+        - name: codTipo
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: deTipo
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: flgAttivo
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteTipoDovutoTo'
+  /operatore/admin/tipiDovuto/search/{mygovEnteId}:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: searchTipoDovuto_1
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: codTipo
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: deTipo
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: flgAttivo
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: withActivationInfo
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteTipoDovutoTo'
+  /operatore/admin/tipiDovuto/search/{mygovEnteId}/cod/{codTipo}:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: getTipoDovutoByEnteAndCodTipo
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: codTipo
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EnteTipoDovutoTo'
+  /operatore/admin/tipiDovuto/search/tipo/{codTipo}:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: searchTipoDovutoByTipo
+      parameters:
+        - name: codTipo
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: codIpaEnte
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: deNomeEnte
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: flgAttivo
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteTipoDovutoTo'
+  /operatore/admin/tipiDovuto/motivoRiscossione:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: getMotivoRiscossione
+      parameters:
+        - name: tipoEnte
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: macroArea
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: tipoServizio
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TassonomiaCodDescTo'
+  /operatore/admin/tipiDovuto/macroArea:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: getMacroArea
+      parameters:
+        - name: tipoEnte
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TassonomiaCodDescTo'
+  /operatore/admin/tipiDovuto/hasDovutoNoScadenza/{mygovEnteId}/cod/{codTipo}:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: hasDovutoNoScadenza
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: codTipo
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+  /operatore/admin/tipiDovuto/deactivate/{mygovEnteTipoDovutoId}:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: deactivate
+      parameters:
+        - name: mygovEnteTipoDovutoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /operatore/admin/tipiDovuto/codTassonomico:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: getCodTassonomico
+      parameters:
+        - name: tipoEnte
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: macroArea
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: tipoServizio
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: motivoRisc
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TassonomiaCodDescTo'
+  /operatore/admin/tipiDovuto/activate/{mygovEnteTipoDovutoId}:
+    get:
+      tags:
+        - TipoDovuto
+      operationId: activate
+      parameters:
+        - name: mygovEnteTipoDovutoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /operatore/admin/taxonomy/search:
+    get:
+      tags:
+        - BackofficeTassonomie
+      operationId: searchTassonomie
+      parameters:
+        - name: nomeTassonomia
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FlussoTasMasTo'
+  /operatore/admin/script/receipt/forceHandleFesp/{newStatus}/{mygovReceiptId}:
+    get:
+      tags:
+        - script-controller
+      operationId: forceHandleFespReceipt
+      parameters:
+        - name: newStatus
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: mygovReceiptId
+          in: path
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /operatore/admin/script/receipt/forceGenerateBytes:
+    get:
+      tags:
+        - script-controller
+      operationId: forceGenerateBytes
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /operatore/admin/script/receipt/forceGenerateBytes/{mygovReceiptId}:
+    get:
+      tags:
+        - script-controller
+      operationId: forceGenerateBytes_1
+      parameters:
+        - name: mygovReceiptId
+          in: path
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /operatore/admin/script/receipt/forceExport/{mygovReceiptId}:
+    get:
+      tags:
+        - script-controller
+      operationId: forceExportPaReceipt
+      parameters:
+        - name: mygovReceiptId
+          in: path
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /operatore/admin/giornale/{type}/search:
+    get:
+      tags:
+        - Operatori giornale degli eventi
+      operationId: searchGiornale
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idDominio
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: iuv
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: categoriaEvento
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tipoEvento
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: idPsp
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: esito
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: dataEventoFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: dataEventoTo
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GiornaleTo'
+  /operatore/admin/giornale/{type}/psp:
+    get:
+      tags:
+        - Operatori giornale degli eventi
+      operationId: getAllPsp
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+  /operatore/admin/giornale/{type}/opzioni:
+    get:
+      tags:
+        - Operatori giornale degli eventi
+      operationId: getAllOptions
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OpzioniRicercaGiornaleTo'
+  /operatore/admin/giornale/{type}/detail/{id}:
+    get:
+      tags:
+        - Operatori giornale degli eventi
+      operationId: getDetailGiornale
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GiornaleTo'
+  /operatore/admin/flussi/tassonomie/search:
+    get:
+      tags:
+        - BackofficeFlusso
+      operationId: searchTassonomie_1
+      parameters:
+        - name: nomeTassonomia
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FlussoTasMasTo'
+  /operatore/admin/enti:
+    get:
+      tags:
+        - BackofficeEnte
+      operationId: searchEnti
+      parameters:
+        - name: codIpaEnte
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: deNome
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: codFiscale
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: idStato
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: dtAvvioFrom
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: dtAvvioTo
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: logoMode
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnagraficaEnteTo'
+  /operatore/admin/enti/{mygovEnteId}:
+    get:
+      tags:
+        - BackofficeEnte
+      operationId: getEnteById_1
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AnagraficaEnteTo'
+  /operatore/admin/enti/tipiEnte:
+    get:
+      tags:
+        - BackofficeEnte
+      operationId: getTipiEnte
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TassonomiaCodDescTo'
+  /operatore/admin/enti/lingueAggiuntive:
+    get:
+      tags:
+        - BackofficeEnte
+      operationId: getLingueAggiuntive
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LingueAggiuntiveAvvisoCodDescTo'
+  /operatore/admin/enti/funzionalita/{mygovEnteId}:
+    get:
+      tags:
+        - BackofficeEnte
+      operationId: searchFunzionalita
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnteFunzionalita'
+  /operatore/admin/enti/funzionalita/{mygovEnteId}/{funzionalita}:
+    get:
+      tags:
+        - BackofficeEnte
+      operationId: registroFunzionalita
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: funzionalita
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RegistroOperazioneTo'
+  /operatore/admin/enti/funzionalita/deactivate/{mygovEnteFunzionalitaId}:
+    get:
+      tags:
+        - BackofficeEnte
+      operationId: deactivateFunzionalita
+      parameters:
+        - name: mygovEnteFunzionalitaId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /operatore/admin/enti/funzionalita/activate/{mygovEnteFunzionalitaId}:
+    get:
+      tags:
+        - BackofficeEnte
+      operationId: activateFunzionalita
+      parameters:
+        - name: mygovEnteFunzionalitaId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /operatore/admin/enti/anagraficaStati:
+    get:
+      tags:
+        - BackofficeEnte
+      operationId: getAnagraficaStati
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnagraficaStatoTo'
+  /mybox/download/{mygovEnteId}:
+    get:
+      tags:
+        - MyBox
+      operationId: download_1
+      parameters:
+        - name: mygovEnteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: filename
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: securityToken
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /enti/byCodFiscale/{codFiscale}:
+    get:
+      tags:
+        - Enti
+      operationId: getEnteByCodFiscale
+      parameters:
+        - name: codFiscale
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EnteTo'
+  /email:
+    get:
+      tags:
+        - Validazione email
+      operationId: checkEmailValidationStatus
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidazioneEmailTo'
+      security: []
+  /dovuti/search:
+    get:
+      tags:
+        - Dovuti
+      operationId: searchDovuto
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: codIpaEnte
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: codTipoDovuto
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: causale
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: payableNoticeOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DovutoTo'
+  /dovuti/last:
+    get:
+      tags:
+        - Dovuti
+      operationId: searchLastDovuto
+      parameters:
+        - name: num
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DovutoTo'
+  /carrello/update:
+    get:
+      tags:
+        - carrello-controller
+      operationId: updateBasketPnd
+      parameters:
+        - name: codIpaEnte
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: codTipoDovuto
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: codIuv
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AttualizzazioneTo'
+  /carrello/outcome:
+    get:
+      tags:
+        - carrello-controller
+      operationId: getOutcomeLoggedIn
+      parameters:
+        - name: pollingToken
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaymentOutcomeTo'
+  /avvisi/search:
+    get:
+      tags:
+        - Avvisi
+      operationId: searchAvviso
+      parameters:
+        - name: numeroAvviso
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: owner
+          in: query
+          required: true
+          schema:
+            type: boolean
+        - name: codIdUnivoco
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: anagrafica
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: codIpaEnte
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: codTipoDovuto
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /avvisi/download/{id}:
+    get:
+      tags:
+        - Avvisi
+      operationId: downloadAvviso
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: securityToken
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /appadmin/log/{loggerName}:
+    get:
+      tags:
+        - Applicazione
+      summary: Log details
+      description: Metodo per ottenere informazioni di log per un particolare logger, o per settare un nuovo livello di log
+      operationId: logDetails
+      parameters:
+        - name: loggerName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: newLevel
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        default:
+          description: Informazioni di dettaglio di un particolare logger
+          content:
+            '*/*':
+              schema:
+                type: string
+      security: []
+  /appadmin/fs:
+    get:
+      tags:
+        - Applicazione
+      operationId: fsGet
+      parameters:
+        - name: path
+          in: query
+          required: false
+          schema:
+            type: string
+            default: .
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+            application/octet-stream:
+              schema:
+                type: object
+      security: []
+  /appadmin/env/log:
+    get:
+      tags:
+        - Applicazione
+      summary: Log environment
+      description: Metodo per scrivere sui log le configurazioni applicative
+      operationId: logEnv
+      parameters:
+        - name: loggersForDetails
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        default:
+          description: OK se l'operazione è stata eseguita
+          content:
+            '*/*':
+              schema:
+                type: string
+      security: []
+  /appadmin/db/{dbName}/locks:
+    get:
+      tags:
+        - Applicazione
+      operationId: getDbLocks
+      parameters:
+        - name: dbName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+      security: []
+  /appadmin/checklogoenti:
+    get:
+      tags:
+        - Enti
+      operationId: checkLogoEnti
+      parameters:
+        - name: delete
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /appadmin/cache/get:
+    get:
+      tags:
+        - Applicazione
+      summary: CacheGet all cache
+      description: Metodo per ottenere la cache applicativa
+      operationId: cacheGet
+      responses:
+        default:
+          description: OK o msg di errore
+          content:
+            '*/*':
+              schema:
+                type: string
+      security: []
+  /appadmin/cache/get/{cacheName}:
+    get:
+      tags:
+        - Applicazione
+      summary: CacheGet specific cache
+      description: Metodo per ottenere la cache applicativa passando il nome cache
+      operationId: cacheGet_1
+      parameters:
+        - name: cacheName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: OK o msg di errore
+          content:
+            '*/*':
+              schema:
+                type: string
+      security: []
+  /appadmin/cache/get/{cacheName}/{cacheKey}:
+    get:
+      tags:
+        - Applicazione
+      summary: CacheGet specific key on cache
+      description: Metodo per ottenere la cache applicativa passando il nome cache e la chiave
+      operationId: cacheGet_2
+      parameters:
+        - name: cacheName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: cacheKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: OK o msg di errore
+          content:
+            '*/*':
+              schema:
+                type: string
+      security: []
+  /appadmin/cache/flush:
+    get:
+      tags:
+        - Applicazione
+      summary: CacheFlush
+      description: Metodo per svuotare la cache applicativa
+      operationId: cacheFlush
+      responses:
+        default:
+          description: L'elenco dei nomi delle cache svuotate
+          content:
+            '*/*':
+              schema:
+                type: string
+      security: []
+  /appadmin/cache/flush/{cacheName}:
+    get:
+      tags:
+        - Applicazione
+      summary: CacheFlush specific cache
+      description: Metodo per svuotare la cache applicativa passando il nome cache
+      operationId: cacheFlush_1
+      parameters:
+        - name: cacheName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: OK o msg di errore
+          content:
+            '*/*':
+              schema:
+                type: string
+      security: []
+  /appadmin/cache/flush/{cacheName}/{cacheKey}:
+    get:
+      tags:
+        - Applicazione
+      summary: CacheFlush specific key on cache
+      description: Metodo per svuotare la cache applicativa passando il nome cache e la chiave
+      operationId: cacheFlush_2
+      parameters:
+        - name: cacheName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: cacheKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: OK o msg di errore
+          content:
+            '*/*':
+              schema:
+                type: string
+      security: []
+  /operatore/admin/tipiDovuto/delete/{mygovEnteTipoDovutoId}:
+    delete:
+      tags:
+        - TipoDovuto
+      operationId: delete
+      parameters:
+        - name: mygovEnteTipoDovutoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int32
+  /info/getBrokerConfig:
+    get:
+      tags:
+        - Config
+      summary: Informazioni applicazione
+      description: Ritorna le informazioni dell'applicazione per la parte di FE
+      operationId: getBrokerConfig
+      parameters: [ ]
+      responses:
+        default:
+          description: Le informazioni dell'applicazione come mappa chiave/valore
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigFE'
+      security: [ ]
+components:
+  schemas:
+    ConfigFE:
+      type: object
+      properties:
+        headerAssistanceUrl:
+          type: string
+        logoFooterImg:
+          type: string
+        footerDescText:
+          type: string
+        footerPrivacyInfoUrl:
+          type: string
+        footerGDPRUrl:
+          type: string
+        footerTermsCondUrl:
+          type: string
+        footerAccessibilityUrl:
+          type: string
+    UtenteTo:
+      type: object
+      properties:
+        userId:
+          type: string
+        username:
+          type: string
+        codiceFiscale:
+          type: string
+        email:
+          type: string
+        emailNew:
+          type: string
+        emailSourceType:
+          type: string
+        nome:
+          type: string
+        cognome:
+          type: string
+        indirizzo:
+          type: string
+        civico:
+          type: string
+        cap:
+          type: string
+        comuneId:
+          type: integer
+          format: int64
+        provinciaId:
+          type: integer
+          format: int64
+        nazioneId:
+          type: integer
+          format: int64
+        comune:
+          type: string
+        provincia:
+          type: string
+        nazione:
+          type: string
+        ruolo:
+          type: string
+        flgAssociato:
+          type: boolean
+        lastLogin:
+          type: string
+          format: date-time
+        loginType:
+          type: string
+        statoNascita:
+          type: string
+        provinciaNascita:
+          type: string
+        comuneNascita:
+          type: string
+        dataNascita:
+          type: string
+        entiRoles:
+          type: object
+          additionalProperties:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        dtUltimaAbilitazione:
+          type: string
+          format: date-time
+        dtUltimaDisabilitazione:
+          type: string
+          format: date-time
+        emailValidationNeeded:
+          type: boolean
+    UploadTo:
+      type: object
+      properties:
+        uploadId:
+          type: string
+        filename:
+          type: string
+        size:
+          type: integer
+          format: int64
+        uploadTimestamp:
+          type: integer
+          format: int64
+        expiryTimestamp:
+          type: integer
+          format: int64
+        error:
+          type: string
+    AnagraficaPagatore:
+      type: object
+      properties:
+        tipoIdentificativoUnivoco:
+          type: string
+        codiceIdentificativoUnivoco:
+          type: string
+        anagrafica:
+          type: string
+        email:
+          type: string
+        indirizzo:
+          type: string
+        civico:
+          type: string
+        cap:
+          type: string
+        localita:
+          type: string
+        provincia:
+          type: string
+        nazione:
+          type: string
+        localitaId:
+          type: integer
+          format: int64
+        provinciaId:
+          type: integer
+          format: int64
+        nazioneId:
+          type: integer
+          format: int64
+    DefinitionDovuto:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    FieldBean:
+      type: object
+      properties:
+        name:
+          type: string
+        required:
+          type: boolean
+        regex:
+          type: string
+        htmlRender:
+          type: string
+          enum:
+            - TEXT
+            - INTEGER
+            - DOUBLE
+            - BOOLEAN
+            - DATE
+            - DATETIME
+            - TEXTAREA
+            - HTMLAREA
+            - IMAGE
+            - SELECT
+            - MULTILINK
+            - FILE
+            - NONE
+            - SINGLESELECT
+            - MULTISELECT
+            - MULTIFIELD
+            - ASSOCIATION
+            - LINKGENERATOR
+            - TAGS
+            - TAB
+            - LABEL
+            - CURRENCY
+            - CURRENCY_LABEL
+        htmlClass:
+          type: string
+        htmlLabel:
+          type: string
+        htmlPlaceholder:
+          type: string
+        bindCms:
+          type: string
+        defaultValue:
+          type: string
+        insertableOrder:
+          type: integer
+          format: int32
+        indexable:
+          type: boolean
+        renderableOrder:
+          type: integer
+          format: int32
+        searchableOrder:
+          type: integer
+          format: int32
+        listableOrder:
+          type: integer
+          format: int32
+        associationField:
+          type: string
+        minOccurences:
+          type: integer
+          format: int32
+        maxOccurences:
+          type: integer
+          format: int32
+        groupBy:
+          type: string
+        extraAttr:
+          type: object
+          additionalProperties:
+            type: string
+        enumerationList:
+          type: array
+          items:
+            type: string
+        subfields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldBean'
+        validDependsOn:
+          type: string
+        validDependsOnUids:
+          type: string
+        valueDependsOn:
+          type: string
+        valueDependsOnUids:
+          type: string
+        hiddenDependsOn:
+          type: string
+        hiddenDependsOnUids:
+          type: string
+        mandatoryDependsOn:
+          type: string
+        mandatoryDependsOnUids:
+          type: string
+        enabledDependsOn:
+          type: string
+        enabledDependsOnUids:
+          type: string
+        errorMessage:
+          type: string
+        helpMessage:
+          type: string
+        insertable:
+          type: boolean
+        renderable:
+          type: boolean
+        searchable:
+          type: boolean
+        listable:
+          type: boolean
+        association:
+          type: boolean
+        detailLink:
+          type: boolean
+    SpontaneoFormTo:
+      type: object
+      properties:
+        fieldBeans:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldBean'
+        importo:
+          type: string
+        campoTotaleInclusoInXSD:
+          type: string
+        reCaptchaPublicKey:
+          type: string
+        definitionDovuto:
+          type: array
+          items:
+            $ref: '#/components/schemas/DefinitionDovuto'
+        intestatario:
+          $ref: '#/components/schemas/AnagraficaPagatore'
+    SpontaneoTo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        causale:
+          type: string
+        causaleVisualizzata:
+          type: string
+        bilancio:
+          type: string
+        importo:
+          type: number
+        deEnte:
+          type: string
+        codIpaEnte:
+          type: string
+        codTipoDovuto:
+          type: string
+        deTipoDovuto:
+          type: string
+        errorMsg:
+          type: string
+        intestatario:
+          $ref: '#/components/schemas/AnagraficaPagatore'
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        causale:
+          type: string
+        causaleVisualizzata:
+          type: string
+        bilancio:
+          type: string
+        importo:
+          type: number
+        codIpaEnte:
+          type: string
+        codTipoDovuto:
+          type: string
+        codStato:
+          type: string
+        intestatario:
+          $ref: '#/components/schemas/AnagraficaPagatore'
+        messaggioAvviso:
+          type: string
+        codIuv:
+          type: string
+        securityTokenAvviso:
+          type: string
+        versanteEmail:
+          type: string
+        mailValidationToken:
+          type: string
+        iud:
+          type: string
+        datiSpecificiRiscossione:
+          type: string
+        identificativoUnivocoFlusso:
+          type: string
+        bolloDigitale:
+          $ref: '#/components/schemas/DatiMarcaBolloDigitale'
+        importoAtt:
+          type: boolean
+    DatiMarcaBolloDigitale:
+      type: object
+      properties:
+        mygovDatiMarcaBolloDigitaleId:
+          type: integer
+          format: int64
+        version:
+          type: integer
+          format: int32
+        tipoBollo:
+          type: string
+        hashDocumento:
+          type: string
+        provinciaResidenza:
+          type: string
+    DovutoEntePrimarioTo:
+      type: object
+      properties:
+        denominazioneBeneficiario:
+          type: string
+        codiceIdentificativoUnivoco:
+          type: string
+        ibanAddebito:
+          type: string
+        indirizzoBeneficiario:
+          type: string
+        civicoBeneficiario:
+          type: string
+        capBeneficiario:
+          type: string
+        nazioneBeneficiario:
+          type: string
+        provinciaBeneficiario:
+          type: string
+        localitaBeneficiario:
+          type: string
+        importo:
+          type: string
+    DovutoMultibeneficiarioTo:
+      type: object
+      properties:
+        denominazioneBeneficiario:
+          type: string
+        codiceIdentificativoUnivoco:
+          type: string
+        ibanAddebito:
+          type: string
+        indirizzoBeneficiario:
+          type: string
+        civicoBeneficiario:
+          type: string
+        capBeneficiario:
+          type: string
+        nazioneBeneficiario:
+          type: string
+        provinciaBeneficiario:
+          type: string
+        localitaBeneficiario:
+          type: string
+        importoSecondario:
+          type: string
+        causaleMB:
+          type: string
+        datiSpecificiRiscossione:
+          type: string
+    DovutoTo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        codIud:
+          type: string
+        causale:
+          type: string
+        causaleVisualizzata:
+          type: string
+        importo:
+          type: string
+        importoAsCent:
+          type: integer
+          format: int64
+        valuta:
+          type: string
+        codStato:
+          type: string
+        deEnte:
+          type: string
+        codIpaEnte:
+          type: string
+        codiceFiscaleEnte:
+          type: string
+        codTipoDovuto:
+          type: string
+        deTipoDovuto:
+          type: string
+        dataScadenza:
+          type: string
+          format: date
+        deStato:
+          type: string
+        modPagamento:
+          type: array
+          items:
+            type: string
+        avviso:
+          type: boolean
+        codIuv:
+          type: string
+        numeroAvviso:
+          type: string
+        intestatarioAvviso:
+          type: string
+        intestatario:
+          $ref: '#/components/schemas/AnagraficaPagatore'
+        securityTokenAvviso:
+          type: string
+        annullabile:
+          type: boolean
+        entePrimarioDetail:
+          $ref: '#/components/schemas/DovutoEntePrimarioTo'
+        dovutoMultibeneficiario:
+          $ref: '#/components/schemas/DovutoMultibeneficiarioTo'
+        flgIuvVolatile:
+          type: boolean
+        urlNotificaPnd:
+          type: boolean
+        multibeneficiario:
+          type: boolean
+        multiIntestatario:
+          type: boolean
+        payable:
+          type: boolean
+    MailValidationRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        encryptedSalt:
+          type: string
+        pin:
+          type: string
+        error:
+          type: string
+    MailValidationResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        validatedToken:
+          type: string
+        validationStatus:
+          type: string
+        expiration:
+          type: integer
+          format: int64
+    BasketTo:
+      type: object
+      properties:
+        versante:
+          $ref: '#/components/schemas/AnagraficaPagatore'
+        idSession:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        backUrlInviaEsito:
+          type: string
+        tipoCarrello:
+          type: string
+        showMyPay:
+          type: string
+        enteCaller:
+          type: string
+        dovutiEntiSecondari:
+          $ref: '#/components/schemas/DovutiEntiSecondari'
+        mailValidationToken:
+          type: string
+    CtDatiVersamentoDovutiEntiSecondari:
+      required:
+        - codiceFiscaleBeneficiario
+        - datiSpecificiRiscossione
+        - denominazioneBeneficiario
+        - ibanAccreditoBeneficiario
+        - importoSingoloVersamento
+      type: object
+      properties:
+        codiceFiscaleBeneficiario:
+          type: string
+        denominazioneBeneficiario:
+          type: string
+        ibanAccreditoBeneficiario:
+          type: string
+        indirizzoBeneficiario:
+          type: string
+        civicoBeneficiario:
+          type: string
+        capBeneficiario:
+          type: string
+        localitaBeneficiario:
+          type: string
+        provinciaBeneficiario:
+          type: string
+        nazioneBeneficiario:
+          type: string
+        causaleVersamento:
+          type: string
+        datiSpecificiRiscossione:
+          type: string
+        importoSingoloVersamento:
+          type: number
+    DovutiEntiSecondari:
+      required:
+        - datiVersamentoEntiSecondari
+        - versioneOggetto
+      type: object
+      properties:
+        versioneOggetto:
+          type: string
+        datiVersamentoEntiSecondari:
+          $ref: '#/components/schemas/CtDatiVersamentoDovutiEntiSecondari'
+      xml:
+        name: DovutiEntiSecondari
+    EsitoTo:
+      type: object
+      properties:
+        esito:
+          type: string
+        url:
+          type: string
+        faultBean:
+          $ref: '#/components/schemas/FaultBean'
+        returnMsg:
+          type: string
+        errorUid:
+          type: string
+    FaultBean:
+      required:
+        - faultCode
+        - faultString
+        - id
+      type: object
+      properties:
+        faultCode:
+          type: string
+        faultString:
+          type: string
+        id:
+          type: string
+        description:
+          type: string
+        serial:
+          type: integer
+          format: int32
+        originalFaultCode:
+          type: string
+        originalFaultString:
+          type: string
+        originalDescription:
+          type: string
+    ComuneTo:
+      type: object
+      properties:
+        comuneId:
+          type: integer
+          format: int64
+        comune:
+          type: string
+        provinciaId:
+          type: integer
+          format: int64
+    DovutoElaboratoEntePrimarioTo:
+      type: object
+      properties:
+        denominazioneBeneficiario:
+          type: string
+        codiceIdentificativoUnivoco:
+          type: string
+        ibanAddebito:
+          type: string
+        indirizzoBeneficiario:
+          type: string
+        civicoBeneficiario:
+          type: string
+        capBeneficiario:
+          type: string
+        nazioneBeneficiario:
+          type: string
+        provinciaBeneficiario:
+          type: string
+        localitaBeneficiario:
+          type: string
+        importo:
+          type: string
+    DovutoMultibeneficiarioElaboratoTo:
+      type: object
+      properties:
+        denominazioneBeneficiario:
+          type: string
+        codiceIdentificativoUnivoco:
+          type: string
+        ibanAddebito:
+          type: string
+        indirizzoBeneficiario:
+          type: string
+        civicoBeneficiario:
+          type: string
+        capBeneficiario:
+          type: string
+        nazioneBeneficiario:
+          type: string
+        provinciaBeneficiario:
+          type: string
+        localitaBeneficiario:
+          type: string
+        importoSecondario:
+          type: string
+    DovutoOperatoreTo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        codFiscale:
+          type: string
+        iud:
+          type: string
+        iuv:
+          type: string
+        causale:
+          type: string
+        causaleVisualizzata:
+          type: string
+        importo:
+          type: string
+        dataScadenza:
+          type: string
+          format: date
+        stato:
+          type: string
+        codStato:
+          type: string
+        dataStato:
+          type: string
+          format: date-time
+        hasAvviso:
+          type: boolean
+        hasRicevuta:
+          type: boolean
+        tipoDovuto:
+          $ref: '#/components/schemas/EnteTipoDovutoTo'
+        anagrafica:
+          type: string
+        tipoSoggetto:
+          type: string
+        flgAnagraficaAnonima:
+          type: boolean
+        hasCodFiscale:
+          type: boolean
+        email:
+          type: string
+        indirizzo:
+          type: string
+        numCiv:
+          type: string
+        cap:
+          type: string
+        nazione:
+          $ref: '#/components/schemas/NazioneTo'
+        prov:
+          $ref: '#/components/schemas/ProvinciaTo'
+        comune:
+          $ref: '#/components/schemas/ComuneTo'
+        flgGenerateIuv:
+          type: boolean
+        iuf:
+          type: string
+        dataInizioTransazione:
+          type: string
+          format: date-time
+        identificativoTransazione:
+          type: string
+        intestatario:
+          type: string
+        pspScelto:
+          type: string
+        dovutoType:
+          type: string
+        invalidDesc:
+          type: string
+        flgMultibeneficiario:
+          type: boolean
+        flgIuvVolatile:
+          type: boolean
+        entePrimarioDetail:
+          $ref: '#/components/schemas/DovutoEntePrimarioTo'
+        entePrimarioElaboratoDetail:
+          $ref: '#/components/schemas/DovutoElaboratoEntePrimarioTo'
+        dovutoMultibeneficiario:
+          $ref: '#/components/schemas/DovutoMultibeneficiarioTo'
+        dovutoMultibeneficiarioElaborato:
+          $ref: '#/components/schemas/DovutoMultibeneficiarioElaboratoTo'
+    EnteTipoDovutoTo:
+      type: object
+      properties:
+        mygovEnteTipoDovutoId:
+          type: integer
+          format: int64
+        mygovEnteId:
+          type: integer
+          format: int64
+        codIpaEnte:
+          type: string
+        deNomeEnte:
+          type: string
+        thumbLogoEnte:
+          type: string
+        hashThumbLogoEnte:
+          type: string
+        codTipo:
+          type: string
+        deTipo:
+          type: string
+        deUrlPagamentoDovuto:
+          type: string
+        flgCfAnonimo:
+          type: boolean
+        flgScadenzaObbligatoria:
+          type: boolean
+        flgAttivo:
+          type: boolean
+        importo:
+          type: string
+        dtUltimaAbilitazione:
+          type: string
+          format: date-time
+        dtUltimaDisabilitazione:
+          type: string
+          format: date-time
+    NazioneTo:
+      type: object
+      properties:
+        nazioneId:
+          type: integer
+          format: int64
+        nomeNazione:
+          type: string
+        codiceIsoAlpha2:
+          type: string
+    ProvinciaTo:
+      type: object
+      properties:
+        provinciaId:
+          type: integer
+          format: int64
+        provincia:
+          type: string
+        sigla:
+          type: string
+    EnteRolesTo:
+      type: object
+      properties:
+        mygovEnteId:
+          type: integer
+          format: int64
+        codIpaEnte:
+          type: string
+        deNomeEnte:
+          type: string
+        emailAddress:
+          type: string
+        roles:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    AnagraficaTipoDovutoTo:
+      type: object
+      properties:
+        mygovEnteTipoDovutoId:
+          type: integer
+          format: int64
+        mygovEnteId:
+          type: integer
+          format: int64
+        codIpaEnte:
+          type: string
+        codTipo:
+          type: string
+        deTipo:
+          type: string
+        ibanAccreditoPi:
+          type: string
+        ibanAccreditoPsp:
+          type: string
+        codXsdCausale:
+          type: string
+        importo:
+          type: number
+        spontaneo:
+          type: boolean
+        flgCfAnonimo:
+          type: boolean
+        flgScadenzaObbligatoria:
+          type: boolean
+        flgStampaDataScadenza:
+          type: boolean
+        deUrlPagamentoDovuto:
+          type: string
+        deBilancioDefault:
+          type: string
+        deSettoreEnte:
+          type: string
+        deIntestatarioCcPostale:
+          type: string
+        flgNotificaIo:
+          type: boolean
+        flgDisabilitaStampaAvviso:
+          type: boolean
+        codiceContestoPagamento:
+          type: string
+        flgNotificaEsitoPush:
+          type: boolean
+        maxTentativiInoltroEsito:
+          type: integer
+          format: int32
+        macroArea:
+          type: string
+        tipoServizio:
+          type: string
+        motivoRiscossione:
+          type: string
+        codTassonomico:
+          type: string
+        nomeApplicativo:
+          type: string
+        deUrlInoltroEsitoPagamentoPush:
+          type: string
+        codServiceAccountJwtUscitaClientId:
+          type: string
+        deServiceAccountJwtUscitaClientMail:
+          type: string
+        codServiceAccountJwtUscitaSecretKeyId:
+          type: string
+        codServiceAccountJwtUscitaSecretKey:
+          type: string
+        flgJwtAttivo:
+          type: boolean
+        urlNotificaPnd:
+          type: string
+        userPnd:
+          type: string
+        pswPnd:
+          type: string
+        urlNotificaAttualizzazionePnd:
+          type: string
+    AnagraficaEnteTo:
+      type: object
+      properties:
+        mygovEnteId:
+          type: integer
+          format: int64
+        codIpaEnte:
+          type: string
+        codiceFiscaleEnte:
+          type: string
+        deNomeEnte:
+          type: string
+        deLogoEnte:
+          type: string
+        thumbLogoEnte:
+          type: string
+        hashThumbLogoEnte:
+          type: string
+        deInformazioniEnte:
+          type: string
+        emailAmministratore:
+          type: string
+        dtUltimaModifica:
+          type: string
+          format: date-time
+        codRpDatiVersDatiSingVersIbanAccredito:
+          type: string
+        enteSilInviaRispostaPagamentoUrl:
+          type: string
+        dePassword:
+          type: string
+        paaSILInviaCarrelloDovutiHash:
+          type: string
+        codRpDatiVersDatiSingVersBicAccreditoSeller:
+          type: boolean
+        deRpEnteBenefDenominazioneBeneficiario:
+          type: string
+        deRpEnteBenefIndirizzoBeneficiario:
+          type: string
+        deRpEnteBenefCivicoBeneficiario:
+          type: string
+        codRpEnteBenefCapBeneficiario:
+          type: string
+        deRpEnteBenefLocalitaBeneficiario:
+          type: string
+        deRpEnteBenefProvinciaBeneficiario:
+          type: string
+        codRpEnteBenefNazioneBeneficiario:
+          type: string
+        deRpEnteBenefTelefonoBeneficiario:
+          type: string
+        deRpEnteBenefSitoWebBeneficiario:
+          type: string
+        deRpEnteBenefEmailBeneficiario:
+          type: string
+        applicationCode:
+          type: string
+        codCodiceInterbancarioCbill:
+          type: string
+        cdStatoEnte:
+          $ref: '#/components/schemas/AnagraficaStatoTo'
+        deAutorizzazione:
+          type: string
+        codTipoEnte:
+          type: string
+        dtAvvio:
+          type: string
+          format: date
+        linguaAggiuntiva:
+          type: string
+        flagInsertDefaultSet:
+          type: boolean
+    AnagraficaStatoTo:
+      type: object
+      properties:
+        mygovAnagraficaStatoId:
+          type: integer
+          format: int64
+        codStato:
+          type: string
+        deStato:
+          type: string
+    EnteTo:
+      type: object
+      properties:
+        mygovEnteId:
+          type: integer
+          format: int64
+        codIpaEnte:
+          type: string
+        codiceFiscaleEnte:
+          type: string
+        deNomeEnte:
+          type: string
+        deLogoEnte:
+          type: string
+        thumbLogoEnte:
+          type: string
+        hashThumbLogoEnte:
+          type: string
+        deInformazioniEnte:
+          type: string
+    ValidazioneEmailTo:
+      type: object
+      properties:
+        emailAddress:
+          type: string
+        remainingTries:
+          type: integer
+          format: int32
+        expireDt:
+          type: string
+          format: date-time
+        cantRequestNewMailBeforeSeconds:
+          type: integer
+          format: int32
+        outcome:
+          type: string
+          enum:
+            - OK
+            - EXPIRED
+            - MAX_TRIES
+            - WRONG_CODE
+    CodeDescriptionTo:
+      type: object
+      properties:
+        code:
+          type: string
+        descr:
+          type: string
+    AttualizzazioneTo:
+      type: object
+      properties:
+        bilancio:
+          type: string
+        importoPosizione:
+          type: number
+    PaymentOutcomeRtTo:
+      type: object
+      properties:
+        noticeNumber:
+          type: string
+        codIpaEnte:
+          type: string
+        deEnte:
+          type: string
+        id:
+          type: integer
+          format: int64
+        securityToken:
+          type: string
+    PaymentOutcomeTo:
+      type: object
+      properties:
+        status:
+          type: string
+        pollingToken:
+          type: string
+        paidAmount:
+          type: number
+        emailVersante:
+          type: string
+        rt:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentOutcomeRtTo'
+    DovutoElaboratoTo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        causale:
+          type: string
+        importo:
+          type: string
+        importoAsCent:
+          type: integer
+          format: int64
+        valuta:
+          type: string
+        dataScadenza:
+          type: string
+          format: date
+        dataPagamento:
+          type: string
+          format: date
+        codStato:
+          type: string
+        stato:
+          type: string
+        statoComplessivo:
+          type: string
+        modPagamento:
+          type: string
+        dataInizioTransazione:
+          type: string
+          format: date-time
+        identificativoTransazione:
+          type: string
+        intestatario:
+          type: string
+        pspScelto:
+          type: string
+        commissioniApplicatePsp:
+          type: string
+        allegatoRicevutaCodiceTipo:
+          type: string
+        allegatoRicevutaTipo:
+          type: string
+        allegatoRicevutaTest:
+          type: string
+        email:
+          type: string
+        showStampaRicevutaButton:
+          type: boolean
+        enteId:
+          type: integer
+          format: int64
+        codIpaEnte:
+          type: string
+        codFiscaleEnte:
+          type: string
+        enteDeNome:
+          type: string
+        codTipoDovuto:
+          type: string
+        deTipoDovuto:
+          type: string
+        codIuv:
+          type: string
+        numeroAvviso:
+          type: string
+        securityTokenRt:
+          type: string
+        entePrimarioElaboratoDetail:
+          $ref: '#/components/schemas/DovutoElaboratoEntePrimarioTo'
+        dovutoMultibeneficiario:
+          $ref: '#/components/schemas/DovutoMultibeneficiarioElaboratoTo'
+        multibeneficiario:
+          type: boolean
+    FileTo:
+      type: object
+      properties:
+        identificativo:
+          type: string
+        path:
+          type: string
+        name:
+          type: string
+        dataProduzione:
+          type: string
+          format: date-time
+        dataCreazione:
+          type: string
+          format: date-time
+        dimensione:
+          type: integer
+          format: int64
+        codFedUserId:
+          type: string
+        operatore:
+          type: string
+        showDownload:
+          type: boolean
+        securityToken:
+          type: string
+        dataInizio:
+          type: string
+          format: date-time
+        dataFine:
+          type: string
+          format: date-time
+        stato:
+          type: string
+        id:
+          type: integer
+          format: int64
+    FlussoImportTo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nomeFlusso:
+          type: string
+        dataCaricamento:
+          type: string
+          format: date
+        operatore:
+          type: string
+        deStato:
+          type: string
+        codStato:
+          type: string
+        pdfGenerati:
+          type: integer
+          format: int64
+        showDownload:
+          type: boolean
+        codErrore:
+          type: string
+        log:
+          type: string
+        numRigheTotali:
+          type: integer
+          format: int64
+        numRigheImportateCorrettamente:
+          type: integer
+          format: int64
+        path:
+          type: string
+        codFedUserId:
+          type: string
+        securityToken:
+          type: string
+    FlussoTo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nome:
+          type: string
+    EnteExtedendTo:
+      type: object
+      properties:
+        deNomeEnte:
+          type: string
+        codiceFiscaleEnte:
+          type: string
+        ibanAccrerdito:
+          type: string
+        indirizzoBeneficiario:
+          type: string
+        civicoBeneficiario:
+          type: string
+        capBeneficiario:
+          type: string
+        nazioneBeneficiario:
+          type: string
+        provicniaBeneficiario:
+          type: string
+        localitaBeneficiario:
+          type: string
+        importoSecondario:
+          type: string
+    OperatoreTo:
+      type: object
+      properties:
+        userId:
+          type: string
+        username:
+          type: string
+        codiceFiscale:
+          type: string
+        email:
+          type: string
+        emailNew:
+          type: string
+        emailSourceType:
+          type: string
+        nome:
+          type: string
+        cognome:
+          type: string
+        indirizzo:
+          type: string
+        civico:
+          type: string
+        cap:
+          type: string
+        comuneId:
+          type: integer
+          format: int64
+        provinciaId:
+          type: integer
+          format: int64
+        nazioneId:
+          type: integer
+          format: int64
+        comune:
+          type: string
+        provincia:
+          type: string
+        nazione:
+          type: string
+        ruolo:
+          type: string
+        flgAssociato:
+          type: boolean
+        lastLogin:
+          type: string
+          format: date-time
+        loginType:
+          type: string
+        statoNascita:
+          type: string
+        provinciaNascita:
+          type: string
+        comuneNascita:
+          type: string
+        dataNascita:
+          type: string
+        entiRoles:
+          type: object
+          additionalProperties:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        dtUltimaAbilitazione:
+          type: string
+          format: date-time
+        dtUltimaDisabilitazione:
+          type: string
+          format: date-time
+        emailValidationNeeded:
+          type: boolean
+        fullEntiRoles:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnteRolesTo'
+    RegistroOperazioneTo:
+      type: object
+      properties:
+        username:
+          type: string
+        fullName:
+          type: string
+        dtOperazione:
+          type: string
+          format: date-time
+        statoDa:
+          type: boolean
+        statoA:
+          type: boolean
+    TassonomiaCodDescTo:
+      type: object
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+    FlussoTasMasTo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        codStato:
+          type: string
+        deStato:
+          type: string
+        iuf:
+          type: string
+        tipoFlussoMassivo:
+          type: string
+        numRigheTotali:
+          type: integer
+          format: int64
+        numRigheElaborateCorrettamente:
+          type: integer
+          format: int64
+        dtCreazione:
+          type: string
+          format: date-time
+        deNomeOperatore:
+          type: string
+        path:
+          type: string
+        codErrore:
+          type: string
+        showDownload:
+          type: boolean
+        securityToken:
+          type: string
+    GiornaleTo:
+      type: object
+      properties:
+        mygovGiornaleId:
+          type: integer
+          format: int64
+        dataOraEvento:
+          type: string
+          format: date-time
+        idDominio:
+          type: string
+        iuv:
+          type: string
+        evento:
+          type: string
+        idPsp:
+          type: string
+        tipo:
+          type: string
+        sottotipo:
+          type: string
+        categoria:
+          type: string
+        esito:
+          type: string
+        contestoPagamento:
+          type: string
+        tipoVersamento:
+          type: string
+        componente:
+          type: string
+        idFruitore:
+          type: string
+        idErogatore:
+          type: string
+        idStazione:
+          type: string
+        canalePagamento:
+          type: string
+        parametriInterfaccia:
+          type: string
+    OpzioniRicercaGiornaleTo:
+      type: object
+      properties:
+        tipoGiornale:
+          type: string
+        tipiEvento:
+          type: array
+          items:
+            type: string
+        categorieEvento:
+          type: array
+          items:
+            type: string
+        esitiEvento:
+          type: array
+          items:
+            type: string
+    LingueAggiuntiveAvvisoCodDescTo:
+      type: object
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+    AccessTokenDTO:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        tokenType:
+          type: string
+        expiresIn:
+          type: integer
+          format: int32
+    EnteFunzionalita:
+      type: object
+      properties:
+        mygovEnteFunzionalitaId:
+          type: integer
+          format: int64
+        codIpaEnte:
+          type: string
+        codFunzionalita:
+          type: string
+        flgAttivo:
+          type: boolean
+        dtUltimaAbilitazione:
+          type: string
+          format: date-time
+        dtUltimaDisabilitazione:
+          type: string
+          format: date-time
+  securitySchemes:
+    MyPaySecurity:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,1164 @@
+openapi: 3.0.1
+info:
+  title: MyPay SIL
+  description: MyPay SIL API
+  version: 1.0.0
+servers:
+  - url: https://${hostname}
+    description: Generated server url
+security:
+  - MyPaySecurity: []
+paths:
+  /verifica-avviso/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILVerificaAvviso
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificaAvvisoDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificaAvvisoRispostaDto'
+  /registra-pagamento/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILRegistraPagamento
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistraPagamentoDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /prenota-export-flusso/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILPrenotaExportFlusso
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrenotaExportFlussoDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /prenota-export-flusso-scaduti/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILPrenotaExportFlussoScaduti
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrenotaExportFlussoScadutiDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /prenota-export-flusso-incrementale-con-ricevuta/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILPrenotaExportFlussoIncrementaleConRicevuta
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/PrenotaExportFlussoIncrementaleConRicevutaDto
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/PrenotaExportFlussoIncrementaleConRicevutaRispostaDto
+  /invia-dovuti/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILInviaDovuti
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InviaDovutiDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InviaDovutiRispostaDto'
+  /invia-carrello-dovuti/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILInviaCarrelloDovuti
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InviaCarrelloDovutiDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InviaCarrelloDovutiRispostaDto'
+  /importa-dovuto/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILImportaDovuto
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportaDovutoDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportaDovutoRispostaDto'
+  /chiedi-stato-import-flusso/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILChiediStatoImportFlusso
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChiediStatoImportFlussoDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChiediStatoImportFlussoRispostaDto'
+  /chiedi-stato-export-flusso/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILChiediStatoExportFlusso
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: requestToken
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChiediStatoExportFlussoRispostaDto'
+  /chiedi-stato-export-flusso-scaduti/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILChiediStatoExportFlussoScaduti
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: requestToken
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChiediStatoExportFlussoScadutiRispostaDto'
+  /chiedi-pagati/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILChiediPagati
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idSession
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pagati'
+  /chiedi-pagati-con-ricevuta/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILChiediPagatiConRicevuta
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idSession
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: identificativoUnivocoVersamento
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: identificativoUnivocoDovuto
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChiediPagatiConRicevutaRispostaDto'
+  /chiedi-esito-carrello-dovuti/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILChiediEsitoCarrelloDovuti
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idSessionCarrello
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RispostaCarrelloDto'
+  /autorizza-import-flusso/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-dovuti-pagati
+      operationId: paaSILAutorizzaImportFlusso
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutorizzaImportFlussoRispostaDto'
+components:
+  schemas:
+    VerificaAvvisoDto:
+      required:
+        - identificativoUnivocoVersamento
+      type: object
+      properties:
+        identificativoUnivocoVersamento:
+          type: string
+        enteSILInviaRispostaPagamentoUrl:
+          type: string
+    VerificaAvvisoRispostaDto:
+      type: object
+      properties:
+        esito:
+          type: string
+        idSession:
+          type: string
+        redirect:
+          type: integer
+          format: int32
+        url:
+          type: string
+    RegistraPagamentoDto:
+      required:
+        - codiceIstitutiAttestante
+        - dataEsitoSingoloPagamento
+        - denominazioneAttestante
+        - identificativoUnivocoRiscossione
+        - identificativoUnivocoVersamento
+        - singoloImportoPagato
+        - tipoIstitutoAttestante
+      type: object
+      properties:
+        identificativoUnivocoVersamento:
+          type: string
+        codiceContestoPagamento:
+          type: string
+        singoloImportoPagato:
+          type: number
+        dataEsitoSingoloPagamento:
+          type: string
+          format: date-time
+        indiceDatiSingoloPagamento:
+          type: integer
+          format: int32
+        identificativoUnivocoRiscossione:
+          type: string
+        tipoIstitutoAttestante:
+          type: string
+        codiceIstitutiAttestante:
+          type: string
+        denominazioneAttestante:
+          type: string
+    PrenotaExportFlussoDto:
+      required:
+        - dateFrom
+        - dateTo
+      type: object
+      properties:
+        dateFrom:
+          type: string
+          format: date-time
+        dateTo:
+          type: string
+          format: date-time
+        identificativoTipoDovuto:
+          type: string
+        versioneTracciato:
+          type: string
+    PrenotaExportFlussoScadutiDto:
+      required:
+        - dataScadenza
+        - tipiDovuto
+      type: object
+      properties:
+        dataScadenza:
+          type: string
+          format: date-time
+        tipiDovuto:
+          type: string
+    PrenotaExportFlussoIncrementaleConRicevutaDto:
+      required:
+        - dateFrom
+      type: object
+      properties:
+        dateFrom:
+          type: string
+          format: date-time
+        dateTo:
+          type: string
+          format: date-time
+        identificativoTipoDovuto:
+          type: string
+        ricevuta:
+          type: boolean
+        incrementale:
+          type: boolean
+        versioneTracciato:
+          type: string
+        passwordMypivot:
+          type: string
+    PrenotaExportFlussoIncrementaleConRicevutaRispostaDto:
+      type: object
+      properties:
+        requestToken:
+          type: string
+        dateTo:
+          type: string
+          format: date-time
+    Bilancio:
+      required:
+        - capitolos
+      type: object
+      properties:
+        capitolos:
+          type: array
+          xml:
+            name: capitolo
+          items:
+            $ref: '#/components/schemas/CtCapitolo'
+      xml:
+        name: bilancio
+        namespace: http://www.regione.veneto.it/schemas/2012/Pagamenti/Ente/
+    CtAccertamento:
+      required:
+        - importo
+      type: object
+      properties:
+        codAccertamento:
+          type: string
+        importo:
+          type: number
+    CtCapitolo:
+      required:
+        - accertamentos
+        - codCapitolo
+      type: object
+      properties:
+        codCapitolo:
+          type: string
+        codUfficio:
+          type: string
+        accertamentos:
+          type: array
+          xml:
+            name: accertamento
+          items:
+            $ref: '#/components/schemas/CtAccertamento'
+    CtDatiMarcaBolloDigitale:
+      required:
+        - hashDocumento
+        - provinciaResidenza
+        - tipoBollo
+      type: object
+      properties:
+        tipoBollo:
+          type: string
+        hashDocumento:
+          type: string
+        provinciaResidenza:
+          type: string
+    CtDatiSingoloVersamentoDovuti:
+      required:
+        - causaleVersamento
+        - datiSpecificiRiscossione
+        - identificativoTipoDovuto
+        - identificativoUnivocoDovuto
+        - importoSingoloVersamento
+      type: object
+      properties:
+        identificativoUnivocoDovuto:
+          type: string
+        importoSingoloVersamento:
+          type: number
+        commissioneCaricoPA:
+          type: number
+        identificativoTipoDovuto:
+          type: string
+        causaleVersamento:
+          type: string
+        datiSpecificiRiscossione:
+          type: string
+        datiMarcaBolloDigitale:
+          $ref: '#/components/schemas/CtDatiMarcaBolloDigitale'
+        bilancio:
+          $ref: '#/components/schemas/Bilancio'
+    CtDatiVersamentoDovuti:
+      required:
+        - datiSingoloVersamentos
+        - tipoVersamento
+      type: object
+      properties:
+        tipoVersamento:
+          type: string
+        identificativoUnivocoVersamento:
+          type: string
+        datiSingoloVersamentos:
+          type: array
+          xml:
+            name: datiSingoloVersamento
+          items:
+            $ref: '#/components/schemas/CtDatiSingoloVersamentoDovuti'
+    CtIdentificativoUnivocoPersonaFG:
+      required:
+        - codiceIdentificativoUnivoco
+        - tipoIdentificativoUnivoco
+      type: object
+      properties:
+        tipoIdentificativoUnivoco:
+          type: string
+          enum:
+            - F
+            - G
+        codiceIdentificativoUnivoco:
+          type: string
+    CtSoggettoPagatore:
+      required:
+        - anagraficaPagatore
+        - identificativoUnivocoPagatore
+      type: object
+      properties:
+        identificativoUnivocoPagatore:
+          $ref: '#/components/schemas/CtIdentificativoUnivocoPersonaFG'
+        anagraficaPagatore:
+          type: string
+        indirizzoPagatore:
+          type: string
+        civicoPagatore:
+          type: string
+        capPagatore:
+          type: string
+        localitaPagatore:
+          type: string
+        provinciaPagatore:
+          type: string
+        nazionePagatore:
+          type: string
+        emailPagatore:
+          type: string
+    Dovuti:
+      required:
+        - datiVersamento
+        - soggettoPagatore
+        - versioneOggetto
+      type: object
+      properties:
+        versioneOggetto:
+          type: string
+        soggettoPagatore:
+          $ref: '#/components/schemas/CtSoggettoPagatore'
+        datiVersamento:
+          $ref: '#/components/schemas/CtDatiVersamentoDovuti'
+      xml:
+        name: Dovuti
+        namespace: http://www.regione.veneto.it/schemas/2012/Pagamenti/Ente/
+    InviaDovutiDto:
+      required:
+        - dovuti
+      type: object
+      properties:
+        dovuti:
+          $ref: '#/components/schemas/Dovuti'
+        enteSILInviaRispostaPagamentoUrl:
+          type: string
+    InviaDovutiRispostaDto:
+      type: object
+      properties:
+        esito:
+          type: string
+        idSession:
+          type: string
+        redirect:
+          type: integer
+          format: int32
+        url:
+          type: string
+    CtDatiVersamentoDovutiEntiSecondari:
+      required:
+        - codiceFiscaleBeneficiario
+        - datiSpecificiRiscossione
+        - denominazioneBeneficiario
+        - ibanAccreditoBeneficiario
+        - importoSingoloVersamento
+      type: object
+      properties:
+        codiceFiscaleBeneficiario:
+          type: string
+        denominazioneBeneficiario:
+          type: string
+        ibanAccreditoBeneficiario:
+          type: string
+        indirizzoBeneficiario:
+          type: string
+        civicoBeneficiario:
+          type: string
+        capBeneficiario:
+          type: string
+        localitaBeneficiario:
+          type: string
+        provinciaBeneficiario:
+          type: string
+        nazioneBeneficiario:
+          type: string
+        causaleVersamento:
+          type: string
+        datiSpecificiRiscossione:
+          type: string
+        importoSingoloVersamento:
+          type: number
+    DovutiEntiSecondari:
+      required:
+        - datiVersamentoEntiSecondari
+        - versioneOggetto
+      type: object
+      properties:
+        versioneOggetto:
+          type: string
+        datiVersamentoEntiSecondari:
+          $ref: '#/components/schemas/CtDatiVersamentoDovutiEntiSecondari'
+      xml:
+        name: DovutiEntiSecondari
+        namespace: http://www.regione.veneto.it/schemas/2012/Pagamenti/Ente/
+    ElementoListaDovutiDto:
+      type: object
+      properties:
+        codIpaEnte:
+          type: string
+        password:
+          type: string
+        dovuti:
+          $ref: '#/components/schemas/Dovuti'
+    InviaCarrelloDovutiDto:
+      required:
+        - elementoListaDovutis
+      type: object
+      properties:
+        elementoListaDovutis:
+          type: array
+          items:
+            $ref: '#/components/schemas/ElementoListaDovutiDto'
+        dovutiEntiSecondari:
+          type: array
+          items:
+            $ref: '#/components/schemas/DovutiEntiSecondari'
+        enteSILInviaRispostaPagamentoUrl:
+          type: string
+    InviaCarrelloDovutiRispostaDto:
+      type: object
+      properties:
+        esito:
+          type: string
+        idSessionCarrello:
+          type: string
+        redirect:
+          type: integer
+          format: int32
+        url:
+          type: string
+    CtDatiVersamento:
+      required:
+        - causaleVersamento
+        - datiSpecificiRiscossione
+        - identificativoTipoDovuto
+        - importoSingoloVersamento
+      type: object
+      properties:
+        dataEsecuzionePagamento:
+          type: string
+          format: date-time
+        tipoVersamento:
+          type: string
+        identificativoUnivocoVersamento:
+          type: string
+        identificativoUnivocoDovuto:
+          type: string
+        importoSingoloVersamento:
+          type: number
+        commissioneCaricoPA:
+          type: number
+        identificativoTipoDovuto:
+          type: string
+        causaleVersamento:
+          type: string
+        datiSpecificiRiscossione:
+          type: string
+        bilancio:
+          $ref: '#/components/schemas/Bilancio'
+    ImportaDovutoDto:
+      required:
+        - dovuto
+      type: object
+      properties:
+        dovuto:
+          $ref: '#/components/schemas/Versamento'
+        flagGeneraIuv:
+          type: boolean
+        dovutiEntiSecondari:
+          type: array
+          items:
+            $ref: '#/components/schemas/DovutiEntiSecondari'
+    Versamento:
+      required:
+        - azione
+        - datiVersamento
+        - versioneOggetto
+      type: object
+      properties:
+        versioneOggetto:
+          type: string
+        soggettoPagatore:
+          $ref: '#/components/schemas/CtSoggettoPagatore'
+        datiVersamento:
+          $ref: '#/components/schemas/CtDatiVersamento'
+        azione:
+          type: string
+      xml:
+        name: Versamento
+        namespace: http://www.regione.veneto.it/schemas/2012/Pagamenti/Ente/
+    ImportaDovutoRispostaDto:
+      type: object
+      properties:
+        esito:
+          type: string
+        identificativoUnivocoVersamento:
+          type: string
+        urlFileAvviso:
+          type: string
+        base64ZipAvviso:
+          type: string
+    ChiediStatoImportFlussoDto:
+      required:
+        - requestToken
+      type: object
+      properties:
+        requestToken:
+          type: string
+        fileScarti:
+          type: boolean
+        fileIUV:
+          type: boolean
+        fileAvvisi:
+          type: boolean
+    ChiediStatoImportFlussoRispostaDto:
+      type: object
+      properties:
+        stato:
+          type: string
+        urlFileScarti:
+          type: string
+        urlFileIUV:
+          type: string
+        urlFileAvvisi:
+          type: string
+    ChiediStatoExportFlussoRispostaDto:
+      type: object
+      properties:
+        stato:
+          type: string
+        downloadUrl:
+          type: string
+    ChiediStatoExportFlussoScadutiRispostaDto:
+      type: object
+      properties:
+        stato:
+          type: string
+        nomeFile:
+          type: string
+        downloadUrl:
+          type: string
+        pathFile:
+          type: string
+    CtDatiSingoloPagamentoPagati:
+      required:
+        - causaleVersamento
+        - dataEsitoSingoloPagamento
+        - datiSpecificiRiscossione
+        - identificativoUnivocoDovuto
+        - identificativoUnivocoRiscossione
+        - singoloImportoPagato
+      type: object
+      properties:
+        identificativoUnivocoDovuto:
+          type: string
+        singoloImportoPagato:
+          type: number
+        esitoSingoloPagamento:
+          type: string
+        dataEsitoSingoloPagamento:
+          type: string
+          format: date-time
+        identificativoUnivocoRiscossione:
+          type: string
+        causaleVersamento:
+          type: string
+        datiSpecificiRiscossione:
+          type: string
+    CtDatiVersamentoPagati:
+      required:
+        - codiceContestoPagamento
+        - codiceEsitoPagamento
+        - identificativoUnivocoVersamento
+        - importoTotalePagato
+      type: object
+      properties:
+        codiceEsitoPagamento:
+          type: string
+        importoTotalePagato:
+          type: number
+        identificativoUnivocoVersamento:
+          type: string
+        codiceContestoPagamento:
+          type: string
+        datiSingoloPagamentos:
+          type: array
+          xml:
+            name: datiSingoloPagamento
+          items:
+            $ref: '#/components/schemas/CtDatiSingoloPagamentoPagati'
+    CtDominio:
+      required:
+        - identificativoDominio
+      type: object
+      properties:
+        identificativoDominio:
+          type: string
+        identificativoStazioneRichiedente:
+          type: string
+    CtEnteBeneficiario:
+      required:
+        - denominazioneBeneficiario
+        - identificativoUnivocoBeneficiario
+      type: object
+      properties:
+        identificativoUnivocoBeneficiario:
+          $ref: '#/components/schemas/CtIdentificativoUnivocoPersonaG'
+        denominazioneBeneficiario:
+          type: string
+        codiceUnitOperBeneficiario:
+          type: string
+        denomUnitOperBeneficiario:
+          type: string
+        indirizzoBeneficiario:
+          type: string
+        civicoBeneficiario:
+          type: string
+        capBeneficiario:
+          type: string
+        localitaBeneficiario:
+          type: string
+        provinciaBeneficiario:
+          type: string
+        nazioneBeneficiario:
+          type: string
+    CtIdentificativoUnivoco:
+      required:
+        - codiceIdentificativoUnivoco
+        - tipoIdentificativoUnivoco
+      type: object
+      properties:
+        tipoIdentificativoUnivoco:
+          type: string
+          enum:
+            - G
+            - A
+            - B
+        codiceIdentificativoUnivoco:
+          type: string
+    CtIdentificativoUnivocoPersonaG:
+      required:
+        - codiceIdentificativoUnivoco
+        - tipoIdentificativoUnivoco
+      type: object
+      properties:
+        tipoIdentificativoUnivoco:
+          type: string
+          enum:
+            - G
+        codiceIdentificativoUnivoco:
+          type: string
+    CtIstitutoAttestante:
+      required:
+        - denominazioneAttestante
+        - identificativoUnivocoAttestante
+      type: object
+      properties:
+        identificativoUnivocoAttestante:
+          $ref: '#/components/schemas/CtIdentificativoUnivoco'
+        denominazioneAttestante:
+          type: string
+        codiceUnitOperAttestante:
+          type: string
+        denomUnitOperAttestante:
+          type: string
+        indirizzoAttestante:
+          type: string
+        civicoAttestante:
+          type: string
+        capAttestante:
+          type: string
+        localitaAttestante:
+          type: string
+        provinciaAttestante:
+          type: string
+        nazioneAttestante:
+          type: string
+    Pagati:
+      required:
+        - dataOraMessaggioRicevuta
+        - datiPagamento
+        - dominio
+        - enteBeneficiario
+        - identificativoMessaggioRicevuta
+        - istitutoAttestante
+        - riferimentoDataRichiesta
+        - riferimentoMessaggioRichiesta
+        - soggettoPagatore
+        - versioneOggetto
+      type: object
+      properties:
+        versioneOggetto:
+          type: string
+        dominio:
+          $ref: '#/components/schemas/CtDominio'
+        identificativoMessaggioRicevuta:
+          type: string
+        dataOraMessaggioRicevuta:
+          type: string
+          format: date-time
+        riferimentoMessaggioRichiesta:
+          type: string
+        riferimentoDataRichiesta:
+          type: string
+          format: date-time
+        istitutoAttestante:
+          $ref: '#/components/schemas/CtIstitutoAttestante'
+        enteBeneficiario:
+          $ref: '#/components/schemas/CtEnteBeneficiario'
+        soggettoPagatore:
+          $ref: '#/components/schemas/CtSoggettoPagatore'
+        datiPagamento:
+          $ref: '#/components/schemas/CtDatiVersamentoPagati'
+      xml:
+        name: Pagati
+        namespace: http://www.regione.veneto.it/schemas/2012/Pagamenti/Ente/
+    ChiediPagatiConRicevutaRispostaDto:
+      type: object
+      properties:
+        pagati:
+          $ref: '#/components/schemas/PagatiConRicevuta'
+        tipoFirma:
+          type: string
+        rt:
+          type: string
+    CtAllegatoRicevuta:
+      required:
+        - testoAllegato
+        - tipoAllegatoRicevuta
+      type: object
+      properties:
+        tipoAllegatoRicevuta:
+          type: string
+          enum:
+            - ES
+            - BD
+        testoAllegato:
+          type: string
+          format: byte
+    CtDatiSingoloPagamentoPagatiConRicevuta:
+      required:
+        - causaleVersamento
+        - dataEsitoSingoloPagamento
+        - datiSpecificiRiscossione
+        - identificativoUnivocoDovuto
+        - identificativoUnivocoRiscossione
+        - singoloImportoPagato
+      type: object
+      properties:
+        identificativoUnivocoDovuto:
+          type: string
+        singoloImportoPagato:
+          type: number
+        esitoSingoloPagamento:
+          type: string
+        dataEsitoSingoloPagamento:
+          type: string
+          format: date-time
+        identificativoUnivocoRiscossione:
+          type: string
+        causaleVersamento:
+          type: string
+        datiSpecificiRiscossione:
+          type: string
+        indiceDatiSingoloPagamento:
+          type: integer
+          format: int32
+        commissioniApplicatePSP:
+          type: number
+        allegatoRicevuta:
+          $ref: '#/components/schemas/CtAllegatoRicevuta'
+    CtDatiVersamentoPagatiConRicevuta:
+      required:
+        - codiceContestoPagamento
+        - codiceEsitoPagamento
+        - identificativoUnivocoVersamento
+        - importoTotalePagato
+      type: object
+      properties:
+        codiceEsitoPagamento:
+          type: string
+        importoTotalePagato:
+          type: number
+        identificativoUnivocoVersamento:
+          type: string
+        codiceContestoPagamento:
+          type: string
+        datiSingoloPagamentos:
+          type: array
+          xml:
+            name: datiSingoloPagamento
+          items:
+            $ref: '#/components/schemas/CtDatiSingoloPagamentoPagatiConRicevuta'
+    PagatiConRicevuta:
+      required:
+        - dataOraMessaggioRicevuta
+        - datiPagamento
+        - dominio
+        - enteBeneficiario
+        - identificativoMessaggioRicevuta
+        - istitutoAttestante
+        - riferimentoDataRichiesta
+        - riferimentoMessaggioRichiesta
+        - soggettoPagatore
+        - versioneOggetto
+      type: object
+      properties:
+        versioneOggetto:
+          type: string
+        dominio:
+          $ref: '#/components/schemas/CtDominio'
+        identificativoMessaggioRicevuta:
+          type: string
+        dataOraMessaggioRicevuta:
+          type: string
+          format: date-time
+        riferimentoMessaggioRichiesta:
+          type: string
+        riferimentoDataRichiesta:
+          type: string
+          format: date-time
+        istitutoAttestante:
+          $ref: '#/components/schemas/CtIstitutoAttestante'
+        enteBeneficiario:
+          $ref: '#/components/schemas/CtEnteBeneficiario'
+        soggettoPagatore:
+          $ref: '#/components/schemas/CtSoggettoPagatore'
+        datiPagamento:
+          $ref: '#/components/schemas/CtDatiVersamentoPagatiConRicevuta'
+      xml:
+        name: PagatiConRicevuta
+        namespace: http://www.regione.veneto.it/schemas/2012/Pagamenti/Ente/
+    RispostaCarrelloDto:
+      type: object
+      properties:
+        esito:
+          type: string
+        codIpaEnte:
+          type: string
+        codIdentificativoUnivocoCarrello:
+          type: string
+        pagati:
+          $ref: '#/components/schemas/PagatiConRicevuta'
+        rt:
+          type: string
+    AutorizzaImportFlussoRispostaDto:
+      type: object
+      properties:
+        uploadUrl:
+          type: string
+        authorizationToken:
+          type: string
+        requestToken:
+          type: string
+        importPath:
+          type: string
+  securitySchemes:
+    MyPaySecurity:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

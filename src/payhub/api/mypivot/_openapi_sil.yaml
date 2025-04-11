@@ -1,0 +1,876 @@
+openapi: 3.0.1
+info:
+  title: MyPivot SIL
+  description: MyPivot API SIL
+  version: 1.0.0
+servers:
+  - url: http://${hostname}
+    description: Generated server url
+security:
+  - myPivotSecurity: []
+paths:
+  /prenota-export-flusso-riconciliazione/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-pagati-riconciliati
+      operationId: pivotSILPrenotaExportFlussoRiconciliazione
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrenotaExportFlussoRiconciliazioneDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/PrenotaExportFlussoRiconciliazioneRispostaDto
+  /chiedi-stato-import-flusso/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-pagati-riconciliati
+      operationId: pivotSILChiediStatoImportFlusso
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: requestToken
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+  /chiedi-stato-import-flusso-tesoreria/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-pagati-riconciliati
+      operationId: pivotSILChiediStatoImportFlussoTesoreria
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: requestToken
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+  /chiedi-stato-export-flusso-riconciliazione/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-pagati-riconciliati
+      operationId: pivotSILChiediStatoExportFlussoRiconciliazione
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: requestToken
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/ChiediStatoExportFlussoRiconciliazioneRispostaDto
+  /chiedi-pagati-riconciliati:
+    post:
+      tags:
+        - sil-pagamenti-telematici-pagati-riconciliati
+      operationId: pivotSILChiediPagatiRiconciliati
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChiediPagatiRiconciliatiDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChiediPagatiRiconciliatiRispostaDto'
+  /chiedi-accertamento/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-pagati-riconciliati
+      operationId: pivotSILChiediAccertamento
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChiediAccertamentoDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CtBilancio'
+  /autorizza-import-flusso/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-pagati-riconciliati
+      operationId: pivotSILAutorizzaImportFlusso
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutorizzaImportFlussoRispostaDto'
+  /autorizza-import-flusso-tesoreria/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-pagati-riconciliati
+      operationId: pivotSILAutorizzaImportFlussoTesoreria
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: tipoFlusso
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutorizzaImportFlussoRispostaDto'
+  /autorizza-import-flusso-rt/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-pagati-riconciliati
+      operationId: pivotSILAutorizzaImportFlussoRT
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutorizzaImportFlussoRispostaDto'
+  /autorizza-import-flusso-rendicontazione/{codIpaEnte}:
+    post:
+      tags:
+        - sil-pagamenti-telematici-pagati-riconciliati
+      operationId: pivotSILAutorizzaImportFlussoRendicontazione
+      parameters:
+        - name: codIpaEnte
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutorizzaImportFlussoRispostaDto'
+components:
+  schemas:
+    CodiceClassificazioneType:
+      required:
+        - classificaziones
+      type: object
+      properties:
+        classificaziones:
+          type: array
+          xml:
+            name: classificazione
+          items:
+            type: string
+            xml:
+              name: classificazione
+    IdUnivocoRendicontazioneType:
+      type: object
+      properties:
+        iurs:
+          type: array
+          xml:
+            name: iur
+          items:
+            type: string
+            xml:
+              name: iur
+    IdUnivocoVersamentoType:
+      type: object
+      properties:
+        iuvs:
+          type: array
+          xml:
+            name: iuv
+          items:
+            type: string
+            xml:
+              name: iuv
+    PrenotaExportFlussoRiconciliazioneDto:
+      required:
+        - codiceClassificazione
+        - idUnivocoRendicontazione
+        - idUnivocoVersamento
+        - tipoDovuto
+        - versioneTracciato
+      type: object
+      properties:
+        codiceClassificazione:
+          $ref: '#/components/schemas/CodiceClassificazioneType'
+        tipoDovuto:
+          $ref: '#/components/schemas/TipoDovutoType'
+        idUnivocoVersamento:
+          $ref: '#/components/schemas/IdUnivocoVersamentoType'
+        idUnivocoRendicontazione:
+          $ref: '#/components/schemas/IdUnivocoRendicontazioneType'
+        dataUltimoAggiornamentoDa:
+          type: string
+          format: date-time
+        dataUltimoAggiornamentoA:
+          type: string
+          format: date-time
+        dataEsecuzioneDa:
+          type: string
+          format: date-time
+        dataEsecuzioneA:
+          type: string
+          format: date-time
+        dataEsitoDa:
+          type: string
+          format: date-time
+        dataEsitoA:
+          type: string
+          format: date-time
+        dataRegolamentoDa:
+          type: string
+          format: date-time
+        dataRegolamentoA:
+          type: string
+          format: date-time
+        dataContabileDa:
+          type: string
+          format: date-time
+        dataContabileA:
+          type: string
+          format: date-time
+        dataValutaDa:
+          type: string
+          format: date-time
+        dataValutaA:
+          type: string
+          format: date-time
+        idUnivocoDovuto:
+          type: string
+        idUnivocoRiscossione:
+          type: string
+        idUnivocoPagatore:
+          type: string
+        anagraficaPagatore:
+          type: string
+        idUnivocoVersante:
+          type: string
+        anagraficaVersante:
+          type: string
+        denominazioneAttestante:
+          type: string
+        ordinante:
+          type: string
+        idRegolamento:
+          type: string
+        contoTesoreria:
+          type: string
+        importoTesoreria:
+          type: string
+        causale:
+          type: string
+        versioneTracciato:
+          type: string
+    TipoDovutoType:
+      type: object
+      properties:
+        tipos:
+          type: array
+          xml:
+            name: tipo
+          items:
+            type: string
+            xml:
+              name: tipo
+    PrenotaExportFlussoRiconciliazioneRispostaDto:
+      type: object
+      properties:
+        requestToken:
+          type: string
+        dataA:
+          type: string
+          format: date-time
+    ChiediStatoExportFlussoRiconciliazioneRispostaDto:
+      type: object
+      properties:
+        stato:
+          type: string
+        downloadUrl:
+          type: string
+    ChiediPagatiRiconciliatiDto:
+      required:
+        - codIpaEnte
+      type: object
+      properties:
+        codIpaEnte:
+          type: string
+        richiestaPerData:
+          $ref: '#/components/schemas/CtRichiestaPerData'
+        richiestaPerIUVIUF:
+          $ref: '#/components/schemas/CtRichiestaPerIUVIUF'
+    CtFiltroTipiDovuto:
+      required:
+        - identificativoTipoDovutos
+      type: object
+      properties:
+        identificativoTipoDovutos:
+          type: array
+          xml:
+            name: identificativoTipoDovuto
+          items:
+            type: string
+            xml:
+              name: identificativoTipoDovuto
+    CtRichiestaPerData:
+      required:
+        - dataA
+        - dataDa
+      type: object
+      properties:
+        dataDa:
+          type: string
+          format: date-time
+        dataA:
+          type: string
+          format: date-time
+        filtroTipiDovuto:
+          $ref: '#/components/schemas/CtFiltroTipiDovuto'
+    CtRichiestaPerIUVIUF:
+      type: object
+      properties:
+        riversamentiPuntuali:
+          $ref: '#/components/schemas/CtRiversamentiPuntuali'
+        riversamentiCumulativi:
+          $ref: '#/components/schemas/CtRiversamentiCumulativi'
+        filtroTipiDovuto:
+          $ref: '#/components/schemas/CtFiltroTipiDovuto'
+    CtRiversamentiCumulativi:
+      type: object
+      properties:
+        identificativoFlussos:
+          type: array
+          xml:
+            name: identificativoFlusso
+          items:
+            type: string
+            xml:
+              name: identificativoFlusso
+    CtRiversamentiPuntuali:
+      type: object
+      properties:
+        identificativoUnivocoVersamentos:
+          type: array
+          xml:
+            name: identificativoUnivocoVersamento
+          items:
+            type: string
+            xml:
+              name: identificativoUnivocoVersamento
+    ChiediPagatiRiconciliatiRispostaDto:
+      type: object
+      properties:
+        pagamentiRiconciliatiPerTipoDovutos:
+          type: array
+          items:
+            $ref: '#/components/schemas/CtPagamentiRiconciliatiPerTipoDovuto'
+        numeroTotale:
+          type: integer
+        dataA:
+          type: string
+          format: date-time
+    CtDatiSingoliPagamenti:
+      required:
+        - codiceEsitoSingoloPagamento
+        - dataEsitoSingoloPagamento
+        - identificativoUnivocoRiscossione
+        - identificativoUnivocoVersamento
+        - singoloImportoPagato
+      type: object
+      properties:
+        identificativoUnivocoVersamento:
+          type: string
+        identificativoUnivocoRiscossione:
+          type: string
+        indiceDatiSingoloPagamento:
+          type: integer
+          format: int32
+        singoloImportoPagato:
+          type: number
+        codiceEsitoSingoloPagamento:
+          type: string
+        dataEsitoSingoloPagamento:
+          type: string
+          format: date-time
+    CtDatiSingoloPagamentoEsito:
+      required:
+        - causaleVersamento
+        - dataEsitoSingoloPagamento
+        - datiSpecificiRiscossione
+        - identificativoUnivocoRiscossione
+        - singoloImportoPagato
+      type: object
+      properties:
+        singoloImportoPagato:
+          type: number
+        esitoSingoloPagamento:
+          type: string
+        dataEsitoSingoloPagamento:
+          type: string
+          format: date-time
+        identificativoUnivocoRiscossione:
+          type: string
+        causaleVersamento:
+          type: string
+        datiSpecificiRiscossione:
+          type: string
+    CtDatiVersamentoExport:
+      required:
+        - codiceContestoPagamento
+        - codiceEsitoPagamento
+        - identificativoUnivocoVersamento
+        - importoTotalePagato
+      type: object
+      properties:
+        codiceEsitoPagamento:
+          type: string
+        importoTotalePagato:
+          type: number
+        identificativoUnivocoVersamento:
+          type: string
+        codiceContestoPagamento:
+          type: string
+          xml:
+            name: CodiceContestoPagamento
+        datiSingoloPagamento:
+          $ref: '#/components/schemas/CtDatiSingoloPagamentoEsito'
+    CtDominio:
+      required:
+        - identificativoDominio
+      type: object
+      properties:
+        identificativoDominio:
+          type: string
+        identificativoStazioneRichiedente:
+          type: string
+    CtEnteBeneficiario:
+      required:
+        - denominazioneBeneficiario
+        - identificativoUnivocoBeneficiario
+      type: object
+      properties:
+        identificativoUnivocoBeneficiario:
+          $ref: '#/components/schemas/CtIdentificativoUnivocoPersonaG'
+        denominazioneBeneficiario:
+          type: string
+        codiceUnitOperBeneficiario:
+          type: string
+        denomUnitOperBeneficiario:
+          type: string
+        indirizzoBeneficiario:
+          type: string
+        civicoBeneficiario:
+          type: string
+        capBeneficiario:
+          type: string
+        localitaBeneficiario:
+          type: string
+        provinciaBeneficiario:
+          type: string
+        nazioneBeneficiario:
+          type: string
+    CtExport:
+      required:
+        - dataOraMessaggioRicevuta
+        - datiPagamento
+        - dominio
+        - enteBeneficiario
+        - identificativoMessaggioRicevuta
+        - identificativoUnivocoDovuto
+        - istitutoAttestante
+        - riferimentoDataRichiesta
+        - riferimentoMessaggioRichiesta
+        - soggettoPagatore
+        - versioneOggetto
+      type: object
+      properties:
+        versioneOggetto:
+          type: string
+        dominio:
+          $ref: '#/components/schemas/CtDominio'
+        identificativoMessaggioRicevuta:
+          type: string
+        dataOraMessaggioRicevuta:
+          type: string
+          format: date-time
+        riferimentoMessaggioRichiesta:
+          type: string
+        riferimentoDataRichiesta:
+          type: string
+          format: date-time
+        istitutoAttestante:
+          $ref: '#/components/schemas/CtIstitutoAttestante'
+        enteBeneficiario:
+          $ref: '#/components/schemas/CtEnteBeneficiario'
+        soggettoVersante:
+          $ref: '#/components/schemas/CtSoggettoVersante'
+        soggettoPagatore:
+          $ref: '#/components/schemas/CtSoggettoPagatore'
+        datiPagamento:
+          $ref: '#/components/schemas/CtDatiVersamentoExport'
+        identificativoUnivocoDovuto:
+          type: string
+    CtFlussoRiversamento:
+      required:
+        - dataOraFlusso
+        - dataRegolamento
+        - datiSingoliPagamenti
+        - identificativoFlusso
+        - identificativoUnivocoRegolamento
+        - importoTotalePagamenti
+        - istitutoMittente
+        - istitutoRicevente
+        - numeroTotalePagamenti
+        - versioneOggetto
+      type: object
+      properties:
+        versioneOggetto:
+          type: string
+        identificativoFlusso:
+          type: string
+        dataOraFlusso:
+          type: string
+          format: date-time
+        identificativoUnivocoRegolamento:
+          type: string
+        dataRegolamento:
+          type: string
+          format: date-time
+        istitutoMittente:
+          $ref: '#/components/schemas/CtIstitutoMittente'
+        istitutoRicevente:
+          $ref: '#/components/schemas/CtIstitutoRicevente'
+        numeroTotalePagamenti:
+          type: number
+        importoTotalePagamenti:
+          type: number
+        datiSingoliPagamenti:
+          $ref: '#/components/schemas/CtDatiSingoliPagamenti'
+    CtIdentificativoUnivoco:
+      required:
+        - codiceIdentificativoUnivoco
+        - tipoIdentificativoUnivoco
+      type: object
+      properties:
+        tipoIdentificativoUnivoco:
+          type: string
+          enum:
+            - G
+            - A
+            - B
+        codiceIdentificativoUnivoco:
+          type: string
+    CtIdentificativoUnivocoPersonaFG:
+      required:
+        - codiceIdentificativoUnivoco
+        - tipoIdentificativoUnivoco
+      type: object
+      properties:
+        tipoIdentificativoUnivoco:
+          type: string
+          enum:
+            - F
+            - G
+        codiceIdentificativoUnivoco:
+          type: string
+    CtIdentificativoUnivocoPersonaG:
+      required:
+        - codiceIdentificativoUnivoco
+        - tipoIdentificativoUnivoco
+      type: object
+      properties:
+        tipoIdentificativoUnivoco:
+          type: string
+          enum:
+            - G
+        codiceIdentificativoUnivoco:
+          type: string
+    CtIstitutoAttestante:
+      required:
+        - denominazioneAttestante
+        - identificativoUnivocoAttestante
+      type: object
+      properties:
+        identificativoUnivocoAttestante:
+          $ref: '#/components/schemas/CtIdentificativoUnivoco'
+        denominazioneAttestante:
+          type: string
+        codiceUnitOperAttestante:
+          type: string
+        denomUnitOperAttestante:
+          type: string
+        indirizzoAttestante:
+          type: string
+        civicoAttestante:
+          type: string
+        capAttestante:
+          type: string
+        localitaAttestante:
+          type: string
+        provinciaAttestante:
+          type: string
+        nazioneAttestante:
+          type: string
+    CtIstitutoMittente:
+      required:
+        - identificativoUnivocoMittente
+      type: object
+      properties:
+        identificativoUnivocoMittente:
+          $ref: '#/components/schemas/CtIdentificativoUnivoco'
+        denominazioneMittente:
+          type: string
+    CtIstitutoRicevente:
+      required:
+        - identificativoUnivocoRicevente
+      type: object
+      properties:
+        identificativoUnivocoRicevente:
+          $ref: '#/components/schemas/CtIdentificativoUnivocoPersonaG'
+        denominazioneRicevente:
+          type: string
+    CtPagamentiRiconciliati:
+      required:
+        - data
+        - pagamento
+      type: object
+      properties:
+        pagamento:
+          $ref: '#/components/schemas/CtExport'
+        riversamento:
+          $ref: '#/components/schemas/CtFlussoRiversamento'
+        data:
+          type: string
+          format: date-time
+    CtPagamentiRiconciliatiPerTipoDovuto:
+      type: object
+      properties:
+        pagamentiRiconciliatis:
+          type: array
+          xml:
+            name: pagamentiRiconciliati
+          items:
+            $ref: '#/components/schemas/CtPagamentiRiconciliati'
+        identificativoTipoDovuto:
+          type: string
+          xml:
+            attribute: true
+    CtSoggettoPagatore:
+      required:
+        - anagraficaPagatore
+        - identificativoUnivocoPagatore
+      type: object
+      properties:
+        identificativoUnivocoPagatore:
+          $ref: '#/components/schemas/CtIdentificativoUnivocoPersonaFG'
+        anagraficaPagatore:
+          type: string
+        indirizzoPagatore:
+          type: string
+        civicoPagatore:
+          type: string
+        capPagatore:
+          type: string
+        localitaPagatore:
+          type: string
+        provinciaPagatore:
+          type: string
+        nazionePagatore:
+          type: string
+        emailPagatore:
+          type: string
+    CtSoggettoVersante:
+      required:
+        - anagraficaVersante
+        - identificativoUnivocoVersante
+      type: object
+      properties:
+        identificativoUnivocoVersante:
+          $ref: '#/components/schemas/CtIdentificativoUnivocoPersonaFG'
+        anagraficaVersante:
+          type: string
+        indirizzoVersante:
+          type: string
+        civicoVersante:
+          type: string
+        capVersante:
+          type: string
+        localitaVersante:
+          type: string
+        provinciaVersante:
+          type: string
+        nazioneVersante:
+          type: string
+        emailVersante:
+          type: string
+    ChiediAccertamentoDto:
+      type: object
+      properties:
+        richiestaPerIUF:
+          $ref: '#/components/schemas/RichiestaPerIUF'
+        richiestaPerBolletta:
+          $ref: '#/components/schemas/RichiestaPerBolletta'
+    RichiestaPerBolletta:
+      required:
+        - annoBolletta
+        - numeroBolletta
+      type: object
+      properties:
+        annoBolletta:
+          type: string
+        numeroBolletta:
+          type: string
+    RichiestaPerIUF:
+      required:
+        - identificativoUnivocoFlusso
+      type: object
+      properties:
+        identificativoUnivocoFlusso:
+          type: string
+    CtAccertamento:
+      required:
+        - codAccertamento
+        - importo
+      type: object
+      properties:
+        codAccertamento:
+          type: string
+        importo:
+          type: number
+    CtBilancio:
+      required:
+        - tipoDovutos
+        - ufficio
+      type: object
+      properties:
+        ufficio:
+          type: string
+        tipoDovutos:
+          type: array
+          xml:
+            name: tipoDovuto
+          items:
+            $ref: '#/components/schemas/CtTipoDovuto'
+    CtCapitolo:
+      required:
+        - accertamentos
+        - codCapitolo
+      type: object
+      properties:
+        codCapitolo:
+          type: string
+        accertamentos:
+          type: array
+          xml:
+            name: accertamento
+          items:
+            $ref: '#/components/schemas/CtAccertamento'
+    CtTipoDovuto:
+      required:
+        - capitolos
+        - codTipoDovuto
+      type: object
+      properties:
+        codTipoDovuto:
+          type: string
+        capitolos:
+          type: array
+          xml:
+            name: capitolo
+          items:
+            $ref: '#/components/schemas/CtCapitolo'
+    AutorizzaImportFlussoRispostaDto:
+      type: object
+      properties:
+        uploadUrl:
+          type: string
+        authorizationToken:
+          type: string
+        requestToken:
+          type: string
+        importPath:
+          type: string
+  securitySchemes:
+    myPivotSecurity:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
