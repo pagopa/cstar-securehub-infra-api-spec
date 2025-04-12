@@ -1,0 +1,304 @@
+openapi: 3.0.1
+info:
+  title: IDPAY Welfare Portal File Group API
+  description: IDPAY Welfare Portal File Group
+  version: '1.0'
+servers:
+  - url: https://api-io.dev.cstar.pagopa.it/idpay/group
+paths:
+  /initiative/{initiativeId}/upload:
+    put:
+      tags:
+        - group
+      summary: Upload CSV file containing a group of Beneficiary
+      operationId: uploadGroupOfBeneficiary
+      parameters:
+      - name: initiativeId
+        in: path
+        description: The initiative ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupUpdateDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+              example:
+                code: "GROUP_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+        '422':
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+              example:
+                code: "GROUP_INITIATIVE_STATUS_NOT_VALID"
+                message: "Initiative is unprocessable for status not valid"
+        '409':
+          description: The requested ID was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+              example:
+                code: "GROUP_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+              example:
+                code: "GROUP_GENERIC_ERROR"
+                message: "Application error"
+  /initiative/{initiativeId}/status:
+    get:
+      tags:
+        - group
+      summary: Return Group of Beneficiary CSV file upload status with relative error detail if present
+      operationId: getGroupOfBeneficiaryStatusAndDetails
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusGroupDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+              example:
+                code: "GROUP_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+        '404':
+          description: The requested ID was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+              example:
+                code: "GROUP_NOT_FOUND"
+                message: "There is no group for the initiative"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+              example:
+                code: "GROUP_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+              example:
+                code: "GROUP_GENERIC_ERROR"
+                message: "Application error"
+  /initiative/{initiativeId}/citizen/{citizenToken}:
+    get:
+      tags:
+        - group
+      summary: Return a positive or negative boolean if the searched user is part of the preset group list uploaded for the specific initiative
+      operationId: getCitizenStatusForInitiative
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+        - name: citizenToken
+          in: path
+          description: The citizen Token encrypted
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CitizenStatusDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+              example:
+                code: "GROUP_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+        '404':
+          description: The requested ID was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+              example:
+                code: "GROUP_BENEFICIARY_LIST_NOT_PROVIDED"
+                message: "No beneficiary list provided for the initiative"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+              example:
+                code: "GROUP_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupErrorDTO'
+              example:
+                code: "GROUP_GENERIC_ERROR"
+                message: "Application error"
+components:
+  schemas:
+    GroupErrorDTO:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+            - GROUP_NOT_FOUND
+            - GROUP_INVALID_REQUEST
+            - GROUP_TOO_MANY_REQUESTS
+            - GROUP_GENERIC_ERROR
+            - GROUP_BENEFICIARY_LIST_NOT_PROVIDED
+            - GROUP_NOT_FOUND_OR_STATUS_NOT_VALID
+            - GROUP_INITIATIVE_STATUS_NOT_VALID
+            - GROUP_DELETE_FILE_FAILED
+            - GROUP_SAVE_FILE_FAILED
+            - GROUP_LOAD_FILE_ERROR
+            - GROUP_FOLDER_INITIALIZE_ERROR
+          description: >-
+            "ENG: Error code:
+            GROUP_NOT_FOUND: Group not found,
+            GROUP_INVALID_REQUEST: Something went wrong handling the request,
+            GROUP_TOO_MANY_REQUESTS: Too many requests,
+            GROUP_GENERIC_ERROR: Application error,
+            GROUP_BENEFICIARY_LIST_NOT_PROVIDED: No beneficiary list provided,
+            GROUP_NOT_FOUND_OR_STATUS_NOT_VALID: There is no group for the initiative or the status is invalid,
+            GROUP_INITIATIVE_STATUS_NOT_VALID: Initiative is unprocessable for status not valid,
+            GROUP_DELETE_FILE_FAILED: It's not possible remove this file,
+            GROUP_SAVE_FILE_FAILED: Could not store the file,
+            GROUP_LOAD_FILE_ERROR: Could not read the file,
+            GROUP_FOLDER_INITIALIZE_ERROR: Could not initialize folder for upload,
+            - IT: Codice di errore:
+            GROUP_NOT_FOUND: Gruppo non trovato,
+            GROUP_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+            GROUP_TOO_MANY_REQUESTS: Troppe richieste,
+            GROUP_GENERIC_ERROR: Errore generico,
+            GROUP_BENEFICIARY_LIST_NOT_PROVIDED: Non è stata fornita una lista di beneficiari,
+            GROUP_NOT_FOUND_OR_STATUS_NOT_VALID: Gruppo non trovato per l'iniziativa oppure lo stato non è valido,
+            GROUP_INITIATIVE_STATUS_NOT_VALID: Iniziativa non elaborabile per lo stato non valido,
+            GROUP_DELETE_FILE_FAILED: Non è possibile rimuovere il file,
+            GROUP_SAVE_FILE_FAILED: Non è possibile salvare il file,
+            GROUP_LOAD_FILE_ERROR: Non è possibile leggere il file,
+            GROUP_FOLDER_INITIALIZE_ERROR: Non è possibile inizializzare la cartella per il caricamento"
+        message:
+          type: string
+          description: "ENG: Error message - IT: Messaggio di errore"
+    GroupUpdateDTO:
+      type: object
+      properties:
+        status:
+          type: string
+        errorRow:
+          type: integer
+          format: int32
+        errorKey:
+          type: string
+        elabTimeStamp:
+          type: string
+          format: date-time
+    StatusGroupDTO:
+      type: object
+      properties:
+        status:
+          type: string
+        fileUploadingDateTime:
+          type: string
+          format: date-time
+        fileName:
+          type: string
+        beneficiariesReached:
+          type: integer
+          format: int32
+        errorMessage:
+          type: string
+    CitizenStatusDTO:
+      type: object
+      properties:
+        status:
+          type: boolean
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+security:
+  - Bearer: []

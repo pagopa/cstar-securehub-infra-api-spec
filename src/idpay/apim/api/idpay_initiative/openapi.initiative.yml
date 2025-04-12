@@ -1,0 +1,4865 @@
+openapi: 3.0.1
+info:
+  title: IDPAY Welfare Portal Initiative API
+  description: IDPAY Welfare Portal Initiative
+  version: '1.0'
+servers:
+  - url: https://api-io.dev.cstar.pagopa.it/idpay/initiative
+paths:
+  '/{initiativeId}/beneficiary/view':
+    get:
+      tags:
+        - initiative
+      summary: Returns the detail of an active initiative
+      operationId: getInitiativeBeneficiaryView
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeDTO'
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  '/organizations':
+    get:
+      tags:
+        - organizations
+      summary: Returns list of Organizations for at least one initiative by each visible to the PagoPA operator
+      operationId: getListOfOrganization
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationListDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /summary:
+    get:
+      tags:
+        - initiative
+      summary: Returns the list of initiatives names for a specific organization
+      description: Returns the list of initiatives names for a specific organization
+      operationId: getInitativeSummary
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeSummaryArrayDTO'
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /config/beneficiary/rule:
+    get:
+      tags:
+        - initiative
+      summary: Returns fixed automated Criteria
+      description: Returns fixed automated Criteria
+      operationId: getBeneficiaryConfigRules
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigBeneficiaryRuleArrayDTO'
+              example:
+                - code: ISEE
+                  authority: INPS
+                  operator: EQ
+                  checked: false
+                - code: BIRTHDATE
+                  authority: AGID
+                  field: Year
+                  operator: EQ
+                  checked: false
+                - code: RESIDENCE
+                  authority: AGID
+                  field: City
+                  operator: EQ
+                  checked: false
+        '401':
+          description: Authentication failed
+  /config/transaction/rule:
+    get:
+      tags:
+        - initiative
+      summary: Return transaction config rules content
+      description: Return transaction config rules content
+      operationId: getTransactionConfigRules
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigTrxRuleArrayDTO'
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /config/transaction/mcc:
+    get:
+      tags:
+        - initiative
+      summary: Return MCC config contents
+      description: Return MCC config contents
+      operationId: getMccConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigMccArrayDTO'
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/statistics:
+    get:
+      tags:
+        - initiative
+      summary: Return of onboard users and the budget spent (accrued bonus)
+      operationId: initiativeStatistics
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeStatisticsDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticsErrorDTO'
+              example:
+                code: "STATISTICS_INVALID_REQUEST"
+                message: "Something went wrong handling request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested ID was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticsErrorDTO'
+              example:
+                code: "STATISTICS_NOT_FOUND"
+                message: "Stats not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticsErrorDTO'
+              example:
+                code: "STATISTICS_MANAGER_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticsErrorDTO'
+              example:
+                code: "STATISTICS_MANAGER_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}:
+    get:
+      tags:
+        - initiative
+      summary: Returns the detail of an active initiative
+      description: Returns the detail of an active initiative
+      operationId: getInitiativeDetail
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeDTO'
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested inititative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  '/{initiativeId}/beneficiary/{iban}':
+    get:
+      tags:
+        - beneficiary
+      summary: Returns the detail of the IBAN associated to the initiative by the citizen
+      operationId: getIban
+      parameters:
+        - name: Fiscal-Code
+          in: header
+          schema:
+            type: string
+            example: Fiscal-Code
+          required: true
+        - name: iban
+          in: path
+          description: The citizen iban
+          required: true
+          schema:
+            type: string
+        - name: initiativeId
+          in: path
+          description: The initiative id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IbanDTO'
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IbanErrorDTO'
+              example:
+                code: "IBAN_NOT_FOUND"
+                message: "Iban not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IbanErrorDTO'
+              example:
+                code: "IBAN_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IbanErrorDTO'
+              example:
+                code: "IBAN_GENERIC_ERROR"
+                message: "Application error"
+  '/{initiativeId}/beneficiary/timeline':
+    get:
+      tags:
+        - beneficiary
+      summary: Returns the list of transactions and operations of an initiative of a citizen sorted by date (newest->oldest)
+      operationId: getTimeline
+      parameters:
+        - name: Fiscal-Code
+          in: header
+          schema:
+            type: string
+            example: Fiscal-Code
+          required: true
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+        - name: operationType
+          in: query
+          description: Operation type filter
+          schema:
+            type: string
+        - name: dateFrom
+          in: query
+          description: Start date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: dateTo
+          in: query
+          description: End date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: page
+          in: query
+          description: The number of the page
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: 'Number of items, default 3 - max 10'
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineErrorDTO'
+              example:
+                code: "TIMELINE_INVALID_REQUEST"
+                message: "Something went wrong handling request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineErrorDTO'
+              example:
+                code: "TIMELINE_USER_NOT_FOUND"
+                message: "Timeline for the current user not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineErrorDTO'
+              example:
+                code: "TIMELINE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineErrorDTO'
+              example:
+                code: "TIMELINE_GENERIC_ERROR"
+                message: "Application error"
+  '/{initiativeId}/beneficiary/timeline/{operationId}':
+    get:
+      tags:
+        - beneficiary
+      summary: Returns the detail of a transaction
+      operationId: getTimelineDetail
+      parameters:
+        - name: Fiscal-Code
+          in: header
+          schema:
+            type: string
+            example: Fiscal-Code
+          required: true
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+        - name: operationId
+          in: path
+          description: The operation ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationDTO'
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineErrorDTO'
+              example:
+                code: "TIMELINE_DETAIL_NOT_FOUND"
+                message: "Detail of Timeline not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineErrorDTO'
+              example:
+                code: "TIMELINE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineErrorDTO'
+              example:
+                code: "TIMELINE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/beneficiary/suspend:
+    put:
+      tags:
+        - beneficiary
+      summary: Suspend user to initiative discount type
+      operationId: suspendUserDiscount
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: Fiscal-Code
+          in: header
+          schema:
+            type: string
+          required: true
+      responses:
+        '204':
+          description: OK
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              example:
+                code: "WALLET_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              example:
+                code: "WALLET_USER_UNSUBSCRIBED"
+                message: "The user has unsubscribed from initiative"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              example:
+                code: "WALLET_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              example:
+                code: "WALLET_GENERIC_ERROR"
+                message: "An error occurred in the microservice onboarding"
+  /{initiativeId}/beneficiary/readmit:
+    put:
+      tags:
+        - beneficiary
+      summary: Readmit user to initiative discount type
+      operationId: readmitUserDiscount
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: Fiscal-Code
+          in: header
+          schema:
+            type: string
+          required: true
+      responses:
+        '204':
+          description: OK
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              example:
+                code: "WALLET_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              example:
+                code: "WALLET_USER_UNSUBSCRIBED"
+                message: "The user has unsubscribed from initiative"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              example:
+                code: "WALLET_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              example:
+                code: "WALLET_GENERIC_ERROR"
+                message: "An error occurred in the microservice onboarding"
+  '/{initiativeId}/beneficiary/wallet':
+    get:
+      tags:
+        - beneficiary
+      summary: Returns the detail of an active initiative of a citizen
+      operationId: getWalletDetail
+      parameters:
+        - name: Fiscal-Code
+          in: header
+          schema:
+            type: string
+            example: Fiscal-Code
+          required: true
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeDTO'
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              example:
+                code: "WALLET_USER_NOT_ONBOARDED"
+                message: "User not onboarded on this initiative"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              example:
+                code: "WALLET_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              example:
+                code: "WALLET_GENERIC_ERROR"
+                message: "Application error"
+  '/{initiativeId}/beneficiary/instruments':
+    get:
+      tags:
+        - beneficiary
+      summary: Returns the list of payment instruments associated to the initiative by the citizen
+      operationId: getInstrumentList
+      parameters:
+        - name: Fiscal-Code
+          in: header
+          schema:
+            type: string
+            example: Fiscal-Code
+          required: true
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstrumentListDTO'
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
+              example:
+                code: "PAYMENT_INSTRUMENT_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
+              example:
+                code: "PAYMENT_INSTRUMENT_GENERIC_ERROR"
+                message: "Something gone wrong while send RTD instrument notify"
+    delete:
+      tags:
+        - initiative
+      summary: Logically Delete Initiative
+      operationId: logicallyDeleteInitiative
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_CANNOT_BE_DELETED"
+                message: "Initiative with current status cannot be deleted"
+        '401':
+          description: Authentication failed
+        '404':
+          description: Initiative ID not found or already deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  '/{initiativeId}/beneficiary/family':
+    get:
+      tags:
+        - beneficiary
+      summary: Returns the family unit composition
+      operationId: getFamilyComposition
+      parameters:
+        - name: Fiscal-Code
+          in: header
+          schema:
+            type: string
+            example: Fiscal-Code
+          required: true
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyUnitCompositionDTO'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingErrorDTO'
+              example:
+                code: "ONBOARDING_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingErrorDTO'
+              example:
+                code: "ONBOARDING_USER_NOT_ONBOARDED"
+                message: "The current user is not onboarded on initiative [%s]"
+        '429':
+          description: Too many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingErrorDTO'
+              example:
+                code: "ONBOARDING_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingErrorDTO'
+              example:
+                code: "ONBOARDING_GENERIC_ERROR"
+                message: "An error occurred in the microservice onboarding"
+
+  /{initiativeId}/logo:
+    put:
+      tags:
+        - initiative
+      summary: Upload and update Logo
+      description: Upload and update Logo
+      operationId: uploadAndUpdateLogo
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - logo
+              type: object
+              properties:
+                logo:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /info:
+    post:
+      tags:
+        - initiative
+      summary: Save initiative and first subset of data 'service info'
+      description: Save initiative and first subset of data 'service info'
+      operationId: saveInitiativeServiceInfo
+      requestBody:
+        description: First initiative info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiativeAdditionalDTO'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/info:
+    put:
+      tags:
+        - initiative
+      summary: Save initiative and first subset of data 'service info'
+      description: Save initiative and first subset of data 'service info'
+      operationId: updateInitiativeServiceInfo
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: First initiative info
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiativeAdditionalDTO'
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested Initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/general:
+    put:
+      tags:
+        - initiative
+      summary: Update initiative and subset of data 'general info'
+      description: Update initiative and first subset of data 'general info'
+      operationId: updateInitiativeGeneralInfo
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: General information about Initiative
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiativeGeneralDTO'
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/beneficiary:
+    put:
+      tags:
+        - initiative
+      summary: Association of beneficiary rules to an initiative
+      description: Association of beneficiary rules to an initiative
+      operationId: updateInitiativeBeneficiary
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Unique identifier of the subscribed initiative, instrument HPAN
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiativeBeneficiaryRuleDTO'
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/reward:
+    put:
+      tags:
+        - initiative
+      summary: Association of transaction and reward rules to an initiative
+      operationId: updateTrxAndRewardRules
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiativeRewardAndTrxRulesDTO'
+        required: true
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/refund:
+    put:
+      tags:
+        - initiative
+      summary: Save the refund rule of the initiative
+      operationId: updateInitiativeRefundRule
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiativeRefundRuleDTO'
+        required: true
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/general/draft:
+    put:
+      tags:
+        - initiative
+      summary: Update initiative and subset of data 'general info'
+      description: Update initiative and first subset of data 'general info'
+      operationId: updateInitiativeGeneralInfoDraft
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: General information about Initiative
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiativeGeneralDTO'
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/beneficiary/draft:
+    put:
+      tags:
+        - initiative
+      summary: Association of beneficiary rules to a draft initiative without validation
+      description: Association of beneficiary rules to a draft initiative without validation
+      operationId: updateInitiativeBeneficiaryDraft
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiativeBeneficiaryRuleDTO'
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/reward/draft:
+    put:
+      tags:
+        - initiative
+      summary: Association of transaction and reward rules to a draft initiative without validation
+      operationId: updateTrxAndRewardRulesDraft
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiativeRewardAndTrxRulesDTO'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/refund/draft:
+    put:
+      tags:
+        - initiative
+      summary: Save the refund rule of the initiative in Draft
+      operationId: updateInitiativeRefundRuleDraft
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiativeRefundRuleDTO'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/approved:
+    put:
+      tags:
+        - initiative
+      summary: Update Initiative into APPROVED Status
+      operationId: updateInitiativeApprovedStatus
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/rejected:
+    put:
+      tags:
+        - initiative
+      summary: Update Initiative into TO_CHECK Status
+      operationId: updateInitiativeToCheckStatus
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/published:
+    put:
+      tags:
+        - initiative
+      summary: Update Initiative into PUBLISHED Status
+      operationId: updateInitiativePublishedStatus
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/onboardings:
+    get:
+      tags:
+        - initiative-onboarding
+      summary: Returns the onboardings status
+      description: Returns the onboardings status
+      operationId: getOnboardingStatus
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: beneficiary
+          in: query
+          description: Fiscale code
+          required: false
+          schema:
+            type: string
+        - name: dateFrom
+          in: query
+          description: Start date
+          required: false
+          schema:
+            type: string
+        - name: dateTo
+          in: query
+          description: End date
+          required: false
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: onboarding state
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/onboarding/status:
+    get:
+      tags:
+        - initiative-onboarding
+      summary: Returns the actual onboarding status
+      operationId: getBeneficiaryOnboardingStatus
+      parameters:
+        - name: Fiscal-Code
+          in: header
+          schema:
+            type: string
+          required: true
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Check successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingStatusDTO'
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingErrorDTO'
+              example:
+                code: "ONBOARDING_USER_NOT_ONBOARDED"
+                message: "The current user is not onboarded on initiative [%s]"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingErrorDTO'
+              example:
+                code: "ONBOARDING_GENERIC_ERROR"
+                message: "An error occurred in the microservice admissibility"
+  /{initiativeId}/ranking/exports:
+    get:
+      tags:
+        - initiative-onboarding
+      summary: Return a pageable list of Citizen ranking status for a specific Intiative by using filters
+      description: Return a pageable list of Citizen ranking status for a specific Intiative by using filters
+      operationId: getInitiativeOnboardingRankingStatusPaged
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: beneficiary
+          in: query
+          description: Fiscale code
+          required: false
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: onboarding state
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageOnboardingRankingsDTO'
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/ranking/exports/{filename}:
+    get:
+      tags:
+        - initiative-onboarding
+      summary: Return the requested filename containing the list of Citizen ranking status for a specific Intiative
+      description: Return the requested filename containing the list of Citizen ranking status for a specific Intiative
+      operationId: getRankingFileDownload
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: filename
+          in: path
+          description: filename
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SasToken'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /{initiativeId}/ranking/notified:
+    put:
+      tags:
+        - initiative-onboarding
+      summary: Notify Citizen ranking status for a specific Intiative
+      description: Notify Citizen ranking status for a specific Intiative
+      operationId: notifyCitizenRankings
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RankingErrorDTO'
+              example:
+                code: "RANKING_INVALID_REQUEST"
+                message: "Something went wrong handling request"
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested ID was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RankingErrorDTO'
+              example:
+                code: "RANKING_INITIATIVE_NOT_FOUND"
+                message: "Initiative not found"
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RankingErrorDTO'
+              example:
+                code: "RANKING_MANAGER_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RankingErrorDTO'
+              example:
+                code: "RANKING_MANAGER_GENERIC_ERROR"
+                message: "Application error"
+  /{initiativeId}/reward/exports:
+    get:
+      tags:
+        - initiative-reward
+      summary: Return a pageable list of reward exports notification for a specific Initiative by using filters
+      operationId: getRewardNotificationExportsPaged
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: notificationDateFrom
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+            format: date
+        - name: notificationDateTo
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageRewardExportsDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /{initiativeId}/reward/imports:
+    get:
+      tags:
+        - initiative-reward
+      summary: Return a pageable list of reward imports notification for a specific Initiative by using filters
+      operationId: getRewardNotificationImportsPaged
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: elabDateFrom
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+            format: date-time
+        - name: elabDateTo
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageRewardImportsDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /{initiativeId}/reward/suspend:
+    put:
+      tags:
+        - initiative-reward
+      summary: Suspend user to initiative refund type
+      operationId: suspendUserRefund
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: Fiscal-Code
+          in: header
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: 0
+                message: string
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: 0
+                message: string
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: 0
+                message: string
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: 0
+                message: string
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: 0
+                message: string
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: 0
+                message: string
+  /{initiativeId}/reward/readmit:
+    put:
+      tags:
+        - initiative-reward
+      summary: Readmit user to initiative refund type
+      operationId: readmitUserRefund
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: Fiscal-Code
+          in: header
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: 0
+                message: string
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: 0
+                message: string
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: 0
+                message: string
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: 0
+                message: string
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: 0
+                message: string
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: 0
+                message: string
+  /{initiativeId}/reward/exports/{filename}:
+    get:
+      tags:
+        - initiative-reward
+      summary: Return the requested filename
+      operationId: getRewardFileDownload
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: filename
+          in: path
+          description: filename
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SasToken'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /{initiativeId}/reward/import/{filename}:
+    put:
+      tags:
+        - initiative-reward
+      summary: Upload dispositive file
+      operationId: putDispFileUpload
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: filename
+          in: path
+          description: filename
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /{initiativeId}/reward/import/{filename}/errors:
+    get:
+      tags:
+        - initiative-reward
+      summary: Get dispositive file errors
+      operationId: getDispFileErrors
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: filename
+          in: path
+          description: filename
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CsvDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /{initiativeId}/reward/exports/{exportId}/summary:
+    get:
+      tags:
+        - initiative-reward
+      summary: get the export summary data
+      operationId: getExportSummary
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: exportId
+          in: path
+          description: exportId
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/ExportSummaryDTO'
+              example:
+                createDate: 2018-10-13
+                status: EXPORTED
+                successPercentage: '20'
+                totalAmountCents: 100
+                totalRefundedAmountCents: 10
+                totalRefunds: 20
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /{initiativeId}/reward/exports/{exportId}/refunds:
+    get:
+      tags:
+        - initiative-reward
+      summary: get the refunds list in pages
+      operationId: getExportRefundsListPaged
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: exportId
+          in: path
+          description: exportId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: cro
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/ExportListDTO'
+              example:
+                content:
+                  - id: '1234'
+                    iban: IT60X0542811101000000123456
+                    amountCents: 1000
+                    status: COMPLETED_OK
+                  - id: '5678'
+                    iban: IT60X0542811101000000123456
+                    amountCents: 1000
+                    status: COMPLETED_OK
+                  - id: '9101'
+                    iban: IT60X0542811101000000123456
+                    amountCents: 1000
+                    status: COMPLETED_OK
+                  - id: '1121'
+                    iban: IT60X0542811101000000123456
+                    amountCents: 1000
+                    status: COMPLETED_OK
+                  - id: '3141'
+                    iban: IT60X0542811101000000123456
+                    amountCents: 1000
+                    status: COMPLETED_KO
+                  - id: '5161'
+                    iban: IT60X0542811101000000123456
+                    amountCents: 1000
+                    status: COMPLETED_KO
+                  - id: '7181'
+                    iban: IT60X0542811101000000123456
+                    amountCents: 1000
+                    status: COMPLETED_KO
+                  - id: '9200'
+                    iban: IT60X0542811101000000123456
+                    amountCents: 1000
+                    status: EXPORTED
+                  - id: '1222'
+                    iban: IT60X0542811101000000123456
+                    amountCents: 1000
+                    status: EXPORTED
+                  - id: '3242'
+                    iban: IT60X0542811101000000123456
+                    amountCents: 1000
+                    status: EXPORTED
+                pageNo: 0
+                pageSize: 10
+                totalElements: 10
+                totalPages: 1
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /{initiativeId}/reward/exports/event/{eventId}:
+    get:
+      tags:
+        - initiative-reward
+      summary: get the refund detail
+      operationId: getRefundDetail
+      parameters:
+        - name: initiativeId
+          in: path
+          description: initiativeId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: eventId
+          in: path
+          description: eventId
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/RefundDetailDTO'
+              example:
+                amountCents: 1000
+                endDate: 2022-10-15
+                fiscalCode: RSSMRA94C31F205K
+                iban: IT60X0542811101000000123456
+                userNotificationDate: 2022-12-13
+                refundType: ORDINARY
+                transferDate: 2022-12-13
+                startDate: 2022-10-14
+                status: COMPLETED_OK
+                cro: '12345678901'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /token:
+    post:
+      tags:
+        - 'token'
+      summary: Get jwt token for pagopa_admin user role with the choosen organizationId
+      description: Get jwt token for pagopa_admin user role with the choosen organizationId
+      operationId: getPagoPaAdminToken
+      parameters:
+        - name: organization-id
+          in: header
+          schema:
+            type: string
+            example: organization-id
+          required: true
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortalToken'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '404':
+          description: The requested initiative was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+components:
+  schemas:
+    SasToken:
+      type: object
+      properties:
+        sas:
+          type: string
+    PortalToken:
+      type: object
+      properties:
+        token:
+          type: string
+    InitiativeAdditionalDTO:
+      type: object
+      properties:
+        serviceIO:
+          type: boolean
+        serviceId:
+          type: string
+        serviceName:
+          type: string
+        serviceScope:
+          enum:
+            - LOCAL
+            - NATIONAL
+          type: string
+        description:
+          type: string
+        privacyLink:
+          type: string
+        tcLink:
+          type: string
+        channels:
+          $ref: '#/components/schemas/ChannelArrayDTO'
+        logoFileName:
+          type: string
+        logoURL:
+          type: string
+        logoUploadDate:
+          type: string
+          format: date-time
+    InitiativeGeneralDTO:
+      type: object
+      properties:
+        budget:
+          type: number
+          example: 10
+        beneficiaryType:
+          enum:
+            - PF
+            - PG
+            - NF
+          type: string
+        familyUnitComposition:
+          enum:
+            - INPS
+            - ANPR
+          type: string
+        beneficiaryKnown:
+          type: boolean
+        beneficiaryBudget:
+          type: number
+          example: 10
+        startDate:
+          type: string
+          description: Start date
+          format: date
+          example: '2022-01-30'
+        endDate:
+          type: string
+          description: Start date
+          format: date
+          example: '2022-01-30'
+        rankingStartDate:
+          type: string
+          description: Start date
+          format: date
+          example: '2022-01-30'
+        rankingEndDate:
+          type: string
+          description: Start date
+          format: date
+          example: '2022-01-30'
+        rankingEnabled:
+          type: boolean
+        descriptionMap:
+          $ref: '#/components/schemas/DescriptionMap'
+    AutomatedCriteriaDTO:
+      type: object
+      properties:
+        authority:
+          type: string
+        code:
+          type: string
+        field:
+          type: string
+        operator:
+          type: string
+        value:
+          type: string
+        orderDirection:
+          type: string
+          enum:
+            - ASC
+            - DESC
+        iseeTypes:
+          type: array
+          items:
+            type: string
+            enum:
+              - ORDINARIO
+              - MINORENNE
+              - UNIVERSITARIO
+              - SOCIOSANITARIO
+              - DOTTORATO
+              - RESIDENZIALE
+              - CORRENTE
+          example:
+            [
+              'ORDINARIO',
+              'MINORENNE',
+              'UNIVERSITARIO',
+              'SOCIOSANITARIO',
+              'DOTTORATO',
+              'RESIDENZIALE',
+              'CORRENTE',
+            ]
+    InitiativeDTO:
+      type: object
+      properties:
+        initiativeId:
+          type: string
+        initiativeName:
+          type: string
+        organizationId:
+          type: string
+        organizationName:
+          type: string
+        creationDate:
+          type: string
+          description: Creation Date
+          format: date-time
+        updateDate:
+          type: string
+          description: Update Date
+          format: date-time
+        status:
+          type: string
+        autocertificationCheck:
+          type: boolean
+        beneficiaryRanking:
+          type: boolean
+        general:
+          $ref: '#/components/schemas/InitiativeGeneralDTO'
+        additionalInfo:
+          $ref: '#/components/schemas/InitiativeAdditionalDTO'
+        beneficiaryRule:
+          $ref: '#/components/schemas/InitiativeBeneficiaryRuleDTO'
+        initiativeRewardType:
+          type: string
+          enum:
+            - DISCOUNT
+            - REFUND
+        rewardRule:
+          $ref: '#/components/schemas/InitiativeRewardRuleDTO'
+        trxRule:
+          $ref: '#/components/schemas/InitiativeTrxConditionsDTO'
+        refundRule:
+          $ref: '#/components/schemas/InitiativeRefundRuleDTO'
+        isLogoPresent:
+          type: boolean
+    DescriptionLanguageMap:
+      type: object
+      properties:
+        language:
+          type: string
+        description:
+          type: string
+      items:
+        $ref: '#/components/schemas/DescriptionLanguageMap'
+    InitiativeSummaryArrayDTO:
+      type: array
+      items:
+        $ref: '#/components/schemas/InitiativeSummaryDTO'
+    InitiativeSummaryDTO:
+      type: object
+      properties:
+        initiativeId:
+          type: string
+        initiativeName:
+          type: string
+        initiativeRewardType:
+          type: string
+        status:
+          type: string
+        creationDate:
+          type: string
+          format: date-time
+        updateDate:
+          type: string
+          format: date-time
+        rankingEnabled:
+          type: boolean
+    OrganizationListDTO:
+      type: array
+      items:
+        $ref: '#/components/schemas/OrganizationDTO'
+    OrganizationDTO:
+      type: object
+      properties:
+        organizationId:
+          type: string
+        organizationName:
+          type: string
+    ChannelArrayDTO:
+      type: array
+      items:
+        $ref: '#/components/schemas/ChannelDTO'
+    ChannelDTO:
+      type: object
+      properties:
+        type:
+          enum:
+            - web
+            - email
+            - mobile
+          type: string
+        contact:
+          type: string
+    ErrorDTO:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    AnyOfInitiativeBeneficiaryRuleDTOSelfDeclarationCriteriaItems:
+      type: object
+      anyOf:
+        - $ref: '#/components/schemas/SelfCriteriaBoolDTO'
+        - $ref: '#/components/schemas/SelfCriteriaMultiDTO'
+        - $ref: '#/components/schemas/SelfCriteriaTextDTO'
+      description: List of possible criteria
+    InitiativeBeneficiaryRuleDTO:
+      type: object
+      properties:
+        selfDeclarationCriteria:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnyOfInitiativeBeneficiaryRuleDTOSelfDeclarationCriteriaItems'
+        automatedCriteria:
+          type: array
+          items:
+            $ref: '#/components/schemas/AutomatedCriteriaDTO'
+        apiKeyClientId:
+          type: string
+        apiKeyClientAssertion:
+          type: string
+    SelfCriteriaBoolDTO:
+      type: object
+      properties:
+        _type:
+          enum:
+            - boolean
+          type: string
+        description:
+          type: string
+        value:
+          type: boolean
+        code:
+          type: string
+    SelfCriteriaMultiDTO:
+      title: SelfCriteriaMultiDTO
+      type: object
+      properties:
+        _type:
+          enum:
+            - multi
+          type: string
+        description:
+          type: string
+        value:
+          type: array
+          items:
+            type: string
+          example:
+            - value1
+            - value2
+            - value3
+        code:
+          type: string
+    SelfCriteriaTextDTO:
+      title: SelfCriteriaTextDTO
+      type: object
+      properties:
+        _type:
+          enum:
+            - text
+          type: string
+        description:
+          type: string
+        value:
+          type: string
+        code:
+          type: string
+    ConfigBeneficiaryRuleArrayDTO:
+      type: array
+      items:
+        $ref: '#/components/schemas/ConfigBeneficiaryRuleDTO'
+    ConfigBeneficiaryRuleDTO:
+      title: ConfigBeneficiaryRuleDTO
+      type: object
+      properties:
+        code:
+          type: string
+        authority:
+          type: string
+        field:
+          type: string
+        operator:
+          type: string
+        checked:
+          type: boolean
+    ConfigTrxRuleArrayDTO:
+      type: array
+      items:
+        $ref: '#/components/schemas/ConfigTrxRuleDTO'
+    ConfigTrxRuleDTO:
+      title: ConfigTrxRuleDTO
+      type: object
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+        checked:
+          type: boolean
+    ConfigMccArrayDTO:
+      type: array
+      items:
+        $ref: '#/components/schemas/ConfigMccDTO'
+    ConfigMccDTO:
+      title: ConfigMccDTO
+      type: object
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+    DayConfig:
+      type: object
+      properties:
+        daysOfWeek:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+              - MONDAY
+              - TUESDAY
+              - WEDNESDAY
+              - THURSDAY
+              - FRIDAY
+              - SATURDAY
+              - SUNDAY
+        intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Interval'
+    InitiativeRewardAndTrxRulesDTO:
+      required:
+        - initiativeRewardType
+        - rewardRule
+      type: object
+      properties:
+        initiativeRewardType:
+          type: string
+          enum:
+            - REFUND
+            - DISCOUNT
+        rewardRule:
+          anyOf:
+            - $ref: '#/components/schemas/RewardGroupsDTO'
+            - $ref: '#/components/schemas/RewardValueDTO'
+        trxRule:
+          $ref: '#/components/schemas/InitiativeTrxConditionsDTO'
+    InitiativeRewardRuleDTO:
+      required:
+        - _type
+        - rewardValueType
+      type: object
+      properties:
+        _type:
+          type: string
+        rewardValueType:
+          type: string
+          enum:
+            - PERCENTAGE
+            - ABSOLUTE
+      discriminator:
+        propertyName: _type
+    InitiativeTrxConditionsDTO:
+      type: object
+      properties:
+        daysOfWeek:
+          type: array
+          properties:
+            empty:
+              type: boolean
+          items:
+            $ref: '#/components/schemas/DayConfig'
+        threshold:
+          $ref: '#/components/schemas/ThresholdDTO'
+        mccFilter:
+          $ref: '#/components/schemas/MccFilterDTO'
+        trxCount:
+          $ref: '#/components/schemas/TrxCountDTO'
+        rewardLimits:
+          type: array
+          items:
+            $ref: '#/components/schemas/RewardLimitsDTO'
+    Interval:
+      type: object
+      properties:
+        startTime:
+          type: string
+          description: 'hours:minutes:seconds.nano'
+          example: '00:16:00.000'
+        endTime:
+          type: string
+          description: 'hours:minutes:seconds.nano'
+          example: '02:00:00.000'
+    MccFilterDTO:
+      type: object
+      properties:
+        allowedList:
+          type: boolean
+        values:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    LogoDTO:
+      type: object
+      properties:
+        logoFileName:
+          type: string
+          example: 'logo-name.png'
+        logoURL:
+          type: string
+          example: 'https://localhost:8080/logo/initiative/logo.png'
+        logoUploadDate:
+          type: string
+          description: date-time
+          example: '2022-11-18T17:16:08.8820821'
+    RewardGroupDTO:
+      type: object
+      properties:
+        from:
+          type: number
+        to:
+          type: number
+        rewardValue:
+          maximum: 100
+          minimum: 0
+          type: number
+    RewardGroupsDTO:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/InitiativeRewardRuleDTO'
+        - type: object
+          properties:
+            rewardGroups:
+              type: array
+              items:
+                $ref: '#/components/schemas/RewardGroupDTO'
+    RewardLimitsDTO:
+      type: object
+      properties:
+        frequency:
+          type: string
+          enum:
+            - DAILY
+            - WEEKLY
+            - MONTHLY
+            - YEARLY
+        rewardLimit:
+          type: number
+    RewardValueDTO:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/InitiativeRewardRuleDTO'
+        - type: object
+          properties:
+            rewardValue:
+              type: number
+    ThresholdDTO:
+      type: object
+      properties:
+        from:
+          type: number
+        fromIncluded:
+          type: boolean
+        to:
+          type: number
+        toIncluded:
+          type: boolean
+    TrxCountDTO:
+      type: object
+      properties:
+        from:
+          type: integer
+          format: int64
+        fromIncluded:
+          type: boolean
+        to:
+          type: integer
+          format: int64
+        toIncluded:
+          type: boolean
+    InitiativeRefundRuleDTO:
+      type: object
+      properties:
+        accumulatedAmount:
+          $ref: '#/components/schemas/AccumulatedAmountDTO'
+        timeParameter:
+          $ref: '#/components/schemas/TimeParameterDTO'
+        additionalInfo:
+          $ref: '#/components/schemas/RefundAdditionalInfoDTO'
+    AccumulatedAmountDTO:
+      required:
+        - accumulatedType
+      type: object
+      properties:
+        accumulatedType:
+          type: string
+          enum:
+            - BUDGET_EXHAUSTED
+            - THRESHOLD_REACHED
+        refundThreshold:
+          type: number
+          example: 1
+    TimeParameterDTO:
+      required:
+        - timeType
+      type: object
+      properties:
+        timeType:
+          type: string
+          enum:
+            - CLOSED
+            - DAILY
+            - WEEKLY
+            - MONTHLY
+            - QUARTERLY
+    OnboardingDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusOnboardingDTOS'
+        pageNo:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+    StatusOnboardingDTOS:
+      type: object
+      properties:
+        beneficiary:
+          type: string
+        beneficiaryState:
+          type: string
+          enum:
+            - INVITED
+            - ACCEPTED_TC
+            - DEMANDED
+            - ON_EVALUATION
+            - ONBOARDING_KO
+            - ELIGIBLE_KO
+            - ONBOARDING_OK
+            - INACTIVE
+            - UNSUBSCRIBED
+            - SUSPENDED
+        updateStatusDate:
+          type: string
+          format: date-time
+        familyId:
+          type: string
+    PageOnboardingRankingsDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnboardingRankingsDTO'
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        rankingStatus:
+          type: string
+        rankingPublishedTimestamp:
+          type: string
+          format: date-time
+        rankingGeneratedTimestamp:
+          type: string
+          format: date-time
+        totalEligibleOk:
+          type: integer
+          format: int64
+        totalEligibleKo:
+          type: integer
+          format: int64
+        totalOnboardingKo:
+          type: integer
+          format: int64
+        rankingFilePath:
+          type: string
+    OnboardingRankingsDTO:
+      type: object
+      properties:
+        beneficiary:
+          type: string
+        criteriaConsensusTimestamp:
+          type: string
+          format: date-time
+        rankingValue:
+          type: integer
+          format: int64
+        ranking:
+          type: integer
+          format: int64
+        beneficiaryRankingStatus:
+          type: string
+        familyId:
+          type: string
+    RefundAdditionalInfoDTO:
+      required:
+        - identificationCode
+      type: object
+      properties:
+        identificationCode:
+          type: string
+    InitiativeStatisticsDTO:
+      type: object
+      properties:
+        lastUpdatedDateTime:
+          type: string
+          format: date-time
+        onboardedCitizenCount:
+          type: integer
+          format: int32
+        accruedRewards:
+          type: number
+          example: 1.00
+    PageRewardExportsDTO:
+      title: PageRewardExportsDTO
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/RewardExportsDTO'
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+    PageRewardImportsDTO:
+      title: PageRewardImportsDTO
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            '$ref': '#/components/schemas/RewardImportsDTO'
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+    DescriptionMap:
+      type: object
+      additionalProperties:
+        type: string
+      example:
+        it: Ciao!
+        en: Hello!
+        fr: Salut!
+    RewardExportsDTO:
+      title: RewardExportsDTO
+      required:
+        [
+          'id',
+          'organizationId',
+          'initiativeId',
+          'initiativeName',
+          'filePath',
+          'status',
+          'notificationDate',
+          'percentageResulted',
+          'percentageResults',
+          'rewardsExported',
+          'rewardsNotified',
+          'rewardsResulted',
+          'rewardsResultedOk',
+          'rewardsResults',
+        ]
+      type: object
+      properties:
+        feedbackDate:
+          type: string
+          format: date-time
+        filePath:
+          type: string
+        id:
+          type: string
+        initiativeId:
+          type: string
+        initiativeName:
+          type: string
+        notificationDate:
+          type: string
+          format: date
+        organizationId:
+          type: string
+        percentageResulted:
+          type: string
+        percentageResultedOk:
+          type: string
+        percentageResults:
+          type: string
+        rewardsExported:
+          type: string
+        rewardsNotified:
+          type: integer
+          format: int64
+        rewardsResulted:
+          type: integer
+          format: int64
+        rewardsResultedOk:
+          type: integer
+          format: int64
+        rewardsResults:
+          type: string
+        status:
+          type: string
+    TimelineErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - TIMELINE_DETAIL_NOT_FOUND
+            - TIMELINE_USER_NOT_FOUND
+            - TIMELINE_REFUNDS_NOT_FOUND
+            - TIMELINE_INVALID_REQUEST
+            - TIMELINE_TOO_MANY_REQUESTS
+            - TIMELINE_GENERIC_ERROR
+          description: >-
+            "ENG: Error code: TIMELINE_DETAIL_NOT_FOUND: Detail of Timeline not found,
+             TIMELINE_USER_NOT_FOUND: Timeline for the current user not found,
+             TIMELINE_REFUNDS_NOT_FOUND: Refund for current initiative not found,
+             TIMELINE_INVALID_REQUEST: Something went wrong handling request,
+             TIMELINE_TOO_MANY_REQUESTS: Too many requests,
+             TIMELINE_GENERIC_ERROR: Application Error - IT: Codice di errore:
+             TIMELINE_DETAIL_NOT_FOUND: Dettaglio della Timeline non trovato,
+             TIMELINE_USER_NOT_FOUND: Timeline per utente corrente non trovata,
+             TIMELINE_REFUNDS_NOT_FOUND:  Rimborso per la corrente iniziativa non trovato,
+             TIMELINE_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+             TIMELINE_TOO_MANY_REQUESTS: Troppe richieste,
+             TIMELINE_GENERIC_ERROR: Errore generico"
+        message:
+          type: string
+          description: "ENG: Error message - IT: Messaggio di errore"
+    RewardImportsDTO:
+      title: RewardImportsDTO
+      type: object
+      properties:
+        contentLength:
+          type: integer
+          format: int32
+        eTag:
+          type: string
+        elabDate:
+          type: string
+          format: date-time
+        errorsSize:
+          type: integer
+          format: int32
+        exportIds:
+          type: array
+          items:
+            type: string
+        feedbackDate:
+          type: string
+          format: date-time
+        filePath:
+          type: string
+        initiativeId:
+          type: string
+        organizationId:
+          type: string
+        percentageResulted:
+          type: string
+        percentageResultedOk:
+          type: string
+        percentageResultedOkElab:
+          type: string
+        rewardsResulted:
+          type: integer
+          format: int64
+        rewardsResultedError:
+          type: integer
+          format: int64
+        rewardsResultedOk:
+          type: integer
+          format: int64
+        rewardsResultedOkError:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+            - COMPLETE
+            - ERROR
+            - IN_PROGRESS
+            - WARN
+        url:
+          type: string
+    IbanDTO:
+      type: object
+      required:
+        - iban
+        - checkIbanStatus
+        - description
+        - channel
+        - checkIbanResponseDate
+      properties:
+        iban:
+          type: string
+        checkIbanStatus:
+          type: string
+        holderBank:
+          type: string
+        description:
+          type: string
+        channel:
+          type: string
+        checkIbanResponseDate:
+          type: string
+          format: date-time
+    IbanErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - IBAN_NOT_FOUND
+            - IBAN_INVALID_REQUEST
+            - IBAN_TOO_MANY_REQUESTS
+            - IBAN_GENERIC_ERROR
+          description: >-
+            "ENG: Error code: IBAN_NOT_FOUND: Iban not found,
+             IBAN_INVALID_REQUEST: Something went wrong handling request,
+             IBAN_TOO_MANY_REQUESTS: Too many requests,
+             IBAN_GENERIC_ERROR: Application Error - IT: Codice di errore:
+             IBAN_NOT_FOUND: Iban non trovato,
+             IBAN_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+             IBAN_TOO_MANY_REQUESTS: Troppe richieste,
+             IBAN_GENERIC_ERROR: Errore generico"
+        message:
+          type: string
+          description: "ENG: Error message - IT: Messaggio di errore"
+    WalletDTO:
+      type: object
+      required:
+        - initiativeId
+        - status
+        - endDate
+        - nInstr
+      properties:
+        initiativeId:
+          type: string
+        initiativeName:
+          type: string
+        status:
+          enum:
+            - NOT_REFUNDABLE_ONLY_IBAN
+            - NOT_REFUNDABLE_ONLY_INSTRUMENT
+            - REFUNDABLE
+            - NOT_REFUNDABLE
+            - UNSUBSCRIBED
+            - SUSPENDED
+          type: string
+        endDate:
+          type: string
+          format: date
+        amountCents:
+          type: integer
+          format: int64
+        accruedCents:
+          type: integer
+          format: int64
+        refundedCents:
+          type: integer
+          format: int64
+        lastCounterUpdate:
+          type: string
+          format: date-time
+        iban:
+          type: string
+        nInstr:
+          type: integer
+          format: int32
+    InstrumentListDTO:
+      type: object
+      required:
+        - instrumentList
+      properties:
+        instrumentList:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstrumentDTO'
+          description: The list of payment instruments associated to the initiative by the citizen
+    InstrumentDTO:
+      title: InstrumentDTO
+      type: object
+      required:
+        - instrumentId
+        - instrumentType
+      properties:
+        idWallet:
+          type: string
+          description: >-
+            ENG: Wallet's id provided by the Payment manager - IT:
+            Identificativo del portafoglio fornito dal gestore di pagamenti
+        instrumentId:
+          type: string
+          description: >-
+            ENG: Payment instrument id - IT: Identificativo dello strumento di
+            pagamento
+        maskedPan:
+          type: string
+          description: 'ENG: Masked Pan - IT: Masked Pan'
+        channel:
+          type: string
+          description: 'ENG: Channel - IT: Canale di richiesta'
+        brandLogo:
+          type: string
+          description: >-
+            ENG: Card's brand logo URL - IT: URL del logo del marchio della
+            carta
+        brand:
+          type: string
+          description: >-
+            ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della
+            carta come mastercard, visa, ecc...
+        status:
+          enum:
+            - ACTIVE
+            - PENDING_ENROLLMENT_REQUEST
+            - PENDING_DEACTIVATION_REQUEST
+          type: string
+          description: 'ENG: The status of the instrument - IT: Stato dello strumento'
+        instrumentType:
+          type: string
+          enum:
+            - CARD
+            - APP_IO_PAYMENT
+            - IDPAYCODE
+        activationDate:
+          type: string
+          format: date-time
+          description: >-
+            ENG: Activation date of the instrument - IT: Data di attivazione
+            dello strumento
+    OperationDTO:
+      oneOf:
+        - $ref: '#/components/schemas/TransactionDetailDTO'
+        - $ref: '#/components/schemas/InstrumentOperationDTO'
+        - $ref: '#/components/schemas/IbanOperationDTO'
+        - $ref: '#/components/schemas/OnboardingOperationDTO'
+        - $ref: '#/components/schemas/RefundOperationDTO'
+        - $ref: '#/components/schemas/SuspendOperationDTO'
+        - $ref: '#/components/schemas/ReadmittedOperationDTO'
+        - $ref: '#/components/schemas/UnsubscribeOperationDTO'
+    TimelineDTO:
+      type: object
+      required:
+        - operationList
+      properties:
+        lastUpdate:
+          type: string
+          description: date of the last update
+          format: date-time
+        operationList:
+          type: array
+          items:
+            $ref: '#/components/schemas/OperationListDTO'
+          description: the list of transactions and operations of an initiative of a citizen
+        pageNo:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+    OperationListDTO:
+      description: Complex type for items in the operation list
+      oneOf:
+        - $ref: '#/components/schemas/TransactionOperationDTO'
+        - $ref: '#/components/schemas/InstrumentOperationDTO'
+        - $ref: '#/components/schemas/RejectedInstrumentOperationDTO'
+        - $ref: '#/components/schemas/IbanOperationDTO'
+        - $ref: '#/components/schemas/OnboardingOperationDTO'
+        - $ref: '#/components/schemas/RefundOperationDTO'
+        - $ref: '#/components/schemas/SuspendOperationDTO'
+        - $ref: '#/components/schemas/ReadmittedOperationDTO'
+        - $ref: '#/components/schemas/UnsubscribeOperationDTO'
+
+    RejectedInstrumentOperationDTO:
+      type: object
+      required:
+        - operationId
+        - operationType
+        - operationDate
+        - channel
+      properties:
+        operationId:
+          type: string
+        operationType:
+          enum:
+            - REJECTED_ADD_INSTRUMENT
+            - REJECTED_DELETE_INSTRUMENT
+          type: string
+        operationDate:
+          type: string
+          format: date-time
+        brandLogo:
+          type: string
+        instrumentId:
+          type: string
+        maskedPan:
+          type: string
+        channel:
+          type: string
+        instrumentType:
+          type: string
+          enum:
+            - CARD
+            - IDPAYCODE
+    TransactionDetailDTO:
+      type: object
+      required:
+        - operationId
+        - operationType
+        - operationDate
+        - accruedCents
+        - status
+      properties:
+        operationId:
+          type: string
+          description: 'ENG: Id of the operation - IT: Identificativo dell''operazione'
+        operationType:
+          enum:
+            - TRANSACTION
+            - REVERSAL
+          type: string
+          description: 'ENG: Operation type - IT: Tipologia di operazione'
+        eventId:
+          type: string
+        brandLogo:
+          type: string
+          description: >-
+            ENG: Card's brand logo URL - IT: URL del logo del marchio della
+            carta
+        brand:
+          type: string
+          description: >-
+            ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della
+            carta come mastercard, visa, ecc...
+        maskedPan:
+          type: string
+          description: 'ENG: Masked Pan - IT: Masked Pan'
+        amountCents:
+          type: integer
+          format: int64
+          description: 'ENG: Transaction amount - IT: Importo della transazione'
+          example: 100
+        accruedCents:
+          type: integer
+          format: int64
+          description: 'ENG: Transaction accrued - IT: Importo accumulato'
+          example: 100
+        operationDate:
+          type: string
+          format: date-time
+          description: 'ENG: Operation date - IT: Data dell''operazione'
+        circuitType:
+          type: string
+          description: >-
+            ENG: Circuit type - IT: Tipologia del circuito 00-> Bancomat,
+            01->Visa, 02->Mastercard, 03->Amex, 04->JCB, 05->UnionPay,
+            06->Diners, 07->PostePay, 08->BancomatPay, 09->Satispay,
+            10->PrivateCircuit
+        idTrxIssuer:
+          type: string
+          description: >-
+            ENG: Transaction issuer ID - IT: Identificativo della transazione
+            rispetto all'issuer
+        idTrxAcquirer:
+          type: string
+          description: >-
+            ENG: Transaction acquirer ID- IT: Identificativo della transazione
+            rispetto all'acquirer
+        status:
+          type: string
+          enum:
+            - AUTHORIZED
+            - REWARDED
+            - CANCELLED
+          description: >-
+            ENG: Transaction status [AUTHORIZED: Transaction authorize,
+            REWARDED: Transaction rewarded, CANCELLED: Transaction cancelled]  -
+            IT: Stato della transazione [AUTHORIZED: Transazione autorizzata,
+            REWARDED: Transazione premiata, CANCELLED: transazione cancellata]
+        channel:
+          type: string
+          enum:
+            - RTD
+            - QRCODE
+            - IDPAYCODE
+            - BARCODE
+          description: >-
+            ENG: Channel from which the transaction takes place - IT: Canale da
+            cui avviene la transazione
+        businessName:
+          type: string
+    InstrumentOperationDTO:
+      type: object
+      required:
+        - operationId
+        - operationType
+        - operationDate
+        - instrumentType
+        - channel
+      properties:
+        operationId:
+          type: string
+        operationType:
+          enum:
+            - ADD_INSTRUMENT
+            - DELETE_INSTRUMENT
+          type: string
+        operationDate:
+          type: string
+          format: date-time
+        brandLogo:
+          type: string
+        maskedPan:
+          type: string
+        channel:
+          type: string
+        instrumentType:
+          type: string
+          enum:
+            - CARD
+            - IDPAYCODE
+    IbanOperationDTO:
+      type: object
+      required:
+        - operationId
+        - operationType
+        - operationDate
+        - iban
+        - channel
+      properties:
+        operationId:
+          type: string
+        operationType:
+          enum:
+            - ADD_IBAN
+          type: string
+        operationDate:
+          type: string
+          format: date-time
+        iban:
+          type: string
+        channel:
+          type: string
+    OnboardingOperationDTO:
+      type: object
+      required:
+        - operationId
+        - operationType
+        - operationDate
+      properties:
+        operationId:
+          type: string
+        operationType:
+          enum:
+            - ONBOARDING
+          type: string
+        operationDate:
+          type: string
+          format: date-time
+    RefundOperationDTO:
+      type: object
+      required:
+        - operationId
+        - operationType
+        - eventId
+        - operationDate
+        - amountCents
+      properties:
+        operationId:
+          type: string
+        eventId:
+          type: string
+        operationType:
+          enum:
+            - PAID_REFUND
+            - REJECTED_REFUND
+          type: string
+        operationDate:
+          type: string
+          format: date
+        amountCents:
+          type: integer
+          format: int64
+          example: 100
+        accruedCents:
+          type: integer
+          format: int64
+          example: 100
+    TransactionOperationDTO:
+      type: object
+      required:
+        - operationId
+        - operationType
+        - operationDate
+        - accruedCents
+        - status
+      properties:
+        operationId:
+          type: string
+        operationType:
+          enum:
+            - TRANSACTION
+            - REVERSAL
+          type: string
+        eventId:
+          type: string
+        operationDate:
+          type: string
+          format: date-time
+        brandLogo:
+          type: string
+        maskedPan:
+          type: string
+        amountCents:
+          type: integer
+          format: int64
+          example: 100
+        accruedCents:
+          type: integer
+          format: int64
+          example: 100
+        circuitType:
+          type: string
+          description: '00-> Bancomat, 01->Visa, 02->Mastercard, 03->Amex, 04->JCB, 05->UnionPay, 06->Diners, 07->PostePay, 08->BancomatPay, 09->Satispay, 10->PrivateCircuit'
+        idTrxIssuer:
+          type: string
+        idTrxAcquirer:
+          type: string
+        status:
+          type: string
+          enum:
+            - AUTHORIZED
+            - REWARDED
+            - CANCELLED
+        channel:
+          type: string
+          enum:
+            - RTD
+            - QRCODE
+            - IDPAYCODE
+            - BARCODE
+        businessName:
+          type: string
+    SuspendOperationDTO:
+      type: object
+      required:
+        - operationId
+        - operationType
+        - operationDate
+      properties:
+        operationId:
+          type: string
+        operationType:
+          enum:
+            - SUSPENDED
+          type: string
+        operationDate:
+          type: string
+          format: date-time
+    ReadmittedOperationDTO:
+      type: object
+      required:
+        - operationId
+        - operationType
+        - operationDate
+      properties:
+        operationId:
+          type: string
+        operationType:
+          enum:
+            - READMITTED
+          type: string
+        operationDate:
+          type: string
+          format: date-time
+    UnsubscribeOperationDTO:
+      type: object
+      required:
+        - operationId
+        - operationType
+        - operationDate
+      properties:
+        operationId:
+          type: string
+          description: "ENG: Id of the operation - IT: Identificativo dell'operazione"
+        operationType:
+          enum:
+            - UNSUBSCRIBED
+          type: string
+          description: "ENG: Operation type - IT: Tipologia dell'operazione"
+        operationDate:
+          type: string
+          format: date-time
+          description: "ENG: Operation date - IT: Data dell'operazione"
+    CsvDTO:
+      title: CsvDTO
+      type: object
+      properties:
+        data:
+          type: string
+    ExportSummaryDTO:
+      title: ExportSummaryDTO
+      type: object
+      properties:
+        createDate:
+          type: string
+          format: date
+        totalAmountCents:
+          type: integer
+          format: int64
+        totalRefundedAmountCents:
+          type: integer
+          format: int64
+        totalRefunds:
+          type: integer
+          format: int64
+        successPercentage:
+          type: string
+        status:
+          type: string
+    ExportListDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExportDetailDTO'
+        pageNo:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+    OnboardingStatusDTO:
+      title: OnboardingStatusDTO
+      type: object
+      required:
+        - status
+        - statusDate
+      properties:
+        status:
+          enum:
+            - INVITED
+            - ACCEPTED_TC
+            - DEMANDED
+            - ON_EVALUATION
+            - ONBOARDING_KO
+            - ELIGIBLE_KO
+            - ONBOARDING_OK
+            - INACTIVE
+            - UNSUBSCRIBED
+            - SUSPENDED
+          type: string
+          description: "ENG: Actual status of the citizen onboarding for an initiative - IT: Stato attuale del cittadino rispetto ad un'iniziativa"
+        statusDate:
+          type: string
+          format: date-time
+          description: "ENG: Date on which the status changed to the current one - IT: Data in cui lo stato è cambiato allo stato attuale"
+        onboardingOkDate:
+          type: string
+          format: date-time
+          description: "ENG: Date on which the onboarding successfully went through - IT: Data in cui l'adesione è avvenuta con successo"
+    ExportDetailDTO:
+      type: object
+      properties:
+        iban:
+          type: string
+        amountCents:
+          type: integer
+          format: int64
+        status:
+          type: string
+        eventId:
+          type: string
+    RefundDetailDTO:
+      type: object
+      properties:
+        fiscalCode:
+          type: string
+        iban:
+          type: string
+        amountCents:
+          type: integer
+          format: int64
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        status:
+          type: string
+        refundType:
+          type: string
+        cro:
+          type: string
+        transferDate:
+          type: string
+          format: date
+        userNotificationDate:
+          type: string
+          format: date
+    FamilyUnitCompositionDTO:
+      type: object
+      required:
+        - usersList
+      properties:
+        usersList:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnboardingDetailDTO'
+          description: The list of family unit composition details
+    OnboardingDetailDTO:
+      type: object
+      required:
+        - code
+        - message
+        - details
+      properties:
+        fiscalCode:
+          type: string
+        familyId:
+          type: string
+        onboardingDate:
+          type: string
+          format: date
+        status:
+          enum:
+            - INVITED
+            - ACCEPTED_TC
+            - DEMANDED
+            - ON_EVALUATION
+            - ONBOARDING_KO
+            - ELIGIBLE_KO
+            - ONBOARDING_OK
+            - INACTIVE
+            - UNSUBSCRIBED
+            - SUSPENDED
+          type: string
+    InitiativeErrorDTO:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+            - INITIATIVE_ROLLBACK_TO_PREVIOUS_STATUS
+            - INITIATIVE_WHITELIST_INVALID_PROPERTIES
+            - INITIATIVE_INVALID_LOCALE_FORMAT
+            - INITIATIVE_ITALIAN_LANGUAGE_REQUIRED_FOR_DESCRIPTION
+            - INITIATIVE_CANNOT_BE_DELETED
+            - INITIATIVE_ADMIN_ROLE_NOT_ALLOWED
+            - INITIATIVE_ORGANIZATION_ROLE_NOT_ALLOWED
+            - INITIATIVE_PUBLICATION_NOT_ALLOWED_FOR_DATES
+            - INITIATIVE_STATUS_NOT_VALID
+            - INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_ORDER_DIRECTION_MISSING
+            - INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_EQUALS_OPERATOR
+            - INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_ISEE_MISSING
+            - INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_TYPOLOGY_ISEE_MISSING
+            - INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_BENEFICIARY_NF_ISEE_MISSING
+            - INITIATIVE_VALIDATION_WIZARD_VIOLATIONS
+            - INITIATIVE_REWARD_RULES_NOT_VALID
+            - INITIATIVE_REFUND_RULES_NOT_VALID
+            - INITIATIVE_FAMILY_UNIT_COMPOSITION_NOT_VALID
+            - INITIATIVE_START_DATE_AND_END_DATE_NOT_VALID
+            - INITIATIVE_YEAR_VALUE_NOT_VALID
+            - INITIATIVE_INVALID_REQUEST
+            - INITIATIVE_NOT_FOUND
+            - INITIATIVE_LOGO_ERROR
+            - INITIATIVE_TOO_MANY_REQUESTS
+            - INITIATIVE_GENERIC_ERROR
+          description: >-
+            "ENG: Error code:
+             INITIATIVE_ROLLBACK_TO_PREVIOUS_STATUS: Error during the initiative publishing the status of the initiative will be returned to its previous state,
+             INITIATIVE_WHITELIST_INVALID_PROPERTIES: Initiative properties are not valid for this initiative with beneficiary known,
+             INITIATIVE_INVALID_LOCALE_FORMAT: Initiative not found due to invalid locale format,
+             INITIATIVE_ITALIAN_LANGUAGE_REQUIRED_FOR_DESCRIPTION: Italian language required for initiative description,
+             INITIATIVE_CANNOT_BE_DELETED: Initiative with current status cannot be deleted,
+             INITIATIVE_ADMIN_ROLE_NOT_ALLOWED: This operation is not allowed for admin role,
+             INITIATIVE_ORGANIZATION_ROLE_NOT_ALLOWED: This operation is not allowed for organization role,
+             INITIATIVE_PUBLICATION_NOT_ALLOWED_FOR_DATES: Initiative unprocessable because the end date has passed,
+             INITIATIVE_STATUS_NOT_VALID: Initiative is unprocessable for status not valid,
+             INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_ORDER_DIRECTION_MISSING: Automated criteria for ranking initiative not valid because OrderDirection is missing,
+             INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_EQUALS_OPERATOR: Automated criteria for ranking initiative not valid because is used an equals operator,
+             INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_ISEE_MISSING: Automated criteria for ranking initiative not valid because ISEE is missing,
+             INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_TYPOLOGY_ISEE_MISSING: Automated criteria not valid because typology ISEE is missing,
+             INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_BENEFICIARY_NF_ISEE_MISSING: Automated criteria for family initiative not valid because ISEE is missing,
+             INITIATIVE_VALIDATION_WIZARD_VIOLATIONS: Initiative validation failed caused by wizard violation,
+             INITIATIVE_REWARD_RULES_NOT_VALID: Reward rules is not valid,
+             INITIATIVE_REFUND_RULES_NOT_VALID: Refund rules is not valid,
+             INITIATIVE_FAMILY_UNIT_COMPOSITION_NOT_VALID: Family unit composition is not valid,
+             INITIATIVE_START_DATE_AND_END_DATE_NOT_VALID: The startDate and endDate inserted is not valid,
+             INITIATIVE_YEAR_VALUE_NOT_VALID: The year value inserted is not valid,
+             INITIATIVE_INVALID_REQUEST: Something went wrong handling the request,
+             INITIATIVE_NOT_FOUND: Initiative not found,
+             INITIATIVE_LOGO_ERROR:An error occurred during the uploading logo,
+             INITIATIVE_TOO_MANY_REQUESTS: Too many requests,
+             INITIATIVE_GENERIC_ERROR: Application error,
+             - IT: Codice di errore:
+             INITIATIVE_ROLLBACK_TO_PREVIOUS_STATUS: Errore durante la pubblicazione dell'iniziativa lo stato dell'iniziativa sarà riportato al suo stato precedente,
+             INITIATIVE_WHITELIST_INVALID_PROPERTIES: Le proprietà dell'iniziativa non sono valide per iniziativa con beneficiario noto,
+             INITIATIVE_INVALID_LOCALE_FORMAT: Iniziativa non trovata a causa di format locale non valido,
+             INITIATIVE_ITALIAN_LANGUAGE_REQUIRED_FOR_DESCRIPTION: Lingua italiana richiesta per la descrizione dell'iniziativa,
+             INITIATIVE_CANNOT_BE_DELETED: L'iniziativa con lo stato corrente non può essere eliminata,
+             INITIATIVE_ADMIN_ROLE_NOT_ALLOWED: Questa operazione non è concessa per il ruolo di admin,
+             INITIATIVE_ORGANIZATION_ROLE_NOT_ALLOWED: Questa operazione non è concessa per il ruolo dell'ente,
+             INITIATIVE_PUBLICATION_NOT_ALLOWED_FOR_DATES: Iniziativa non processabile perchè la data di fine è trascorsa,
+             INITIATIVE_STATUS_NOT_VALID: L'iniziativa non processabile per lo stato non valido,
+             INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_ORDER_DIRECTION_MISSING: I criteri automatizzati per l'iniziativa di tipo ranking non sono validi perché manca OrderDirection,
+             INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_EQUALS_OPERATOR: I criteri automatizzati per l'iniziativa di tipo ranking non sono validi perché è utilizzato un operatore uguale,
+             INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_ISEE_MISSING: I criteri automatizzati per l'iniziativa di tipo ranking non sono validi perché manca l'ISEE,
+             INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_TYPOLOGY_ISEE_MISSING: I criteri automatizzati per l'iniziativa di tipo ranking non sono validi perché manca la tipologia di ISEE,
+             INITIATIVE_AUTOMATED_CRITERIA_NOT_VALID_BENEFICIARY_NF_ISEE_MISSING: I criteri automatizzati per l'iniziativa di tipo nucleo familiare non sono validi perchè manca l'ISEE,
+             INITIATIVE_VALIDATION_WIZARD_VIOLATIONS: La validazione dell'iniziativa è fallita a causa delle violazioni durante la procedura,
+             INITIATIVE_REWARD_RULES_NOT_VALID: Regole sul tipo di premio non valide,
+             INITIATIVE_REFUND_RULES_NOT_VALID: Regole di rimborso non valide,
+             INITIATIVE_FAMILY_UNIT_COMPOSITION_NOT_VALID: La composizione del nucleo familiare non è valida,
+             INITIATIVE_START_DATE_AND_END_DATE_NOT_VALID: La data di inizio e di fine inserite non sono valide,
+             INITIATIVE_YEAR_VALUE_NOT_VALID: Il valore dell'anno inserito non è valido,
+             INITIATIVE_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+             INITIATIVE_NOT_FOUND: Iniziativa non trovata,
+             INITIATIVE_LOGO_ERROR: Qualcosa è andato storto durante il caricamento del logo,
+             INITIATIVE_TOO_MANY_REQUESTS: Troppe richieste,
+             INITIATIVE_GENERIC_ERROR: Errore generico"
+        message:
+          type: string
+          description: "ENG: Error message - IT: Messaggio di errore"
+    WalletErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - WALLET_USER_UNSUBSCRIBED
+            - WALLET_ENROLL_INSTRUMENT_NOT_ALLOWED_FOR_DISCOUNT_INITIATIVE
+            - WALLET_ENROLL_IBAN_NOT_ALLOWED_FOR_DISCOUNT_INITIATIVE
+            - WALLET_ENROLL_INSTRUMENT_NOT_ALLOWED_FOR_REFUND_INITIATIVE
+            - WALLET_INITIATIVE_ENDED
+            - WALLET_USER_NOT_ONBOARDED
+            - WALLET_IBAN_NOT_ITALIAN
+            - WALLET_INSTRUMENT_ALREADY_ASSOCIATED
+            - WALLET_INSTRUMENT_DELETE_NOT_ALLOWED
+            - WALLET_INSTRUMENT_IDPAYCODE_NOT_FOUND
+            - WALLET_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS
+            - WALLET_READMISSION_NOT_ALLOWED_FOR_USER_STATUS
+            - WALLET_INSTRUMENT_NOT_FOUND
+            - WALLET_GENERIC_ERROR
+            - WALLET_INVALID_REQUEST
+            - WALLET_TOO_MANY_REQUESTS
+          description: >-
+            "ENG: Error code:
+            WALLET_USER_UNSUBSCRIBED: The user has unsubscribed from initiative,
+            WALLET_ENROLL_INSTRUMENT_NOT_ALLOWED_FOR_DISCOUNT_INITIATIVE: It is not possible to
+            enroll a payment instrument for a discount initiative,
+            WALLET_ENROLL_IBAN_NOT_ALLOWED_FOR_DISCOUNT_INITIATIVE: It is not possible enroll
+            an iban for a discount type initiative,
+            WALLET_ENROLL_INSTRUMENT_NOT_ALLOWED_FOR_REFUND_INITIATIVE: It is not possible to enroll
+            a IDPayCode for a refund type initiative,
+            WALLET_INITIATIVE_ENDED: The operation is not allowed because the initiative has already ended,
+            WALLET_USER_NOT_ONBOARDED: User not onboarded on this initiative,
+            WALLET_IBAN_NOT_ITALIAN: Iban is not italian,
+            WALLET_INSTRUMENT_ALREADY_ASSOCIATED: Payment Instrument is already associated to another user,
+            WALLET_INSTRUMENT_DELETE_NOT_ALLOWED: It's not possible to delete an instrument of AppIO payment types,
+            WALLET_INSTRUMENT_IDPAYCODE_NOT_FOUND: idpayCode is not found for the current user,
+            WALLET_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS: It is not possible to suspend the
+            user on initiative,
+            WALLET_READMISSION_NOT_ALLOWED_FOR_USER_STATUS: It is not possible to readmit
+            the user on initiative,
+            WALLET_INSTRUMENT_NOT_FOUND: The selected payment instrument has not been found for the current user,
+            WALLET_GENERIC_ERROR: Application error,
+            WALLET_INVALID_REQUEST: Something went wrong handling the request,
+            WALLET_TOO_MANY_REQUESTS: Too many requests on the ms
+            - IT: Codice di errore:
+            WALLET_USER_UNSUBSCRIBED: L'utente si è disiscritto dall'iniziativa,
+            WALLET_ENROLL_INSTRUMENT_NOT_ALLOWED_FOR_DISCOUNT_INITIATIVE: Non è possibile associare
+            uno strumento di pagamento per un'iniziativa di tipo a sconto,
+            WALLET_ENROLL_IBAN_NOT_ALLOWED_FOR_DISCOUNT_INITIATIVE: Non è possibile associare un iban per un'iniziativa di tipo a sconto,
+            WALLET_ENROLL_INSTRUMENT_NOT_ALLOWED_FOR_REFUND_INITIATIVE: Non è possibile associare un
+            IDPayCode per una iniziativa di tipo a rimborso,
+            WALLET_INITIATIVE_ENDED: L'operazione non è consentita perché l'iniziativa è scaduta,
+            WALLET_USER_NOT_ONBOARDED: Utente non onboardato all'inziativa,
+            WALLET_IBAN_NOT_ITALIAN: L'Iban non è italiano,
+            WALLET_INSTRUMENT_ALREADY_ASSOCIATED: Lo strumento di pagamento è già associato
+            ad un altro utente,
+            WALLET_INSTRUMENT_DELETE_NOT_ALLOWED: Non è possibile eliminare uno strumento di tipo AppIO,
+            WALLET_INSTRUMENT_IDPAYCODE_NOT_FOUND: L'idpayCode non è stato trovato per l'utente corrente,
+            WALLET_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS: Non è possibile sospendere l'utente dall'iniziativa,
+            WALLET_READMISSION_NOT_ALLOWED_FOR_USER_STATUS: Non è possibile riammettere
+            l'utente all'iniziativa,
+            WALLET_INSTRUMENT_NOT_FOUND: Lo strumento di pagamento selezionato non è stato trovato per l'utente corrente,
+            WALLET_GENERIC_ERROR: Errore generico,
+            WALLET_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+            WALLET_TOO_MANY_REQUESTS: Troppe richieste"
+        message:
+          type: string
+          description: 'ENG: Error message- IT: Messaggio di errore'
+    OnboardingErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - ONBOARDING_USER_UNSUBSCRIBED
+            - ONBOARDING_PAGE_SIZE_NOT_ALLOWED
+            - ONBOARDING_PDND_CONSENT_DENIED
+            - ONBOARDING_SELF_DECLARATION_NOT_VALID
+            - ONBOARDING_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS
+            - ONBOARDING_READMISSION_NOT_ALLOWED_FOR_USER_STATUS
+            - ONBOARDING_INVALID_REQUEST
+            - ONBOARDING_USER_NOT_IN_WHITELIST
+            - ONBOARDING_INITIATIVE_NOT_STARTED
+            - ONBOARDING_INITIATIVE_ENDED
+            - ONBOARDING_BUDGET_EXHAUSTED
+            - ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED
+            - ONBOARDING_TECHNICAL_ERROR
+            - ONBOARDING_UNSATISFIED_REQUIREMENTS
+            - ONBOARDING_GENERIC_ERROR
+            - ONBOARDING_USER_NOT_ONBOARDED
+            - ONBOARDING_INITIATIVE_NOT_FOUND
+            - ONBOARDING_TOO_MANY_REQUESTS
+          description: >-
+            "ENG: Error code:
+            ONBOARDING_USER_UNSUBSCRIBED: The user has unsubscribed from initiative,
+            ONBOARDING_PAGE_SIZE_NOT_ALLOWED: Page size not allowed,
+            ONBOARDING_PDND_CONSENT_DENIED: The PDND consent was denied by the user for the initiative,
+            ONBOARDING_SELF_DECLARATION_NOT_VALID: The self-declaration criteria are not
+            valid for the initiative or those inserted by the user do not match those required by the initiative,
+            ONBOARDING_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS: It is not possible to suspend
+            the user on initiative,
+            ONBOARDING_READMISSION_NOT_ALLOWED_FOR_USER_STATUS: It is not possible to readmit the user on initiative,
+            ONBOARDING_INVALID_REQUEST: Something went wrong handling the request,
+            ONBOARDING_USER_NOT_IN_WHITELIST: The current user is not allowed to participate to the initiative,
+            ONBOARDING_INITIATIVE_NOT_STARTED: The initiative has not yet begun,
+            ONBOARDING_INITIATIVE_ENDED: The initiative ended,
+            ONBOARDING_BUDGET_EXHAUSTED: Budget exhausted for initiative,
+            ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED: The initiative is not active,
+            ONBOARDING_TECHNICAL_ERROR: A technical error occurred during the onboarding process,
+            ONBOARDING_UNSATISFIED_REQUIREMENTS: The user does not satisfy the requirements set for the initiative,
+            ONBOARDING_GENERIC_ERROR: Application error,
+            ONBOARDING_USER_NOT_ONBOARDED: The current user is not onboarded on initiative,
+            ONBOARDING_INITIATIVE_NOT_FOUND: Cannot find initiative,
+            ONBOARDING_TOO_MANY_REQUESTS: Too many requests
+            - IT: Codice di errore:
+            ONBOARDING_USER_UNSUBSCRIBED: L'utente si è disiscritto dall'iniziativa,
+            ONBOARDING_PAGE_SIZE_NOT_ALLOWED: Dimensione pagina non permessa,
+            ONBOARDING_PDND_CONSENT_DENIED: Il consenso PDND per l'iniziativa è stato negato dall'utente,
+            ONBOARDING_SELF_DECLARATION_NOT_VALID: I criteri di autodichiarazione non sono
+            validi per l'iniziativa o quelli inseriti dall'utente
+            non corrispondono con quelli richiesti dall'iniziativa,
+            ONBOARDING_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS: Non è possibile sospendere
+            l'utente dall'iniziativa,
+            ONBOARDING_READMISSION_NOT_ALLOWED_FOR_USER_STATUS: Non è possibile riammettere l'utente all'iniziativa,
+            ONBOARDING_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+            ONBOARDING_USER_NOT_IN_WHITELIST: L'utente corrente non ha il permesso di partecipare all'iniziativa,
+            ONBOARDING_INITIATIVE_NOT_STARTED: L'iniziativa non è ancora partita,
+            ONBOARDING_INITIATIVE_ENDED: L'iniziativa è terminata,
+            ONBOARDING_BUDGET_EXHAUSTED: Il budget dell'iniziativa è esaurito,
+            ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED: L'iniziativa non è attiva,
+            ONBOARDING_TECHNICAL_ERROR: Si è verificato un errore tecnico durante il processo di adesione,
+            ONBOARDING_UNSATISFIED_REQUIREMENTS: L'utente non soddisfa i requisiti che sono stati richiesti per l'iniziativa,
+            ONBOARDING_GENERIC_ERROR: Errore applicativo,
+            ONBOARDING_USER_NOT_ONBOARDED: Utente non onboardato all'iniziativa,
+            ONBOARDING_INITIATIVE_NOT_FOUND: Iniziativa non trovata,
+            ONBOARDING_TOO_MANY_REQUESTS: Troppe richieste"
+        message:
+          type: string
+          description: 'ENG: Error message- IT: Messaggio di errore'
+    RankingErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - RANKING_INITIATIVE_NOT_FOUND
+            - RANKING_INITIATIVE_NOT_RELATED
+            - RANKING_INVALID_REQUEST
+            - RANKING_TOO_MANY_REQUESTS
+            - RANKING_GENERIC_ERROR
+          description: >-
+            "ENG: Error code: RANKING_INITIATIVE_NOT_FOUND: Initiative not found,
+             RANKING_INITIATIVE_NOT_RELATED: Initiative is not related with organization,
+             RANKING_INVALID_REQUEST: Something went wrong handling request,
+             RANKING_TOO_MANY_REQUESTS: Too many requests,
+             RANKING_GENERIC_ERROR: Application Error - IT: Codice di errore:
+             RANKING_INITIATIVE_NOT_FOUND: Iniziativa non trovata,
+             RANKING_INITIATIVE_NOT_RELATED: L'iniziativa non è correlata all'organizzazione,
+             RANKING_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+             RANKING_TOO_MANY_REQUESTS: Troppe richieste,
+             RANKING_GENERIC_ERROR: Errore generico"
+        message:
+          type: string
+          description: "ENG: Error message - IT: Messaggio di errore"
+    StatisticsErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - STATISTICS_NOT_FOUND
+            - STATISTICS_INVALID_REQUEST
+            - STATISTICS_TOO_MANY_REQUESTS
+            - STATISTICS_GENERIC_ERROR
+          description: >-
+            "ENG: Error code: STATISTICS_NOT_FOUND: Stats not found,
+             STATISTICS_INVALID_REQUEST: Something went wrong handling request,
+             STATISTICS_TOO_MANY_REQUESTS: Too many requests,
+             STATISTICS_GENERIC_ERROR: Application Error - IT: Codice di errore:
+             STATISTICS_NOT_FOUND: Statistiche non trovate,
+             STATISTICS_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+             STATISTICS_TOO_MANY_REQUESTS: Troppe richieste,
+             STATISTICS_GENERIC_ERROR: Errore generico"
+        message:
+          type: string
+          description: "ENG: Error message - IT: Messaggio di errore"
+    PaymentInstrumentErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - PAYMENT_INSTRUMENT_PIN_LENGTH_NOT_VALID
+            - PAYMENT_INSTRUMENT_INVALID_REQUEST
+            - PAYMENT_INSTRUMENT_ALREADY_ASSOCIATED
+            - PAYMENT_INSTRUMENT_DELETE_NOT_ALLOWED
+            - PAYMENT_INSTRUMENT_ENCRYPTION_ERROR
+            - PAYMENT_INSTRUMENT_DECRYPTION_ERROR
+            - PAYMENT_INSTRUMENT_ENROLL_NOT_ALLOWED_FOR_REFUND_INITIATIVE
+            - PAYMENT_INSTRUMENT_INITIATIVE_ENDED
+            - PAYMENT_INSTRUMENT_USER_UNSUBSCRIBED
+            - PAYMENT_INSTRUMENT_NOT_FOUND
+            - PAYMENT_INSTRUMENT_IDPAYCODE_NOT_FOUND
+            - PAYMENT_INSTRUMENT_USER_NOT_ONBOARDED
+            - PAYMENT_INSTRUMENT_TOO_MANY_REQUESTS
+            - PAYMENT_INSTRUMENT_GENERIC_ERROR
+          description: >-
+            "ENG: Error code:
+            PAYMENT_INSTRUMENT_PIN_LENGTH_NOT_VALID: Pin length is not valid,
+            PAYMENT_INSTRUMENT_INVALID_REQUEST: Something went wrong handling the request,
+            PAYMENT_INSTRUMENT_ALREADY_ASSOCIATED: Payment Instrument is already associated to another user,
+            PAYMENT_INSTRUMENT_DELETE_NOT_ALLOWED: It's not possible to delete an instrument of AppIO payment types,
+            PAYMENT_INSTRUMENT_ENCRYPTION_ERROR: Something went wrong creating SHA256 digest,
+            PAYMENT_INSTRUMENT_DECRYPTION_ERROR: Something gone wrong while extracting datablock from pinblock,
+            PAYMENT_INSTRUMENT_ENROLL_NOT_ALLOWED_FOR_REFUND_INITIATIVE: It is not possible to enroll a idpayCode for a refund type initiative,
+            PAYMENT_INSTRUMENT_INITIATIVE_ENDED: The operation is not allowed because the initiative has already ended,
+            PAYMENT_INSTRUMENT_USER_UNSUBSCRIBED: The user has unsubscribed from initiative,
+            PAYMENT_INSTRUMENT_NOT_FOUND: The selected payment instrument has not been found for the current user,
+            PAYMENT_INSTRUMENT_IDPAYCODE_NOT_FOUND: idpayCode is not found for the current user,
+            PAYMENT_INSTRUMENT_USER_NOT_ONBOARDED: The current user is not onboarded on initiative,
+            PAYMENT_INSTRUMENT_TOO_MANY_REQUESTS: Too many requests,
+            PAYMENT_INSTRUMENT_GENERIC_ERROR Application error:
+            - IT: Codice di errore:
+            PAYMENT_INSTRUMENT_PIN_LENGTH_NOT_VALID: Lunghezza del pin non valida,
+            PAYMENT_INSTRUMENT_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+            PAYMENT_INSTRUMENT_ALREADY_ASSOCIATED: Lo strumento di pagamento è già associato ad un altro utente,
+            PAYMENT_INSTRUMENT_DELETE_NOT_ALLOWED: Non è possibile eliminare uno strumento di pagamento di tipo AppIO,
+            PAYMENT_INSTRUMENT_ENCRYPTION_ERROR: Qualcosa è andato storto durante la creazione del digest SHA256,
+            PAYMENT_INSTRUMENT_DECRYPTION_ERROR: Qualcosa è andato storto durante l'estrazione del datablock dal pinblock,
+            PAYMENT_INSTRUMENT_ENROLL_NOT_ALLOWED_FOR_REFUND_INITIATIVE: Non è possibile enrollare un idpayCode per un'iniziativa di tipo a rimborso,
+            PAYMENT_INSTRUMENT_INITIATIVE_ENDED: L'operazione non è consentita perché l'iniziativa è scaduta,
+            PAYMENT_INSTRUMENT_USER_UNSUBSCRIBED: L'utente si è disiscritto dall'iniziativa,
+            PAYMENT_INSTRUMENT_NOT_FOUND:  Lo strumento di pagamento selezionato non è stato trovato per l'utente corrente,
+            PAYMENT_INSTRUMENT_IDPAYCODE_NOT_FOUND: L'idpayCode non è stato trovato per l'utente corrente,
+            PAYMENT_INSTRUMENT_USER_NOT_ONBOARDED: L'utente corrente non è onboardato all'iniziativa,
+            PAYMENT_INSTRUMENT_TOO_MANY_REQUESTS: Troppe richieste,
+            PAYMENT_INSTRUMENT_GENERIC_ERROR: Errore generico"
+        message:
+          type: string
+          description: 'ENG: Error message- IT: Messaggio di errore'
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+security:
+  - Bearer: []
+tags:
+  - name: initiative
+    description: ''
