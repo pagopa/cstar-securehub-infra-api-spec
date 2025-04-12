@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayiban" />
-        <rewrite-uri template="@("/idpay/iban/"+(string)context.Variables["tokenPDV"])" />    
+        <rewrite-uri template="@("/idpay/iban/"+(string)context.Variables["tokenPDV"])" />
     </inbound>
     <backend>
         <base />

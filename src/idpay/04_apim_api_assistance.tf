@@ -248,4 +248,3 @@ module "idpay_api_assistance" {
   ]
 
 }
-

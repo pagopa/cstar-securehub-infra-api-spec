@@ -40,11 +40,11 @@
         <set-variable name="idpayPortalToken" value="@{
                     Jwt selcToken = (Jwt)context.Variables["outputToken"];
                     var JOSEProtectedHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
-                        new { 
-                            typ = "JWT", 
-                            alg = "RS256" 
+                        new {
+                            typ = "JWT",
+                            alg = "RS256"
                         }))).Split('=')[0].Replace('+', '-').Replace('/', '_');
-                    
+
                     var iat = DateTimeOffset.Now.ToUnixTimeSeconds();
                     var exp = new DateTimeOffset(DateTime.Now.AddHours(8)).ToUnixTimeSeconds();  // sets the expiration of the token to be 8 hours from now
                     var aud = "idpay.welfare.pagopa.it";
@@ -56,7 +56,7 @@
                     JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
                     var org_id = organization["id"];
                     var org_vat = organization["fiscal_code"];
-                    var org_name = organization["name"];              
+                    var org_name = organization["name"];
                     var org_party_role = organization.Value<JArray>("roles").First().Value<string>("partyRole");
                     var org_role = organization.Value<JArray>("roles").First().Value<string>("role");
                     var payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
@@ -83,10 +83,10 @@
                     {
                         var signature = rsa.SignData(Encoding.UTF8.GetBytes(message), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                         return message + "." + Convert.ToBase64String(signature).Split('=')[0].Replace('+', '-').Replace('/', '_');
-                    }                    
+                    }
 
                     return message;
-                    
+
                 }" />
         <return-response>
             <set-body>@((string)context.Variables["idpayPortalToken"])</set-body>
