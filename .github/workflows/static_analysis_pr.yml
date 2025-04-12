@@ -13,4 +13,4 @@ jobs:
       - name: Static Analysis
         uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@5c7e5f690ad0f07f3bd945bdebf2a6c7a575b33f # v1.20.0
         with:
-          precommit_version: 'v1.96.1@sha256:01f870b7689b5a09c1a370914fcddcac42c4b6478c9d369e1d2590dd0a66ffd0'
+          precommit_version: 'v1.97.3@sha256:cab76405fc6d068e20ca7c5a6f8d17c527356eed31dbc54151aec9fac65da128'
