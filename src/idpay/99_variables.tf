@@ -62,6 +62,11 @@ variable "tags" {
   }
 }
 
+variable "aks_legacy_instance_name" {
+  type        = string
+  description = "Instance name"
+}
+
 variable "event_hub_port" {
   type    = number
   default = 9093
@@ -113,41 +118,39 @@ variable "dns_zone_internal_prefix" {
 #   type        = string
 #   description = "Token MIL, OIDC URL"
 # }
-# variable "pdv_tokenizer_url" {
-#   type        = string
-#   default     = "127.0.0.1"
-#   description = "PDV uri. Endpoint for encryption of pii information."
-# }
+
 #
-# variable "pdv_timeout_sec" {
-#   type        = number
-#   description = "PDV timeout (sec)"
-#   default     = 15
-# }
+# PDV
 #
-# variable "pdv_retry_count" {
-#   type        = number
-#   description = "PDV max retry number"
-#   default     = 3
-# }
-#
-# variable "pdv_retry_interval" {
-#   type        = number
-#   description = "PDV interval between each retry"
-#   default     = 5
-# }
-#
-# variable "pdv_retry_max_interval" {
-#   type        = number
-#   description = "PDV max interval between each retry"
-#   default     = 15
-# }
-#
-# variable "pdv_retry_delta" {
-#   type        = number
-#   description = "PDV delta"
-#   default     = 1
-# }
+variable "pdv_tokenizer_url" {
+  type        = string
+  description = "PDV uri. Endpoint for encryption of pii information."
+}
+
+variable "pdv_timeout_sec" {
+  type        = number
+  description = "PDV timeout (sec)"
+}
+
+variable "pdv_retry_count" {
+  type        = number
+  description = "PDV max retry number"
+}
+
+variable "pdv_retry_interval" {
+  type        = number
+  description = "PDV interval between each retry"
+}
+
+variable "pdv_retry_max_interval" {
+  type        = number
+  description = "PDV max interval between each retry"
+}
+
+variable "pdv_retry_delta" {
+  type        = number
+  description = "PDV delta"
+}
 #
 # variable "checkiban_base_url" {
 #   type        = string
@@ -280,11 +283,10 @@ variable "dns_zone_internal_prefix" {
 #   default     = 2000
 # }
 #
-# variable "rate_limit_assistance_product" {
-#   type        = number
-#   description = "Rate limit for Assistance product"
-#   default     = 1000
-# }
+variable "rate_limit_assistance_product" {
+  type        = number
+  description = "Rate limit for Assistance product"
+}
 #
 # variable "rate_limit_mil_citizen_product" {
 #   type        = number
@@ -315,3 +317,22 @@ variable "dns_zone_internal_prefix" {
 #   description = "Rate limit for merchants portal product"
 #   default     = 2500
 # }
+
+#
+# IO
+#
+#APP IO
+variable "appio_timeout_sec" {
+  type        = number
+  description = "AppIo timeout (sec)"
+}
+
+variable "rate_limit_io_product" {
+  type        = number
+  description = "Rate limit for IO product"
+}
+
+variable "webViewUrl" {
+  type        = string
+  description = "WebView Url"
+}
