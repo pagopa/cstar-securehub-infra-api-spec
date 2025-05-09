@@ -114,10 +114,10 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
-# variable "openid_config_url_mil" {
-#   type        = string
-#   description = "Token MIL, OIDC URL"
-# }
+variable "openid_config_url_mil" {
+  type        = string
+  description = "Token MIL, OIDC URL"
+}
 
 #
 # PDV
@@ -158,16 +158,16 @@ variable "pdv_retry_delta" {
 #   description = "Check IBAN uri."
 # }
 #
-# variable "selc_base_url" {
-#   type        = string
-#   description = "SelfCare api backend url"
-# }
-#
-# variable "selc_timeout_sec" {
-#   type        = number
-#   description = "SelfCare api timeout (sec)"
-#   default     = 5
-# }
+variable "selc_base_url" {
+  type        = string
+  description = "SelfCare api backend url"
+}
+
+variable "selc_timeout_sec" {
+  type        = number
+  description = "SelfCare api timeout (sec)"
+  default     = 5
+}
 #
 # variable "pm_service_base_url" {
 #   type        = string
@@ -179,17 +179,17 @@ variable "pm_backend_url" {
   type        = string
   description = "Payment manager backend url (enrollment)"
 }
-#
-# variable "mil_openid_url" {
-#   type        = string
-#   description = "OpenId MIL url"
-# }
-#
-# variable "mil_issuer_url" {
-#   type        = string
-#   description = " MIL issuer url"
-# }
-#
+
+variable "mil_openid_url" {
+  type        = string
+  description = "OpenId MIL url"
+}
+
+variable "mil_issuer_url" {
+  type        = string
+  description = " MIL issuer url"
+}
+
 # variable "webViewUrl" {
 #   type        = string
 #   description = "WebView Url"
@@ -248,11 +248,11 @@ variable "reverse_proxy_rtd" {
 #   default     = false
 # }
 #
-# variable "idpay_mocked_acquirer_apim_user_id" {
-#   type        = string
-#   description = "APIm user id of mocked acquirer"
-#   default     = null
-# }
+variable "idpay_mocked_acquirer_apim_user_id" {
+  type        = string
+  description = "APIm user id of mocked acquirer"
+  default     = null
+}
 #
 # variable "aks_cluster_domain_name" {
 #   type        = string
@@ -296,23 +296,20 @@ variable "rate_limit_mil_merchant_product" {
   description = "Rate limit for MIL merchant product"
 }
 #
-# variable "rate_limit_minint_product" {
-#   type        = number
-#   description = "Rate limit for MIN INT product"
-#   default     = 1000
-# }
+variable "rate_limit_minint_product" {
+  type        = number
+  description = "Rate limit for MIN INT product"
+}
 #
-# variable "rate_limit_portal_product" {
-#   type        = number
-#   description = "Rate limit for institutions portal product"
-#   default     = 2500
-# }
+variable "rate_limit_portal_product" {
+  type        = number
+  description = "Rate limit for institutions portal product"
+}
 #
-# variable "rate_limit_merchants_portal_product" {
-#   type        = number
-#   description = "Rate limit for merchants portal product"
-#   default     = 2500
-# }
+variable "rate_limit_merchants_portal_product" {
+  type        = number
+  description = "Rate limit for merchants portal product"
+}
 
 #
 # IO
@@ -332,3 +329,13 @@ variable "webViewUrl" {
   type        = string
   description = "WebView Url"
 }
+
+variable "enable_flags" {
+  type = object({
+    mock_io_api = bool
+    mocked_merchant = bool
+  })
+  description = "Feature flags"
+
+}
+

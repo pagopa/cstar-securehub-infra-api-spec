@@ -2,7 +2,7 @@
 # module "idpay_citizen_data" {
 #   source = "./.terraform/modules/__v4__/api_management_api"
 #
-#   count               = var.enable.mock_io_api ? 1 : 0
+#   count               = var.enable_flags.mock_io_api ? 1 : 0
 #   name                = "${var.env_short}-idpay-mock-citizen-data"
 #   api_management_name = data.azurerm_api_management.apim_core.name
 #   resource_group_name = data.azurerm_resource_group.apim_rg.name

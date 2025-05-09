@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <!-- Storage related variables -->
-        <set-variable name="storagePrivateFqdn" value="${refund-storage-account-name}" />
+        <set-variable name="storagePrivateFqdn" value="${refund-storage-account-fqdn-private}" />
         <set-variable name="containerName" value="refund" />
         <!-- section: rewrite request to backend -->
         <!-- change base backend url -->

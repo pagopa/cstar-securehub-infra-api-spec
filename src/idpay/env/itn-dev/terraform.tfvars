@@ -29,6 +29,11 @@ rate_limit_assistance_product = 1000
 rate_limit_mil_merchant_product = 2000
 rate_limit_mil_citizen_product = 2000
 
+rate_limit_minint_product = 1000
+
+rate_limit_portal_product = 2500
+rate_limit_merchants_portal_product = 2500
+
 
 
 #
@@ -63,3 +68,26 @@ reverse_proxy_rtd = "127.0.0.1"
 #
 payment_timeout_sec = 5
 pm_backend_url      = "https://api.dev.platform.pagopa.it"
+
+enable_flags = {
+  mock_io_api = true
+  mocked_merchant = true
+}
+
+#
+# Mocked
+#
+idpay_mocked_acquirer_apim_user_id = "1"
+
+#
+# MIL
+#
+openid_config_url_mil = "https://mil-u-apim.azure-api.net/mil-auth/.well-known/openid-configuration"
+mil_openid_url        = "https://api-mcshared.dev.cstar.pagopa.it/auth/.well-known/openid-configuration"
+mil_issuer_url        = "https://api-mcshared.dev.cstar.pagopa.it/auth"
+
+#
+# SelfCare API
+#
+selc_base_url = "https://api.dev.selfcare.pagopa.it"
+selc_timeout_sec = 5

@@ -87,7 +87,7 @@ module "idpay_mil_payment" {
       operation_id = "getPublicKey"
 
       xml_content = templatefile("./api/idpay_mil/idpay_mil_payment/get-public-key-policy.xml.tpl", {
-        idpay-mil-key = data.azurerm_key_vault_secret.idpay_mil_key.name
+        idpay-mil-key = data.azurerm_key_vault_key.idpay_mil_key.name
         keyvault-name = data.azurerm_key_vault.key_vault_domain.name
       })
     },

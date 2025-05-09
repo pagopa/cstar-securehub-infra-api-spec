@@ -15,12 +15,45 @@ locals {
   domain_kv_rg_name        = "${local.project}-security-rg"
 
   #
+  # APIM
+  #
+  apim_rg_name                  = "cstar-${var.env_short}-api-rg"
+  apim_name                     = "cstar-${var.env_short}-apim"
+  apim_logger_id                = "${data.azurerm_api_management.apim_core.id}/loggers/${local.apim_name}-logger"
+
+
+  #
   # Data
   #
   data_resource_group_name = "${local.project}-data-rg"
   initiative_storage_name = "cstar${var.env_short}itnidpayinitatvsa"
+  initiative_storage_fqdn = data.azurerm_storage_account.initiative_storage.primary_blob_internet_endpoint
+
+  refund_storage_fqdn = data.azurerm_storage_account.refund_storage.primary_blob_internet_endpoint
   refund_storage_name = "cstar${var.env_short}itnidpayrefundsa"
 
+  idpay-portal-hostname          = "welfare.${data.azurerm_dns_zone.public.name}"
+  #
+  # ORIGINS (used for CORS on IDPAY Welfare Portal)
+  #
+  origins = {
+    base = concat(
+      [
+        "https://portal.${data.azurerm_dns_zone.public.name}",
+        "https://management.${data.azurerm_dns_zone.public.name}",
+        "https://${local.apim_name}.developer.azure-api.net",
+        "https://${local.idpay-portal-hostname}",
+      ],
+      var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001"] : []
+    )
+  }
+
+  #
+  # Selfcare
+  #
+  idpay-portal-hostname          = "welfare.${data.azurerm_dns_zone.public.name}"
+  idpay-oidc-config_url          = "https://${local.idpay-portal-hostname}/selfcare/openid-configuration.json"
+  selfcare-issuer                = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
 
   # monitor_appinsights_name        = "${local.product}-appinsights"
   # monitor_action_group_slack_name = "SlackPagoPA"
