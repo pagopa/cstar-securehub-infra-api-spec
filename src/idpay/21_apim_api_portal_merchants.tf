@@ -41,7 +41,7 @@ module "idpay_merchants_permission_portal" {
 
   description  = "IDPAY Merchants Portal User Permission"
   display_name = "IDPAY Merchants Portal User Permission API"
-  path         = "idpay/merchant/authorization"
+  path         = "idpay-itn/merchant/authorization"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayportalwelfarebackendrolepermission/idpay/welfare"
@@ -87,7 +87,7 @@ module "idpay_merchants_permission_portal" {
 #
 #   description  = "IDPAY Merchants Notification Email"
 #   display_name = "IDPAY Merchants Notification Email API"
-#   path         = "idpay/merchant/email-notification"
+#   path         = "idpay-itn/merchant/email-notification"
 #   protocols    = ["https"]
 #
 #   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaynotificationemail/"
@@ -136,7 +136,7 @@ module "idpay_merchants_permission_portal" {
 #
 #   description  = "IDPAY Merchants Portal"
 #   display_name = "IDPAY Merchants Portal API"
-#   path         = "idpay/merchant/portal"
+#   path         = "idpay-itn/merchant/portal"
 #   protocols    = ["https"]
 #
 #   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaymerchant/idpay/merchant/portal"

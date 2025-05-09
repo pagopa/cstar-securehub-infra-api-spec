@@ -45,7 +45,7 @@ module "idpay_api_webview" {
 
   description  = "IDPAY Webview"
   display_name = "IDPAY Webview"
-  path         = "idpay/self-expense"
+  path         = "idpay-itn/self-expense"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayselfexpensebackend/idpay/self-expense"

@@ -25,7 +25,7 @@ resource "azurerm_api_management_api" "idpay_token_exchange" {
 
   revision              = "1"
   display_name          = "IDPAY Token Exchange"
-  path                  = "idpay/welfare"
+  path                  = "idpay-itn/welfare"
   subscription_required = false
   #service_url           = ""
   protocols = ["https"]

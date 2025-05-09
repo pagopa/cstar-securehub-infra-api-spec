@@ -30,7 +30,7 @@ resource "azurerm_api_management_api" "idpay_mock_api" {
   revision              = "1"
   description           = "IDPAY MOCK API"
   display_name          = "IDPAY MOCK API"
-  path                  = "idpay/mock"
+  path                  = "idpay-itn/mock"
   protocols             = ["https"]
   subscription_required = false
 
