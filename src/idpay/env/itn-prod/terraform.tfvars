@@ -17,6 +17,6 @@ tags = {
 #
 # Dns
 #
-dns_zone_prefix      = "cstar"
+dns_zone_prefix          = "cstar"
 dns_zone_internal_prefix = "internal.cstar"
 external_domain          = "pagopa.it"
