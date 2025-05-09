@@ -37,7 +37,7 @@
 #
 #   depends_on = [azurerm_api_management_named_value.idpay_apim_subscription_mocked_acquirer_key]
 #
-#   source = "./.terraform/modules/__v3__/api_management_product"
+#   source = "./.terraform/modules/__v4__/api_management_product"
 #
 #
 #   product_id   = "idpay_api_merchant_mock_product"
@@ -67,7 +67,7 @@
 # module "idpay_qr_code_payment_mock_merchant" {
 #   count = var.idpay_mocked_merchant_enable ? 1 : 0
 #
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-qr-code-payment-mock-merchant"
 #   api_management_name = data.azurerm_api_management.apim_core.name

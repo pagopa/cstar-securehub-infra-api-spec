@@ -3,7 +3,7 @@
 # #
 #
 # module "idpay_api_portal_merchants_product" {
-#   source = "./.terraform/modules/__v3__/api_management_product"
+#   source = "./.terraform/modules/__v4__/api_management_product"
 #
 #
 #   product_id   = "idpay_api_portal_merchants_product"
@@ -33,7 +33,7 @@
 #
 # ## IDPAY Welfare Portal User Permission API ##
 # module "idpay_merchants_permission_portal" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-merchants-portal-permission"
 #   api_management_name = data.azurerm_api_management.apim_core.name
@@ -79,7 +79,7 @@
 #
 # ## IDPAY Welfare Portal Email API ##
 # module "idpay_merchants_notification_email_api" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-merchants-email"
 #   api_management_name = data.azurerm_api_management.apim_core.name
@@ -128,7 +128,7 @@
 #
 # ## IDPAY Welfare Merchants Portal API ##
 # module "idpay_merchants_portal" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-merchants-portal"
 #   api_management_name = data.azurerm_api_management.apim_core.name

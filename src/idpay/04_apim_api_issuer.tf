@@ -2,7 +2,7 @@
 # # IDPAY PRODUCTS
 # #
 # module "idpay_api_issuer_product" {
-#   source = "./.terraform/modules/__v3__/api_management_product"
+#   source = "./.terraform/modules/__v4__/api_management_product"
 #
 #
 #   product_id   = "idpay_api_issuer_product"
@@ -37,7 +37,7 @@
 #
 # ## IDPAY Onboarding workflow ISSUER API ##
 # module "idpay_onboarding_workflow_issuer" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-issuer-onboarding-workflow"
 #   api_management_name = data.azurerm_api_management.apim_core.name
@@ -88,7 +88,7 @@
 #
 # ## IDPAY Wallet IO API ##
 # module "idpay_wallet_issuer" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-issuer-wallet"
 #   api_management_name = data.azurerm_api_management.apim_core.name
@@ -147,7 +147,7 @@
 #
 # ## IDPAY Timeline IO API ##
 # module "idpay_timeline_issuer" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-issuer-timeline"
 #   api_management_name = data.azurerm_api_management.apim_core.name

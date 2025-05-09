@@ -3,7 +3,7 @@
 # #
 #
 # module "idpay_api_assistance_product" {
-#   source = "./.terraform/modules/__v3__/api_management_product"
+#   source = "./.terraform/modules/__v4__/api_management_product"
 #
 #
 #   product_id   = "idpay_api_assistance_product"
@@ -33,7 +33,7 @@
 # ## IDPAY Assistance API ##
 #
 # module "idpay_api_assistance" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-assistance"
 #   api_management_name = data.azurerm_api_management.apim_core.name

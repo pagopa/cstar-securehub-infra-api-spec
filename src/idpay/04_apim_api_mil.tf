@@ -3,7 +3,7 @@
 # #
 #
 # module "idpay_api_mil_merchant_product" {
-#   source = "./.terraform/modules/__v3__/api_management_product"
+#   source = "./.terraform/modules/__v4__/api_management_product"
 #
 #
 #   product_id   = "idpay_api_mil_merchant_product"
@@ -28,7 +28,7 @@
 # }
 #
 # module "idpay_api_mil_citizen_product" {
-#   source = "./.terraform/modules/__v3__/api_management_product"
+#   source = "./.terraform/modules/__v4__/api_management_product"
 #
 #
 #   product_id   = "idpay_api_mil_citizen_product"
@@ -54,7 +54,7 @@
 #
 # ## IDPAY MIL PAYMENT API ##
 # module "idpay_mil_payment" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-mil-payment"
 #   api_management_name = data.azurerm_api_management.apim_core.name
@@ -111,7 +111,7 @@
 #
 # ## IDPAY MIL API ##
 # module "idpay_mil_merchant" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-mil-merchant"
 #   api_management_name = data.azurerm_api_management.apim_core.name
@@ -154,7 +154,7 @@
 #
 # ## IDPAY MIL ONBOARDING API ##
 # module "idpay_mil_onboarding" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-mil-onboarding"
 #   api_management_name = data.azurerm_api_management.apim_core.name
@@ -219,7 +219,7 @@
 #
 # ## IDPAY MIL WALLET API ##
 # module "idpay_mil_wallet" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-mil-wallet"
 #   api_management_name = data.azurerm_api_management.apim_core.name

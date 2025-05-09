@@ -2,7 +2,7 @@
 # # IDPAY PRODUCTS
 # #
 # module "idpay_api_io_product" {
-#   source = "./.terraform/modules/__v3__/api_management_product"
+#   source = "./.terraform/modules/__v4__/api_management_product"
 #
 #
 #   product_id   = "idpay_api_io_product"
@@ -57,7 +57,7 @@
 #
 # ## IDPAY Onboarding workflow IO API ##
 # module "idpay_onboarding_workflow_io" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-onboarding-workflow"
 #   api_management_name = data.azurerm_api_management.apim_core.name
@@ -115,7 +115,7 @@
 #
 # ## IDPAY Wallet IO API ##
 # module "idpay_wallet_io" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-wallet"
 #   api_management_name = data.azurerm_api_management.apim_core.name
@@ -239,7 +239,7 @@
 #
 # ## IDPAY Timeline IO API ##
 # module "idpay_timeline_io" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-timeline"
 #   api_management_name = data.azurerm_api_management.apim_core.name
@@ -278,7 +278,7 @@
 #
 # ## IDPAY IBAN Wallet IO API ##
 # module "idpay_iban_io" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-iban"
 #   api_management_name = data.azurerm_api_management.apim_core.name
@@ -317,7 +317,7 @@
 #
 # ## IDPAY QR-Code payment IO API ##
 # module "idpay_qr_code_payment_io" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-qr-code-payment-io"
 #   api_management_name = data.azurerm_api_management.apim_core.name
@@ -341,7 +341,7 @@
 #
 # ## IDPAY Payment IO API ##
 # module "idpay_payment_io" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-payment-io"
 #   api_management_name = data.azurerm_api_management.apim_core.name

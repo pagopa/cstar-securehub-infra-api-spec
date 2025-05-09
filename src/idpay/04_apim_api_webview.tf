@@ -3,7 +3,7 @@
 # #
 #
 # module "idpay_api_webview_product" {
-#   source = "./.terraform/modules/__v3__/api_management_product"
+#   source = "./.terraform/modules/__v4__/api_management_product"
 #
 #
 #   product_id   = "idpay_api_webview_product"
@@ -37,7 +37,7 @@
 # ## IDPAY WebView API ##
 #
 # module "idpay_api_webview" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-self-expense-backend"
 #   api_management_name = data.azurerm_api_management.apim_core.name

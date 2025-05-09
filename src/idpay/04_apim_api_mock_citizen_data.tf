@@ -1,6 +1,6 @@
 # ## IDPAY Mock citizen data ##
 # module "idpay_citizen_data" {
-#   source = "./.terraform/modules/__v3__/api_management_api"
+#   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   count               = var.enable.mock_io_api ? 1 : 0
 #   name                = "${var.env_short}-idpay-mock-citizen-data"

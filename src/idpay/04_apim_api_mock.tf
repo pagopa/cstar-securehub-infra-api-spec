@@ -3,7 +3,7 @@
 # #
 #
 # module "idpay_api_mock_product" {
-#   source = "./.terraform/modules/__v3__/api_management_product"
+#   source = "./.terraform/modules/__v4__/api_management_product"
 #
 #
 #   product_id   = "idpay_api_mock_product"
