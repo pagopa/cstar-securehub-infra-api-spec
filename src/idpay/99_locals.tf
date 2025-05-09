@@ -6,6 +6,7 @@ locals {
   # Network
   #
   vnet_core_name                = "${local.product}-vnet"
+  dns_public_core_name                = "${var.dns_zone_prefix}.${var.external_domain}"
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
 
   #

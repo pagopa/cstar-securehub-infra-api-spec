@@ -8,6 +8,6 @@ data "azurerm_api_management" "apim_core" {
 }
 
 data "azurerm_dns_zone" "public" {
-  name                = local.vnet_core_name
+  name                = local.dns_public_core_name
   resource_group_name = local.vnet_core_resource_group_name
 }
