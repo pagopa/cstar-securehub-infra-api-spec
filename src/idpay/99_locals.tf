@@ -6,34 +6,34 @@ locals {
   # Network
   #
   vnet_core_name                = "${local.product}-vnet"
-  dns_public_core_name                = "${var.dns_zone_prefix}.${var.external_domain}"
+  dns_public_core_name          = "${var.dns_zone_prefix}.${var.external_domain}"
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
 
   #
   # AKS
   #
-  domain_aks_ingress_hostname = "${var.domain}.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
+  domain_aks_ingress_hostname            = "${var.domain}.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
   domain_aks_ingress_load_balancer_https = "https://${local.domain_aks_ingress_hostname}"
 
   #
   # KV
   #
-  domain_kv_name        = "${local.project}-kv"
-  domain_kv_rg_name        = "${local.project}-security-rg"
+  domain_kv_name    = "${local.project}-kv"
+  domain_kv_rg_name = "${local.project}-security-rg"
 
   #
   # APIM
   #
-  apim_rg_name                  = "cstar-${var.env_short}-api-rg"
-  apim_name                     = "cstar-${var.env_short}-apim"
-  apim_logger_id                = "${data.azurerm_api_management.apim_core.id}/loggers/${local.apim_name}-logger"
+  apim_rg_name   = "cstar-${var.env_short}-api-rg"
+  apim_name      = "cstar-${var.env_short}-apim"
+  apim_logger_id = "${data.azurerm_api_management.apim_core.id}/loggers/${local.apim_name}-logger"
 
   #
   # Data
   #
   data_resource_group_name = "${local.project}-data-rg"
-  initiative_storage_name = "cstar${var.env_short}itnidpayinitatvsa"
-  initiative_storage_fqdn = data.azurerm_storage_account.initiative_storage.primary_blob_internet_endpoint
+  initiative_storage_name  = "cstar${var.env_short}itnidpayinitatvsa"
+  initiative_storage_fqdn  = data.azurerm_storage_account.initiative_storage.primary_blob_internet_endpoint
 
   refund_storage_fqdn = data.azurerm_storage_account.refund_storage.primary_blob_internet_endpoint
   refund_storage_name = "cstar${var.env_short}itnidpayrefundsa"
@@ -56,9 +56,9 @@ locals {
   #
   # Selfcare
   #
-  idpay-portal-hostname          = "welfare.${data.azurerm_dns_zone.public.name}"
-  idpay-oidc-config_url          = "https://${local.idpay-portal-hostname}/selfcare/openid-configuration.json"
-  selfcare-issuer                = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
+  idpay-portal-hostname = "welfare.${data.azurerm_dns_zone.public.name}"
+  idpay-oidc-config_url = "https://${local.idpay-portal-hostname}/selfcare/openid-configuration.json"
+  selfcare-issuer       = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
 
   # monitor_appinsights_name        = "${local.product}-appinsights"
   # monitor_action_group_slack_name = "SlackPagoPA"

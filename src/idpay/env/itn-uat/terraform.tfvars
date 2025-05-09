@@ -32,7 +32,7 @@ webViewUrl = "https://api-io.uat.cstar.pagopa.it/idpay/self-expense/login"
 #
 # Payment
 #
-pm_backend_url      = "https://api.uat.platform.pagopa.it"
+pm_backend_url = "https://api.uat.platform.pagopa.it"
 
 #
 # Mocked
@@ -49,5 +49,5 @@ mil_issuer_url        = "https://api-mcshared.uat.cstar.pagopa.it/auth"
 #
 # SelfCare API
 #
-selc_base_url = "https://api.uat.selfcare.pagopa.it"
+selc_base_url    = "https://api.uat.selfcare.pagopa.it"
 selc_timeout_sec = 5

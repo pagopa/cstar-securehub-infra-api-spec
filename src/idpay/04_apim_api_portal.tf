@@ -649,7 +649,7 @@ resource "azurerm_api_management_named_value" "refund_storage_access_key" {
 
   display_name = "refund-storage-access-key"
   secret       = true
-  value = data.azurerm_storage_account.refund_storage.primary_access_key
+  value        = data.azurerm_storage_account.refund_storage.primary_access_key
 }
 
 resource "azurerm_api_management_named_value" "initiative_storage_access_key" {
@@ -660,5 +660,5 @@ resource "azurerm_api_management_named_value" "initiative_storage_access_key" {
 
   display_name = "initiative-storage-access-key"
   secret       = true
-  value = data.azurerm_storage_account.initiative_storage.primary_access_key
+  value        = data.azurerm_storage_account.initiative_storage.primary_access_key
 }

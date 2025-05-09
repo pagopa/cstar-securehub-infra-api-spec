@@ -332,10 +332,9 @@ variable "webViewUrl" {
 
 variable "enable_flags" {
   type = object({
-    mock_io_api = bool
+    mock_io_api     = bool
     mocked_merchant = bool
   })
   description = "Feature flags"
 
 }
-

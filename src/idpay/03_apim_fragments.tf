@@ -1,21 +1,21 @@
 resource "azurerm_api_management_policy_fragment" "apim_merchant_id_retriever" {
-  name               = "idpay-merchant-id-retriever"
-  api_management_id  = data.azurerm_api_management.apim_core.id
+  name              = "idpay-merchant-id-retriever"
+  api_management_id = data.azurerm_api_management.apim_core.id
 
-  description  = "idpay-merchant-id-retriever"
-  format       = "rawxml"
-  value  = templatefile("./apim/api_fragment/merchant-id-retriever.xml", {
+  description = "idpay-merchant-id-retriever"
+  format      = "rawxml"
+  value = templatefile("./apim/api_fragment/merchant-id-retriever.xml", {
     ingress_hostname = local.domain_aks_ingress_hostname
   })
 }
 
 resource "azurerm_api_management_policy_fragment" "apim_pdv_tokenizer" {
-  name               = "idpay-pdv-tokenizer"
-  api_management_id  = data.azurerm_api_management.apim_core.id
+  name              = "idpay-pdv-tokenizer"
+  api_management_id = data.azurerm_api_management.apim_core.id
 
-  description  = "idpay-pdv-tokenizer"
-  format       = "rawxml"
-  value  = templatefile("./apim/api_fragment/pdv-tokenizer.xml", {
+  description = "idpay-pdv-tokenizer"
+  format      = "rawxml"
+  value = templatefile("./apim/api_fragment/pdv-tokenizer.xml", {
     pdv_timeout_sec        = var.pdv_timeout_sec
     pdv_tokenizer_url      = var.pdv_tokenizer_url
     pdv_retry_count        = var.pdv_retry_count
@@ -26,23 +26,23 @@ resource "azurerm_api_management_policy_fragment" "apim_pdv_tokenizer" {
 }
 
 resource "azurerm_api_management_policy_fragment" "apim_validate_token_mil" {
-  name               = "idpay-validate-token-mil"
-  api_management_id  = data.azurerm_api_management.apim_core.id
+  name              = "idpay-validate-token-mil"
+  api_management_id = data.azurerm_api_management.apim_core.id
 
-  description  = "idpay-validate-token-mil"
-  format       = "rawxml"
-  value  = templatefile("./apim/api_fragment/validate-token-mil.xml", {
+  description = "idpay-validate-token-mil"
+  format      = "rawxml"
+  value = templatefile("./apim/api_fragment/validate-token-mil.xml", {
     openid-config-url-mil = var.openid_config_url_mil
   })
 }
 
 resource "azurerm_api_management_policy_fragment" "apim_webview_validate_token_mil" {
-  name               = "idpay-webview-validate-token-mil"
-  api_management_id  = data.azurerm_api_management.apim_core.id
+  name              = "idpay-webview-validate-token-mil"
+  api_management_id = data.azurerm_api_management.apim_core.id
 
-  description  = "idpay-webview-validate-token-mil"
-  format       = "rawxml"
-  value  = templatefile("./apim/api_fragment/webview-validate-token-mil.xml", {
+  description = "idpay-webview-validate-token-mil"
+  format      = "rawxml"
+  value = templatefile("./apim/api_fragment/webview-validate-token-mil.xml", {
     openidUrl = var.mil_openid_url,
     issuerUrl = var.mil_issuer_url
   })
