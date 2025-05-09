@@ -20,3 +20,11 @@ tags = {
 dns_zone_prefix          = "cstar"
 dns_zone_internal_prefix = "internal.cstar"
 external_domain          = "pagopa.it"
+
+#
+# AKS Legacy
+#
+aks_legacy_instance_name = "prod01"
+
+
+webViewUrl = "https://api-io.cstar.pagopa.it/idpay/self-expense/login"

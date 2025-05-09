@@ -20,3 +20,30 @@ tags = {
 dns_zone_prefix          = "dev.cstar"
 dns_zone_internal_prefix = "internal.dev.cstar"
 external_domain          = "pagopa.it"
+
+#
+# Rate limit
+#
+rate_limit_assistance_product = 1000
+
+#
+# PDV
+#
+pdv_tokenizer_url = "127.0.0.1"
+pdv_timeout_sec = 15
+   pdv_retry_count = 3
+        pdv_retry_interval = 5
+         pdv_retry_max_interval = 15
+             pdv_retry_delta = 1
+
+#
+# AKS Legacy
+#
+aks_legacy_instance_name = "dev01"
+
+#
+# IO
+#
+appio_timeout_sec = 5
+rate_limit_io_product = 2500
+webViewUrl = "https://api-io.dev.cstar.pagopa.it/idpay/self-expense/login"
