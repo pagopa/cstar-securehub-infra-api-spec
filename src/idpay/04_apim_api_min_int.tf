@@ -19,7 +19,7 @@ module "idpay_api_min_int_product" {
 
   subscriptions_limit = 50
 
-  policy_xml = templatefile("./api_product/min_int/policy_min_int.xml", {
+  policy_xml = templatefile("./apim/api_product/min_int/policy_min_int.xml", {
     rate_limit_minint = var.rate_limit_minint_product
     }
   )
@@ -43,9 +43,9 @@ module "idpay_min_int" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaypayment/idpay/minint/payment"
 
   content_format = "openapi"
-  content_value  = file("./api/idpay_min_int/openapi.min.int.yml")
+  content_value  = file("./apim/api/idpay_min_int/openapi.min.int.yml")
 
-  xml_content = file("./api/base_policy.xml")
+  xml_content = file("./apim/api/base_policy.xml")
 
   product_ids           = [module.idpay_api_min_int_product.product_id]
   subscription_required = true
@@ -54,7 +54,7 @@ module "idpay_min_int" {
     {
       operation_id = "putAssociateUserTrx"
 
-      xml_content = templatefile("./api/idpay_min_int/put-associate-user-trx-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_min_int/put-associate-user-trx-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }

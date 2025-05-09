@@ -18,7 +18,7 @@ module "idpay_api_acquirer_product" {
 
   subscriptions_limit = 0
 
-  policy_xml = file("./api_product/acquirer/policy_acquirer.xml")
+  policy_xml = file("./apim/api_product/acquirer/policy_acquirer.xml")
 
   groups = ["developers"]
 
@@ -44,9 +44,9 @@ module "idpay_qr_code_payment_acquirer" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaypayment/idpay/payment/qr-code/merchant"
 
   content_format = "openapi"
-  content_value  = templatefile("./api/idpay_qrcode_payment/acquirer/openapi.qrcode_payment_acquirer.yml.tpl", {})
+  content_value  = templatefile("./apim/api/idpay_qrcode_payment/acquirer/openapi.qrcode_payment_acquirer.yml.tpl", {})
 
-  xml_content = file("./api/base_policy.xml")
+  xml_content = file("./apim/api/base_policy.xml")
 
   product_ids = [module.idpay_api_acquirer_product.product_id]
 

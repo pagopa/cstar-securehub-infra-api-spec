@@ -15,9 +15,9 @@
 #   service_url = "http://${local.domain_aks_ingress_hostname}/idpayadmissibility/idpay/mock/citizen"
 #
 #   content_format = "openapi"
-#   content_value  = file("./api/idpay_mock_citizen_data/openapi.mock.citizen.yml")
+#   content_value  = file("./apim/api/idpay_mock_citizen_data/openapi.mock.citizen.yml")
 #
-#   xml_content = file("./api/base_policy.xml")
+#   xml_content = file("./apim/api/base_policy.xml")
 #
 #   product_ids           = [data.azurerm_api_management_product.mock_api_product[0].product_id]
 #   subscription_required = true
@@ -25,7 +25,7 @@
 #   api_operation_policies = [
 #     {
 #       operation_id = "createIsee"
-#       xml_content = templatefile("./api/idpay_mock_citizen_data/create-isee-policy.xml.tpl", {
+#       xml_content = templatefile("./apim/api/idpay_mock_citizen_data/create-isee-policy.xml.tpl", {
 #         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #         pdv_timeout_sec                = var.pdv_timeout_sec
 #         pdv_tokenizer_url              = var.pdv_tokenizer_url

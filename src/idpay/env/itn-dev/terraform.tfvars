@@ -66,7 +66,7 @@ reverse_proxy_rtd = "127.0.0.1"
 #
 # Payment
 #
-payment_timeout_sec = 5
+pm_timeout_sec = 5
 pm_backend_url      = "https://api.dev.platform.pagopa.it"
 
 enable_flags = {

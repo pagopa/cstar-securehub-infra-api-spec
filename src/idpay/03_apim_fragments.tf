@@ -4,7 +4,7 @@ resource "azurerm_api_management_policy_fragment" "apim_merchant_id_retriever" {
 
   description  = "idpay-merchant-id-retriever"
   format       = "rawxml"
-  value  = templatefile("./api_fragment/merchant-id-retriever.xml", {
+  value  = templatefile("./apim/api_fragment/merchant-id-retriever.xml", {
     ingress_hostname = local.domain_aks_ingress_hostname
   })
 }
@@ -15,7 +15,7 @@ resource "azurerm_api_management_policy_fragment" "apim_pdv_tokenizer" {
 
   description  = "idpay-pdv-tokenizer"
   format       = "rawxml"
-  value  = templatefile("./api_fragment/pdv-tokenizer.xml", {
+  value  = templatefile("./apim/api_fragment/pdv-tokenizer.xml", {
     pdv_timeout_sec        = var.pdv_timeout_sec
     pdv_tokenizer_url      = var.pdv_tokenizer_url
     pdv_retry_count        = var.pdv_retry_count
@@ -31,7 +31,7 @@ resource "azurerm_api_management_policy_fragment" "apim_validate_token_mil" {
 
   description  = "idpay-validate-token-mil"
   format       = "rawxml"
-  value  = templatefile("./api_fragment/validate-token-mil.xml", {
+  value  = templatefile("./apim/api_fragment/validate-token-mil.xml", {
     openid-config-url-mil = var.openid_config_url_mil
   })
 }
@@ -42,13 +42,13 @@ resource "azurerm_api_management_policy_fragment" "apim_webview_validate_token_m
 
   description  = "idpay-webview-validate-token-mil"
   format       = "rawxml"
-  value  = templatefile("./api_fragment/webview-validate-token-mil.xml", {
+  value  = templatefile("./apim/api_fragment/webview-validate-token-mil.xml", {
     openidUrl = var.mil_openid_url,
     issuerUrl = var.mil_issuer_url
   })
 
   lifecycle {
-    ignore_changes = [xml_content]
+    ignore_changes = [value]
   }
 }
 
@@ -62,7 +62,7 @@ resource "azurerm_api_management_policy_fragment" "apim_webview_validate_token_m
 #     properties = {
 #       description = "idpay-merchant-id-retriever"
 #       format      = "rawxml"
-#       value = templatefile("./api_fragment/merchant-id-retriever.xml", {
+#       value = templatefile("./apim/api_fragment/merchant-id-retriever.xml", {
 #         ingress_hostname = local.domain_aks_ingress_hostname
 #       })
 #     }
@@ -79,7 +79,7 @@ resource "azurerm_api_management_policy_fragment" "apim_webview_validate_token_m
 #     properties = {
 #       description = "idpay-pdv-tokenizer"
 #       format      = "rawxml"
-#       value = templatefile("./api_fragment/pdv-tokenizer.xml", {
+#       value = templatefile("./apim/api_fragment/pdv-tokenizer.xml", {
 #         pdv_timeout_sec        = var.pdv_timeout_sec
 #         pdv_tokenizer_url      = var.pdv_tokenizer_url
 #         pdv_retry_count        = var.pdv_retry_count
@@ -100,7 +100,7 @@ resource "azurerm_api_management_policy_fragment" "apim_webview_validate_token_m
 #     properties = {
 #       description = "idpay-validate-token-mil"
 #       format      = "rawxml"
-#       value = templatefile("./api_fragment/validate-token-mil.xml", {
+#       value = templatefile("./apim/api_fragment/validate-token-mil.xml", {
 #         openid-config-url-mil = var.openid_config_url_mil
 #       })
 #     }
@@ -116,7 +116,7 @@ resource "azurerm_api_management_policy_fragment" "apim_webview_validate_token_m
 #     properties = {
 #       description = "idpay-webview-validate-token-mil"
 #       format      = "rawxml"
-#       value = templatefile("./api_fragment/webview-validate-token-mil.xml", {
+#       value = templatefile("./apim/api_fragment/webview-validate-token-mil.xml", {
 #         openidUrl = var.mil_openid_url,
 #         issuerUrl = var.mil_issuer_url
 #       })

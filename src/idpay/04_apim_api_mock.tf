@@ -65,7 +65,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_mock_notificator_m
   resource_group_name = azurerm_api_management_api_operation.idpay_mock_notificator_messages.resource_group_name
   operation_id        = azurerm_api_management_api_operation.idpay_mock_notificator_messages.operation_id
 
-  xml_content = templatefile("./api/idpay_mock_api/mock_notificator_messages.xml.tpl", {
+  xml_content = templatefile("./apim/api/idpay_mock_api/mock_notificator_messages.xml.tpl", {
     env = var.env
   })
 
@@ -91,7 +91,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_mock_notificator_p
   resource_group_name = azurerm_api_management_api_operation.idpay_mock_notificator_profiles.resource_group_name
   operation_id        = azurerm_api_management_api_operation.idpay_mock_notificator_profiles.operation_id
 
-  xml_content = templatefile("./api/idpay_mock_api/mock_notificator_profiles.xml.tpl", {
+  xml_content = templatefile("./apim/api/idpay_mock_api/mock_notificator_profiles.xml.tpl", {
   })
 
   depends_on = [azurerm_api_management_api_operation.idpay_mock_notificator_profiles]
@@ -116,7 +116,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_mock_create_servic
   resource_group_name = azurerm_api_management_api_operation.idpay_mock_create_service.resource_group_name
   operation_id        = azurerm_api_management_api_operation.idpay_mock_create_service.operation_id
 
-  xml_content = templatefile("./api/idpay_mock_api/mock_create_service.xml.tpl", {
+  xml_content = templatefile("./apim/api/idpay_mock_api/mock_create_service.xml.tpl", {
     env = var.env
   })
 
@@ -147,7 +147,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_mock_delete_servic
   resource_group_name = azurerm_api_management_api_operation.idpay_mock_delete_service.resource_group_name
   operation_id        = azurerm_api_management_api_operation.idpay_mock_delete_service.operation_id
 
-  xml_content = templatefile("./api/idpay_mock_api/mock_delete_service.xml.tpl", {
+  xml_content = templatefile("./apim/api/idpay_mock_api/mock_delete_service.xml.tpl", {
     env = var.env
   })
 
@@ -178,7 +178,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_mock_update_servic
   resource_group_name = azurerm_api_management_api_operation.idpay_mock_update_service.resource_group_name
   operation_id        = azurerm_api_management_api_operation.idpay_mock_update_service.operation_id
 
-  xml_content = templatefile("./api/idpay_mock_api/mock_update_service.xml.tpl", {
+  xml_content = templatefile("./apim/api/idpay_mock_api/mock_update_service.xml.tpl", {
     env = var.env
   })
 
@@ -209,7 +209,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_mock_upload_servic
   resource_group_name = azurerm_api_management_api_operation.idpay_mock_upload_service_logo.resource_group_name
   operation_id        = azurerm_api_management_api_operation.idpay_mock_upload_service_logo.operation_id
 
-  xml_content = templatefile("./api/idpay_mock_api/mock_upload_service_logo.xml.tpl", {
+  xml_content = templatefile("./apim/api/idpay_mock_api/mock_upload_service_logo.xml.tpl", {
   })
 
   depends_on = [azurerm_api_management_api_operation.idpay_mock_upload_service_logo]
@@ -239,7 +239,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_mock_retrieve_serv
   resource_group_name = azurerm_api_management_api_operation.idpay_mock_retrieve_service_token.resource_group_name
   operation_id        = azurerm_api_management_api_operation.idpay_mock_retrieve_service_token.operation_id
 
-  xml_content = templatefile("./api/idpay_mock_api/mock_retrieve_service_token.xml.tpl", {
+  xml_content = templatefile("./apim/api/idpay_mock_api/mock_retrieve_service_token.xml.tpl", {
     env = var.env
   })
 
@@ -270,7 +270,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_mock_tos_version_p
   resource_group_name = azurerm_api_management_api_operation.idpay_mock_tos_version.resource_group_name
   operation_id        = azurerm_api_management_api_operation.idpay_mock_tos_version.operation_id
 
-  xml_content = templatefile("./api/idpay_mock_api/mock_tos_version.xml.tpl", {
+  xml_content = templatefile("./apim/api/idpay_mock_api/mock_tos_version.xml.tpl", {
   })
 
   depends_on = [azurerm_api_management_api_operation.idpay_mock_tos_version]

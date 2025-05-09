@@ -19,7 +19,7 @@ module "idpay_api_webview_product" {
 
   subscriptions_limit = 0
 
-  policy_xml = templatefile("./api_product/webview/policy_webview.xml", {
+  policy_xml = templatefile("./apim/api_product/webview/policy_webview.xml", {
     rate_limit_io_product = var.rate_limit_io_product
     }
   )
@@ -51,9 +51,9 @@ module "idpay_api_webview" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayselfexpensebackend/idpay/self-expense"
 
   content_format = "openapi"
-  content_value  = file("./api/idpay-self-expense/openapi.self-expense.yml.tpl")
+  content_value  = file("./apim/api/idpay-self-expense/openapi.self-expense.yml.tpl")
 
-  xml_content = file("./api/base_policy.xml")
+  xml_content = file("./apim/api/base_policy.xml")
 
   product_ids           = [module.idpay_api_webview_product.product_id]
   subscription_required = false
@@ -62,35 +62,35 @@ module "idpay_api_webview" {
     {
       operation_id = "login"
 
-      xml_content = templatefile("./api/idpay-self-expense/login.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay-self-expense/login.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getRedirect"
 
-      xml_content = templatefile("./api/idpay-self-expense/get-redirect.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay-self-expense/get-redirect.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "session"
 
-      xml_content = templatefile("./api/idpay-self-expense/get-session.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay-self-expense/get-session.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getChildForUserId"
 
-      xml_content = templatefile("./api/idpay-self-expense/get-child-for-userid.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay-self-expense/get-child-for-userid.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "saveExpenseData"
 
-      xml_content = templatefile("./api/idpay-self-expense/save-expense-data.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay-self-expense/save-expense-data.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }

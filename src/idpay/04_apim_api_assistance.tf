@@ -19,7 +19,7 @@ module "idpay_api_assistance_product" {
 
   subscriptions_limit = 50
 
-  policy_xml = templatefile("./api_product/assistance/policy_assistance.xml", {
+  policy_xml = templatefile("./apim/api_product/assistance/policy_assistance.xml", {
     rate_limit_assistance = var.rate_limit_assistance_product
     }
   )
@@ -47,9 +47,9 @@ module "idpay_api_assistance" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayportalwelfarebackeninitiative/idpay/initiative"
 
   content_format = "openapi"
-  content_value  = file("./api/idpay_assistance/openapi.assistance.yml")
+  content_value  = file("./apim/api/idpay_assistance/openapi.assistance.yml")
 
-  xml_content = file("./api/base_policy.xml")
+  xml_content = file("./apim/api/base_policy.xml")
 
   product_ids           = [module.idpay_api_assistance_product.product_id]
   subscription_required = true
@@ -58,77 +58,77 @@ module "idpay_api_assistance" {
     {
       operation_id = "getListOfOrganization"
 
-      xml_content = templatefile("./api/idpay_assistance/get-organization-list.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-organization-list.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getInitativeSummary"
 
-      xml_content = templatefile("./api/idpay_assistance/get-initiative-summary.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-initiative-summary.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getInitiativeDetail"
 
-      xml_content = templatefile("./api/idpay_assistance/get-initiative-detail.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-initiative-detail.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "initiativeStatistics"
 
-      xml_content = templatefile("./api/idpay_assistance/get-initiative-statistics.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-initiative-statistics.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getRewardNotificationExportsPaged"
 
-      xml_content = templatefile("./api/idpay_assistance/get-initiative-reward-notifications-exp.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-initiative-reward-notifications-exp.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getRewardNotificationImportsPaged"
 
-      xml_content = templatefile("./api/idpay_assistance/get-initiative-reward-notifications-imp.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-initiative-reward-notifications-imp.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getOnboardingStatus"
 
-      xml_content = templatefile("./api/idpay_assistance/get-onboarding-status.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-onboarding-status.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getInitiativeOnboardingRankingStatusPaged"
 
-      xml_content = templatefile("./api/idpay_assistance/get-ranking.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-ranking.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getRankingFileDownload"
 
-      xml_content = templatefile("./api/idpay_assistance/get-ranking-download.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-ranking-download.xml.tpl", {
         initiative-storage-account-fqdn-private = data.azurerm_storage_account.initiative_storage.primary_blob_internet_host
       })
     },
     {
       operation_id = "getRewardFileDownload"
 
-      xml_content = templatefile("./api/idpay_assistance/get-reward-download.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-reward-download.xml.tpl", {
         refund-storage-account-name = data.azurerm_storage_account.refund_storage.name
       })
     },
     {
       operation_id = "getDispFileErrors"
 
-      xml_content = templatefile("./api/idpay_assistance/get-disp-errors.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-disp-errors.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
@@ -136,49 +136,49 @@ module "idpay_api_assistance" {
     {
       operation_id = "getIban"
 
-      xml_content = templatefile("./api/idpay_assistance/get-beneficiary-iban.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-beneficiary-iban.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getTimeline"
 
-      xml_content = templatefile("./api/idpay_assistance/get-beneficiary-timeline.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-beneficiary-timeline.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getTimelineDetail"
 
-      xml_content = templatefile("./api/idpay_assistance/get-beneficiary-timeline-detail.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-beneficiary-timeline-detail.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getWalletDetail"
 
-      xml_content = templatefile("./api/idpay_assistance/get-beneficiary-wallet.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-beneficiary-wallet.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getBeneficiaryOnboardingStatus"
 
-      xml_content = templatefile("./api/idpay_assistance/get-beneficiary-onboarding-status.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-beneficiary-onboarding-status.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getFamilyComposition"
 
-      xml_content = templatefile("./api/idpay_assistance/get-beneficiary-onboarding-family-status.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-beneficiary-onboarding-family-status.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getInstrumentList"
 
-      xml_content = templatefile("./api/idpay_assistance/get-beneficiary-instruments.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-beneficiary-instruments.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
@@ -186,21 +186,21 @@ module "idpay_api_assistance" {
     {
       operation_id = "getExportSummary"
 
-      xml_content = templatefile("./api/idpay_assistance/get-refund-export-summary.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-refund-export-summary.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getExportRefundsListPaged"
 
-      xml_content = templatefile("./api/idpay_assistance/get-refund-list.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-refund-list.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getRefundDetail"
 
-      xml_content = templatefile("./api/idpay_assistance/get-refund-detail.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-refund-detail.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
         pdv_timeout_sec                = var.pdv_timeout_sec
         pdv_tokenizer_url              = var.pdv_tokenizer_url
@@ -213,35 +213,35 @@ module "idpay_api_assistance" {
     {
       operation_id = "getMerchantList"
 
-      xml_content = templatefile("./api/idpay_assistance/get-merchant-list-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-merchant-list-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getMerchantDetail"
 
-      xml_content = templatefile("./api/idpay_assistance/get-merchant-detail-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-merchant-detail-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getMerchantInitiativeStatistics"
 
-      xml_content = templatefile("./api/idpay_assistance/get-merchant-statistics-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-merchant-statistics-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getMerchantTransactions"
 
-      xml_content = templatefile("./api/idpay_assistance/get-merchant-transactions-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-merchant-transactions-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getMerchantTransactionsProcessed"
 
-      xml_content = templatefile("./api/idpay_assistance/get-merchant-transactions-processed-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_assistance/get-merchant-transactions-processed-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }

@@ -19,7 +19,7 @@ module "idpay_api_mil_merchant_product" {
 
   subscriptions_limit = 50
 
-  policy_xml = templatefile("./api_product/mil_api/policy_mil_merchant.xml", {
+  policy_xml = templatefile("./apim/api_product/mil_api/policy_mil_merchant.xml", {
     rate_limit_mil_merchant = var.rate_limit_mil_merchant_product
     }
   )
@@ -44,7 +44,7 @@ module "idpay_api_mil_citizen_product" {
 
   subscriptions_limit = 50
 
-  policy_xml = templatefile("./api_product/mil_api/policy_mil_citizen.xml", {
+  policy_xml = templatefile("./apim/api_product/mil_api/policy_mil_citizen.xml", {
     rate_limit_mil_citizen = var.rate_limit_mil_citizen_product
     }
   )
@@ -68,9 +68,9 @@ module "idpay_mil_payment" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaypayment/idpay/mil/payment"
 
   content_format = "openapi"
-  content_value  = file("./api/idpay_mil/idpay_mil_payment/openapi.mil.payment.yml")
+  content_value  = file("./apim/api/idpay_mil/idpay_mil_payment/openapi.mil.payment.yml")
 
-  xml_content = file("./api/base_policy.xml")
+  xml_content = file("./apim/api/base_policy.xml")
 
   product_ids           = [module.idpay_api_mil_merchant_product.product_id]
   subscription_required = true
@@ -79,14 +79,14 @@ module "idpay_mil_payment" {
     {
       operation_id = "createGenericTransaction"
 
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_payment/post-create-transaction-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_payment/post-create-transaction-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getPublicKey"
 
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_payment/get-public-key-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_payment/get-public-key-policy.xml.tpl", {
         idpay-mil-key = data.azurerm_key_vault_key.idpay_mil_key.name
         keyvault-name = data.azurerm_key_vault.key_vault_domain.name
       })
@@ -94,14 +94,14 @@ module "idpay_mil_payment" {
     {
       operation_id = "getStatusTransaction"
 
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_payment/get-transaction-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_payment/get-transaction-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "deleteTransaction"
 
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_payment/delete-transaction-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_payment/delete-transaction-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
@@ -125,9 +125,9 @@ module "idpay_mil_merchant" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaypayment/idpay/merchant"
 
   content_format = "openapi"
-  content_value  = file("./api/idpay_mil/idpay_mil_merchant/openapi.mil.merchant.yml")
+  content_value  = file("./apim/api/idpay_mil/idpay_mil_merchant/openapi.mil.merchant.yml")
 
-  xml_content = file("./api/base_policy.xml")
+  xml_content = file("./apim/api/base_policy.xml")
 
   product_ids           = [module.idpay_api_mil_merchant_product.product_id]
   subscription_required = true
@@ -136,14 +136,14 @@ module "idpay_mil_merchant" {
     {
       operation_id = "getMerchantInitiativeList"
 
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_merchant/get-merchant-initiatives-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_merchant/get-merchant-initiatives-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "uploadMerchantList"
 
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_merchant/put-merchant-upload-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_merchant/put-merchant-upload-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
@@ -168,9 +168,9 @@ module "idpay_mil_onboarding" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayonboardingworkflow/idpay/onboarding"
 
   content_format = "openapi"
-  content_value  = file("./api/idpay_mil/idpay_mil_onboarding/openapi.mil.onboarding.yml")
+  content_value  = file("./apim/api/idpay_mil/idpay_mil_onboarding/openapi.mil.onboarding.yml")
 
-  xml_content = file("./api/base_policy.xml")
+  xml_content = file("./apim/api/base_policy.xml")
 
   product_ids           = [module.idpay_api_mil_citizen_product.product_id]
   subscription_required = true
@@ -178,37 +178,37 @@ module "idpay_mil_onboarding" {
   api_operation_policies = [
     {
       operation_id = "onboardingCitizen"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_onboarding/put-terms-conditions-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_onboarding/put-terms-conditions-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "checkPrerequisites"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_onboarding/put-check-prerequisites-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_onboarding/put-check-prerequisites-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "onboardingStatus"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_onboarding/get-onboarding-status-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_onboarding/get-onboarding-status-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "consentOnboarding"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_onboarding/put-consent-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_onboarding/put-consent-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getInitiativeList"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_onboarding/get-initiative-list-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_onboarding/get-initiative-list-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getInitiativeBeneficiaryDetail"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_onboarding/get-initiative-detail-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_onboarding/get-initiative-detail-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
@@ -233,9 +233,9 @@ module "idpay_mil_wallet" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaywallet/idpay/wallet"
 
   content_format = "openapi"
-  content_value  = file("./api/idpay_mil/idpay_mil_wallet/openapi.mil.wallet.yml")
+  content_value  = file("./apim/api/idpay_mil/idpay_mil_wallet/openapi.mil.wallet.yml")
 
-  xml_content = file("./api/base_policy.xml")
+  xml_content = file("./apim/api/base_policy.xml")
 
   product_ids           = [module.idpay_api_mil_citizen_product.product_id]
   subscription_required = true
@@ -243,43 +243,43 @@ module "idpay_mil_wallet" {
   api_operation_policies = [
     {
       operation_id = "getWallet"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/get-wallet-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/get-wallet-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getWalletDetail"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/get-wallet-detail-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/get-wallet-detail-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "enrollIban"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/put-enroll-iban-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/put-enroll-iban-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "enrollInstrument"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/put-enroll-instrument-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/put-enroll-instrument-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getInstrumentList"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/get-instrument-list-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/get-instrument-list-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "deleteInstrument"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/delete-instrument-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/delete-instrument-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getIdpayCodeStatus"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/get-code-status-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/get-code-status-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
         env_short                      = var.env_short
 
@@ -287,7 +287,7 @@ module "idpay_mil_wallet" {
     },
     {
       operation_id = "generateCode"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/post-generate-idpaycode-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/post-generate-idpaycode-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
         env_short                      = var.env_short
 
@@ -295,7 +295,7 @@ module "idpay_mil_wallet" {
     },
     {
       operation_id = "enrollInstrumentCode"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/put-enroll-instrument-idpaycode-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/put-enroll-instrument-idpaycode-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
         env_short                      = var.env_short
 
@@ -303,25 +303,25 @@ module "idpay_mil_wallet" {
     },
     {
       operation_id = "unsubscribe"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/put-unsubscribe-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/put-unsubscribe-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getIban"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/get-iban-detail-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/get-iban-detail-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getTimeline"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/get-timeline-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/get-timeline-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getTimelineDetail"
-      xml_content = templatefile("./api/idpay_mil/idpay_mil_wallet/get-timeline-detail-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_wallet/get-timeline-detail-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }

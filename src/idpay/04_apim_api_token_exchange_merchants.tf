@@ -37,7 +37,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_merchants_token_ex
   resource_group_name = azurerm_api_management_api_operation.idpay_merchants_token_exchange.resource_group_name
   operation_id        = azurerm_api_management_api_operation.idpay_merchants_token_exchange.operation_id
 
-  xml_content = templatefile("./api/idpay_token_exchange/jwt_exchange_merchants.xml.tpl", {
+  xml_content = templatefile("./apim/api/idpay_token_exchange/jwt_exchange_merchants.xml.tpl", {
     openid-config-url           = local.idpay-oidc-config_url,
     selfcare-issuer             = local.selfcare-issuer,
     jwt_cert_signing_thumbprint = azurerm_api_management_certificate.idpay_merchants_token_exchange_cert_jwt.thumbprint,
@@ -70,7 +70,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_merchants_token_ex
   resource_group_name = azurerm_api_management_api_operation.idpay_merchants_token_exchange_test[0].resource_group_name
   operation_id        = azurerm_api_management_api_operation.idpay_merchants_token_exchange_test[0].operation_id
 
-  xml_content = templatefile("./api/idpay_token_exchange/jwt_merchants_token_test.xml.tpl", {
+  xml_content = templatefile("./apim/api/idpay_token_exchange/jwt_merchants_token_test.xml.tpl", {
     ingress_load_balancer_hostname = local.domain_aks_ingress_hostname,
     jwt_cert_signing_thumbprint    = azurerm_api_management_certificate.idpay_merchants_token_exchange_cert_jwt.thumbprint,
     origins                        = local.origins.base
