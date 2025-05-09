@@ -8,7 +8,7 @@
 #       description = "idpay-merchant-id-retriever"
 #       format      = "rawxml"
 #       value = templatefile("./api_fragment/merchant-id-retriever.xml", {
-#         ingress_hostname = var.ingress_load_balancer_hostname
+#         ingress_hostname = local.domain_aks_ingress_hostname
 #       })
 #     }
 #   })

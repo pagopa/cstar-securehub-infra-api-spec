@@ -63,35 +63,35 @@
 #       operation_id = "login"
 #
 #       xml_content = templatefile("./api/idpay-self-expense/login.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     },
 #     {
 #       operation_id = "getRedirect"
 #
 #       xml_content = templatefile("./api/idpay-self-expense/get-redirect.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     },
 #     {
 #       operation_id = "session"
 #
 #       xml_content = templatefile("./api/idpay-self-expense/get-session.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     },
 #     {
 #       operation_id = "getChildForUserId"
 #
 #       xml_content = templatefile("./api/idpay-self-expense/get-child-for-userid.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     },
 #     {
 #       operation_id = "saveExpenseData"
 #
 #       xml_content = templatefile("./api/idpay-self-expense/save-expense-data.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     }
 #   ]

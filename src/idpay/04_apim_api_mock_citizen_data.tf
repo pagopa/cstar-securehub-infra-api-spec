@@ -12,7 +12,7 @@
 #   path         = "idpay/mock/citizen"
 #   protocols    = ["https"]
 #
-#   service_url = "http://${var.ingress_load_balancer_hostname}/idpayadmissibility/idpay/mock/citizen"
+#   service_url = "http://${local.domain_aks_ingress_hostname}/idpayadmissibility/idpay/mock/citizen"
 #
 #   content_format = "openapi"
 #   content_value  = file("./api/idpay_mock_citizen_data/openapi.mock.citizen.yml")
@@ -26,7 +26,7 @@
 #     {
 #       operation_id = "createIsee"
 #       xml_content = templatefile("./api/idpay_mock_citizen_data/create-isee-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #         pdv_timeout_sec                = var.pdv_timeout_sec
 #         pdv_tokenizer_url              = var.pdv_tokenizer_url
 #       })

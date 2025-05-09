@@ -55,7 +55,7 @@
 #       operation_id = "putAssociateUserTrx"
 #
 #       xml_content = templatefile("./api/idpay_min_int/put-associate-user-trx-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     }
 #   ]

@@ -58,19 +58,19 @@
 #     {
 #       operation_id = "userPermission"
 #       xml_content = templatefile("./api/idpay_role_permission/get-permission-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     },
 #     {
 #       operation_id = "savePortalConsent"
 #       xml_content = templatefile("./api/idpay_role_permission/consent-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     },
 #     {
 #       operation_id = "getPortalConsent"
 #       xml_content = templatefile("./api/idpay_role_permission/consent-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     }
 #   ]
@@ -105,14 +105,14 @@
 #       operation_id = "sendEmail"
 #
 #       xml_content = templatefile("./api/idpay_notification_email/post-notify-email-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     },
 #     {
 #       operation_id = "getInstitutionProductUserInfo"
 #
 #       xml_content = templatefile("./api/idpay_notification_email/get-institution-user-info-merchant-policy.xml.tpl", {
-#         ingress_load_balancer_hostname  = var.ingress_load_balancer_hostname,
+#         ingress_load_balancer_hostname  = local.domain_aks_ingress_hostname,
 #         selc_base_url                   = var.selc_base_url,
 #         selc_timeout_sec                = var.selc_timeout_sec
 #         selc_external_api_key_reference = azurerm_api_management_named_value.selc_external_api_key.display_name
@@ -154,42 +154,42 @@
 #       operation_id = "getMerchantInitiativeStatistics"
 #
 #       xml_content = templatefile("./api/idpay_merchants_portal/get-merchant-statistics-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     },
 #     {
 #       operation_id = "createTransaction"
 #
 #       xml_content = templatefile("./api/idpay_merchants_portal/post-create-merchant-transaction-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     },
 #     {
 #       operation_id = "getMerchantTransactions"
 #
 #       xml_content = templatefile("./api/idpay_merchants_portal/get-merchant-transactions-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     },
 #     {
 #       operation_id = "getMerchantTransactionsProcessed"
 #
 #       xml_content = templatefile("./api/idpay_merchants_portal/get-merchant-transactions-processed-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     },
 #     {
 #       operation_id = "deleteTransaction"
 #
 #       xml_content = templatefile("./api/idpay_merchants_portal/delete-merchant-transaction-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     },
 #     {
 #       operation_id = "authPaymentBarCode"
 #
 #       xml_content = templatefile("./api/idpay_merchants_portal/put-bar-code-authorize-merchant-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
+#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
 #       })
 #     }
 #   ]
