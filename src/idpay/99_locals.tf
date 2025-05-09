@@ -32,7 +32,6 @@ locals {
   refund_storage_fqdn = data.azurerm_storage_account.refund_storage.primary_blob_internet_endpoint
   refund_storage_name = "cstar${var.env_short}itnidpayrefundsa"
 
-  idpay-portal-hostname          = "welfare.${data.azurerm_dns_zone.public.name}"
   #
   # ORIGINS (used for CORS on IDPAY Welfare Portal)
   #

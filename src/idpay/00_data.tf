@@ -38,8 +38,3 @@ data "azurerm_storage_account" "refund_storage" {
   name                = local.refund_storage_name
   resource_group_name = local.data_resource_group_name
 }
-
-data "azurerm_storage_account" "refund_storage" {
-  name                = local.refund_storage_name
-  resource_group_name = local.data_resource_group_name
-}
