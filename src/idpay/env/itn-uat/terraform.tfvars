@@ -28,3 +28,8 @@ aks_legacy_instance_name = "uat01"
 
 
 webViewUrl = "https://api-io.uat.cstar.pagopa.it/idpay/self-expense/login"
+
+#
+# Payment
+#
+pm_backend_url      = "https://api.uat.platform.pagopa.it"

@@ -25,6 +25,11 @@ external_domain          = "pagopa.it"
 # Rate limit
 #
 rate_limit_assistance_product = 1000
+         rate_limit_issuer_product = 2000
+rate_limit_mil_merchant_product = 2000
+rate_limit_mil_citizen_product = 2000
+
+
 
 #
 # PDV
@@ -47,3 +52,14 @@ aks_legacy_instance_name = "dev01"
 appio_timeout_sec = 5
 rate_limit_io_product = 2500
 webViewUrl = "https://api-io.dev.cstar.pagopa.it/idpay/self-expense/login"
+
+#
+# RTD
+#
+reverse_proxy_rtd = "127.0.0.1"
+
+#
+# Payment
+#
+payment_timeout_sec = 5
+pm_backend_url      = "https://api.dev.platform.pagopa.it"

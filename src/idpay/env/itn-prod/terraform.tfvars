@@ -28,3 +28,9 @@ aks_legacy_instance_name = "prod01"
 
 
 webViewUrl = "https://api-io.cstar.pagopa.it/idpay/self-expense/login"
+
+#
+# Payment
+#
+pm_backend_url      = "https://api.platform.pagopa.it"
+

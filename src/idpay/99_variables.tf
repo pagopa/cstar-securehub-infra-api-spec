@@ -175,10 +175,10 @@ variable "pdv_retry_delta" {
 #   description = "PM Service uri. Endpoint to retrieve Payment Instruments information."
 # }
 #
-# variable "pm_backend_url" {
-#   type        = string
-#   description = "Payment manager backend url (enrollment)"
-# }
+variable "pm_backend_url" {
+  type        = string
+  description = "Payment manager backend url (enrollment)"
+}
 #
 # variable "mil_openid_url" {
 #   type        = string
@@ -195,22 +195,20 @@ variable "pdv_retry_delta" {
 #   description = "WebView Url"
 # }
 #
-# variable "pm_timeout_sec" {
-#   type        = number
-#   description = "Payment manager timeout (sec)"
-#   default     = 5
-# }
+variable "pm_timeout_sec" {
+  type        = number
+  description = "Payment manager timeout (sec)"
+}
+
 
 
 #
-# #
-# # RTD reverse proxy
-# #
-# variable "reverse_proxy_rtd" {
-#   type        = string
-#   default     = "127.0.0.1"
-#   description = "AKS external ip. Also the ingress-nginx-controller external ip. Value known after installing the ingress controller."
-# }
+# RTD reverse proxy
+#
+variable "reverse_proxy_rtd" {
+  type        = string
+  description = "AKS external ip. Also the ingress-nginx-controller external ip. Value known after installing the ingress controller."
+}
 #
 # #
 # # SMTP Server
@@ -277,28 +275,26 @@ variable "pdv_retry_delta" {
 #   default     = 2500
 # }
 #
-# variable "rate_limit_issuer_product" {
-#   type        = number
-#   description = "Rate limit for Issuer product"
-#   default     = 2000
-# }
+variable "rate_limit_issuer_product" {
+  type        = number
+  description = "Rate limit for Issuer product"
+  default     = 2000
+}
 #
 variable "rate_limit_assistance_product" {
   type        = number
   description = "Rate limit for Assistance product"
 }
 #
-# variable "rate_limit_mil_citizen_product" {
-#   type        = number
-#   description = "Rate limit for MIL citizen product"
-#   default     = 2000
-# }
+variable "rate_limit_mil_citizen_product" {
+  type        = number
+  description = "Rate limit for MIL citizen product"
+}
 #
-# variable "rate_limit_mil_merchant_product" {
-#   type        = number
-#   description = "Rate limit for MIL merchant product"
-#   default     = 2000
-# }
+variable "rate_limit_mil_merchant_product" {
+  type        = number
+  description = "Rate limit for MIL merchant product"
+}
 #
 # variable "rate_limit_minint_product" {
 #   type        = number

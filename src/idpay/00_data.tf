@@ -6,6 +6,11 @@ data "azurerm_key_vault" "key_vault_domain" {
   resource_group_name = local.domain_kv_rg_name
 }
 
+data "azurerm_key_vault_secret" "idpay_mil_key" {
+  name         = "idpay-mil-key"
+  key_vault_id = data.azurerm_key_vault.key_vault_domain.id
+}
+
 #
 # Storage
 #
