@@ -62,7 +62,7 @@ module "idpay_mil_payment" {
 
   description  = "IDPAY MIL PAYMENT"
   display_name = "IDPAY MIL PAYMENT API"
-  path         = "idpay/mil/payment"
+  path         = "idpay-itn/mil/payment"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaypayment/idpay/mil/payment"
@@ -119,7 +119,7 @@ module "idpay_mil_merchant" {
 
   description  = "IDPAY MIL MERCHANT"
   display_name = "IDPAY MIL MERCHANT API"
-  path         = "idpay/mil/merchant"
+  path         = "idpay-itn/mil/merchant"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaypayment/idpay/merchant"
@@ -162,7 +162,7 @@ module "idpay_mil_onboarding" {
 
   description  = "IDPAY MIL ONBOARDING"
   display_name = "IDPAY MIL ONBOARDING API"
-  path         = "idpay/mil/onboarding"
+  path         = "idpay-itn/mil/onboarding"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayonboardingworkflow/idpay/onboarding"
@@ -227,7 +227,7 @@ module "idpay_mil_wallet" {
 
   description  = "IDPAY MIL WALLET"
   display_name = "IDPAY MIL WALLET API"
-  path         = "idpay/mil/wallet"
+  path         = "idpay-itn/mil/wallet"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaywallet/idpay/wallet"

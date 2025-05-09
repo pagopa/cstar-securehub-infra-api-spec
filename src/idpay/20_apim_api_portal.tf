@@ -41,7 +41,7 @@ module "idpay_permission_portal" {
 
   description  = "IDPAY Welfare Portal User Permission"
   display_name = "IDPAY Welfare Portal User Permission API"
-  path         = "idpay/authorization"
+  path         = "idpay-itn/authorization"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayportalwelfarebackendrolepermission/idpay/welfare"
@@ -87,7 +87,7 @@ module "idpay_initiative_portal" {
 
   description  = "IDPAY Welfare Portal Initiative"
   display_name = "IDPAY Welfare Portal Initiative API"
-  path         = "idpay/initiative"
+  path         = "idpay-itn/initiative"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayportalwelfarebackeninitiative/idpay/initiative"
@@ -471,7 +471,7 @@ module "idpay_group_portal" {
 
   description  = "IDPAY Welfare Portal File Group"
   display_name = "IDPAY Welfare Portal File Group API"
-  path         = "idpay/group"
+  path         = "idpay-itn/group"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaygroup/"
@@ -513,7 +513,7 @@ module "idpay_merchant_portal" {
 
   description  = "IDPAY Merchant"
   display_name = "IDPAY Merchant API"
-  path         = "idpay/merchant"
+  path         = "idpay-itn/merchant"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaymerchant/"
@@ -583,7 +583,7 @@ module "idpay_merchant_portal" {
 #
 #   description  = "IDPAY Notification Email"
 #   display_name = "IDPAY Notification Email API"
-#   path         = "idpay/email-notification"
+#   path         = "idpay-itn/email-notification"
 #   protocols    = ["https"]
 #
 #   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaynotificationemail/"

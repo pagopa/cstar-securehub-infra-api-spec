@@ -38,7 +38,7 @@ module "idpay_qr_code_payment_acquirer" {
 
   description  = "IDPAY QR-CODE PAYMENT ACQUIRER"
   display_name = "IDPAY QR-CODE PAYMENT ACQUIRER API"
-  path         = "idpay/payment/qr-code/merchant"
+  path         = "idpay-itn/payment/qr-code/merchant"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaypayment/idpay/payment/qr-code/merchant"

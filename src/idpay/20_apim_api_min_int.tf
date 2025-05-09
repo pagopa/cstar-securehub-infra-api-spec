@@ -37,7 +37,7 @@ module "idpay_min_int" {
 
   description  = "IDPAY MIN INT"
   display_name = "IDPAY MIN INT API"
-  path         = "idpay/minint/payment"
+  path         = "idpay-itn/minint/payment"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaypayment/idpay/minint/payment"

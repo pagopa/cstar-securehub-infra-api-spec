@@ -45,7 +45,7 @@ module "idpay_onboarding_workflow_issuer" {
 
   description  = "IDPAY Onboarding Workflow Issuer"
   display_name = "IDPAY Onboarding Workflow Issuer API"
-  path         = "idpay/hb/onboarding"
+  path         = "idpay-itn/hb/onboarding"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayonboardingworkflow/idpay/onboarding"
@@ -96,7 +96,7 @@ module "idpay_wallet_issuer" {
 
   description  = "IDPAY Wallet Issuer"
   display_name = "IDPAY Wallet Issuer API"
-  path         = "idpay/hb/wallet"
+  path         = "idpay-itn/hb/wallet"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaywallet/idpay/wallet"
@@ -155,7 +155,7 @@ module "idpay_timeline_issuer" {
 
   description  = "IDPAY Timeline Issuer"
   display_name = "IDPAY Timeline Issuer API"
-  path         = "idpay/hb/timeline"
+  path         = "idpay-itn/hb/timeline"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaytimeline/idpay/timeline"
@@ -188,7 +188,7 @@ module "idpay_iban_io" {
 
   description  = "IDPAY IBAN IO"
   display_name = "IDPAY IBAN IO API"
-  path         = "idpay/iban"
+  path         = "idpay-itn/iban"
   protocols    = ["https"]
 
   service_url = "${local.ingress_load_balancer_https}/idpayiban/idpay/iban"
