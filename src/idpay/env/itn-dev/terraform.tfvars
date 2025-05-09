@@ -10,12 +10,13 @@ tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
   Owner       = "CSTAR"
-  Source      = "https://github.com/pagopa/cstar-infrastructure"
+  Source      = "https://github.com/pagopa/cstar-securehub-infra-api-spec"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
 #
 # Dns
 #
+dns_zone_prefix      = "dev.cstar"
 dns_zone_internal_prefix = "internal.dev.cstar"
 external_domain          = "pagopa.it"
