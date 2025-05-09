@@ -62,6 +62,11 @@ variable "tags" {
   }
 }
 
+variable "aks_legacy_instance_name" {
+  type        = string
+  description = "Instance name"
+}
+
 variable "event_hub_port" {
   type    = number
   default = 9093
@@ -109,45 +114,43 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
-# variable "openid_config_url_mil" {
-#   type        = string
-#   description = "Token MIL, OIDC URL"
-# }
-# variable "pdv_tokenizer_url" {
-#   type        = string
-#   default     = "127.0.0.1"
-#   description = "PDV uri. Endpoint for encryption of pii information."
-# }
+variable "openid_config_url_mil" {
+  type        = string
+  description = "Token MIL, OIDC URL"
+}
+
 #
-# variable "pdv_timeout_sec" {
-#   type        = number
-#   description = "PDV timeout (sec)"
-#   default     = 15
-# }
+# PDV
 #
-# variable "pdv_retry_count" {
-#   type        = number
-#   description = "PDV max retry number"
-#   default     = 3
-# }
-#
-# variable "pdv_retry_interval" {
-#   type        = number
-#   description = "PDV interval between each retry"
-#   default     = 5
-# }
-#
-# variable "pdv_retry_max_interval" {
-#   type        = number
-#   description = "PDV max interval between each retry"
-#   default     = 15
-# }
-#
-# variable "pdv_retry_delta" {
-#   type        = number
-#   description = "PDV delta"
-#   default     = 1
-# }
+variable "pdv_tokenizer_url" {
+  type        = string
+  description = "PDV uri. Endpoint for encryption of pii information."
+}
+
+variable "pdv_timeout_sec" {
+  type        = number
+  description = "PDV timeout (sec)"
+}
+
+variable "pdv_retry_count" {
+  type        = number
+  description = "PDV max retry number"
+}
+
+variable "pdv_retry_interval" {
+  type        = number
+  description = "PDV interval between each retry"
+}
+
+variable "pdv_retry_max_interval" {
+  type        = number
+  description = "PDV max interval between each retry"
+}
+
+variable "pdv_retry_delta" {
+  type        = number
+  description = "PDV delta"
+}
 #
 # variable "checkiban_base_url" {
 #   type        = string
@@ -155,16 +158,16 @@ variable "dns_zone_internal_prefix" {
 #   description = "Check IBAN uri."
 # }
 #
-# variable "selc_base_url" {
-#   type        = string
-#   description = "SelfCare api backend url"
-# }
-#
-# variable "selc_timeout_sec" {
-#   type        = number
-#   description = "SelfCare api timeout (sec)"
-#   default     = 5
-# }
+variable "selc_base_url" {
+  type        = string
+  description = "SelfCare api backend url"
+}
+
+variable "selc_timeout_sec" {
+  type        = number
+  description = "SelfCare api timeout (sec)"
+  default     = 5
+}
 #
 # variable "pm_service_base_url" {
 #   type        = string
@@ -172,42 +175,40 @@ variable "dns_zone_internal_prefix" {
 #   description = "PM Service uri. Endpoint to retrieve Payment Instruments information."
 # }
 #
-# variable "pm_backend_url" {
-#   type        = string
-#   description = "Payment manager backend url (enrollment)"
-# }
-#
-# variable "mil_openid_url" {
-#   type        = string
-#   description = "OpenId MIL url"
-# }
-#
-# variable "mil_issuer_url" {
-#   type        = string
-#   description = " MIL issuer url"
-# }
-#
+variable "pm_backend_url" {
+  type        = string
+  description = "Payment manager backend url (enrollment)"
+}
+
+variable "mil_openid_url" {
+  type        = string
+  description = "OpenId MIL url"
+}
+
+variable "mil_issuer_url" {
+  type        = string
+  description = " MIL issuer url"
+}
+
 # variable "webViewUrl" {
 #   type        = string
 #   description = "WebView Url"
 # }
 #
-# variable "pm_timeout_sec" {
-#   type        = number
-#   description = "Payment manager timeout (sec)"
-#   default     = 5
-# }
+variable "pm_timeout_sec" {
+  type        = number
+  description = "Payment manager timeout (sec)"
+}
+
 
 
 #
-# #
-# # RTD reverse proxy
-# #
-# variable "reverse_proxy_rtd" {
-#   type        = string
-#   default     = "127.0.0.1"
-#   description = "AKS external ip. Also the ingress-nginx-controller external ip. Value known after installing the ingress controller."
-# }
+# RTD reverse proxy
+#
+variable "reverse_proxy_rtd" {
+  type        = string
+  description = "AKS external ip. Also the ingress-nginx-controller external ip. Value known after installing the ingress controller."
+}
 #
 # #
 # # SMTP Server
@@ -247,11 +248,11 @@ variable "dns_zone_internal_prefix" {
 #   default     = false
 # }
 #
-# variable "idpay_mocked_acquirer_apim_user_id" {
-#   type        = string
-#   description = "APIm user id of mocked acquirer"
-#   default     = null
-# }
+variable "idpay_mocked_acquirer_apim_user_id" {
+  type        = string
+  description = "APIm user id of mocked acquirer"
+  default     = null
+}
 #
 # variable "aks_cluster_domain_name" {
 #   type        = string
@@ -274,44 +275,66 @@ variable "dns_zone_internal_prefix" {
 #   default     = 2500
 # }
 #
-# variable "rate_limit_issuer_product" {
-#   type        = number
-#   description = "Rate limit for Issuer product"
-#   default     = 2000
-# }
+variable "rate_limit_issuer_product" {
+  type        = number
+  description = "Rate limit for Issuer product"
+  default     = 2000
+}
 #
-# variable "rate_limit_assistance_product" {
-#   type        = number
-#   description = "Rate limit for Assistance product"
-#   default     = 1000
-# }
+variable "rate_limit_assistance_product" {
+  type        = number
+  description = "Rate limit for Assistance product"
+}
 #
-# variable "rate_limit_mil_citizen_product" {
-#   type        = number
-#   description = "Rate limit for MIL citizen product"
-#   default     = 2000
-# }
+variable "rate_limit_mil_citizen_product" {
+  type        = number
+  description = "Rate limit for MIL citizen product"
+}
 #
-# variable "rate_limit_mil_merchant_product" {
-#   type        = number
-#   description = "Rate limit for MIL merchant product"
-#   default     = 2000
-# }
+variable "rate_limit_mil_merchant_product" {
+  type        = number
+  description = "Rate limit for MIL merchant product"
+}
 #
-# variable "rate_limit_minint_product" {
-#   type        = number
-#   description = "Rate limit for MIN INT product"
-#   default     = 1000
-# }
+variable "rate_limit_minint_product" {
+  type        = number
+  description = "Rate limit for MIN INT product"
+}
 #
-# variable "rate_limit_portal_product" {
-#   type        = number
-#   description = "Rate limit for institutions portal product"
-#   default     = 2500
-# }
+variable "rate_limit_portal_product" {
+  type        = number
+  description = "Rate limit for institutions portal product"
+}
 #
-# variable "rate_limit_merchants_portal_product" {
-#   type        = number
-#   description = "Rate limit for merchants portal product"
-#   default     = 2500
-# }
+variable "rate_limit_merchants_portal_product" {
+  type        = number
+  description = "Rate limit for merchants portal product"
+}
+
+#
+# IO
+#
+#APP IO
+variable "appio_timeout_sec" {
+  type        = number
+  description = "AppIo timeout (sec)"
+}
+
+variable "rate_limit_io_product" {
+  type        = number
+  description = "Rate limit for IO product"
+}
+
+variable "webViewUrl" {
+  type        = string
+  description = "WebView Url"
+}
+
+variable "enable_flags" {
+  type = object({
+    mock_io_api     = bool
+    mocked_merchant = bool
+  })
+  description = "Feature flags"
+
+}
