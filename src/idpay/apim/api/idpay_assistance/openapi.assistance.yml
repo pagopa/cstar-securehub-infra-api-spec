@@ -4,7 +4,7 @@ info:
   description: API for assistance
   version: '1.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay/assistance
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/assistance
 paths:
   '/organizations':
     get:

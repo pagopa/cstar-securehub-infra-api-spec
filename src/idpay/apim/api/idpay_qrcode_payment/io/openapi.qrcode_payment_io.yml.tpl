@@ -4,7 +4,7 @@ info:
   description: IDPAY Payment QRCODE IO
   version: '1.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay/payment/qr-code
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/payment/qr-code
 paths:
   /{trxCode}/relate-user:
     put:

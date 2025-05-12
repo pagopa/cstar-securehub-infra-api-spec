@@ -4,7 +4,7 @@ info:
   description: IDPAY MIN INT
   version: '1.0.1'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay/minint/payment
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/minint/payment
 paths:
   '/{transactionId}/user':
     put:

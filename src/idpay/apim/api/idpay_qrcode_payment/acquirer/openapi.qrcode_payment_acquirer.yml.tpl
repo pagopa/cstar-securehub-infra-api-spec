@@ -4,7 +4,7 @@ info:
   description: IDPAY Payment Merchant
   version: '1.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay/payment/qr-code/merchant
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/payment/qr-code/merchant
 paths:
   /:
     post:

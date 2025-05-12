@@ -4,7 +4,7 @@ info:
   description: IDPAY Payment IO
   version: '1.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay/payment
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/payment
 paths:
   /bar-code:
     post:

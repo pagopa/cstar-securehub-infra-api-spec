@@ -4,7 +4,7 @@ info:
   description: IDPAY MIL ONBOARDING
   version: '1.0.1'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay/mil/onboarding
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/mil/onboarding
 paths:
   /initiative:
     put:

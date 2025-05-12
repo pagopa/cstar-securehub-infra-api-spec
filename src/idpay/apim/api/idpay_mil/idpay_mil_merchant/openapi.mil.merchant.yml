@@ -4,7 +4,7 @@ info:
   description: IDPAY MIL MERCHANT
   version: '1.0.1'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay/mil/merchant
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/mil/merchant
 paths:
   /initiatives:
     get:

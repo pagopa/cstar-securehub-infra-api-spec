@@ -4,7 +4,7 @@ info:
   description: IDPAY Timeline Home Banking
   version: '1.0'
 servers:
- - url: https://api-io.dev.cstar.pagopa.it/idpay/hb/timeline
+ - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/hb/timeline
 paths:
   '/{initiativeId}':
     get:

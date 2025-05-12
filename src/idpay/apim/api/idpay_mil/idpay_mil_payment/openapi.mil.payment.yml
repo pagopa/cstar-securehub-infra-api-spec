@@ -4,7 +4,7 @@ info:
   description: IDPAY MIL PAYMENT API
   version: '1.0.1'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay/mil/payment
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/mil/payment
 paths:
   /:
     post:

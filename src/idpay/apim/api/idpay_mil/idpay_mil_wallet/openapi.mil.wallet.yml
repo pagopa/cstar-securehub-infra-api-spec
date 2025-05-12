@@ -4,7 +4,7 @@ info:
   description: IDPAY MIL WALLET
   version: '1.0.1'
 servers:
-  - url: 'https://api-io.dev.cstar.pagopa.it/idpay/mil/wallet'
+  - url: 'https://api-io.dev.cstar.pagopa.it/idpay-itn/mil/wallet'
 security:
   - bearerAuth: []
 paths:

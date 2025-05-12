@@ -4,7 +4,7 @@ info:
   description: IDPAY Timeline IO
   version: '2.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay/timeline
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/timeline
 paths:
   '/{initiativeId}':
     get:

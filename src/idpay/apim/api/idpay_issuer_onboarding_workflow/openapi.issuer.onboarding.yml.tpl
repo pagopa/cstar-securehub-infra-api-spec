@@ -4,7 +4,7 @@ info:
   description: IDPAY Onboarding Workflow issuer
   version: '1.0'
 servers:
- - url: https://api-io.dev.cstar.pagopa.it/idpay/hb/onboarding
+ - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/hb/onboarding
 paths:
   /initiative:
     get:

@@ -4,7 +4,7 @@ info:
   description: IDPAY Wallet Issuer
   version: '1.0'
 servers:
- - url: https://api-io.dev.cstar.pagopa.it/idpay/hb/wallet
+ - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/hb/wallet
 paths:
   /{initiativeId}:
     get:

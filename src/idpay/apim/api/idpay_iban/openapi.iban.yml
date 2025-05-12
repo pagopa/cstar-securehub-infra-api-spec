@@ -4,7 +4,7 @@ info:
   description: IDPAY IBAN IO
   version: '1.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay/iban
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/iban
 paths:
   '/{iban}':
     get:

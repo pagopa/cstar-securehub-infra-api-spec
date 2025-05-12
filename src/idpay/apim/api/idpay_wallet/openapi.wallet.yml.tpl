@@ -4,7 +4,7 @@ info:
   description: IDPAY Wallet IO
   version: '2.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay/wallet
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/wallet
 paths:
   /:
     get:
