@@ -2,13 +2,13 @@
 # IDPAY PRODUCTS
 #
 
-module "idpay_api_portal_merchants_product" {
+module "idpay_itn_api_portal_merchants_product" {
   source = "./.terraform/modules/__v4__/api_management_product"
 
 
-  product_id   = "idpay_api_portal_merchants_product"
-  display_name = "IDPAY_APP_PORTAL_MERCHANTS_PRODUCT"
-  description  = "IDPAY_APP_PORTAL_MERCHANTS_PRODUCT"
+  product_id   = "idpay_itn_api_portal_merchants_product"
+  display_name = "IDPAY_ITN_APP_PORTAL_MERCHANTS_PRODUCT"
+  description  = "IDPAY_ITN_APP_PORTAL_MERCHANTS_PRODUCT"
 
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
@@ -32,15 +32,15 @@ module "idpay_api_portal_merchants_product" {
 #
 
 ## IDPAY Welfare Portal User Permission API ##
-module "idpay_merchants_permission_portal" {
+module "idpay_itn_merchants_permission_portal" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = "${var.env_short}-idpay-merchants-portal-permission"
+  name                = "${var.env_short}-idpay-itn-merchants-portal-permission"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY Merchants Portal User Permission"
-  display_name = "IDPAY Merchants Portal User Permission API"
+  description  = "IDPAY ITN Merchants Portal User Permission"
+  display_name = "IDPAY ITN Merchants Portal User Permission API"
   path         = "idpay-itn/merchant/authorization"
   protocols    = ["https"]
 
@@ -51,7 +51,7 @@ module "idpay_merchants_permission_portal" {
 
   xml_content = file("./apim/api/base_policy.xml")
 
-  product_ids           = [module.idpay_api_portal_merchants_product.product_id]
+  product_ids           = [module.idpay_itn_api_portal_merchants_product.product_id]
   subscription_required = false
 
   api_operation_policies = [
@@ -78,7 +78,7 @@ module "idpay_merchants_permission_portal" {
 }
 
 # ## IDPAY Welfare Portal Email API ##
-# module "idpay_merchants_notification_email_api" {
+# module "idpay_itn_merchants_notification_email_api" {
 #   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-merchants-email"
@@ -127,7 +127,7 @@ module "idpay_merchants_permission_portal" {
 # }
 
 # ## IDPAY Welfare Merchants Portal API ##
-# module "idpay_merchants_portal" {
+# module "idpay_itn_merchants_portal" {
 #   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-merchants-portal"

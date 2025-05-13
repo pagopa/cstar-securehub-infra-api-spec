@@ -1,13 +1,13 @@
 #
 # IDPAY PRODUCTS
 #
-module "idpay_api_io_product" {
+module "idpay_itn_api_io_product" {
   source = "./.terraform/modules/__v4__/api_management_product"
 
 
-  product_id   = "idpay_api_io_product"
-  display_name = "IDPAY_APP_IO_PRODUCT"
-  description  = "IDPAY_APP_IO_PRODUCT"
+  product_id   = "idpay_itn_api_io_product"
+  display_name = "IDPAY_ITN_APP_IO_PRODUCT"
+  description  = "IDPAY_ITN_APP_IO_PRODUCT"
 
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
@@ -39,7 +39,7 @@ data "azurerm_key_vault_secret" "pdv_api_key" {
 
 resource "azurerm_api_management_named_value" "pdv_api_key" {
 
-  name                = "${var.env_short}-pdv-api-key"
+  name                = "${var.env_short}-${local.prefix_api}-pdv-api-key"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
@@ -56,15 +56,15 @@ resource "azurerm_api_management_named_value" "pdv_api_key" {
 #
 
 ## IDPAY Onboarding workflow IO API ##
-module "idpay_onboarding_workflow_io" {
+module "idpay_itn_onboarding_workflow_io" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = "${var.env_short}-idpay-onboarding-workflow"
+  name                = "${var.env_short}-idpay-itn-onboarding-workflow"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY Onboarding Workflow IO"
-  display_name = "IDPAY Onboarding Workflow IO API"
+  description  = "IDPAY ITN Onboarding Workflow IO"
+  display_name = "IDPAY ITN Onboarding Workflow IO API"
   path         = "idpay-itn/onboarding"
   protocols    = ["https"]
 
@@ -75,7 +75,7 @@ module "idpay_onboarding_workflow_io" {
 
   xml_content = file("./apim/api/base_policy.xml")
 
-  product_ids = [module.idpay_api_io_product.product_id]
+  product_ids = [module.idpay_itn_api_io_product.product_id]
 
   api_operation_policies = [
     {
@@ -114,15 +114,15 @@ module "idpay_onboarding_workflow_io" {
 }
 
 ## IDPAY Wallet IO API ##
-module "idpay_wallet_io" {
+module "idpay_itn_wallet_io" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = "${var.env_short}-idpay-wallet"
+  name                = "${var.env_short}-idpay-itn-wallet"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY Wallet IO"
-  display_name = "IDPAY Wallet IO API"
+  description  = "IDPAY ITN Wallet IO"
+  display_name = "IDPAY ITN Wallet IO API"
   path         = "idpay-itn/wallet"
   protocols    = ["https"]
 
@@ -133,7 +133,7 @@ module "idpay_wallet_io" {
 
   xml_content = file("./apim/api/base_policy.xml")
 
-  product_ids = [module.idpay_api_io_product.product_id]
+  product_ids = [module.idpay_itn_api_io_product.product_id]
 
   api_operation_policies = [
     {
@@ -238,15 +238,15 @@ module "idpay_wallet_io" {
 }
 
 ## IDPAY Timeline IO API ##
-module "idpay_timeline_io" {
+module "idpay_itn_timeline_io" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = "${var.env_short}-idpay-timeline"
+  name                = "${var.env_short}-idpay-itn-timeline"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY Timeline IO"
-  display_name = "IDPAY Timeline IO API"
+  description  = "IDPAY ITN Timeline IO"
+  display_name = "IDPAY ITN Timeline IO API"
   path         = "idpay-itn/timeline"
   protocols    = ["https"]
 
@@ -257,7 +257,7 @@ module "idpay_timeline_io" {
 
   xml_content = file("./apim/api/base_policy.xml")
 
-  product_ids = [module.idpay_api_io_product.product_id]
+  product_ids = [module.idpay_itn_api_io_product.product_id]
 
   api_operation_policies = [
     {
@@ -277,15 +277,15 @@ module "idpay_timeline_io" {
 }
 
 ## IDPAY IBAN Wallet IO API ##
-module "idpay_iban_io" {
+module "idpay_itn_iban_io" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = "${var.env_short}-idpay-iban"
+  name                = "${var.env_short}-idpay-itn-iban"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY IBAN IO"
-  display_name = "IDPAY IBAN IO API"
+  description  = "IDPAY ITN IBAN IO"
+  display_name = "IDPAY ITN IBAN IO API"
   path         = "idpay-itn/iban"
   protocols    = ["https"]
 
@@ -296,7 +296,7 @@ module "idpay_iban_io" {
 
   xml_content = file("./apim/api/base_policy.xml")
 
-  product_ids = [module.idpay_api_io_product.product_id]
+  product_ids = [module.idpay_itn_api_io_product.product_id]
 
   api_operation_policies = [
     {
@@ -316,15 +316,15 @@ module "idpay_iban_io" {
 }
 
 ## IDPAY QR-Code payment IO API ##
-module "idpay_qr_code_payment_io" {
+module "idpay_itn_qr_code_payment_io" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = "${var.env_short}-idpay-qr-code-payment-io"
+  name                = "${var.env_short}-idpay-itn-qr-code-payment-io"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY QR-CODE PAYMENT IO"
-  display_name = "IDPAY QR-CODE PAYMENT IO API"
+  description  = "IDPAY ITN QR-CODE PAYMENT IO"
+  display_name = "IDPAY ITN QR-CODE PAYMENT IO API"
   path         = "idpay-itn/payment/qr-code"
   protocols    = ["https"]
 
@@ -335,20 +335,20 @@ module "idpay_qr_code_payment_io" {
 
   xml_content = file("./apim/api/base_policy.xml")
 
-  product_ids = [module.idpay_api_io_product.product_id]
+  product_ids = [module.idpay_itn_api_io_product.product_id]
 
 }
 
 ## IDPAY Payment IO API ##
-module "idpay_payment_io" {
+module "idpay_itn_payment_io" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = "${var.env_short}-idpay-payment-io"
+  name                = "${var.env_short}-idpay-itn-payment-io"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY PAYMENT IO"
-  display_name = "IDPAY PAYMENT IO API"
+  description  = "IDPAY ITN PAYMENT IO"
+  display_name = "IDPAY ITN PAYMENT IO API"
   path         = "idpay-itn/payment"
   protocols    = ["https"]
 
@@ -359,6 +359,6 @@ module "idpay_payment_io" {
 
   xml_content = file("./apim/api/base_policy.xml")
 
-  product_ids = [module.idpay_api_io_product.product_id]
+  product_ids = [module.idpay_itn_api_io_product.product_id]
 
 }

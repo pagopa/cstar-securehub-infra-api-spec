@@ -12,7 +12,7 @@ resource "azurerm_api_management_subscription" "idpay_apim_subscription_mocked_a
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
   user_id             = data.azurerm_api_management_user.idpay_apim_user_mocked_acquirer[0].id
-  product_id          = module.idpay_api_acquirer_product.id
+  product_id          = module.idpay_itn_api_acquirer_product.id
   display_name        = "Mocked Acquirer"
   allow_tracing       = false
   state               = "active"

@@ -2,7 +2,7 @@
 # IDPAY PRODUCTS
 #
 
-module "idpay_api_portal_product" {
+module "idpay_itn_api_portal_product" {
   source = "./.terraform/modules/__v4__/api_management_product"
 
 
@@ -32,15 +32,15 @@ module "idpay_api_portal_product" {
 #
 
 ## IDPAY Welfare Portal User Permission API ##
-module "idpay_permission_portal" {
+module "idpay_itn_permission_portal" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = "${var.env_short}-idpay-portal-permission"
+  name                = "${var.env_short}-idpay-itn-portal-permission"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY Welfare Portal User Permission"
-  display_name = "IDPAY Welfare Portal User Permission API"
+  description  = "IDPAY ITN Welfare Portal User Permission"
+  display_name = "IDPAY ITN Welfare Portal User Permission API"
   path         = "idpay-itn/authorization"
   protocols    = ["https"]
 
@@ -51,7 +51,7 @@ module "idpay_permission_portal" {
 
   xml_content = file("./apim/api/base_policy.xml")
 
-  product_ids           = [module.idpay_api_portal_product.product_id]
+  product_ids           = [module.idpay_itn_api_portal_product.product_id]
   subscription_required = false
 
   api_operation_policies = [
@@ -78,15 +78,15 @@ module "idpay_permission_portal" {
 }
 
 ## IDPAY Welfare Portal Initiative API ##
-module "idpay_initiative_portal" {
+module "idpay_itn_initiative_portal" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = "${var.env_short}-idpay-initiative"
+  name                = "${var.env_short}-idpay-itn-initiative"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY Welfare Portal Initiative"
-  display_name = "IDPAY Welfare Portal Initiative API"
+  description  = "IDPAY ITN Welfare Portal Initiative"
+  display_name = "IDPAY ITN Welfare Portal Initiative API"
   path         = "idpay-itn/initiative"
   protocols    = ["https"]
 
@@ -97,7 +97,7 @@ module "idpay_initiative_portal" {
 
   xml_content = file("./apim/api/base_policy.xml")
 
-  product_ids           = [module.idpay_api_portal_product.product_id]
+  product_ids           = [module.idpay_itn_api_portal_product.product_id]
   subscription_required = false
 
   api_operation_policies = [
@@ -462,15 +462,15 @@ resource "azurerm_api_management_api_operation_policy" "idpay_portal_token_polic
 */
 
 ## IDPAY Welfare Portal Group API ##
-module "idpay_group_portal" {
+module "idpay_itn_group_portal" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = "${var.env_short}-idpay-group"
+  name                = "${var.env_short}-idpay-itn-group"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY Welfare Portal File Group"
-  display_name = "IDPAY Welfare Portal File Group API"
+  description  = "IDPAY ITN Welfare Portal File Group"
+  display_name = "IDPAY ITN Welfare Portal File Group API"
   path         = "idpay-itn/group"
   protocols    = ["https"]
 
@@ -481,7 +481,7 @@ module "idpay_group_portal" {
 
   xml_content = file("./apim/api/base_policy.xml")
 
-  product_ids           = [module.idpay_api_portal_product.product_id]
+  product_ids           = [module.idpay_itn_api_portal_product.product_id]
   subscription_required = false
 
   api_operation_policies = [
@@ -504,15 +504,15 @@ module "idpay_group_portal" {
 }
 
 ## IDPAY Merchant API ##
-module "idpay_merchant_portal" {
+module "idpay_itn_merchant_portal" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = "${var.env_short}-idpay-merchant"
+  name                = "${var.env_short}-idpay-itn-merchant"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY Merchant"
-  display_name = "IDPAY Merchant API"
+  description  = "IDPAY ITN Merchant"
+  display_name = "IDPAY ITN Merchant API"
   path         = "idpay-itn/merchant"
   protocols    = ["https"]
 
@@ -523,7 +523,7 @@ module "idpay_merchant_portal" {
 
   xml_content = file("./apim/api/base_policy.xml")
 
-  product_ids           = [module.idpay_api_portal_product.product_id]
+  product_ids           = [module.idpay_itn_api_portal_product.product_id]
   subscription_required = false
 
   api_operation_policies = [
@@ -574,7 +574,7 @@ module "idpay_merchant_portal" {
 }
 
 # ## IDPAY Welfare Portal Email API ##
-# module "idpay_notification_email_api" {
+# module "idpay_itn_notification_email_api" {
 #   source = "./.terraform/modules/__v4__/api_management_api"
 #
 #   name                = "${var.env_short}-idpay-email"

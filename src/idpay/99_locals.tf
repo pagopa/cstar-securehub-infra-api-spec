@@ -1,7 +1,7 @@
 locals {
   product = "${var.prefix}-${var.env_short}"
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-
+  prefix_api = "idpay-itn"
   #
   # Network
   #
