@@ -1,4 +1,3 @@
-/*
 locals {
   idpay_itn_apim_api_diagnostics = [
     module.idpay_itn_onboarding_workflow_issuer.name,
@@ -44,4 +43,4 @@ resource "azurerm_api_management_api_diagnostic" "idpay_itn_apim_api_diagnostics
     ]
   }
 }
-*/
+
