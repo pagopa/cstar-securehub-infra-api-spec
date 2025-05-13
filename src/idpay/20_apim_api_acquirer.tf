@@ -32,7 +32,7 @@ module "idpay_itn_api_acquirer_product" {
 module "idpay_itn_qr_code_payment_acquirer" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = "${var.env_short}-idpay-qr-code-payment-acquirer"
+  name                = "${var.env_short}-idpay-itn-qr-code-payment-acquirer"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 

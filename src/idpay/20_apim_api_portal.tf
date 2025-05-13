@@ -6,9 +6,9 @@ module "idpay_itn_api_portal_product" {
   source = "./.terraform/modules/__v4__/api_management_product"
 
 
-  product_id   = "idpay_api_portal_product"
-  display_name = "IDPAY_APP_PORTAL_PRODUCT"
-  description  = "IDPAY_APP_PORTAL_PRODUCT"
+  product_id   = "idpay_itn_api_portal_product"
+  display_name = "IDPAY_ITN_APP_PORTAL_PRODUCT"
+  description  = "IDPAY_ITN_APP_PORTAL_PRODUCT"
 
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
