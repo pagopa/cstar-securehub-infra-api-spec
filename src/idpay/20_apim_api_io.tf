@@ -43,7 +43,7 @@ resource "azurerm_api_management_named_value" "pdv_api_key" {
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  display_name = "pdv-api-key"
+  display_name = "${var.env_short}-${local.prefix_api}-pdv-api-key"
   secret       = true
   value_from_key_vault {
     secret_id = data.azurerm_key_vault_secret.pdv_api_key.versionless_id
