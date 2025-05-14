@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: IDPAY Email Notification Manager API
-  description: IDPAY Email Notification Manager
+  title: IDPAY ITN Email Notification Manager API
+  description: IDPAY ITN Email Notification Manager
   version: '1.0'
 servers:
   - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/email-notification

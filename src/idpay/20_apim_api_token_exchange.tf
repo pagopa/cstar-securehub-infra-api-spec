@@ -15,16 +15,16 @@ resource "azurerm_api_management_certificate" "idpay_token_exchange_cert_jwt" {
   name                = "${local.project}-token-exchange-jwt"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
-  key_vault_secret_id = data.azurerm_key_vault_certificate.idpay_jwt_signing_cert.versionless_id
+  key_vault_secret_id = data.azurerm_key_vault_certificate.idpay_jwt_signing_cert.versionless_secret_id
 }
 
 resource "azurerm_api_management_api" "idpay_token_exchange" {
-  name                = "${var.env_short}-idpay-token-exchange"
+  name                = "${var.env_short}-idpay-itn-token-exchange"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
   revision              = "1"
-  display_name          = "IDPAY Token Exchange"
+  display_name          = "IDPAY ITN Token Exchange"
   path                  = "idpay-itn/welfare"
   subscription_required = false
   #service_url           = ""

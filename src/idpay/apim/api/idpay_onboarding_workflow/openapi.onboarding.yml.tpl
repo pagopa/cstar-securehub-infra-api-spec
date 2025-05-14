@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: IDPAY Onboarding Workflow IO API
-  description: IDPAY Onboarding Workflow IO
+  title: IDPAY ITN Onboarding Workflow IO API
+  description: IDPAY ITN Onboarding Workflow IO
   version: '1.0'
 servers:
   - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/onboarding

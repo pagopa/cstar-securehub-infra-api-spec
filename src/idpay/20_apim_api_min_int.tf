@@ -7,8 +7,8 @@ module "idpay_itn_api_min_int_product" {
 
 
   product_id   = "idpay_itn_api_min_int_product"
-  display_name = "IDPAY_INT_MIN_INT_PRODUCT"
-  description  = "IDPAY_INT_MIN_INT_PRODUCT"
+  display_name = "IDPAY_ITN_MIN_INT_PRODUCT"
+  description  = "IDPAY_ITN_MIN_INT_PRODUCT"
 
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name

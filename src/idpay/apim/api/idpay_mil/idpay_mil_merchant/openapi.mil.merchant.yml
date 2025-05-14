@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: IDPAY MIL MERCHANT API
-  description: IDPAY MIL MERCHANT
+  title: IDPAY ITN MIL MERCHANT API
+  description: IDPAY ITN MIL MERCHANT
   version: '1.0.1'
 servers:
   - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/mil/merchant
