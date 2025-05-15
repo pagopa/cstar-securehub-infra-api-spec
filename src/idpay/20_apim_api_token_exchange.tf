@@ -43,23 +43,21 @@ resource "azurerm_api_management_api_operation" "idpay_token_exchange" {
   description         = "Endpoint for selfcare token exchange"
 }
 
-### TBD: CDN must be present
-# resource "azurerm_api_management_api_operation_policy" "idpay_token_exchange_policy" {
-#   depends_on = [azurerm_storage_blob.oidc_configuration]
-#
-#   api_name            = azurerm_api_management_api_operation.idpay_token_exchange.api_name
-#   api_management_name = azurerm_api_management_api_operation.idpay_token_exchange.api_management_name
-#   resource_group_name = azurerm_api_management_api_operation.idpay_token_exchange.resource_group_name
-#   operation_id        = azurerm_api_management_api_operation.idpay_token_exchange.operation_id
-#
-#   xml_content = templatefile("./apim/api/idpay_token_exchange/jwt_exchange.xml.tpl", {
-#     openid-config-url           = local.idpay-oidc-config_url,
-#     selfcare-issuer             = local.selfcare-issuer,
-#     jwt_cert_signing_thumbprint = azurerm_api_management_certificate.idpay_token_exchange_cert_jwt.thumbprint,
-#     idpay-portal-hostname       = local.idpay-portal-hostname,
-#     origins                     = local.origins.base
-#   })
-# }
+
+resource "azurerm_api_management_api_operation_policy" "idpay_token_exchange_policy" {
+  api_name            = azurerm_api_management_api_operation.idpay_token_exchange.api_name
+  api_management_name = azurerm_api_management_api_operation.idpay_token_exchange.api_management_name
+  resource_group_name = azurerm_api_management_api_operation.idpay_token_exchange.resource_group_name
+  operation_id        = azurerm_api_management_api_operation.idpay_token_exchange.operation_id
+
+  xml_content = templatefile("./apim/api/idpay_token_exchange/jwt_exchange.xml.tpl", {
+    openid-config-url           = local.idpay-oidc-config_url,
+    selfcare-issuer             = local.selfcare-issuer,
+    jwt_cert_signing_thumbprint = azurerm_api_management_certificate.idpay_token_exchange_cert_jwt.thumbprint,
+    idpay-portal-hostname       = local.idpay-portal-hostname,
+    origins                     = local.origins.base
+  })
+}
 
 ##TEST API used for automated test
 resource "azurerm_api_management_api_operation" "idpay_token_exchange_test" {
