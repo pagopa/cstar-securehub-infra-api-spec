@@ -573,72 +573,72 @@ module "idpay_itn_merchant_portal" {
 
 }
 
-# ## IDPAY Welfare Portal Email API ##
-# module "idpay_itn_notification_email_api" {
-#   source = "./.terraform/modules/__v4__/api_management_api"
-#
-#   name                = "${var.env_short}-idpay-email"
-#   api_management_name = data.azurerm_api_management.apim_core.name
-#   resource_group_name = data.azurerm_resource_group.apim_rg.name
-#
-#   description  = "IDPAY Notification Email"
-#   display_name = "IDPAY Notification Email API"
-#   path         = "idpay-itn/email-notification"
-#   protocols    = ["https"]
-#
-#   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaynotificationemail/"
-#
-#   content_format = "openapi"
-#   content_value  = file("./apim/api/idpay_notification_email/openapi.notification.email.yml")
-#
-#   xml_content = file("./apim/api/base_policy.xml")
-#
-#   product_ids           = [module.idpay_api_portal_product.product_id]
-#   subscription_required = false
-#
-#   api_operation_policies = [
-#     {
-#       operation_id = "sendEmail"
-#
-#       xml_content = templatefile("./apim/api/idpay_notification_email/post-notify-email-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-#       })
-#     },
-#     {
-#       operation_id = "getInstitutionProductUserInfo"
-#
-#       xml_content = templatefile("./apim/api/idpay_notification_email/get-institution-user-info-policy.xml.tpl", {
-#         ingress_load_balancer_hostname  = local.domain_aks_ingress_hostname,
-#         selc_base_url                   = var.selc_base_url,
-#         selc_timeout_sec                = var.selc_timeout_sec
-#         selc_external_api_key_reference = azurerm_api_management_named_value.selc_external_api_key.display_name
-#       })
-#     }
-#   ]
-#
-#   depends_on = [
-#     azurerm_api_management_named_value.selc_external_api_key
-#   ]
-#
-# }
+## IDPAY Welfare Portal Email API ##
+ module "idpay_itn_notification_email_api" {
+   source = "./.terraform/modules/__v4__/api_management_api"
+
+   name                = "${var.env_short}-${local.prefix_api}-idpay-email"
+   api_management_name = data.azurerm_api_management.apim_core.name
+   resource_group_name = data.azurerm_resource_group.apim_rg.name
+
+   description  = "IDPAY ITN Notification Email"
+   display_name = "IDPAY ITN Notification Email API"
+   path         = "idpay-itn/email-notification"
+   protocols    = ["https"]
+
+   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaynotificationemail/"
+
+   content_format = "openapi"
+   content_value  = file("./apim/api/idpay_notification_email/openapi.notification.email.yml")
+
+   xml_content = file("./apim/api/base_policy.xml")
+
+   product_ids           = [module.idpay_itn_api_portal_product.product_id]
+   subscription_required = false
+
+   api_operation_policies = [
+     {
+       operation_id = "sendEmail"
+
+       xml_content = templatefile("./apim/api/idpay_notification_email/post-notify-email-policy.xml.tpl", {
+         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+       })
+     },
+     {
+       operation_id = "getInstitutionProductUserInfo"
+
+       xml_content = templatefile("./apim/api/idpay_notification_email/get-institution-user-info-policy.xml.tpl", {
+         ingress_load_balancer_hostname  = local.domain_aks_ingress_hostname,
+         selc_base_url                   = var.selc_base_url,
+         selc_timeout_sec                = var.selc_timeout_sec
+         selc_external_api_key_reference = azurerm_api_management_named_value.selc_external_api_key.display_name
+       })
+     }
+   ]
+
+   depends_on = [
+     azurerm_api_management_named_value.selc_external_api_key
+   ]
+
+ }
 
 #
 # Named values
 #
 
 # # selfcare api
-# resource "azurerm_api_management_named_value" "selc_external_api_key" {
-#
-#   name                = "${var.env_short}-selc-external-api-key-secret"
-#   api_management_name = data.azurerm_api_management.apim_core.name
-#   resource_group_name = data.azurerm_resource_group.apim_rg.name
-#
-#   display_name = "selc-external-api-key"
-#   secret       = true
-#   value_from_key_vault {
-#     secret_id = data.azurerm_key_vault_secret.selc_external_api_key_secret.versionless_id
-#   }
-# }
+resource "azurerm_api_management_named_value" "selc_external_api_key" {
+
+   name                = "${var.env_short}-${local.prefix_api}-selc-external-api-key-secret"
+   api_management_name = data.azurerm_api_management.apim_core.name
+   resource_group_name = data.azurerm_resource_group.apim_rg.name
+
+   display_name = "${var.env_short}-${local.prefix_api}-selc-external-api-key"
+   secret       = true
+   value_from_key_vault {
+     secret_id = data.azurerm_key_vault_secret.selc-external-api-key.versionless_id
+   }
+ }
 
 
 resource "azurerm_api_management_named_value" "refund_storage_access_key" {
