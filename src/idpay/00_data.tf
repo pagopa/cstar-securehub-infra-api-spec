@@ -22,10 +22,10 @@ data "azurerm_key_vault_certificate" "idpay_merchants_jwt_signing_cert" {
 }
 
 
- data "azurerm_key_vault_secret" "selc-external-api-key" {
-   name         = "selc-external-api-key"
-   key_vault_id = data.azurerm_key_vault.key_vault_domain.id
- }
+data "azurerm_key_vault_secret" "selc-external-api-key" {
+  name         = "selc-external-api-key"
+  key_vault_id = data.azurerm_key_vault.key_vault_domain.id
+}
 
 #
 # Storage
