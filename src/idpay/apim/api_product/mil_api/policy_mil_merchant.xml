@@ -46,7 +46,7 @@
                 </return-response>
               </when>
               <otherwise>
-                <include-fragment fragment-id="idpay-merchant-id-retriever" />
+                <include-fragment fragment-id="idpay-itn-merchant-id-retriever" />
                 <choose>
                   <when condition="@(context.Variables["merchantId"] == null)">
                     <return-response>
