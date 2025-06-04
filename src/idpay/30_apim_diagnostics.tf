@@ -43,4 +43,3 @@ resource "azurerm_api_management_api_diagnostic" "idpay_itn_apim_api_diagnostics
     ]
   }
 }
-
