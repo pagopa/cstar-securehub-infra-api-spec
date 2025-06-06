@@ -21,6 +21,10 @@ data "azurerm_key_vault_certificate" "idpay_merchants_jwt_signing_cert" {
   key_vault_id = data.azurerm_key_vault.key_vault_domain.id
 }
 
+data "azurerm_key_vault_certificate" "idpay_register_jwt_signing_cert" {
+  name         = "${local.project}-register-jwt-signing-cert"
+  key_vault_id = data.azurerm_key_vault.key_vault_domain.id
+}
 
 data "azurerm_key_vault_secret" "selc-external-api-key" {
   name         = "selc-external-api-key"
