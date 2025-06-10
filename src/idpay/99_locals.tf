@@ -57,7 +57,7 @@ locals {
   #
   # Selfcare
   #
-  idpay-register-hostname = "registrobeni.${data.azurerm_dns_zone.public.name}"
+  idpay-register-hostname = "registrodeibeni.${data.azurerm_dns_zone.public.name}"
   idpay-portal-hostname   = "welfare-italy.${data.azurerm_dns_zone.public.name}"
   idpay-oidc-config_url   = "https://welfare.${data.azurerm_dns_zone.public.name}/selfcare/openid-configuration.json"
   selfcare-issuer         = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
