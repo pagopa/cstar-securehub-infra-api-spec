@@ -1,9 +1,9 @@
 openapi: 3.0.1
 info:
-  title: IDPAY-ITN-WelfarePortalUserPermissions_v1
+  title: IDPAY ITN Register Portal Permission API
   version: '1.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/authorization
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/regsiter/authorization
 paths:
   /permissions:
     get:
