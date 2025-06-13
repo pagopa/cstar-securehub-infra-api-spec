@@ -1,0 +1,161 @@
+openapi: 3.0.1
+info:
+  title: IDPAY ITN Register Portal Operation API
+  version: '1.0'
+servers:
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/register
+paths:
+  /upload:
+    post:
+      tags:
+        - Register Base User
+      summary: Upload CSV file containing a list of product
+      description: "ENG: Upload CSV file containing a list of product of the same category<br>  IT: Caricamento del file CSV conentente una lista di prodotti della stessa categoria"
+      operationId: uploadCsv
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegisterUploadRequestDTO'
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterUploadRequestDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_INVALID_REQUEST
+                message: Something went wrong handling request
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_TOO_MANY_REQUESTS
+                message: Too many requests
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_GENERIC_ERROR
+                message: An error occurred during file reading
+  /download/report/{idUpload}:
+    get:
+      tags:
+        - Register Base User
+      summary: Download errors report
+      description: "ENG: Download report containing errors from CSV validation<br> IT: Scarica il report contenente gli errori del controllo CSV"
+      operationId: downloadReport
+      parameters:
+        - name: idUpload
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "ENG: ID of the upload<br> IT: ID del caricamento"
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterUploadResponseDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_INVALID_REQUEST
+                message: Something went wrong handling request
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_TOO_MANY_REQUESTS
+                message: Too many requests
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterErrorDTO'
+              example:
+                code: REGISTER_GENERIC_ERROR
+                message: An error occurred during file reading
+components:
+  schemas:
+    RegisterUploadRequestDTO:
+      type: object
+      properties:
+        category:
+          type: string
+          description: "ENG: Category of the products<br> IT: Categoria dei prodotti"
+        file:
+          type: string
+          format: binary
+          description: "ENG: CSV file containing the list of products<br> IT: File CSV contenente la lista dei prodotti"
+    RegisterUploadResponseDTO:
+      type: object
+      properties:
+        idUpload:
+          type: string
+          description: "ENG: Initiative ID<br> IT: ID dell'iniziativa"
+        status:
+          type: string
+          # completare l'enum
+          enum:
+            - UPLOADED
+            - ERROR
+          description: "ENG: Status of the upload <br> IT: Stato del caricamento"
+    RegisterErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - REGISTER_TOO_MANY_REQUESTS
+            - REGISTER_INVALID_REQUEST
+            - REGISTER_GENERIC_ERROR
+          description: >-
+            "ENG: Error code:<br>
+            REGISTER_TOO_MANY_REQUESTS: Too many requests,<br>
+            REGISTER_INVALID_REQUEST: Something went wrong handling the request,<br>
+            REGISTER_GENERIC_ERROR: Application error,<br>
+            - IT: Codice di errore:<br>
+            REGISTER_TOO_MANY_REQUESTS: Troppe richieste,<br>
+            REGISTER_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,<br>
+            REGISTER_GENERIC_ERROR: Errore applicativo"
+        message:
+          type: string
+          description: 'ENG: Error message- IT: Messaggio di errore'
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+security:
+  - Bearer: []

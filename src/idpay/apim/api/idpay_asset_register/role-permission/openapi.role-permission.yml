@@ -3,7 +3,7 @@ info:
   title: IDPAY ITN Register Portal Permission API
   version: '1.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/regsiter/authorization
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/register/authorization
 paths:
   /permissions:
     get:
