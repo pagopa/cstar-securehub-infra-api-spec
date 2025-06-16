@@ -100,13 +100,13 @@ module "idpay_itn_register_operation" {
   api_operation_policies = [
     {
       operation_id = "uploadCsv"
-      xml_content = templatefile("./apim/api/idpay_asset_register/register/upload-csv.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_asset_register/register/post-upload-csv.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "downloadReport"
-      xml_content = templatefile("./apim/api/idpay_asset_register/register/download-report.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_asset_register/register/get-download-report.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
