@@ -15,7 +15,7 @@ resource "azurerm_api_management_api" "idpay_register_token_exchange" {
   display_name          = "IDPAY ITN Token Exchange for Register Portal"
   path                  = "idpay-itn/register/token"
   subscription_required = false
-  #service_url           = ""
+  #service_url          = ""
   protocols = ["https"]
 
 }
@@ -31,6 +31,17 @@ resource "azurerm_api_management_api_operation" "idpay_register_token_exchange" 
   description         = "Endpoint for selfcare token exchange towards register portal"
 }
 
+resource "azurerm_api_management_named_value" "selfcare_api_key" {
+  name                = "${var.env_short}-${local.prefix_api}-selfcare-api-key"
+  api_management_name = data.azurerm_api_management.apim_core.name
+  resource_group_name = data.azurerm_resource_group.apim_rg.name
+
+  display_name = "${var.env_short}-${local.prefix_api}-selfcare-api-key"
+  secret       = true
+  value_from_key_vault {
+    secret_id = data.azurerm_key_vault_secret.selfcare-api-key.versionless_id
+  }
+}
 
 resource "azurerm_api_management_api_operation_policy" "idpay_register_token_exchange_policy" {
   api_name            = azurerm_api_management_api_operation.idpay_register_token_exchange.api_name
@@ -44,12 +55,12 @@ resource "azurerm_api_management_api_operation_policy" "idpay_register_token_exc
     jwt_cert_signing_thumbprint = azurerm_api_management_certificate.idpay_register_token_exchange_cert_jwt.thumbprint,
     idpay-portal-hostname       = local.idpay-register-hostname,
     origins                     = local.origins.base
+    selfcare_api_key_reference  = azurerm_api_management_named_value.selfcare_api_key.display_name,
+    invitalia_fc                = var.invitalia_fc,
+    selfcare_base_url           = var.selfcare_base_url
   })
 
-  #  depends_on = [
-  #    azurerm_api_management_policy_fragment.apim_merchant_id_retriever,
-  #    # azurerm_storage_blob.oidc_configuration
-  #  ]
+
 }
 
 resource "azurerm_api_management_api_operation" "idpay_register_token_exchange_test" {

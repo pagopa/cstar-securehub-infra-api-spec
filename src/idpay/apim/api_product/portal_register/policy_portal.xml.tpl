@@ -43,12 +43,14 @@
                 <claim name="uid" match="all" />
                 <claim name="name" match="all" />
                 <claim name="family_name" match="all" />
-                <claim name="email" match="all" />
+                <claim name="org_email" match="all" />
                 <claim name="org_id" match="all" />
                 <claim name="org_vat" match="all" />
                 <claim name="org_party_role" match="all" />
                 <claim name="org_role" match="all" />
                 <claim name="org_name" match="all" />
+                <claim name="org_pec" match="all" />
+                <claim name="org_address" match="all" />
             </required-claims>
         </validate-jwt>
     </inbound>

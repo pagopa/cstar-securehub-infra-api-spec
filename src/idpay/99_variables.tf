@@ -14,6 +14,14 @@ variable "env" {
   type = string
 }
 
+variable "invitalia_fc" {
+  type = string
+}
+
+variable "selfcare_base_url" {
+  type = string
+}
+
 variable "env_short" {
   type = string
   validation {
