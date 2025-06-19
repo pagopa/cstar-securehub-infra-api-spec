@@ -31,6 +31,11 @@ data "azurerm_key_vault_secret" "selc-external-api-key" {
   key_vault_id = data.azurerm_key_vault.key_vault_domain.id
 }
 
+data "azurerm_key_vault_secret" "selfcare-api-key" {
+  name         = "selfcare-api-key"
+  key_vault_id = data.azurerm_key_vault.key_vault_domain.id
+}
+
 #
 # Storage
 #

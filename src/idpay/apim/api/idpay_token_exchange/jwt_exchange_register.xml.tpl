@@ -37,7 +37,32 @@
                 <issuer>${selfcare-issuer}</issuer>
             </issuers>
         </validate-jwt>
-        <set-variable name="idpayPortalToken" value="@{
+        <set-variable name="institutionId" value="@{
+            Jwt selcToken = (Jwt)context.Variables["outputToken"];
+            JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
+            return organization["id"].ToString();
+        }" />
+        <set-variable name="userId" value="@{
+            Jwt selcToken = (Jwt)context.Variables["outputToken"];
+            return selcToken.Claims.GetValueOrDefault("uid", "{}");
+        }" />
+        <send-request mode="new" response-variable-name="institutionResponse" timeout="10" ignore-error="false">
+            <set-url>@("${selfcare_base_url}"+"/users/"+context.Variables["userId"]+"?institutionsId="+context.Variables["institutionId"]))</set-url>
+            <set-method>GET</set-method>
+            <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
+                <value>{{${selfcare_api_key_reference}}}</value>
+            </set-header>
+        </send-request>
+        <send-request mode="new" response-variable-name="institutionResponse" timeout="10" ignore-error="false">
+            <set-url>@("${selfcare_base_url}"+"/institutions/"+context.Variables["institutionId"])</set-url>
+            <set-method>GET</set-method>
+            <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
+                <value>{{${selfcare_api_key_reference}}}</value>
+            </set-header>
+        </send-request>
+        <choose>
+            <when condition="@(((IResponse)context.Variables["institutionResponse"]).StatusCode == 200)">
+                <set-variable name="idpayPortalToken" value="@{
                     Jwt selcToken = (Jwt)context.Variables["outputToken"];
                     var JOSEProtectedHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
                         new {
@@ -52,51 +77,64 @@
                     var uid = selcToken.Claims.GetValueOrDefault("uid", "");
                     var name = selcToken.Claims.GetValueOrDefault("name", "");
                     var family_name = selcToken.Claims.GetValueOrDefault("family_name", "");
-                    var email = selcToken.Claims.GetValueOrDefault("email", "");
                     JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
                     var org_id = organization["id"];
                     var org_vat = organization["fiscal_code"];
                     var org_name = organization["name"];
                     var org_party_role = organization.Value<JArray>("roles").First().Value<string>("partyRole");
                     var org_role = organization.Value<JArray>("roles").First().Value<string>("role");
-                    if (organization["fiscal_code"].ToString() == "14249451007") {
+                    if (organization["fiscal_code"].ToString() == "${invitalia_fc}") {
                         org_role = "invitalia";
-                    }
-                    else{
+                    } else {
                         org_role = "operatore";
                     }
+
+                    var response = (IResponse)context.Variables["institutionResponse"];
+                    var body = response.Body.As<JObject>();
+                    var org_address = (string)body["address"] +", " + (string)body["zipCode"] +" "+ (string)body["city"] + " ("+(string)body["county"] + ")";
+                    var org_pec = (string)body["digitalAddress"];
+                    response = (IResponse)context.Variables["userResponse"];
+                    body = response.Body.As<JObject>();
+                    var org_email =  (string)body["email"];
                     var payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
-                    new {
-                    iat,
-                    exp,
-                    aud,
-                    iss,
-                    uid,
-                    name,
-                    family_name,
-                    email,
-                    org_id,
-                    org_vat,
-                    org_name,
-                    org_party_role,
-                    org_role
-                    }
+                        new {
+                            iat,
+                            exp,
+                            aud,
+                            iss,
+                            uid,
+                            name,
+                            family_name,
+                            org_email,
+                            org_id,
+                            org_vat,
+                            org_name,
+                            org_party_role,
+                            org_role,
+                            org_address,
+                            org_pec
+                        }
                     ))).Split('=')[0].Replace('+', '-').Replace('/', '_');
 
                     var message = ($"{JOSEProtectedHeader}.{payload}");
 
-                    using (RSA rsa = context.Deployment.Certificates["${jwt_cert_signing_thumbprint}"].GetRSAPrivateKey())
+                     using (RSA rsa = context.Deployment.Certificates["${jwt_cert_signing_thumbprint}"].GetRSAPrivateKey())
                     {
                         var signature = rsa.SignData(Encoding.UTF8.GetBytes(message), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                         return message + "." + Convert.ToBase64String(signature).Split('=')[0].Replace('+', '-').Replace('/', '_');
                     }
-
                     return message;
-
                 }" />
-        <return-response>
-            <set-body>@((string)context.Variables["idpayPortalToken"])</set-body>
-        </return-response>
+                <return-response>
+                    <set-body>@((string)context.Variables["idpayPortalToken"])</set-body>
+                </return-response>
+            </when>
+            <otherwise>
+                <return-response>
+                    <set-status code="500" />
+                </return-response>
+            </otherwise>
+        </choose>
     </inbound>
     <backend>
         <base />
