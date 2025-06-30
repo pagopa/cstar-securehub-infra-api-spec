@@ -1,0 +1,113 @@
+openapi: 3.0.0
+info:
+  title: Keycloak Authentication API
+  version: 1.0.0
+  description: OAuth2/OIDC endpoints for Keycloak
+
+servers:
+  - url: https://your-apim-url
+paths:
+  /realms/{realm}/protocol/openid-connect/token:
+    post:
+      tags:
+        - Authentication
+      summary: Get OAuth2 tokens
+      description: Obtain access, refresh and ID tokens
+      parameters:
+        - $ref: '#/components/parameters/realm'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  enum: [password, authorization_code, client_credentials, refresh_token]
+                  default: password
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+                code:
+                  type: string
+                redirect_uri:
+                  type: string
+                refresh_token:
+                  type: string
+              required:
+                - grant_type
+                - client_id
+      responses:
+        '200':
+          description: Token response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+
+  /realms/{realm}/protocol/openid-connect/auth:
+    get:
+      tags:
+        - Authentication
+      summary: OAuth2 authorization endpoint
+      description: Initiate authorization code flow
+      parameters:
+        - $ref: '#/components/parameters/realm'
+        - name: response_type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [code]
+        - name: client_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: redirect_uri
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: scope
+          in: query
+          schema:
+            type: string
+            default: "openid"
+        - name: state
+          in: query
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Redirect to authentication page or redirect_uri with code
+
+components:
+  parameters:
+    realm:
+      name: realm
+      in: path
+      required: true
+      schema:
+        type: string
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+        id_token:
+          type: string
+        token_type:
+          type: string
+        expires_in:
+          type: integer
+        refresh_expires_in:
+          type: integer
