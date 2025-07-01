@@ -9,8 +9,8 @@ servers:
 paths:
   /*:
     get:
-      summary: Keycloak Realm API
-      description: Access various Keycloak realm endpoints
+      summary: Keycloak API
+      description: Access various Keycloak endpoints
       responses:
         '200':
           description: Successful response
@@ -20,8 +20,8 @@ paths:
                 type: object
                 additionalProperties: true
     post:
-      summary: Keycloak Realm API
-      description: Access various Keycloak realm endpoints
+      summary: Keycloak API
+      description: Access various Keycloak endpoints
       responses:
         '200':
           description: Successful response
