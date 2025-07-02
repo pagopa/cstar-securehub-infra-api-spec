@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
-        <rewrite-uri template="@("/idpay/register/?userId=" + ((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("uid", "") + "&orgName=" + ((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("orgName", ""))" />
+        <rewrite-uri template="@("/idpay/register/product-files")" />
     </inbound>
     <backend>
         <base />

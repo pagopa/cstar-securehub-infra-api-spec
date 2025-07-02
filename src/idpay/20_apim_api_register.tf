@@ -27,55 +27,9 @@ module "idpay_itn_api_register_product" {
 }
 
 #
-# IDPAY API
+# IDPAY API 
 #
-
-module "idpay_itn_permission_register" {
-  source = "./.terraform/modules/__v4__/api_management_api"
-
-  name                = "${var.env_short}-idpay-itn-register-permission"
-  api_management_name = data.azurerm_api_management.apim_core.name
-  resource_group_name = data.azurerm_resource_group.apim_rg.name
-
-  description  = "IDPAY ITN Register Portal Permission"
-  display_name = "IDPAY ITN Register Portal Permission API"
-  path         = "idpay-itn/register/authorization"
-  protocols    = ["https"]
-
-  service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayassetregisterbackend/idpay/welfare"
-
-  content_format = "openapi"
-  content_value  = file("./apim/api/idpay_asset_register/role-permission/openapi.role-permission.yml")
-
-  xml_content = file("./apim/api/base_policy.xml")
-
-  product_ids           = [module.idpay_itn_api_register_product.product_id]
-  subscription_required = false
-
-  api_operation_policies = [
-    {
-      operation_id = "userPermission"
-      xml_content = templatefile("./apim/api/idpay_asset_register/role-permission/get-permission-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-      })
-    },
-    {
-      operation_id = "savePortalConsent"
-      xml_content = templatefile("./apim/api/idpay_asset_register/role-permission/consent-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-      })
-    },
-    {
-      operation_id = "getPortalConsent"
-      xml_content = templatefile("./apim/api/idpay_asset_register/role-permission/consent-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-      })
-    }
-  ]
-
-}
-
-module "idpay_itn_register_operation" {
+module "idpay_itn_register_portal_api" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
   name                = "${var.env_short}-idpay-itn-register-operation"
@@ -87,10 +41,10 @@ module "idpay_itn_register_operation" {
   path         = "idpay-itn/register"
   protocols    = ["https"]
 
-  service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayassetregisterbackend/idpay/welfare"
+  service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayassetregisterbackend/"
 
   content_format = "openapi"
-  content_value  = file("./apim/api/idpay_asset_register/register/openapi.register.yml")
+  content_value  = file("./apim/api/idpay_asset_register/openapi.register.yml")
 
   xml_content = file("./apim/api/base_policy.xml")
 
@@ -99,14 +53,46 @@ module "idpay_itn_register_operation" {
 
   api_operation_policies = [
     {
-      operation_id = "uploadCsv"
-      xml_content = templatefile("./apim/api/idpay_asset_register/register/post-upload-csv.xml.tpl", {
+      operation_id = "userPermission"
+      xml_content = templatefile("./apim/api/idpay_asset_register/get-permissions.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
-      operation_id = "downloadReport"
-      xml_content = templatefile("./apim/api/idpay_asset_register/register/get-download-report.xml.tpl", {
+      operation_id = "savePortalConsent"
+      xml_content = templatefile("./apim/api/idpay_asset_register/consent-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "getPortalConsent"
+      xml_content = templatefile("./apim/api/idpay_asset_register/consent-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "retrieveInstitutionById"
+      xml_content = templatefile("./apim/api/idpay_asset_register/get-institution.xml.tpl", {
+        ingress_load_balancer_hostname  = local.domain_aks_ingress_hostname,
+        selc_base_url                   = var.selc_base_url,
+        selfcare_api_key_reference      = azurerm_api_management_named_value.selfcare_api_key.display_name
+      })
+    },
+    {
+      operation_id = "downloadErrorReport"
+      xml_content = templatefile("./apim/api/idpay_asset_register/get-product-files-report.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "getProductFilesList"
+      xml_content = templatefile("./apim/api/idpay_asset_register/get-product-files.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "uploadProductList"
+      xml_content = templatefile("./apim/api/idpay_asset_register/post-product-files.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
