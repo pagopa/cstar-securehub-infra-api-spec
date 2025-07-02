@@ -25,5 +25,3 @@ external_domain          = "pagopa.it"
 # AKS Legacy
 #
 aks_legacy_instance_name = "dev01"
-
-

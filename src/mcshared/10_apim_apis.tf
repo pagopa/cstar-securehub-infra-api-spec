@@ -13,7 +13,7 @@ resource "azurerm_api_management_api" "auth" {
 
   import {
     content_format = "openapi"
-    content_value = file("./apim/api/oidc/openapi.yaml")
+    content_value  = file("./apim/api/oidc/openapi.yaml")
   }
 }
 
