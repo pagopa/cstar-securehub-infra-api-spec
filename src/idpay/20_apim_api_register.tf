@@ -95,6 +95,12 @@ module "idpay_itn_register_portal_api" {
       xml_content = templatefile("./apim/api/idpay_asset_register/post-product-files.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
+    },
+    {
+      operation_id = "getProducts"
+      xml_content = templatefile("./apim/api/idpay_asset_register/get-products.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
     }
   ]
 }
