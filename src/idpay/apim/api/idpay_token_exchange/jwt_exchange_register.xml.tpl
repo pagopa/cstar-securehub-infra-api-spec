@@ -46,7 +46,7 @@
             Jwt selcToken = (Jwt)context.Variables["outputToken"];
             return selcToken.Claims.GetValueOrDefault("uid", "{}");
         }" />
-        <send-request mode="new" response-variable-name="institutionResponse" timeout="10" ignore-error="false">
+        <send-request mode="new" response-variable-name="userResponse" timeout="10" ignore-error="false">
             <set-url>@("${selfcare_base_url}"+"/users/"+context.Variables["userId"]+"?institutionsId="+context.Variables["institutionId"]))</set-url>
             <set-method>GET</set-method>
             <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
