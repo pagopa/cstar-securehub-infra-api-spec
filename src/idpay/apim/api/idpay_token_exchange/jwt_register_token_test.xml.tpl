@@ -44,7 +44,7 @@
 			var uid = context.Request.Body.As<JObject>(preserveContent: true)["uid"];
 			var name = context.Request.Body.As<JObject>(preserveContent: true)["name"];
 			var family_name = context.Request.Body.As<JObject>(preserveContent: true)["familyName"];
-			var email = context.Request.Body.As<JObject>(preserveContent: true)["email"];
+			var org_email = context.Request.Body.As<JObject>(preserveContent: true)["email"];
 			var acquirer_id = context.Request.Body.As<JObject>(preserveContent: true)["acquirerId"];
 			var merchant_id = context.Request.Body.As<JObject>(preserveContent: true)["merchantId"];
 			var org_id = context.Request.Body.As<JObject>(preserveContent: true)["orgId"];
@@ -52,6 +52,8 @@
 			var org_name = context.Request.Body.As<JObject>(preserveContent: true)["orgName"];
 			var org_party_role = context.Request.Body.As<JObject>(preserveContent: true)["orgPartyRole"];
 			var org_role = context.Request.Body.As<JObject>(preserveContent: true)["orgRole"];
+			var org_pec = context.Request.Body.As<JObject>(preserveContent: true)["orgPec"];
+			var org_address = context.Request.Body.As<JObject>(preserveContent: true)["orgAddress"];
 			var payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
 			new {
 				iat,
@@ -61,14 +63,16 @@
 				uid,
 				name,
 				family_name,
-				email,
 				acquirer_id,
 				merchant_id,
+				org_email,
 				org_id,
 				org_vat,
 				org_name,
 				org_party_role,
-				org_role
+				org_role,
+				org_pec,
+				org_address
 			}
 			))).Split('=')[0].Replace('+', '-').Replace('/', '_');
 

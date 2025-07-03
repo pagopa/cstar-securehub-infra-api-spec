@@ -10,7 +10,7 @@ resource "azurerm_api_management_policy_fragment" "apim_merchant_id_retriever" {
 }
 
 resource "azurerm_api_management_policy_fragment" "apim_pdv_tokenizer" {
-  name              = "idpay--itn-pdv-tokenizer"
+  name              = "idpay-itn-pdv-tokenizer"
   api_management_id = data.azurerm_api_management.apim_core.id
 
   description = "idpay-pdv-tokenizer"
