@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <rate-limit calls="${rate_limit_mil_citizen}" renewal-period="60" />
-        <include-fragment fragment-id="idpay-validate-token-mil" />
+        <include-fragment fragment-id="idpay-itn-validate-token-mil" />
         <choose>
             <when condition="@(context.Variables["fiscalCode"] != null)">
                 <!-- Use the fiscalCode from the fragment for the PDV call -->

@@ -32,7 +32,8 @@ resource "azurerm_api_management_policy_fragment" "apim_validate_token_mil" {
   description = "idpay-itn-validate-token-mil"
   format      = "rawxml"
   value = templatefile("./apim/api_fragment/validate-token-mil.xml", {
-    openid-config-url-mil = var.openid_config_url_mil
+    openidUrl = var.mil_openid_url,
+    issuerUrl = var.mil_issuer_url
   })
 }
 
