@@ -34,7 +34,11 @@ rate_limit_minint_product = 1000
 rate_limit_portal_product           = 2500
 rate_limit_merchants_portal_product = 2500
 
-
+#
+# Register Token Exchange
+#
+invitalia_fc      = "05678721001"
+selfcare_base_url = "https://api.uat.selfcare.pagopa.it/external/v2"
 
 #
 # PDV

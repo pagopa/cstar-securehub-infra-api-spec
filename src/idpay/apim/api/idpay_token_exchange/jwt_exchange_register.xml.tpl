@@ -47,21 +47,21 @@
             return selcToken.Claims.GetValueOrDefault("uid", "{}");
         }" />
         <send-request mode="new" response-variable-name="institutionResponse" timeout="10" ignore-error="false">
-            <set-url>@("${selfcare_base_url}"+"/users/"+context.Variables["userId"]+"?institutionsId="+context.Variables["institutionId"]))</set-url>
-            <set-method>GET</set-method>
-            <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
-                <value>{{${selfcare_api_key_reference}}}</value>
-            </set-header>
+                    <set-url>@("${selfcare_base_url}"+"/institutions/"+context.Variables["institutionId"])</set-url>
+                    <set-method>GET</set-method>
+                    <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
+                        <value>{{${selfcare_api_key_reference}}}</value>
+                    </set-header>
         </send-request>
-        <send-request mode="new" response-variable-name="institutionResponse" timeout="10" ignore-error="false">
-            <set-url>@("${selfcare_base_url}"+"/institutions/"+context.Variables["institutionId"])</set-url>
-            <set-method>GET</set-method>
-            <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
-                <value>{{${selfcare_api_key_reference}}}</value>
-            </set-header>
+        <send-request mode="new" response-variable-name="userResponse" timeout="10" ignore-error="false">
+                    <set-url>@("${selfcare_base_url}/users/"+context.Variables["userId"]+"?institutionId="+context.Variables["institutionId"])</set-url>
+                    <set-method>GET</set-method>
+                    <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
+                        <value>{{${selfcare_api_key_reference}}}</value>
+                    </set-header>
         </send-request>
         <choose>
-            <when condition="@(((IResponse)context.Variables["institutionResponse"]).StatusCode == 200)">
+            <when condition="@(((IResponse)context.Variables["institutionResponse"]).StatusCode == 200 && ((IResponse)context.Variables["userResponse"]).StatusCode == 200)">
                 <set-variable name="idpayPortalToken" value="@{
                     Jwt selcToken = (Jwt)context.Variables["outputToken"];
                     var JOSEProtectedHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
