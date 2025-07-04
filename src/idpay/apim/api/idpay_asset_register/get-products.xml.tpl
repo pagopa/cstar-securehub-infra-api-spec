@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Request.Headers.GetValueOrDefault("x-user-role", "") != "operatore" && context.Request.Headers.GetValueOrDefault("x-user-role", "") != "invitalia")">
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia")">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
                     <set-header name="Content-Type" exists-action="override">

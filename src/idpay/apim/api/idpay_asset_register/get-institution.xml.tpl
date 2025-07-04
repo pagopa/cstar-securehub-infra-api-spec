@@ -7,6 +7,16 @@
 <policies>
     <inbound>
         <base />
+        <choose>
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia")">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+        </choose>
         <set-variable name="institutionId" value="@(context.Request.MatchedParameters["institutionId"])" />
         <send-request mode="new" response-variable-name="institutionResponse" timeout="10" ignore-error="false">
             <set-url>@("${selc_base_url}"+"/external/v2/institutions/"+context.Variables["institutionId"])</set-url>
