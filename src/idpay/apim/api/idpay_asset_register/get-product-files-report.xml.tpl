@@ -13,14 +13,34 @@
 <policies>
     <inbound>
         <base />
+        <choose>
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore")">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+        </choose>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
-        <rewrite-uri template="@("/idpay/register/upload/?userId=" + ((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("uid", "") + "&role=" + ((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("orgRole", "") + "&orgName=" + ((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("orgName", ""))" />
+        <rewrite-uri template="@("/idpay/register/product-files/{productFileId}/report")" />
     </inbound>
     <backend>
         <base />
     </backend>
     <outbound>
         <base />
+        <choose>
+            <when condition="@(context.Response.StatusCode >= 200 &&  context.Response.StatusCode < 300)">
+                    <set-body>@{
+                        var response = context.Response.Body.As<String>(preserveContent: true);
+                        return new JObject(
+                               new JProperty("data", response)
+                        ).ToString();
+                    }</set-body>
+            </when>
+        </choose>
     </outbound>
     <on-error>
         <base />

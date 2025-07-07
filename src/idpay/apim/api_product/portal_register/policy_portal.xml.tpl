@@ -53,6 +53,15 @@
                 <claim name="org_address" match="all" />
             </required-claims>
         </validate-jwt>
+        <set-variable name="organizationId" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_id", ""))" />
+        <set-variable name="userId" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("uid", ""))" />
+        <set-variable name="organizationRole" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_role", ""))" />
+        <set-header name="x-organization-id" exists-action="override">
+            <value>@((String)context.Variables["organizationId"])</value>
+        </set-header>
+        <set-header name="x-user-id" exists-action="override">
+            <value>@((String)context.Variables["userId"])</value>
+        </set-header>
     </inbound>
     <backend>
         <base />

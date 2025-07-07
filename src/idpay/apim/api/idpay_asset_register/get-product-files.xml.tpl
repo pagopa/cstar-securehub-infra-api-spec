@@ -13,8 +13,18 @@
 <policies>
     <inbound>
         <base />
+        <choose>
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore")">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+        </choose>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
-        <rewrite-uri template="@("/idpay/register/?userId=" + ((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("uid", "") + "&orgName=" + ((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("orgName", ""))" />
+        <rewrite-uri template="@("/idpay/register/product-files")" />
     </inbound>
     <backend>
         <base />

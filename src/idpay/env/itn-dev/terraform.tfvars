@@ -43,7 +43,7 @@ selfcare_base_url = "https://api.dev.selfcare.pagopa.it/external/v2"
 #
 # PDV
 #
-pdv_tokenizer_url      = "127.0.0.1"
+pdv_tokenizer_url      = "https://api.dev.tokenizer.pdv.pagopa.it/tokenizer/v1"
 pdv_timeout_sec        = 15
 pdv_retry_count        = 3
 pdv_retry_interval     = 5
