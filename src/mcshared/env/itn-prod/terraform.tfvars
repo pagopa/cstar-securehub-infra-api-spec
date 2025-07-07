@@ -20,8 +20,3 @@ tags = {
 dns_zone_prefix          = "cstar"
 dns_zone_internal_prefix = "internal.cstar"
 external_domain          = "pagopa.it"
-
-#
-# AKS Legacy
-#
-aks_legacy_instance_name = "prod01"
