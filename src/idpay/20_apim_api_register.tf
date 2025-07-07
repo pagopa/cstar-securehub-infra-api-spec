@@ -27,7 +27,7 @@ module "idpay_itn_api_register_product" {
 }
 
 #
-# IDPAY API 
+# IDPAY API
 #
 module "idpay_itn_register_portal_api" {
   source = "./.terraform/modules/__v4__/api_management_api"
