@@ -1,0 +1,32 @@
+openapi: 3.0.0
+info:
+  title: Keycloak Authentication API
+  version: 1.0.0
+  description: OAuth2/OIDC endpoints for Keycloak including discovery
+
+servers:
+  - url: https://your-apim-url
+paths:
+  /*:
+    get:
+      summary: Keycloak API
+      description: Access various Keycloak endpoints
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+    post:
+      summary: Keycloak API
+      description: Access various Keycloak endpoints
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
