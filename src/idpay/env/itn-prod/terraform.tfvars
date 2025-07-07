@@ -39,7 +39,7 @@ rate_limit_merchants_portal_product = 2500
 #
 # PDV
 #
-pdv_tokenizer_url      = "127.0.0.1"
+pdv_tokenizer_url      = "https://api.tokenizer.pdv.pagopa.it/tokenizer/v1"
 pdv_timeout_sec        = 15
 pdv_retry_count        = 3
 pdv_retry_interval     = 5
