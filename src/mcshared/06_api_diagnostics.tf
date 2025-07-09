@@ -11,5 +11,4 @@ resource "azurerm_api_management_api_diagnostic" "this" {
 
   always_log_errors = each.value.api_diagnostic.always_log_errors
   verbosity         = each.value.api_diagnostic.verbosity
-
 }

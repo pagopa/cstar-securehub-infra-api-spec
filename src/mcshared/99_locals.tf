@@ -1,11 +1,6 @@
 locals {
   product = "${var.prefix}-${var.env_short}"
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  #
-  # Network
-  #
-  dns_public_core_name          = "${var.dns_zone_prefix}.${var.external_domain}"
-  vnet_core_resource_group_name = "${local.product}-vnet-rg"
 
   #
   # APIM
