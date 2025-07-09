@@ -40,15 +40,15 @@
                     <set-body>@{
                             var json = ((IResponse)context.Variables["institutionResponse"]).Body.As<JObject>();
                             return new JObject {
-                                ["address"] = json["address"],
-                                ["city"] = json["city"],
-                                ["county"] = json["county"],
-                                ["country"] = json["country"],
-                                ["zipCode"] = json["zipCode"],
-                                ["digitalAddress"] = json["digitalAddress"],
-                                ["description"] = json["description"],
-                                ["taxCode"] = json["taxCode"],
-                                ["externalId"] = json["externalId"]
+                                ["address"] = json["address"] ?? "N/A",
+                                ["city"] = json["city"] ?? "N/A",
+                                ["county"] = json["county"] ?? "N/A",
+                                ["country"] = json["country"] ?? "N/A",
+                                ["zipCode"] = json["zipCode"] ?? "N/A",
+                                ["digitalAddress"] = json["digitalAddress"] ?? "N/A",
+                                ["description"] = json["description"] ?? "N/A",
+                                ["taxCode"] = json["taxCode"] ?? "N/A",
+                                ["externalId"] = json["externalId"] ?? "N/A"
                             }.ToString();
                         }</set-body>
                 </return-response>

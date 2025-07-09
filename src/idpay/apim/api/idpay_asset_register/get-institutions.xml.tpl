@@ -18,8 +18,8 @@
             </when>
         </choose>
         <send-request mode="new" response-variable-name="institutionsResponse" timeout="10" ignore-error="false">
-            <set-url>@("${selc_base_url}"+"/external/v2/tokens/products/prod-registro-beni?status=COMPLETED)</set-url>
-           <set-method>GET</set-method>
+            <set-url>@("${selc_base_url}"+"/external/v2/tokens/products/prod-registro-beni?status=COMPLETED")</set-url>
+            <set-method>GET</set-method>
             <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
                 <value>{{${selfcare_api_key_reference}}}</value>
             </set-header>
@@ -37,7 +37,7 @@
                         <value>application/json</value>
                     </set-header>
                     <set-body>@{
-                        var json = ((IResponse)context.Variables["institutionResponse"]).Body.As<JObject>();
+                        var json = ((IResponse)context.Variables["institutionsResponse"]).Body.As<JObject>();
                         var items = json["items"] as JArray;
 
                         var resultArray = new JArray();
@@ -46,10 +46,10 @@
                         {
                           var resultItem = new JObject
                           {
-                              ["institutionId"] = item["institutionId"],
-                              ["createdAt"] = item["createdAt"],
-                              ["updatedAt"] = item["updatedAt"],
-                              ["description"] = item["institutionUpdate"]["description"]
+                              ["institutionId"] = item["institutionId"] ?? "N/A",
+                              ["createdAt"] = item["createdAt"] ?? "N/A",
+                              ["updatedAt"] = item["updatedAt"] ?? "N/A",
+                              ["description"] = item["institutionUpdate"]?["description"] ?? "N/A",
                           };
                           resultArray.Add(resultItem);
                         }
