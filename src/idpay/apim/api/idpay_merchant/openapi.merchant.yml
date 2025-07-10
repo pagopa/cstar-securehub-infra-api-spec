@@ -205,6 +205,77 @@ paths:
               example:
                 code: MERCHANT_GENERIC_ERROR
                 message: An error occurred during file reading
+    patch:
+      tags:
+        - merchant-detail
+      summary: Update merchant IBAN
+      description: "ENG: Update the IBAN of a merchant for a specific initiative <br> IT: Aggiornamento dell'IBAN di un esercente per una specifica iniziativa"
+      operationId: updateMerchantIban
+      parameters:
+        - name: merchantId
+          in: path
+          description: The merchant ID
+          required: true
+          schema:
+            type: string
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: The IBAN to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantIbanPatchDTO'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantDetailDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantErrorDTO'
+              example:
+                code: MERCHANT_INVALID_REQUEST
+                message: Something went wrong handling request
+        '401':
+          description: Authentication failed
+        '404':
+          description: The requested ID was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantErrorDTO'
+              example:
+                code: MERCHANT_NOT_ONBOARDED
+                message: The current merchant is not onboarded on initiative
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantErrorDTO'
+              example:
+                code: MERCHANT_TOO_MANY_REQUESTS
+                message: Too many requests
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantErrorDTO'
+              example:
+                code: MERCHANT_GENERIC_ERROR
+                message: An error occurred during the update
   /{merchantId}/initiative/{initiativeId}/statistics:
     get:
       tags:
@@ -411,6 +482,15 @@ paths:
           description: Server error
 components:
   schemas:
+    MerchantIbanPatchDTO:
+      type: object
+      properties:
+        iban:
+          type: string
+          description: "ENG: The IBAN of the merchant <br> IT: L'IBAN dell'esercente"
+        ibanHolder:
+          type: string
+          description: "ENG: The holder of the IBAN <br> IT: L'intestatario dell'IBAN"
     MerchantUpdateDTO:
       type: object
       properties:
