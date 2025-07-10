@@ -1,6 +1,7 @@
 locals {
-  product = "${var.prefix}-${var.env_short}"
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product             = "${var.prefix}-${var.env_short}"
+  project             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_no_location = "${var.prefix}-${var.env_short}-${var.domain}"
 
   #
   # APIM
@@ -27,7 +28,7 @@ locals {
       path                  = "mil-auth-itn"
       revision              = "1"
       protocols             = ["https"]
-      service_url           = "https://${local.project}-auth-ca.${data.azurerm_container_app_environment.mcshared.default_domain}"
+      service_url           = "https://${local.project_no_location}-auth-ca.${data.azurerm_container_app_environment.mcshared.default_domain}"
       subscription_required = false
       product               = "mcshared-itn"
       import_descriptor = {

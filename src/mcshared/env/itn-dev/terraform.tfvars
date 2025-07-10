@@ -31,3 +31,18 @@ mil_get_access_token_rate_limit = {
   calls  = 10
   period = 60
 }
+
+mil_get_jwks_rate_limit = {
+  calls  = 100
+  period = 60
+}
+
+mil_get_open_id_conf_rate_limit = {
+  calls  = 100
+  period = 60
+}
+
+mil_introspect_rate_limit = {
+  calls  = 10
+  period = 60
+}
