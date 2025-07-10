@@ -333,6 +333,12 @@ paths:
       summary: Get report IDs
       description: "ENG: Retrieve the list of batch IDs<br> IT: Recupera la lista degli id dei lotti"
       operationId: getBatchNameList
+      parameters:
+        - name: organzationId
+          in: query
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Ok
@@ -417,6 +423,11 @@ paths:
         - name: productFileId
           in: query
           required: false
+          schema:
+            type: string
+        - name: organzationId
+          in: query
+          required: true
           schema:
             type: string
       responses:
