@@ -334,7 +334,7 @@ paths:
       description: "ENG: Retrieve the list of batch IDs<br> IT: Recupera la lista degli id dei lotti"
       operationId: getBatchNameList
       parameters:
-        - name: organzationId
+        - name: x-organization-selected
           in: header
           required: true
           schema:
@@ -425,9 +425,9 @@ paths:
           required: false
           schema:
             type: string
-        - name: organzationId
+        - name:  x-organization-selected
           in: header
-          required: true
+          required: false
           schema:
             type: string
       responses:
