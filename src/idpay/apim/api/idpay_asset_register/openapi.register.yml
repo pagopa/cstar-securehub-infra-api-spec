@@ -335,7 +335,7 @@ paths:
       operationId: getBatchNameList
       parameters:
         - name: organzationId
-          in: query
+          in: header
           required: true
           schema:
             type: string
@@ -426,7 +426,7 @@ paths:
           schema:
             type: string
         - name: organzationId
-          in: query
+          in: header
           required: true
           schema:
             type: string
