@@ -50,3 +50,9 @@ variable "enable_auth_send" {
   description = "Enable auth on RTP send API"
   default     = true
 }
+
+variable "mcshared_migration_flag" {
+  type        = bool
+  description = "Enable expose mil-auth on HOST/mil-auth-itn"
+  default     = false
+}

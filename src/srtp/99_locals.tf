@@ -1,7 +1,7 @@
 locals {
-  product = "${var.prefix}-${var.env_short}"
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-
+  product             = "${var.prefix}-${var.env_short}"
+  project             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_no_location = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # APIM
   apim_rg_name      = "cstar-${var.env_short}-api-rg"
@@ -11,7 +11,9 @@ locals {
 
   dns_external_domain = "pagopa.it"
   dns_zone            = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.${local.dns_external_domain}"
-  rtp_fe_origin       = "${var.domain}.${local.dns_zone}"
+  rtp_fe_origin       = "rtp.${local.dns_zone}"
+
+
 
   # Default Domain Resource Group
   compute_rg = "${local.project}-compute-rg"
@@ -19,16 +21,22 @@ locals {
   # RTP Storage Account
   rtp_storage_account_name = "cstar${var.env_short}${var.location_short}srtpsa"
 
+  # ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+  # MC Shared URL
+  mc_shared_base_url = "https://api-mcshared.${local.dns_zone}/${var.mcshared_migration_flag ? "mil-auth-itn" : "auth"}"
+  api_context_path   = var.mcshared_migration_flag ? "rtp-itn" : "rtp"
+  # ⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+
   apis = {
     # RTP Activation
     rtp-activation = {
       display_name          = "RTP ITN Activation API"
       description           = "RTP ITN Activation API"
-      path                  = "rtp-itn/activation"
+      path                  = "${local.api_context_path}/activation"
       revision              = "1"
       version               = "v1"
       protocols             = ["https"]
-      service_url           = "https://${local.product}-rtp-activator-ca.${data.azurerm_container_app_environment.srtp.default_domain}"
+      service_url           = "https://${local.project_no_location}-activator-ca.${data.azurerm_container_app_environment.srtp.default_domain}"
       subscription_required = false
       product               = "rtp-itn"
       import_descriptor = {
@@ -60,7 +68,7 @@ locals {
     rtp-mock = {
       description           = "RTP ITN MOCK API EPC"
       display_name          = "RTP ITN MOCK API EPC"
-      path                  = "rtp-itn/mock"
+      path                  = "${local.api_context_path}/mock"
       revision              = "1"
       protocols             = ["https"]
       subscription_required = false
@@ -74,7 +82,7 @@ locals {
     rtp-payees-registry = {
       description           = "RTP ITN Payees Registry API"
       display_name          = "RTP ITN Payees Registry API"
-      path                  = "rtp-itn/payees"
+      path                  = "${local.api_context_path}/payees"
       revision              = "1"
       version               = "v1"
       protocols             = ["https"]
@@ -100,30 +108,31 @@ locals {
     rtp-callback = {
       description           = "RTP ITN CALLBACK API"
       display_name          = "RTP ITN CALLBACK API"
-      path                  = "rtp-itn/cb"
+      path                  = "${local.api_context_path}/cb"
       revision              = "1"
       protocols             = ["https"]
-      service_url           = "https://${local.product}-rtp-sender-ca.${data.azurerm_container_app_environment.srtp.default_domain}"
+      service_url           = "https://${local.project_no_location}-sender-ca.${data.azurerm_container_app_environment.srtp.default_domain}"
+      subscription_required = false
+      product               = "rtp-itn"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
+      }
+    }
+    # RTP Service Provider
+    rtp-service-provider = {
+      description           = "RTP ITN Service Provider API"
+      display_name          = "RTP ITN Service Provider API"
+      path                  = local.api_context_path
+      revision              = "1"
+      version               = "v1"
+      protocols             = ["https"]
+      service_url           = "https://${local.project_no_location}-sender-ca.${data.azurerm_container_app_environment.srtp.default_domain}"
       subscription_required = false
       product               = "rtp-itn"
       import_descriptor = {
         content_format = "openapi"
         content_value  = templatefile("./api/pagopa/send.openapi.yaml", {})
-      }
-    }
-    # RTP Payees Registry
-    rtp-service-provider = {
-      description           = "RTP ITN Service Provider API"
-      display_name          = "RTP ITN Service Provider API"
-      path                  = "rtp-itn"
-      revision              = "1"
-      version               = "v1"
-      protocols             = ["https"]
-      subscription_required = false
-      product               = "rtp-itn"
-      import_descriptor = {
-        content_format = "openapi"
-        content_value  = templatefile("./api/pagopa/payees_registry.yaml", {})
       }
       version_set = {
         name                = "${var.env_short}-rtp-service-provider-v2"
@@ -131,17 +140,12 @@ locals {
         versioning_scheme   = "Header"
         version_header_name = "Version"
       }
-      api_policy = {
-        xml_content = templatefile("./api/pagopa/payees_registry_base_policy.xml", {
-          fragment_id = "rtp-validate-blob-storage-payees-token-mcshared-v2"
-        })
-      }
     }
     # RTP Service Providers Registry
     rtp-service_providers-registry = {
       description           = "RTP ITN Service Providers Registry API"
       display_name          = "RTP ITN Service Providers Registry API"
-      path                  = "rtp-itn/service_providers"
+      path                  = "${local.api_context_path}/service_providers"
       revision              = "1"
       version               = "v1"
       protocols             = ["https"]
@@ -193,22 +197,22 @@ locals {
       description = "rtp-validate-token-mcshared"
       format      = "xml"
       value = templatefile("./api_fragment/validate-token-mcshared.xml", {
-        mc_shared_base_url = "https://api-mcshared.${local.dns_zone}"
+        mc_shared_base_url = local.mc_shared_base_url
       })
     }
     rtp-validate-blob-storage-payees-token-mcshared-v2 = {
       description = "rtp-validate-blob-storage-payees-token-mcshared"
       format      = "xml"
       value = templatefile("./api_fragment/validate-token-payees-mcshared_blob_storage.xml", {
-        mc_shared_base_url = "https://api-mcshared.${local.dns_zone}",
-        rtp_group_name     = "rtp_payees_group_name",
+        mc_shared_base_url = local.mc_shared_base_url
+        rtp_group_name     = "read_rtp_payees",
       })
     }
     rtp-validate-blob-storage-service-providers-token-mcshared-v2 = {
       description = "rtp-validate-blob-storage-service-providers-token-mcshared"
       format      = "xml"
       value = templatefile("./api_fragment/validate-token-service-providers-mcshared_blob_storage.xml", {
-        mc_shared_base_url = "https://api-mcshared.${local.dns_zone}",
+        mc_shared_base_url = local.mc_shared_base_url,
         rtp_group_name     = "read_service_registry"
       })
     },
@@ -232,19 +236,19 @@ locals {
       xml_content = templatefile("./api/pagopa/payees_registry_get_policy.xml", {
         storage_account_name = local.rtp_storage_account_name
       })
-      createRtp = {
-        api_name = "rtp-service-provider"
-        xml_content = templatefile("./api/pagopa/send_policy.xml", {
-          fragment_id = "rtp-validate-token-mcshared-v2",
-          enableAuth  = var.enable_auth_send
-        })
-      }
-      getServiceProviders = {
-        api_name = "rtp-service_providers-registry"
-        xml_content = templatefile("./api/pagopa/service_providers_registry_get_policy.xml", {
-          storage_account_name = local.rtp_storage_account_name
-        })
-      }
+    }
+    createRtp = {
+      api_name = "rtp-service-provider"
+      xml_content = templatefile("./api/pagopa/send_policy.xml", {
+        fragment_id = "rtp-validate-token-mcshared-v2",
+        enableAuth  = var.enable_auth_send
+      })
+    }
+    getServiceProviders = {
+      api_name = "rtp-service_providers-registry"
+      xml_content = templatefile("./api/pagopa/service_providers_registry_get_policy.xml", {
+        storage_account_name = local.rtp_storage_account_name
+      })
     }
   }
 }
