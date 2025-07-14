@@ -1,6 +1,6 @@
 prefix         = "cstar"
-env_short      = "d"
-env            = "dev"
+env_short      = "p"
+env            = "prod"
 domain         = "srtp"
 location_short = "itn"
 

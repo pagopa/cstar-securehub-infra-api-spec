@@ -6,14 +6,12 @@ locals {
   # APIM
   apim_rg_name      = "cstar-${var.env_short}-api-rg"
   apim_name         = "cstar-${var.env_short}-apim"
-  apim_logger_id    = "${data.azurerm_api_management.apim.id}/loggers/${local.apim_name}-logger"
+  apim_logger_id    = "${data.azurerm_api_management.apim.id}/loggers/${local.project}-apim-logger"
   api_management_id = data.azurerm_api_management.apim.id
 
   dns_external_domain = "pagopa.it"
   dns_zone            = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.${local.dns_external_domain}"
   rtp_fe_origin       = "rtp.${local.dns_zone}"
-
-
 
   # Default Domain Resource Group
   compute_rg = "${local.project}-compute-rg"
@@ -38,7 +36,7 @@ locals {
       protocols             = ["https"]
       service_url           = "https://${local.project_no_location}-activator-ca.${data.azurerm_container_app_environment.srtp.default_domain}"
       subscription_required = false
-      product               = "rtp-itn"
+      product               = "srtp"
       import_descriptor = {
         content_format = "openapi"
         content_value  = templatefile("./api/pagopa/activation.yaml", {})
@@ -72,7 +70,7 @@ locals {
       revision              = "1"
       protocols             = ["https"]
       subscription_required = false
-      product               = "rtp-itn"
+      product               = "srtp"
       import_descriptor = {
         content_format = "openapi"
         content_value  = templatefile("./api/epc/EPC133-22_v3.1_SRTP_spec.openapi.yaml", {})
@@ -87,7 +85,7 @@ locals {
       version               = "v1"
       protocols             = ["https"]
       subscription_required = false
-      product               = "rtp-itn"
+      product               = "srtp"
       import_descriptor = {
         content_format = "openapi"
         content_value  = templatefile("./api/pagopa/payees_registry.yaml", {})
@@ -113,7 +111,7 @@ locals {
       protocols             = ["https"]
       service_url           = "https://${local.project_no_location}-sender-ca.${data.azurerm_container_app_environment.srtp.default_domain}"
       subscription_required = false
-      product               = "rtp-itn"
+      product               = "srtp"
       import_descriptor = {
         content_format = "openapi"
         content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
@@ -129,7 +127,7 @@ locals {
       protocols             = ["https"]
       service_url           = "https://${local.project_no_location}-sender-ca.${data.azurerm_container_app_environment.srtp.default_domain}"
       subscription_required = false
-      product               = "rtp-itn"
+      product               = "srtp"
       import_descriptor = {
         content_format = "openapi"
         content_value  = templatefile("./api/pagopa/send.openapi.yaml", {})
@@ -150,7 +148,7 @@ locals {
       version               = "v1"
       protocols             = ["https"]
       subscription_required = false
-      product               = "rtp-itn"
+      product               = "srtp"
       import_descriptor = {
         content_format = "openapi"
         content_value  = templatefile("./api/pagopa/service_providers_registry.yaml", {})
@@ -178,8 +176,8 @@ locals {
     }
   }
   products = {
-    # RTP ITN
-    rtp-itn = {
+    # SRTP
+    srtp = {
       display_name          = "RTP ITN Request To Pay"
       description           = "RTP Request To Pay"
       subscription_required = false
