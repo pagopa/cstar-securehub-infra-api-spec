@@ -216,12 +216,72 @@ paths:
               example:
                 code: REGISTER_GENERIC_ERROR
                 message: An error occurred during file reading
+    get:
+      tags:
+        - products-upload
+      summary: Returns the uploads history list
+      description: 'ENG: Returns the history uploads list <br> IT: Lista storico caricamenti'
+      operationId: getProductFilesList
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadsListDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadsErrorDTO'
+              example:
+                code: UPLOADS_INVALID_REQUEST
+                message: Something went wrong handling request
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadsErrorDTO'
+              example:
+                code: UPLOADS_TOO_MANY_REQUESTS
+                message: Too many requests
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadsErrorDTO'
+              example:
+                code: UPLOADS_GENERIC_ERROR
+                message: An error occurred during file reading
   /product-files/verify:
     post:
       tags:
         - products-upload
-      summary: Verify CSV file containing a list of products
-      description: 'ENG: Verify CSV file containing a list of products <br> IT: Verifica del file CSV contenente una lista di prodotti'
+      summary: Upload CSV file containing a list of products
+      description: 'ENG: Upload CSV file containing a list of products <br> IT: Caricamento del file CSV conentente una lista di prodotti'
       operationId: verifyProductList
       parameters:
         - name: category
