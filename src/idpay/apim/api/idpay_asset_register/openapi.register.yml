@@ -216,45 +216,45 @@ paths:
               example:
                 code: REGISTER_GENERIC_ERROR
                 message: An error occurred during file reading
-    get:
+  /product-files/verify:
+    post:
       tags:
         - products-upload
-      summary: Returns the uploads history list
-      description: 'ENG: Returns the history uploads list <br> IT: Lista storico caricamenti'
-      operationId: getProductFilesList
+      summary: Verify CSV file containing a list of products
+      description: 'ENG: Verify CSV file containing a list of products <br> IT: Verifica del file CSV contenente una lista di prodotti'
+      operationId: verifyProductList
       parameters:
-        - name: page
+        - name: category
           in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: size
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: sort
-          in: query
-          required: false
+          required: true
           schema:
             type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - csv
+              type: object
+              properties:
+                csv:
+                  type: string
+                  format: binary
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UploadsListDTO'
+                $ref: '#/components/schemas/RegisterUploadResponseDTO'
         '400':
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UploadsErrorDTO'
+                $ref: '#/components/schemas/RegisterErrorDTO'
               example:
-                code: UPLOADS_INVALID_REQUEST
+                code: REGISTER_INVALID_REQUEST
                 message: Something went wrong handling request
         '401':
           description: Authentication failed
@@ -263,18 +263,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UploadsErrorDTO'
+                $ref: '#/components/schemas/RegisterErrorDTO'
               example:
-                code: UPLOADS_TOO_MANY_REQUESTS
+                code: REGISTER_TOO_MANY_REQUESTS
                 message: Too many requests
         '500':
           description: Server ERROR
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UploadsErrorDTO'
+                $ref: '#/components/schemas/RegisterErrorDTO'
               example:
-                code: UPLOADS_GENERIC_ERROR
+                code: REGISTER_GENERIC_ERROR
                 message: An error occurred during file reading
   /product-files/{productFileId}/report:
     get:
@@ -763,6 +763,12 @@ components:
         linkEprel:
           type: string
           description: "ENG: The EPREL product link <br> IT: Il link EPREL del prodotto"
+        capacity:
+          type: string
+          description: "ENG: The capacity of the product <br> IT: Capacità del  prodotto"
+        productName:
+          type: string
+          description: "ENG: The name of the product  <br> IT: Nome del prodotto"
     InstitutionResponse:
       title: InstitutionResponse
       type: object
