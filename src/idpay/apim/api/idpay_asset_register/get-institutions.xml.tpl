@@ -44,14 +44,16 @@
 
                         foreach (var item in items)
                         {
-                          var resultItem = new JObject
-                          {
-                              ["institutionId"] = item["institutionId"] ?? "N/A",
-                              ["createdAt"] = item["createdAt"] ?? "N/A",
-                              ["updatedAt"] = item["updatedAt"] ?? "N/A",
-                              ["description"] = item["institutionUpdate"]?["description"] ?? "N/A",
-                          };
-                          resultArray.Add(resultItem);
+                          if((string)item["institutionId"] != (string)context.Variables["organizationId"]){
+                            var resultItem = new JObject
+                            {
+                                ["institutionId"] = item["institutionId"] ?? "N/A",
+                                ["createdAt"] = item["createdAt"] ?? "N/A",
+                                ["updatedAt"] = item["updatedAt"] ?? "N/A",
+                                ["description"] = item["institutionUpdate"]?["description"] ?? "N/A",
+                            };
+                            resultArray.Add(resultItem);
+                          }
                         }
 
                         return new JObject{
