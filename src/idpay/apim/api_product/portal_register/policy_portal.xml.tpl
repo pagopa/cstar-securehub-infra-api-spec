@@ -56,11 +56,15 @@
         <set-variable name="organizationId" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_id", ""))" />
         <set-variable name="userId" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("uid", ""))" />
         <set-variable name="organizationRole" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_role", ""))" />
+        <set-variable name="organizationEmail" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_email", ""))" />
         <set-header name="x-organization-id" exists-action="override">
             <value>@((String)context.Variables["organizationId"])</value>
         </set-header>
         <set-header name="x-user-id" exists-action="override">
             <value>@((String)context.Variables["userId"])</value>
+        </set-header>
+        <set-header name="x-user-email" exists-action="override">
+            <value>@((String)context.Variables["organizationEmail"])</value>
         </set-header>
     </inbound>
     <backend>

@@ -17,40 +17,50 @@
                 </return-response>
             </when>
         </choose>
-        <set-variable name="institutionId" value="@(context.Request.MatchedParameters["institutionId"])" />
-        <send-request mode="new" response-variable-name="institutionResponse" timeout="10" ignore-error="false">
-            <set-url>@("${selc_base_url}"+"/external/v2/institutions/"+context.Variables["institutionId"])</set-url>
-           <set-method>GET</set-method>
+        <send-request mode="new" response-variable-name="institutionsResponse" timeout="10" ignore-error="false">
+            <set-url>@("${selc_base_url}"+"/external/v2/tokens/products/prod-registro-beni?status=COMPLETED")</set-url>
+            <set-method>GET</set-method>
             <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
                 <value>{{${selfcare_api_key_reference}}}</value>
             </set-header>
         </send-request>
         <choose>
-            <when condition="@(context.Variables["institutionResponse"] == null)">
+            <when condition="@(context.Variables["institutionsResponse"] == null)">
                 <return-response>
                     <set-status code="504" reason="Institutions API Gateway Timeout" />
                 </return-response>
             </when>
-            <when condition="@(((IResponse)context.Variables["institutionResponse"]).StatusCode == 200)">
+            <when condition="@(((IResponse)context.Variables["institutionsResponse"]).StatusCode == 200)">
                 <return-response>
                     <set-status code="200" />
                     <set-header name="Content-Type" exists-action="override">
                         <value>application/json</value>
                     </set-header>
                     <set-body>@{
-                            var json = ((IResponse)context.Variables["institutionResponse"]).Body.As<JObject>();
-                            return new JObject {
-                                ["address"] = json["address"] ?? "N/A",
-                                ["city"] = json["city"] ?? "N/A",
-                                ["county"] = json["county"] ?? "N/A",
-                                ["country"] = json["country"] ?? "N/A",
-                                ["zipCode"] = json["zipCode"] ?? "N/A",
-                                ["digitalAddress"] = json["digitalAddress"] ?? "N/A",
-                                ["description"] = json["description"] ?? "N/A",
-                                ["taxCode"] = json["taxCode"] ?? "N/A",
-                                ["externalId"] = json["externalId"] ?? "N/A"
-                            }.ToString();
-                        }</set-body>
+                        var json = ((IResponse)context.Variables["institutionsResponse"]).Body.As<JObject>();
+                        var items = json["items"] as JArray;
+
+                        var resultArray = new JArray();
+
+                        foreach (var item in items)
+                        {
+                          if((string)item["institutionId"] != (string)context.Variables["organizationId"]){
+                            var resultItem = new JObject
+                            {
+                                ["institutionId"] = item["institutionId"] ?? "N/A",
+                                ["createdAt"] = item["createdAt"] ?? "N/A",
+                                ["updatedAt"] = item["updatedAt"] ?? "N/A",
+                                ["description"] = item["institutionUpdate"]?["description"] ?? "N/A",
+                            };
+                            resultArray.Add(resultItem);
+                          }
+                        }
+
+                        return new JObject{
+                            ["institutions"] = resultArray
+                        }.ToString();
+
+                    }</set-body>
                 </return-response>
             </when>
             <otherwise>

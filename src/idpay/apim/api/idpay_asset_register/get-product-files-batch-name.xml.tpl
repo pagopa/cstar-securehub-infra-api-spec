@@ -31,7 +31,7 @@
             </when>
         </choose>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
-        <rewrite-uri template="@("/idpay/register/products")" />
+        <rewrite-uri template="@("/idpay/register/product-files/batch-list")" />
     </inbound>
     <backend>
         <base />

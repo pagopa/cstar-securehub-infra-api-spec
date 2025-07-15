@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia")">
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore")">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
                     <set-header name="Content-Type" exists-action="override">
@@ -23,15 +23,8 @@
                 </return-response>
             </when>
         </choose>
-        <choose>
-            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") == "invitalia")">
-                <set-header name="x-organization-id" exists-action="override">
-                    <value>@((String)context.Request.Headers["x-organization-selected"].FirstOrDefault())</value>
-                </set-header>
-            </when>
-        </choose>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
-        <rewrite-uri template="@("/idpay/register/products")" />
+        <rewrite-uri template="@("/idpay/register/product-files/verify")" />
     </inbound>
     <backend>
         <base />
