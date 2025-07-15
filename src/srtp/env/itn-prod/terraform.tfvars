@@ -3,5 +3,3 @@ env_short      = "p"
 env            = "prod"
 domain         = "srtp"
 location_short = "itn"
-
-mcshared_migration_flag = false

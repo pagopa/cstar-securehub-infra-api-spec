@@ -19,11 +19,9 @@ locals {
   # RTP Storage Account
   rtp_storage_account_name = "cstar${var.env_short}${var.location_short}srtpsa"
 
-  # ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
   # MC Shared URL
-  mc_shared_base_url = "https://api-mcshared.${local.dns_zone}/${var.mcshared_migration_flag ? "mil-auth-itn" : "auth"}"
-  api_context_path   = var.mcshared_migration_flag ? "rtp-itn" : "rtp"
-  # ⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+  mc_shared_base_url = "https://api-mcshared.${local.dns_zone}/auth"
+  api_context_path   = "rtp"
 
   apis = {
     # RTP Activation
