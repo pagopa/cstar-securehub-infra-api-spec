@@ -34,16 +34,6 @@ variable "domain" {
   }
 }
 
-variable "location" {
-  type        = string
-  description = "One of westeurope, northeurope"
-}
-
-variable "location_string" {
-  type        = string
-  description = "One of West Europe, North Europe"
-}
-
 variable "location_short" {
   type = string
   validation {
