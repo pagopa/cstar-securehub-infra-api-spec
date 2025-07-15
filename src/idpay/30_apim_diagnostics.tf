@@ -47,9 +47,6 @@ locals {
 
     # Modules Webview
     module.idpay_api_webview.name,
-
-    # Modules conditional
-    module.idpay_qr_code_payment_mock_merchant.name,
   ]
 }
 
