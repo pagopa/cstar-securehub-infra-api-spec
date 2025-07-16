@@ -1,0 +1,38 @@
+<policies>
+    <inbound>
+        <base />
+
+        <send-request mode="new"
+            response-variable-name="storageResponse"
+            timeout="20">
+            <set-url>
+                https://${storage_account_name}.blob.core.windows.net/rtp-debtor-service-provider/serviceregistry.json</set-url>
+            <set-method>GET</set-method>
+            <set-header name="x-ms-version" exists-action="override">
+                <value>2020-10-02</value>
+            </set-header>
+            <authentication-managed-identity resource="https://storage.azure.com" />
+        </send-request>
+
+        <return-response>
+            <set-status code="200" reason="OK" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>@(((IResponse)context.Variables["storageResponse"]).Body.As&lt;string&gt;())</set-body>
+        </return-response>
+
+    </inbound>
+
+    <backend>
+        <base />
+    </backend>
+
+    <outbound>
+        <base />
+    </outbound>
+
+    <on-error>
+        <base />
+    </on-error>
+</policies>

@@ -45,39 +45,8 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-# MIL
-variable "mil_auth_openapi_descriptor" {
-  type = string
-}
-
-variable "mil_get_open_id_conf_rate_limit" {
-  type = object({
-    calls  = number
-    period = number
-  })
-}
-
-variable "mil_introspect_rate_limit" {
-  type = object({
-    calls  = number
-    period = number
-  })
-}
-
-variable "mil_get_jwks_rate_limit" {
-  type = object({
-    calls  = number
-    period = number
-  })
-}
-
-variable "mil_get_access_token_rate_limit" {
-  type = object({
-    calls  = number
-    period = number
-  })
-}
-
-variable "mil_get_access_token_allowed_origins" {
-  type = list(string)
+variable "enable_auth_send" {
+  type        = bool
+  description = "Enable auth on RTP send API"
+  default     = true
 }
