@@ -34,16 +34,6 @@ variable "domain" {
   }
 }
 
-variable "location" {
-  type        = string
-  description = "One of westeurope, northeurope"
-}
-
-variable "location_string" {
-  type        = string
-  description = "One of West Europe, North Europe"
-}
-
 variable "location_short" {
   type = string
   validation {
@@ -55,30 +45,39 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
+# MIL
+variable "mil_auth_openapi_descriptor" {
+  type = string
 }
 
-variable "aks_legacy_instance_name" {
-  type        = string
-  description = "Instance name"
+variable "mil_get_open_id_conf_rate_limit" {
+  type = object({
+    calls  = number
+    period = number
+  })
 }
 
-# DNS
-variable "external_domain" {
-  type        = string
-  description = "Domain for delegation"
+variable "mil_introspect_rate_limit" {
+  type = object({
+    calls  = number
+    period = number
+  })
 }
 
-variable "dns_zone_prefix" {
-  type        = string
-  description = "The dns subdomain."
+variable "mil_get_jwks_rate_limit" {
+  type = object({
+    calls  = number
+    period = number
+  })
 }
 
-variable "dns_zone_internal_prefix" {
-  type        = string
-  description = "The dns subdomain."
+variable "mil_get_access_token_rate_limit" {
+  type = object({
+    calls  = number
+    period = number
+  })
+}
+
+variable "mil_get_access_token_allowed_origins" {
+  type = list(string)
 }

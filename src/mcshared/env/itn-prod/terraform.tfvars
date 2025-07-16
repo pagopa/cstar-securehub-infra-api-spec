@@ -1,27 +1,32 @@
-prefix          = "cstar"
-env_short       = "p"
-env             = "prod"
-domain          = "idpay"
-location        = "italynorth"
-location_string = "Italy North"
-location_short  = "itn"
+prefix         = "cstar"
+env_short      = "p"
+env            = "prod"
+domain         = "idpay"
+location_short = "itn"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "UAT"
-  Owner       = "CSTAR"
-  Source      = "https://github.com/pagopa/cstar-securehub-infra-api-spec"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+
+mil_auth_openapi_descriptor = "https://raw.githubusercontent.com/pagopa/mil-auth/384998980f984f31d7f92022974a56da9f79f6a9/src/main/resources/META-INF/openapi_not_admin.yaml"
+mil_get_access_token_allowed_origins = [
+  "https://rtp.cstar.pagopa.it",
+  "https://welfare.cstar.pagopa.it"
+]
+
+mil_get_access_token_rate_limit = {
+  calls  = 100
+  period = 60
 }
 
-#
-# Dns
-#
-dns_zone_prefix          = "cstar"
-dns_zone_internal_prefix = "internal.cstar"
-external_domain          = "pagopa.it"
+mil_get_jwks_rate_limit = {
+  calls  = 1000
+  period = 60
+}
 
-#
-# AKS Legacy
-#
-aks_legacy_instance_name = "prod01"
+mil_get_open_id_conf_rate_limit = {
+  calls  = 1000
+  period = 60
+}
+
+mil_introspect_rate_limit = {
+  calls  = 100
+  period = 60
+}
