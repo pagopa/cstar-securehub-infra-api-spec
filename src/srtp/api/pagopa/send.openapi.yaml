@@ -10,7 +10,7 @@ info:
     Error codes follow the format ZZXXKYYYT where:
       - ZZ: Domain identifier
       - XX: Error category (01=Authentication, 02=Validation, etc.)
-      - K: Method type
+      - K: Method type 
       - YYY: Detailed error code
       - T: Severity (F=Fatal, E=Error, W=Warning)
   contact:
@@ -53,7 +53,7 @@ paths:
         "400":
           #description: |
           #  Bad request.
-
+            
           #  Possible error codes:
           #  - 02021000E: Invalid request format
           #  - 02021001E: Missing required field
@@ -65,14 +65,118 @@ paths:
           #  - 02021007E: Invalid subject format
           #  - 02021008E: Invalid expiryDate format
           #  - 02021009E: Required header missing
+          
+          $ref: '#/components/responses/Error'
+        "401":
+          #description: |
+          #  Wrong credentials.
+            
+          #  Possible error codes:
+          #  - 02011000F: Missing authentication token
+          #  - 02011001E: Invalid token format
+          #  - 02011002E: Expired token
+          #  - 02011003F: Invalid signature
+          $ref: '#/components/responses/Error'
+        "403":
+          #description: |
+          #  Forbidden.
+            
+          #  Possible error codes:
+          #  - 02011004E: Insufficient permissions
+          #  - 02011005E: Invalid scope
+          #  - 02011006E: Account suspended
+          $ref: '#/components/responses/Error'
+        "406":
+          #description: |
+          #  Not acceptable. Did you require application/json?
+            
+          #  Possible error codes:
+          #  - 02021010E: Unsupported accept header
+          $ref: '#/components/responses/Error'
+        "409":
+          #description: |
+          #  Conflict.
+            
+          #  Possible error codes:
+          #  - 02031000E: Notice already processed
+          #  - 02031001E: Duplicate request
+          $ref: '#/components/responses/Error'
+        "415":
+          #description: |
+          #  Unsupported media type. Did you provide application/json?
+            
+          #  Possible error codes:
+          #  - 02021011E: Unsupported content type
+          #  - 02021012E: Invalid content encoding
+          $ref: '#/components/responses/Error'
+        "422":
+          #description: |
+          #  Unprocessable Entity. Error received from Service Provider.
+            
+          #  Possible error codes:
+          #  - 02031002E: Service Provider rejection
+          #  - 02031003E: Invalid payment notice
+          #  - 02031004E: Expired payment notice
+          #  - 02031005E: Business rule violation
+          #  - 02031006E: Payer not activated.
+          $ref: '#/components/responses/Error'
+        "429":
+          #description: |
+          #  Too many requests.
+            
+          #  Possible error codes:
+          #  - 02051000E: Rate limit exceeded
+          #  - 02051001E: Quota exceeded
+          $ref: '#/components/responses/Error'
+        "500":
+          #description: |
+          #  Server error.
+            
+          #  Possible error codes:
+          #  - 02091000F: Internal server error
+          #  - 02091001F: Database error
+          #  - 02091002F: Integration failure
+          $ref: '#/components/responses/Error'
+        "504":
+          #description: |
+          #  Timeout communicating with Debtor Service Provider.
+            
+          #  Possible error codes:
+          #  - 02051002F: Debtor Service Provider timeout
+          #  - 02051003F: Integration processing timeout
+          $ref: '#/components/responses/Error'
+        default:
+          #description: Unexpected error.
+          $ref: '#/components/responses/Error'
+    get:
+      operationId: findRtpByNoticeNumber
+      summary: Retrieve a RTP by the Notice Number associated to it
+      description: Returns RTP data associated with the given ID
+      tags: [ rtps ]
+      security:
+        - oAuth2: [ admin_rtp_send, read_rtp_send ]
+      parameters:
+        - $ref: '#/components/parameters/NoticeNumber'
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/Version'
+      responses:
+        "200":
+          $ref: '#/components/responses/findRtp'
+        "400":
+          #description: |
+          #  Bad request.
 
+          #  Possible error codes:
+          #  - 02021000E: Invalid request format
+          #  - 02021013E: Invalid rtpId format
+          #  - 02021009E: Required header missing
           $ref: '#/components/responses/Error'
         "401":
           #description: |
           #  Wrong credentials.
 
           #  Possible error codes:
-          #  - 02011000F: Missing authentication token
+          #  - 02011000E: Missing authentication token
           #  - 02011001E: Invalid token format
           #  - 02011002E: Expired token
           #  - 02011003F: Invalid signature
@@ -86,39 +190,19 @@ paths:
           #  - 02011005E: Invalid scope
           #  - 02011006E: Account suspended
           $ref: '#/components/responses/Error'
+        "404":
+          #description: |
+          #  Not found.
+
+          #  Possible error codes:
+          #  - 02041000E: RTP not found
+          $ref: '#/components/responses/Error'
         "406":
           #description: |
           #  Not acceptable. Did you require application/json?
 
           #  Possible error codes:
           #  - 02021010E: Unsupported accept header
-          $ref: '#/components/responses/Error'
-        "409":
-          #description: |
-          #  Conflict.
-
-          #  Possible error codes:
-          #  - 02031000E: Notice already processed
-          #  - 02031001E: Duplicate request
-          $ref: '#/components/responses/Error'
-        "415":
-          #description: |
-          #  Unsupported media type. Did you provide application/json?
-
-          #  Possible error codes:
-          #  - 02021011E: Unsupported content type
-          #  - 02021012E: Invalid content encoding
-          $ref: '#/components/responses/Error'
-        "422":
-          #description: |
-          #  Unprocessable Entity. Error received from Service Provider.
-
-          #  Possible error codes:
-          #  - 02031002E: Service Provider rejection
-          #  - 02031003E: Invalid payment notice
-          #  - 02031004E: Expired payment notice
-          #  - 02031005E: Business rule violation
-          #  - 02031006E: Payer not activated.
           $ref: '#/components/responses/Error'
         "429":
           #description: |
@@ -168,7 +252,7 @@ paths:
         "400":
           #description: |
           #  Bad request.
-
+            
           #  Possible error codes:
           #  - 02021000E: Invalid request format
           #  - 02021013E: Invalid rtpId format
@@ -177,7 +261,7 @@ paths:
         "401":
           #description: |
           #  Wrong credentials.
-
+            
           #  Possible error codes:
           #  - 02011000E: Missing authentication token
           #  - 02011001E: Invalid token format
@@ -187,7 +271,7 @@ paths:
         "403":
           #description: |
           #  Forbidden.
-
+            
           #  Possible error codes:
           #  - 02011004E: Insufficient permissions
           #  - 02011005E: Invalid scope
@@ -196,14 +280,14 @@ paths:
         "404":
           #description: |
           #  Not found.
-
+            
           #  Possible error codes:
           #  - 02041000E: RTP not found
           $ref: '#/components/responses/Error'
         "406":
           #description: |
           #  Not acceptable. Did you require application/json?
-
+            
           #  Possible error codes:
           #  - 02021010E: Unsupported accept header
           $ref: '#/components/responses/Error'
@@ -217,7 +301,7 @@ paths:
         "429":
           #description: |
           #  Too many requests.
-
+            
           #  Possible error codes:
           #  - 02051000E: Rate limit exceeded
           #  - 02051001E: Quota exceeded
@@ -225,7 +309,7 @@ paths:
         "500":
           #description: |
           #  Server error.
-
+            
           #  Possible error codes:
           #  - 02091000F: Internal server error
           #  - 02091001F: Database error
@@ -234,7 +318,7 @@ paths:
         "504":
           #description: |
           #  Timeout communicating with Debtor Service Provider.
-
+            
           #  Possible error codes:
           #  - 02051002F: Debtor Service Provider timeout
           #  - 02051003F: Integration processing timeout
@@ -416,7 +500,7 @@ components:
         - "02091002F" # Integration failure
         - "02051002F" # Debtor Service Provider timeout
         - "02051003F" # Integration processing timeout
-
+        
         # POST /rtps/{rtpId}/cancel
         - "02021013E" # Invalid rtpId format
         - "02041000E" # RTP not found
@@ -586,7 +670,7 @@ components:
         - payeeId
         - name
         - payTrxRef
-
+  
     Payer:
       description: Payer data.
       type: object
@@ -671,7 +755,7 @@ components:
       minLength: 36
       maxLength: 36
       example: "d0d654e6-97da-4848-b568-99fedccb642b"
-
+      
     RtpLocation:
       type: string
       description: The location of created resource.
@@ -867,7 +951,7 @@ components:
       minLength: 36
       maxLength: 36
       example: "bd615b4a-066d-443e-8dd2-a28a39931fef"
-
+    
     Version:
       description: Version of the required API.
       type: string
@@ -953,7 +1037,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Rtp'
-
+            
     Error:
       description: Response returned when an error occured.
       headers:
@@ -1029,6 +1113,14 @@ components:
       schema:
         $ref: '#/components/schemas/RequestId'
 
+    NoticeNumber:
+      name: noticeNumber
+      in: query
+      description: Notice number associated to a RTP.
+      required: true
+      schema:
+        $ref: '#/components/schemas/NoticeNumber'
+        
     RtpId:
       name: rtpId
       in: path
@@ -1036,7 +1128,7 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/RtpId'
-
+        
     Version:
       name: Version
       in: header
@@ -1044,7 +1136,7 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/Version'
-
+  
   # ============================================================================
   # Security schemes.
   # ============================================================================
