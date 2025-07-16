@@ -845,9 +845,9 @@ components:
           type: string
         digitalAddress:
           type: string
-        externalId:
+        fiscalCode:
           type: string
-        taxCode:
+        vatNumber:
           type: string
         zipCode:
           type: string
