@@ -39,6 +39,7 @@ paths:
         citizen - IT: Ritorna i dettagli di un IBAN associato ad una iniziativa
       operationId: getIban
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: 'ENG: Language - IT: Lingua'
@@ -98,6 +99,7 @@ paths:
         lista di IBAN associati ad un cittadino
       operationId: getIbanList
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: 'ENG: Language - IT: Lingua'
@@ -143,6 +145,7 @@ paths:
         dall'idetificativo del service
       operationId: getInitiativeData
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: serviceId
           in: path
           description: 'ENG: The service ID - IT: Identificativo del service'
@@ -211,6 +214,7 @@ paths:
         condizioni
       operationId: onboardingCitizen
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: 'ENG: Language - IT: Lingua'
@@ -287,6 +291,7 @@ paths:
         dell'iniziativa
       operationId: checkPrerequisites
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: 'ENG: Language - IT: Lingua'
@@ -371,6 +376,7 @@ paths:
         consensi di PDND e le autodichiarazioni
       operationId: consentOnboarding
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: 'ENG: Language - IT: Lingua'
@@ -454,6 +460,7 @@ paths:
         in cui l'adesione è avvenuta con successo
       operationId: onboardingStatus
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: 'ENG: Language - IT: Lingua'
@@ -513,6 +520,60 @@ paths:
               example:
                 code: ONBOARDING_GENERIC_ERROR
                 message: An error occurred in the microservice admissibility
+  '/onboarding/user/initiative/status':
+    get:
+      tags:
+        - onboarding
+      summary: >-
+        ENG: Returns all initiatives in Waiting List or In Evaluation status that the user is onboarded to or has requested
+        - IT: Ritorna tutte le iniziative in stato Lista Attesa o In Valutazione a cui l'utente è onboardato o che ha fatto richiesta
+      operationId: onboardingInitiativeUserStatus
+      parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
+        - name: Accept-Language
+          in: header
+          description: 'ENG: Language - IT: Lingua'
+          schema:
+            type: string
+            example: it-IT
+            default: it-IT
+          required: true
+      responses:
+        '200':
+          description: Check successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOnboardingStatusDTO'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingErrorDTO'
+              example:
+                code: ONBOARDING_INVALID_REQUEST
+                message: Something went wrong handling the request
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingErrorDTO'
+              example:
+                code: ONBOARDING_TOO_MANY_REQUESTS
+                message: Too many requests
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingErrorDTO'
+              example:
+                code: ONBOARDING_GENERIC_ERROR
+                message: An error occurred in the microservice admissibility
   '/timeline/{initiativeId}':
     get:
       tags:
@@ -524,6 +585,7 @@ paths:
         (nuove->vecchie)
       operationId: getTimeline
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: 'ENG: Language - IT: Lingua'
@@ -609,6 +671,7 @@ paths:
         una transazione
       operationId: getTimelineDetail
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -674,6 +737,7 @@ paths:
         la lista di iniziative attive di un cittadino
       operationId: getWallet
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -718,6 +782,7 @@ paths:
         dell'iniziativa
       operationId: getInitiativeBeneficiaryDetail
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: initiativeId
           in: path
           description: 'ENG: The initiative ID - IT: Identificativo dell''iniziativa'
@@ -777,6 +842,7 @@ paths:
         Ritorna i dettagli di una iniziativa di un cittadino
       operationId: getWalletDetail
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -836,6 +902,7 @@ paths:
         un'iniziativa
       operationId: enrollIban
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -916,6 +983,7 @@ paths:
         uno strumento di pagamento ad un'iniziativa
       operationId: enrollInstrument
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -1002,6 +1070,7 @@ paths:
         pagamenti associati ad un'iniziativa del cittadino
       operationId: getInstrumentList
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: 'ENG: Language - IT: Lingua'
@@ -1052,6 +1121,7 @@ paths:
         strumento di pagamento di un'iniziativa
       operationId: deleteInstrument
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -1138,6 +1208,7 @@ paths:
       summary: 'ENG: Unsubscribe to an initiative - IT: Disiscrizione ad un''iniziativa'
       operationId: unsubscribe
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -1204,6 +1275,7 @@ paths:
         del wallet
       operationId: getWalletStatus
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -1275,6 +1347,7 @@ paths:
         pagamento
       operationId: getInitiativesWithInstrument
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -1445,6 +1518,7 @@ paths:
         uno strumento di pagamento ad una iniziativa
       operationId: enrollInstrumentCode
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -1509,6 +1583,7 @@ paths:
       summary: 'ENG: Pre Authorize payment - IT: Preautorizzazione pagamento'
       operationId: putPreAuthPayment
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: trxCode
           in: path
           description: 'ENG: The transaction''s code - IT: Codice della transazione'
@@ -1576,6 +1651,7 @@ paths:
       summary: 'ENG: Authorize payment - IT: Autorizzazione pagamento'
       operationId: putAuthPayment
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: trxCode
           in: path
           description: 'ENG: The transaction''s code - IT: Codice della transazione'
@@ -1643,6 +1719,7 @@ paths:
       summary: 'ENG: Cancel payment - IT: Cancellazione pagamento'
       operationId: deletePayment
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: trxCode
           in: path
           description: 'ENG: The transaction''s code - IT: Codice della transazione'
@@ -1767,6 +1844,16 @@ paths:
                 code: PAYMENT_GENERIC_ERROR
                 message: application error (connection microservice error)
 components:
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      in: header
+      description: 'ENG: Api Version - IT: Versione dell Api'
+      required: true
+      schema:
+        type: string
+        example: v1
+        default: v1
   schemas:
     IbanDTO:
       type: object
@@ -1871,6 +1958,14 @@ components:
           description: >-
             ENG: Unique identifier of the subscribed initiative - IT:
             Identificativo univoco dell'iniziativa sottoscritta
+    ListOnboardingStatusDTO:
+      title: ListOnboardingStatusDTO
+      type: array
+      items:
+        $ref: '#/components/schemas/OnboardingStatusDTO'
+      description: >-
+        ENG: List of initiatives in Waiting List or In Evaluation status, to which the user is onboarded
+        - IT: Lista delle iniziative in stato Lista d''attesa o In Valutazione, a cui l'utente è onboardato
     OnboardingStatusDTO:
       title: OnboardingStatusDTO
       type: object
@@ -1899,6 +1994,31 @@ components:
           description: >-
             ENG: Date on which the status changed to the current one - IT: Data
             in cui lo stato è cambiato allo stato attuale
+        detailKo:
+          enum:
+            - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
+            - ONBOARDING_WAITING_LIST
+            - ONBOARDING_USER_UNSUBSCRIBED
+            - ONBOARDING_PAGE_SIZE_NOT_ALLOWED
+            - ONBOARDING_PDND_CONSENT_DENIED
+            - ONBOARDING_SELF_DECLARATION_NOT_VALID
+            - ONBOARDING_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS
+            - ONBOARDING_READMISSION_NOT_ALLOWED_FOR_USER_STATUS
+            - ONBOARDING_INVALID_REQUEST
+            - ONBOARDING_USER_NOT_IN_WHITELIST
+            - ONBOARDING_INITIATIVE_NOT_STARTED
+            - ONBOARDING_INITIATIVE_ENDED
+            - ONBOARDING_BUDGET_EXHAUSTED
+            - ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED
+            - ONBOARDING_TECHNICAL_ERROR
+            - ONBOARDING_UNSATISFIED_REQUIREMENTS
+            - ONBOARDING_GENERIC_ERROR
+            - ONBOARDING_USER_NOT_ONBOARDED
+            - ONBOARDING_INITIATIVE_NOT_FOUND
+            - ONBOARDING_TOO_MANY_REQUESTS
+          type: string
+          description: >-
+            "ENG: Identify the detail of the ko status. - IT: Identifica il dettaglio dello status di ko"
         onboardingOkDate:
           type: string
           format: date-time
@@ -1944,6 +2064,7 @@ components:
             - ISEE
             - BIRTHDATE
             - RESIDENCE
+            - FAMILY
           description: >-
             ENG: A code that identifies the type of criteria - IT: Codice che
             identifica il tipo di criterio
@@ -1993,6 +2114,7 @@ components:
         - _type
         - code
         - description
+        - subDescription
         - value
       properties:
         _type:
@@ -2010,6 +2132,11 @@ components:
           description: >-
             ENG: Self-declaration description - IT: Descrizione
             dell'autodichiarazione
+        subDescription:
+          type: string
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
+            dell'autodichiarazione
         value:
           type: boolean
           description: >-
@@ -2021,6 +2148,7 @@ components:
         - _type
         - code
         - description
+        - subDescription
         - value
       properties:
         _type:
@@ -2038,19 +2166,40 @@ components:
           description: >-
             ENG: Self-declaration description - IT: Descrizione
             dell'autodichiarazione
+        subDescription:
+          type: string
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
+            dell'autodichiarazione
         value:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/RowDataDTO'
           description: >-
             ENG: Indicates self-declaration values - IT: Indica i valori per
             l'autodichiarazione
+    RowDataDTO:
+      type: object
+      required:
+        - description
+      properties:
+        description:
+          type: string
+          description: >-
+            ENG: Self-declaration description - IT: Descrizione
+            del record di autodichiarazione
+        subDescription:
+          type: string
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
+            del record di autodichiarazione
     SelfDeclarationTextDTO:
       type: object
       required:
         - _type
         - code
         - description
+        - subDescription
         - value
       properties:
         _type:
@@ -2067,6 +2216,11 @@ components:
           type: string
           description: >-
             ENG: Self-declaration description - IT: Descrizione
+            dell'autodichiarazione
+        subDescription:
+          type: string
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
             dell'autodichiarazione
         value:
           type: string
@@ -2247,6 +2401,8 @@ components:
             - ONBOARDING_USER_NOT_ONBOARDED
             - ONBOARDING_INITIATIVE_NOT_FOUND
             - ONBOARDING_TOO_MANY_REQUESTS
+            - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
+            - ONBOARDING_WAITING_LIST
           description: >-
             "ENG: Error code: ONBOARDING_USER_UNSUBSCRIBED: The user has
             unsubscribed from initiative, ONBOARDING_PAGE_SIZE_NOT_ALLOWED: Page
@@ -2900,6 +3056,10 @@ components:
             - NOT_REFUNDABLE
             - UNSUBSCRIBED
             - SUSPENDED
+            - USED
+            - EXPIRED
+            - ACTIVE
+            - EXPIRING
           type: string
           description: >-
             ENG: Actual status of the citizen wallet for an initiative - IT:
@@ -3006,6 +3166,10 @@ components:
             - NOT_REFUNDABLE
             - UNSUBSCRIBED
             - SUSPENDED
+            - USED
+            - EXPIRED
+            - ACTIVE
+            - EXPIRING
           type: string
           description: 'ENG: The status of the initiative - IT: Stato dell''iniziativa'
         endDate:
@@ -3015,6 +3179,13 @@ components:
             ENG: End date for the time window in which it is possible to use the
             initiative's rewards - IT: Data che indica la fine del periodo di
             fruizione dell'iniziativa
+        voucherEndDate:
+          type: string
+          format: date
+          description: >-
+            ENG: End date for the time window in which it is possible to use the
+            voucher's rewards - IT: Data che indica la fine del periodo di
+            fruizione del voucher
         amountCents:
           type: integer
           format: int64
