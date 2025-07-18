@@ -48,6 +48,7 @@
 			var acquirer_id = context.Request.Body.As<JObject>(preserveContent: true)["acquirerId"];
 			var merchant_id = context.Request.Body.As<JObject>(preserveContent: true)["merchantId"];
 			var org_id = context.Request.Body.As<JObject>(preserveContent: true)["orgId"];
+			var org_fc = context.Request.Body.As<JObject>(preserveContent: true)["orgFC"];
 			var org_vat = context.Request.Body.As<JObject>(preserveContent: true)["orgVAT"];
 			var org_name = context.Request.Body.As<JObject>(preserveContent: true)["orgName"];
 			var org_party_role = context.Request.Body.As<JObject>(preserveContent: true)["orgPartyRole"];
@@ -67,6 +68,7 @@
 				merchant_id,
 				org_email,
 				org_id,
+				org_fc,
 				org_vat,
 				org_name,
 				org_party_role,
