@@ -13,6 +13,7 @@ paths:
       summary: "ENG: Returns the list of active initiatives of a citizen - IT: Ritorna la lista di iniziative attive di un cittadino"
       operationId: getWallet
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: "ENG: Language - IT: Lingua"
           in: header
@@ -55,6 +56,7 @@ paths:
       summary: "ENG: Returns the detail of an initiative - IT: Ritorna i dettagli dell'iniziativa"
       operationId: getInitiativeBeneficiaryDetail
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: initiativeId
           in: path
           description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
@@ -112,6 +114,7 @@ paths:
       summary: "ENG: Returns the detail of an active initiative of a citizen - IT: Ritorna i dettagli di una iniziativa di un cittadino"
       operationId: getWalletDetail
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: "ENG: Language - IT: Lingua"
           in: header
@@ -169,6 +172,7 @@ paths:
       summary: "ENG: Association of an IBAN to an initiative - IT: Associa un IBAN ad un'iniziativa"
       operationId: enrollIban
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: "ENG: Language - IT: Lingua"
           in: header
@@ -243,6 +247,7 @@ paths:
       summary: "ENG: Association of a payment instrument to an initiative - IT: Associa uno strumento di pagamento ad un'iniziativa"
       operationId: enrollInstrument
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: "ENG: Language - IT: Lingua"
           in: header
@@ -322,6 +327,7 @@ paths:
       summary: "ENG: Returns the list of payment instruments associated to the initiative by the citizen - IT: Ritorna la lista di istrumenti di pagamenti associati ad un'iniziativa del cittadino"
       operationId: getInstrumentList
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
@@ -371,6 +377,7 @@ paths:
       summary: "ENG: Delete a payment instrument from an initiative - IT: Cancella uno strumento di pagamento di un'iniziativa"
       operationId: deleteInstrument
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: "ENG: Language - IT: Lingua"
           in: header
@@ -451,6 +458,7 @@ paths:
       summary: "ENG: Unsubscribe to an initiative - IT: Disiscrizione ad un'iniziativa"
       operationId: unsubscribe
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: "ENG: Language - IT: Lingua"
           in: header
@@ -516,6 +524,7 @@ paths:
       summary: "ENG: Returns the actual wallet status - IT: Ritorna lo status attuale del wallet"
       operationId: getWalletStatus
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: "ENG: Language - IT: Lingua"
           in: header
@@ -585,6 +594,7 @@ paths:
       summary: "ENG: Returns the initiatives list associated to a payment instrument - IT: Ritorna la lista di iniziative associate ad uno strumento di pagamento"
       operationId: getInitiativesWithInstrument
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: "ENG: Language - IT: Lingua"
           in: header
@@ -642,6 +652,8 @@ paths:
         - wallet
       summary: 'ENG: Check if the idpay code already exists - IT: Verifica se è già stato generato il codice idpay'
       operationId: getIdpayCodeStatus
+      parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
       responses:
         '200':
           description: Check successful
@@ -675,6 +687,8 @@ paths:
         - wallet
       summary: 'ENG: Generate idpay code, if initativeId is not present new code will be generated,- IT: Generato il codice per idpay, se l''initiativeId non è presente verrà generato un nuovo codice'
       operationId: generateCode
+      parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
       requestBody:
         description: 'ENG: Id of the iniziative - IT: Identificativo dell''iniziativa'
         required: false
@@ -691,8 +705,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenerateCodeRespDTO'
-        '401':
-          description: Authentication failed
         '400':
           description: Bad request
           content:
@@ -702,6 +714,8 @@ paths:
               example:
                 code: "PAYMENT_INSTRUMENT_PIN_LENGTH_NOT_VALID"
                 message: "Pin length is not valid"
+        '401':
+          description: Authentication failed
         '403':
           description: Forbidden
           content:
@@ -745,6 +759,7 @@ paths:
       summary: 'ENG: Association of a payment instrument to an initiative - IT: Associa uno strumento di pagamento ad una iniziativa'
       operationId: enrollInstrumentCode
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -803,6 +818,16 @@ paths:
                 code: "WALLET_GENERIC_ERROR"
                 message: "An error occurred in the microservice payment instrument"
 components:
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      in: header
+      description: 'ENG: Api Version - IT: Versione dell Api'
+      required: true
+      schema:
+        type: string
+        example: v1
+        default: v1
   schemas:
     CheckEnrollmentDTO:
       type: object
@@ -853,6 +878,14 @@ components:
             - SUSPENDED
           type: string
           description: "ENG: Actual status of the citizen wallet for an initiative - IT: Stato attuale del portafoglio di un cittadino per un'iniziativa"
+        voucherStatus:
+          enum:
+            - USED
+            - EXPIRED
+            - ACTIVE
+            - EXPIRING
+          type: string
+          description: "ENG: Actual status of the voucher - IT: Stato attuale del voucher"
     WalletDTO:
       type: object
       required:
@@ -922,7 +955,7 @@ components:
       required:
         - initiativeId
         - status
-        - endDate
+        - initiativeEndDate
         - nInstr
       properties:
         familyId:
@@ -943,8 +976,16 @@ components:
             - UNSUBSCRIBED
             - SUSPENDED
           type: string
-          description: "ENG: The status of the initiative - IT: Stato dell'iniziativa"
-        endDate:
+          description: "ENG: The status of the Wallet - IT: Stato attuale del Wallet"
+        voucherStatus:
+          enum:
+            - USED
+            - EXPIRED
+            - ACTIVE
+            - EXPIRING
+          type: string
+          description: "ENG: Actual status of the voucher - IT: Stato attuale del voucher"
+        initiativeEndDate:
           type: string
           format: date
           description: "ENG: End date for the time window in which it is possible to use the initiative's rewards - IT: Data che indica la fine del periodo di fruizione dell'iniziativa"
