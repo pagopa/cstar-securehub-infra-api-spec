@@ -1,4 +1,4 @@
-name: Validate all OpenAPI YAML with Spectral (Soft Fail)
+name: Validate all OpenAPI YAML with Spectral (Soft Fail - Fixed)
 
 on:
   pull_request:
@@ -31,7 +31,8 @@ jobs:
           find src/idpay/apim/api -type f -name "*.yml" | while read file; do
             if grep -qE "^openapi:|^swagger:" "$file"; then
               echo "🔎 Validating OpenAPI file: $file"
-              if spectral lint "$file"; then
+              # Lancia spectral solo con il ruleset OpenAPI base
+              if spectral lint -r "spectral:oas" "$file"; then
                 echo "✅ $file: PASSED"
                 summary="$summary\n✅ $file: PASSED"
               else
