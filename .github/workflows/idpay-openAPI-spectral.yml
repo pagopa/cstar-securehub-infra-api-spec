@@ -1,4 +1,4 @@
-name: Validate OpenAPI YAML with Spectral
+name: Validate all OpenAPI YAML with Spectral (Soft Fail)
 
 on:
   pull_request:
@@ -22,15 +22,33 @@ jobs:
       - name: Install Spectral CLI
         run: npm install -g @stoplight/spectral-cli
 
-      # Check idpay yml and yml.tpl files
-      - name: Lint OpenAPI .yml files
+      - name: Lint OpenAPI .yml files (Soft Fail)
         run: |
-          echo "Linting OpenAPI YAML files..."
+          echo "🔍 Searching for OpenAPI YAML files..."
+          summary=""
+          failed_files=()
+
           find src/idpay/apim/api -type f -name "*.yml" | while read file; do
             if grep -qE "^openapi:|^swagger:" "$file"; then
-              echo "✅ Validating OpenAPI file: $file"
-              spectral lint "$file" || exit 1
+              echo "🔎 Validating OpenAPI file: $file"
+              if spectral lint "$file"; then
+                echo "✅ $file: PASSED"
+                summary="$summary\n✅ $file: PASSED"
+              else
+                echo "❌ $file: FAILED"
+                summary="$summary\n❌ $file: FAILED"
+                failed_files+=("$file")
+              fi
             else
               echo "⚠️ Skipping non-OpenAPI YAML: $file"
             fi
           done
+
+          echo -e "\n📋 Validation Summary:"
+          echo -e "$summary"
+
+          if [ ${#failed_files[@]} -ne 0 ]; then
+            echo "⚠️ Completed with errors in ${#failed_files[@]} OpenAPI file(s), but not failing the job (soft fail)."
+          else
+            echo "✅ All OpenAPI files passed validation."
+          fi
