@@ -1,4 +1,4 @@
-name: Validate all OpenAPI YAML with Spectral (Soft Fail - Full Ruleset)
+name: Validate all OpenAPI YAML with Spectral (Soft Fail - Aggregated Report)
 
 on:
   pull_request:
@@ -24,27 +24,36 @@ jobs:
           npm install -g @stoplight/spectral-cli
           npm install @stoplight/spectral-owasp-ruleset
 
-      - name: Lint OpenAPI .yml files (Soft Fail - With Ruleset)
+      - name: Lint OpenAPI .yml files
         run: |
-          echo "🔍 Searching for OpenAPI YAML files..."
+          echo "🔍 Searching for OpenAPI YAML files under src/idpay/apim/api..."
           summary=""
           failed_files=()
+          aggregated_report=""
 
           set +e
+
+          declare -A error_counts
 
           find src/idpay/apim/api -type f -name "*.yml" | while read file; do
             if grep -qE "^openapi:|^swagger:" "$file"; then
               echo "🔎 Validating OpenAPI file: $file"
-              output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
+              output=$(spectral lint -r src/idpay/apim/api/.spectral.yaml -f stylish "$file" 2>&1)
               exit_code=$?
 
-              echo "$output"
+              extracted=$(echo "$output" | grep -E "^[[:space:]]*[0-9]+:[0-9]+" || true)
+
+              error_count=$(echo "$extracted" | grep -c "error" || true)
+              warn_count=$(echo "$extracted" | grep -c "warn" || true)
+              total_count=$((error_count + warn_count))
+
+              error_counts["$(basename "$file")"]=$total_count
+
+              aggregated_report="$aggregated_report\n🔗 $(basename "$file") - $total_count issue(s) [$error_count errors, $warn_count warnings]\n$extracted\n"
 
               if [ $exit_code -eq 0 ]; then
-                echo "✅ $file: PASSED"
                 summary="$summary\n✅ $file: PASSED"
               else
-                echo "❌ $file: FAILED"
                 summary="$summary\n❌ $file: FAILED"
                 failed_files+=("$file")
               fi
@@ -55,6 +64,11 @@ jobs:
 
           echo -e "\n📋 Validation Summary:"
           echo -e "$summary"
+
+          echo -e "\n📊 Aggregated Errors (by Swagger - Sorted):"
+          for file in $(for f in "${!error_counts[@]}"; do echo "$f ${error_counts[$f]}"; done | sort -k2 -nr | awk '{print $1}'); do
+            echo -e "$(echo "$aggregated_report" | awk "/🔗 $file/{flag=1;next}/🔗/{flag=0}flag")"
+          done
 
           if [ ${#failed_files[@]} -ne 0 ]; then
             echo "⚠️ Completed with errors in ${#failed_files[@]} OpenAPI file(s), but not failing the job (soft fail)."
