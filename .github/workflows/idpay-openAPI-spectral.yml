@@ -41,15 +41,14 @@ jobs:
               output=$(spectral lint -r src/idpay/apim/api/.spectral.yaml -f stylish "$file" 2>&1)
               exit_code=$?
 
-              extracted=$(echo "$output" | grep -E "^[[:space:]]*[0-9]+:[0-9]+" || true)
-
-              error_count=$(echo "$extracted" | grep -c "error" || true)
-              warn_count=$(echo "$extracted" | grep -c "warn" || true)
+              # Conta tutte le righe con errori e warning senza filtrarle via grep
+              error_count=$(echo "$output" | grep -ic "error" || true)
+              warn_count=$(echo "$output" | grep -ic "warn" || true)
               total_count=$((error_count + warn_count))
 
               error_counts["$(basename "$file")"]=$total_count
 
-              aggregated_report="$aggregated_report\n🔗 $(basename "$file") - $total_count issue(s) [$error_count errors, $warn_count warnings]\n$extracted\n"
+              aggregated_report="$aggregated_report\n🔗 $(basename "$file") - $total_count issue(s) [$error_count errors, $warn_count warnings]\n$output\n"
 
               if [ $exit_code -eq 0 ]; then
                 summary="$summary\n✅ $file: PASSED"
