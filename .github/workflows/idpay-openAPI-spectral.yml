@@ -1,13 +1,10 @@
-name: 'Validate OpenAPI'
+name: Validate all OpenAPI YAML with Spectral
 
 on:
   pull_request:
-    types:
-      - opened
-      - edited
-      - synchronize
-    paths:
-      - 'src/idpay/apim/api/openapi.**'
+  push:
+    branches:
+      - main
 
 jobs:
   validate-openapi:
