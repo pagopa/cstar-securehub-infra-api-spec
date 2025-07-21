@@ -1,0 +1,11 @@
+extends:
+  - "spectral:oas"
+  - "spectral:asyncapi"
+  - "https://unpkg.com/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs"
+
+overrides:
+  - files: "src/idpay/apim/api/*/.yml"
+    rules:
+      # Disabilita le regole OWASP che potrebbero bloccare
+      owasp:api12:2023-write-restricted: "off"
+      owasp:api12:2023-read-restricted: "off"

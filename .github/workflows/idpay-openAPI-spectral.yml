@@ -1,0 +1,36 @@
+name: Validate OpenAPI YAML with Spectral
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate-openapi:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Spectral CLI
+        run: npm install -g @stoplight/spectral-cli
+
+      # Check idpay yml and yml.tpl files
+      - name: Lint OpenAPI .yml files
+        run: |
+          echo "Linting OpenAPI YAML files..."
+          find src/idpay/apim/api -type f -name "*.yml" | while read file; do
+            if grep -qE "^openapi:|^swagger:" "$file"; then
+              echo "✅ Validating OpenAPI file: $file"
+              spectral lint "$file" || exit 1
+            else
+              echo "⚠️ Skipping non-OpenAPI YAML: $file"
+            fi
+          done
