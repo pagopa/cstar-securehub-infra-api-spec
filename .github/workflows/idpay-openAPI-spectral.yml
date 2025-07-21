@@ -22,7 +22,7 @@ jobs:
       - name: Install Spectral CLI
         run: npm install -g @stoplight/spectral-cli
 
-      - name: Lint OpenAPI .yml files (Soft Fail - Fixed)
+      - name: Lint OpenAPI .yml files (Soft Fail - Show Errors)
         run: |
           echo "🔍 Searching for OpenAPI YAML files..."
           summary=""
@@ -31,8 +31,13 @@ jobs:
           find src/idpay/apim/api -type f -name "*.yml" | while read file; do
             if grep -qE "^openapi:|^swagger:" "$file"; then
               echo "🔎 Validating OpenAPI file: $file"
-              # Usa spectral senza specificare -r (usa il ruleset integrato per OpenAPI)
-              if spectral lint "$file"; then
+              # Lancia spectral e cattura anche l'output
+              output=$(spectral lint --no-document-globals "$file" 2>&1)
+              exit_code=$?
+
+              echo "$output" # Mostra errori e warning nel log
+
+              if [ $exit_code -eq 0 ]; then
                 echo "✅ $file: PASSED"
                 summary="$summary\n✅ $file: PASSED"
               else
