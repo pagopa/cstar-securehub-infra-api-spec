@@ -2419,16 +2419,19 @@ components:
             dell'iniziativa
     LinkDTO:
       type: object
+      required:
+        - description
+        - url
       properties:
         description:
           type: string
           enum:
-            - PRODUCT_LIST
-            - STORE_LIST
+            - MERCHANT
+            - PRODUCT
           description: 'ENG: Link''s description - IT: Descrizione del tipo di link'
         url:
           type: string
-          description: 'ENG: Url - IT: Url del link'
+          description: 'ENG: Url''s link - IT: Url del link'
     InitiativeErrorDTO:
       type: object
       properties:
@@ -3331,7 +3334,7 @@ components:
           type: string
           description: 'ENG: The service ID - IT: Identificativo del service'
         link:
-          $ref: '#/components/schemas/LinkDTO1'
+          $ref: '#/components/schemas/LinkDTO'
     InitiativesWithInstrumentDTO:
       type: object
       required:
@@ -3460,25 +3463,10 @@ components:
         links:
           type: array
           items:
-            $ref: '#/components/schemas/LinkDTO1'
+            $ref: '#/components/schemas/LinkDTO'
           description: >-
             ENG: The list of utils link of initiatives of a citizen - IT: Lista
             dei link utili nell'iniziativa
-    LinkDTO1:
-      type: object
-      required:
-        - description
-        - url
-      properties:
-        description:
-          type: string
-          enum:
-            - MERCHANT
-            - PRODUCT
-          description: 'ENG: Type of Url - IT: Tipologia di Url '
-        url:
-          type: string
-          description: 'ENG: Url''s link - IT: Url del link'
     InitiativeRefundRuleDTO:
       type: object
       properties:

@@ -1167,7 +1167,7 @@ components:
           enum:
             - MERCHANT
             - PRODUCT
-          description: "ENG: Type of Url - IT: Tipologia di Url "
+          description: "ENG: Link's description - IT: Descrizione del tipo di link"
         url:
           type: string
           description: "ENG: Url's link - IT: Url del link"

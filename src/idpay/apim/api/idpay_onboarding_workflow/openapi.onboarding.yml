@@ -882,18 +882,19 @@ components:
           description: "ENG: URL for the initiative's logo image - IT: URL del logo dell'iniziativa"
     LinkDTO:
       type: object
+      required:
+        - description
+        - url
       properties:
         description:
           type: string
           enum:
-            - PRODUCT_LIST
-            - STORE_LIST
-          description: >-
-            ENG: Link's description - IT: Descrizione del tipo di link
+            - MERCHANT
+            - PRODUCT
+          description: "ENG: Link's description - IT: Descrizione del tipo di link"
         url:
           type: string
-          description: >-
-            ENG: Url - IT: Url del link
+          description: "ENG: Url's link - IT: Url del link"
     InitiativeErrorDTO:
       type: object
       properties:
