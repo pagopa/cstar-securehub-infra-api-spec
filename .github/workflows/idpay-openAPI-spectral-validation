@@ -1,0 +1,71 @@
+name: Validate all OpenAPI YAML with Spectral
+
+on:
+  pull_request:
+    paths:
+      - 'src/idpay/apim/api/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/idpay/apim/api/**'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-openapi:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Spectral CLI and rulesets
+        run: |
+          npm install -g @stoplight/spectral-cli
+          npm install @stoplight/spectral-owasp-ruleset
+
+      - name: Lint OpenAPI .yml files (Hard Fail - With Ruleset)
+        run: |
+          echo "🔍 Searching for OpenAPI YAML files..."
+          summary=""
+          failed_files=()
+
+          set +e
+
+          find src/idpay/apim/api -type f -name "*.yml" | while read file; do
+            if grep -qE "^openapi:|^swagger:" "$file"; then
+              echo "🔎 Validating OpenAPI file: $file"
+              output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
+              exit_code=$?
+
+              echo "$output"
+
+              if [ $exit_code -eq 0 ]; then
+                echo "✅ $file: PASSED"
+                summary="$summary\n✅ $file: PASSED"
+              else
+                echo "❌ $file: FAILED"
+                summary="$summary\n❌ $file: FAILED"
+                failed_files+=("$file")
+              fi
+            else
+              echo "⚠️ Skipping non-OpenAPI YAML: $file"
+            fi
+          done
+
+          echo -e "\n📋 Validation Summary:"
+          echo -e "$summary"
+
+          if [ ${#failed_files[@]} -ne 0 ]; then
+            echo "❌ Completed with errors in ${#failed_files[@]} OpenAPI file(s)."
+            exit 1
+          else
+            echo "✅ All OpenAPI files passed validation."
+          fi
