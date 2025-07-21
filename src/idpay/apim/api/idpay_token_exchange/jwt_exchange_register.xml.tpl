@@ -79,7 +79,6 @@
                     var family_name = selcToken.Claims.GetValueOrDefault("family_name", "");
                     JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
                     var org_id = organization["id"];
-                    var org_vat = organization["fiscal_code"];
                     var org_name = organization["name"];
                     var org_party_role = organization.Value<JArray>("roles").First().Value<string>("partyRole");
                     var org_role = organization.Value<JArray>("roles").First().Value<string>("role");
@@ -88,11 +87,15 @@
                     } else {
                         org_role = "operatore";
                     }
-
                     var response = (IResponse)context.Variables["institutionResponse"];
                     var body = response.Body.As<JObject>();
                     var org_address = (string)body["address"] +", " + (string)body["zipCode"] +" "+ (string)body["city"] + " ("+(string)body["county"] + ")";
                     var org_pec = (string)body["digitalAddress"];
+                    var org_fc = (string)body["taxCode"];
+                    var onboardingArray = body["onboarding"] as JArray;
+                    var org_vat = onboardingArray?
+                        .Children<JObject>()
+                        .FirstOrDefault(o => o["billing"] != null)?["billing"]?["vatNumber"]?.ToString() ?? "-";
                     response = (IResponse)context.Variables["userResponse"];
                     body = response.Body.As<JObject>();
                     var org_email =  (string)body["email"];
@@ -108,6 +111,7 @@
                             org_email,
                             org_id,
                             org_vat,
+                            org_fc,
                             org_name,
                             org_party_role,
                             org_role,

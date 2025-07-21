@@ -45,6 +45,7 @@
                 <claim name="family_name" match="all" />
                 <claim name="org_email" match="all" />
                 <claim name="org_id" match="all" />
+                <claim name="org_fc" match="all" />
                 <claim name="org_vat" match="all" />
                 <claim name="org_party_role" match="all" />
                 <claim name="org_role" match="all" />
