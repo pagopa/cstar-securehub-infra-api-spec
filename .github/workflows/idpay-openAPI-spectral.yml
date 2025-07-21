@@ -38,7 +38,7 @@ jobs:
               output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
               exit_code=$?
 
-              aggregated_errors="$aggregated_errors\n🔗 $(basename "$file")\n$(echo "$output" | grep -E "^(Error|Warning)" | sort | uniq -c | sort -nr)\n"
+              aggregated_errors="$aggregated_errors\n🔗 $(basename "$file")\n$(echo "$output" | grep -E '^(Error|Warning)' | sort | uniq -c | sort -nr)\n"
 
               if [ $exit_code -eq 0 ]; then
                 summary="$summary\n✅ $file: PASSED"
@@ -46,6 +46,8 @@ jobs:
                 summary="$summary\n❌ $file: FAILED"
                 failed_files+=("$file")
               fi
+            else
+              echo "⚠️ Skipping non-OpenAPI YAML: $file"
             fi
           done
 
