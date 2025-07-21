@@ -95,7 +95,7 @@
                     var onboardingArray = body["onboarding"] as JArray;
                     var org_vat = onboardingArray?
                         .Children<JObject>()
-                        .FirstOrDefault(o => o["billing"] != null)?["billing"]?["vatNumber"]?.ToString() ?? "N/A";
+                        .FirstOrDefault(o => o["billing"] != null)?["billing"]?["vatNumber"]?.ToString() ?? "-";
                     response = (IResponse)context.Variables["userResponse"];
                     body = response.Body.As<JObject>();
                     var org_email =  (string)body["email"];
