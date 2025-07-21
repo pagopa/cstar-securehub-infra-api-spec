@@ -47,10 +47,10 @@
                           if((string)item["institutionId"] != (string)context.Variables["organizationId"]){
                             var resultItem = new JObject
                             {
-                                ["institutionId"] = item["institutionId"] ?? "N/A",
-                                ["createdAt"] = item["createdAt"] ?? "N/A",
-                                ["updatedAt"] = item["updatedAt"] ?? "N/A",
-                                ["description"] = item["institutionUpdate"]?["description"] ?? "N/A",
+                                ["institutionId"] = item["institutionId"] ?? "-",
+                                ["createdAt"] = item["createdAt"] ?? "-",
+                                ["updatedAt"] = item["updatedAt"] ?? "-",
+                                ["description"] = item["institutionUpdate"]?["description"] ?? "-",
                             };
                             resultArray.Add(resultItem);
                           }
