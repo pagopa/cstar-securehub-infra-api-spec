@@ -29,16 +29,26 @@ jobs:
           echo "🔍 Searching for OpenAPI YAML files..."
           summary=""
           failed_files=()
-          aggregated_errors=""
+          aggregated_report=""
 
           set +e
 
+          declare -A error_counts
+
           find src/idpay/apim/api -type f -name "*.yml" | while read file; do
             if grep -qE "^openapi:|^swagger:" "$file"; then
-              output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
+              output=$(spectral lint -f stylish -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
               exit_code=$?
 
-              aggregated_errors="$aggregated_errors\n🔗 $(basename "$file")\n$(echo "$output" | grep -E '^(Error|Warning)' | sort | uniq -c | sort -nr)\n"
+              extracted=$(echo "$output" | grep -E "^[[:space:]]*[0-9]+:[0-9]+" || true)
+
+              error_count=$(echo "$extracted" | grep -c "error" || true)
+              warn_count=$(echo "$extracted" | grep -c "warn" || true)
+              total_count=$((error_count + warn_count))
+
+              error_counts["$(basename "$file")"]=$total_count
+
+              aggregated_report="$aggregated_report\n🔗 $(basename "$file") - $total_count issue(s) [$error_count errors, $warn_count warnings]\n$extracted\n"
 
               if [ $exit_code -eq 0 ]; then
                 summary="$summary\n✅ $file: PASSED"
@@ -46,16 +56,17 @@ jobs:
                 summary="$summary\n❌ $file: FAILED"
                 failed_files+=("$file")
               fi
-            else
-              echo "⚠️ Skipping non-OpenAPI YAML: $file"
             fi
           done
 
           echo -e "\n📋 Validation Summary:"
           echo -e "$summary"
 
-          echo -e "\n📊 Aggregated Errors (by Swagger):"
-          echo -e "$aggregated_errors"
+          echo -e "\n📊 Aggregated Errors (by Swagger - Sorted):"
+
+          for file in $(for f in "${!error_counts[@]}"; do echo "$f ${error_counts[$f]}"; done | sort -k2 -nr | awk '{print $1}'); do
+            echo -e "$(echo "$aggregated_report" | awk "/🔗 $file/{flag=1;next}/🔗/{flag=0}flag")"
+          done
 
           if [ ${#failed_files[@]} -ne 0 ]; then
             echo "⚠️ Completed with errors in ${#failed_files[@]} OpenAPI file(s), but not failing the job (soft fail)."
