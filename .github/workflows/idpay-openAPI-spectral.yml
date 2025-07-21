@@ -29,28 +29,23 @@ jobs:
           echo "🔍 Searching for OpenAPI YAML files..."
           summary=""
           failed_files=()
-
-          mkdir -p spectral-output
+          aggregated_errors=""
 
           set +e
 
           find src/idpay/apim/api -type f -name "*.yml" | while read file; do
             if grep -qE "^openapi:|^swagger:" "$file"; then
-              echo "🔎 Validating OpenAPI file: $file"
-              spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" \
-                > "spectral-output/$(basename "$file").log" 2>&1
+              output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
               exit_code=$?
 
+              aggregated_errors="$aggregated_errors\n🔗 $(basename "$file")\n$(echo "$output" | grep -E "^(Error|Warning)" | sort | uniq -c | sort -nr)\n"
+
               if [ $exit_code -eq 0 ]; then
-                echo "✅ $file: PASSED"
                 summary="$summary\n✅ $file: PASSED"
               else
-                echo "❌ $file: FAILED"
                 summary="$summary\n❌ $file: FAILED"
                 failed_files+=("$file")
               fi
-            else
-              echo "⚠️ Skipping non-OpenAPI YAML: $file"
             fi
           done
 
@@ -58,11 +53,7 @@ jobs:
           echo -e "$summary"
 
           echo -e "\n📊 Aggregated Errors (by Swagger):"
-          for log in spectral-output/*.log; do
-            echo "🔗 $(basename "$log")"
-            grep -E "^(Error|Warning)" "$log" | sort | uniq -c | sort -nr
-            echo ""
-          done
+          echo -e "$aggregated_errors"
 
           if [ ${#failed_files[@]} -ne 0 ]; then
             echo "⚠️ Completed with errors in ${#failed_files[@]} OpenAPI file(s), but not failing the job (soft fail)."
