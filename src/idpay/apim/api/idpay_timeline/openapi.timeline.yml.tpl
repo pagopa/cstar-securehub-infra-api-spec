@@ -15,6 +15,7 @@ paths:
           citizen sorted by date (newest->oldest) - IT: Ritorna la lista ordinata di transazioni e operazioni di una iniziativa di un cittadino (nuove->vecchie)
       operationId: getTimeline
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
@@ -96,6 +97,7 @@ paths:
       summary: "ENG: Returns the detail of a transaction - IT: Ritorna il dettaglio di una transazione"
       operationId: getTimelineDetail
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           description: "ENG: Language - IT: Lingua"
           in: header
@@ -153,6 +155,16 @@ paths:
                 code: "TIMELINE_GENERIC_ERROR"
                 message: "Application error"
 components:
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      in: header
+      description: 'ENG: Api Version - IT: Versione dell Api'
+      required: true
+      schema:
+        type: string
+        example: v1
+        default: v1
   schemas:
     OperationDTO:
       oneOf:

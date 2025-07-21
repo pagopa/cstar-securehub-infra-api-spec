@@ -13,6 +13,7 @@ paths:
       summary: "ENG: Retrieves the initiative ID starting from the corresponding service ID - IT: Ritrova l'identificativo dell'iniziativa a partire dall'idetificativo del service"
       operationId: getInitiativeData
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: serviceId
           in: path
           description: "ENG: The service ID - IT: Identificativo del service"
@@ -80,6 +81,7 @@ paths:
       summary: "ENG: Acceptance of Terms & Conditions - IT: Accettazione dei Termini e condizioni"
       operationId: onboardingCitizen
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
@@ -154,6 +156,7 @@ paths:
       summary: "ENG: Checks the initiative prerequisites - IT: Verifica i prerequisiti dell'iniziativa"
       operationId: checkPrerequisites
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
@@ -236,6 +239,7 @@ paths:
       summary: "ENG: Saves the consensus of both PDND and self-declaration - IT: Salva i consensi di PDND e le autodichiarazioni"
       operationId: consentOnboarding
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
@@ -312,6 +316,7 @@ paths:
       summary: "ENG: Returns the actual onboarding status along with the date on which that status changed and, if present, the date upon which the onboarding successfully went through - IT: Ritorna lo stato attuale dell'adesione insieme alla data in cui quello stato è cambiato e, se presente, la data in cui l'adesione è avvenuta con successo"
       operationId: onboardingStatus
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
@@ -371,7 +376,71 @@ paths:
               example:
                 code: "ONBOARDING_GENERIC_ERROR"
                 message: "An error occurred in the microservice admissibility"
+  '/user/initiative/status':
+    get:
+      tags:
+        - onboarding
+      summary: >-
+        ENG: Returns all initiatives in Waiting List or In Evaluation status that the user is onboarded to or has requested
+        - IT: Ritorna tutte le iniziative in stato Lista Attesa o In Valutazione a cui l'utente è onboardato o che ha fatto richiesta
+      operationId: onboardingInitiativeUserStatus
+      parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
+        - name: Accept-Language
+          in: header
+          description: 'ENG: Language - IT: Lingua'
+          schema:
+            type: string
+            example: it-IT
+            default: it-IT
+          required: true
+      responses:
+        '200':
+          description: Check successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOnboardingStatusDTO'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingErrorDTO'
+              example:
+                code: ONBOARDING_INVALID_REQUEST
+                message: Something went wrong handling the request
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingErrorDTO'
+              example:
+                code: ONBOARDING_TOO_MANY_REQUESTS
+                message: Too many requests
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingErrorDTO'
+              example:
+                code: ONBOARDING_GENERIC_ERROR
+                message: An error occurred in the microservice admissibility
 components:
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      in: header
+      description: 'ENG: Api Version - IT: Versione dell Api'
+      required: true
+      schema:
+        type: string
+        example: v1
+        default: v1
   schemas:
     ConsentPutDTO:
       title: ConsentPutDTO
@@ -397,6 +466,14 @@ components:
         - $ref: '#/components/schemas/SelfConsentBoolDTO'
         - $ref: '#/components/schemas/SelfConsentMultiDTO'
         - $ref: '#/components/schemas/SelfConsentTextDTO'
+    ListOnboardingStatusDTO:
+      title: ListOnboardingStatusDTO
+      type: array
+      items:
+        $ref: '#/components/schemas/UserOnboardingStatusDTO'
+      description: >-
+        ENG: List of initiatives in Waiting List or In Evaluation status, to which the user is onboarded
+        - IT: Lista delle iniziative in stato Lista d''attesa o In Valutazione, a cui l'utente è onboardato
     OnboardingPutDTO:
       title: OnboardingPutDTO
       type: object
@@ -406,6 +483,67 @@ components:
         initiativeId:
           type: string
           description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
+    UserOnboardingStatusDTO:
+      title: UserOnboardingStatusDTO
+      type: object
+      required:
+        - initiativeName
+        - serviceId
+        - initiativeId
+        - status
+        - statusDate
+      properties:
+        initiativeName:
+          type: string
+          description: "ENG: Name of the initiative - IT: Nome dell'iniziativa"
+        serviceId:
+          type: string
+          description: 'ENG: The service ID - IT: Identificativo del service'
+        initiativeId:
+          type: string
+          description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
+        status:
+          enum:
+            - ACCEPTED_TC
+            - ON_EVALUATION
+            - ONBOARDING_KO
+            - ELIGIBLE_KO
+            - ONBOARDING_OK
+            - UNSUBSCRIBED
+            - INVITED
+            - DEMANDED
+            - SUSPENDED
+          type: string
+          description: "ENG: Actual status of the citizen onboarding for an initiative - IT: Stato attuale del cittadino rispetto ad un'iniziativa"
+        statusDate:
+          type: string
+          format: date-time
+          description: "ENG: Date on which the status changed to the current one - IT: Data in cui lo stato è cambiato allo stato attuale"
+        detailKo:
+          enum:
+            - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
+            - ONBOARDING_WAITING_LIST
+            - ONBOARDING_USER_UNSUBSCRIBED
+            - ONBOARDING_PAGE_SIZE_NOT_ALLOWED
+            - ONBOARDING_PDND_CONSENT_DENIED
+            - ONBOARDING_SELF_DECLARATION_NOT_VALID
+            - ONBOARDING_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS
+            - ONBOARDING_READMISSION_NOT_ALLOWED_FOR_USER_STATUS
+            - ONBOARDING_INVALID_REQUEST
+            - ONBOARDING_USER_NOT_IN_WHITELIST
+            - ONBOARDING_INITIATIVE_NOT_STARTED
+            - ONBOARDING_INITIATIVE_ENDED
+            - ONBOARDING_BUDGET_EXHAUSTED
+            - ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED
+            - ONBOARDING_TECHNICAL_ERROR
+            - ONBOARDING_UNSATISFIED_REQUIREMENTS
+            - ONBOARDING_GENERIC_ERROR
+            - ONBOARDING_USER_NOT_ONBOARDED
+            - ONBOARDING_INITIATIVE_NOT_FOUND
+            - ONBOARDING_TOO_MANY_REQUESTS
+          type: string
+          description: >-
+            "ENG: Identify the detail of the ko status. - IT: Identifica il dettaglio dello status di ko"
     OnboardingStatusDTO:
       title: OnboardingStatusDTO
       type: object
@@ -430,6 +568,31 @@ components:
           type: string
           format: date-time
           description: "ENG: Date on which the status changed to the current one - IT: Data in cui lo stato è cambiato allo stato attuale"
+        detailKo:
+          enum:
+            - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
+            - ONBOARDING_WAITING_LIST
+            - ONBOARDING_USER_UNSUBSCRIBED
+            - ONBOARDING_PAGE_SIZE_NOT_ALLOWED
+            - ONBOARDING_PDND_CONSENT_DENIED
+            - ONBOARDING_SELF_DECLARATION_NOT_VALID
+            - ONBOARDING_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS
+            - ONBOARDING_READMISSION_NOT_ALLOWED_FOR_USER_STATUS
+            - ONBOARDING_INVALID_REQUEST
+            - ONBOARDING_USER_NOT_IN_WHITELIST
+            - ONBOARDING_INITIATIVE_NOT_STARTED
+            - ONBOARDING_INITIATIVE_ENDED
+            - ONBOARDING_BUDGET_EXHAUSTED
+            - ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED
+            - ONBOARDING_TECHNICAL_ERROR
+            - ONBOARDING_UNSATISFIED_REQUIREMENTS
+            - ONBOARDING_GENERIC_ERROR
+            - ONBOARDING_USER_NOT_ONBOARDED
+            - ONBOARDING_INITIATIVE_NOT_FOUND
+            - ONBOARDING_TOO_MANY_REQUESTS
+          type: string
+          description: >-
+            "ENG: Identify the detail of the ko status. - IT: Identifica il dettaglio dello status di ko"
         onboardingOkDate:
           type: string
           format: date-time
@@ -469,6 +632,7 @@ components:
             - ISEE
             - BIRTHDATE
             - RESIDENCE
+            - FAMILY_UNIT
           description: "ENG: A code that identifies the type of criteria - IT: Codice che identifica il tipo di criterio"
         description:
           type: string
@@ -520,6 +684,11 @@ components:
         description:
           type: string
           description: "ENG: Self-declaration description - IT: Descrizione dell'autodichiarazione"
+        subDescription:
+          type: string
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
+            dell'autodichiarazione
         value:
           type: boolean
           description: "ENG: Indicates whether the self-declaration is accepted or not - IT: Indica se l'autodichiarazione è accettata o no"
@@ -542,11 +711,33 @@ components:
         description:
           type: string
           description: "ENG: Self-declaration description - IT: Descrizione dell'autodichiarazione"
+        subDescription:
+          type: string
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
+            dell'autodichiarazione
         value:
           type: array
           items:
-            type: string
-          description: "ENG: Indicates self-declaration values - IT: Indica i valori per l'autodichiarazione"
+            $ref: '#/components/schemas/RowDataDTO'
+          description: >-
+            ENG: Indicates self-declaration values - IT: Indica i valori per
+            l'autodichiarazione
+    RowDataDTO:
+      type: object
+      required:
+        - description
+      properties:
+        description:
+          type: string
+          description: >-
+            ENG: Self-declaration description - IT: Descrizione
+            del record di autodichiarazione
+        subDescription:
+          type: string
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
+            del record di autodichiarazione
     SelfDeclarationTextDTO:
       type: object
       required:
@@ -570,10 +761,16 @@ components:
           description: >-
             ENG: Self-declaration description - IT: Descrizione
             dell'autodichiarazione
+        subDescription:
+          type: string
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
+            dell'autodichiarazione
         value:
           type: string
           description: >-
-            ENG: Indicates self-declaration values - IT: Indica i valori per l'autodichiarazione
+            ENG: Indicates self-declaration values - IT: Indica i valori per
+            l'autodichiarazione
     SelfConsentBoolDTO:
       type: object
       required:
@@ -649,6 +846,7 @@ components:
         - initiativeId
         - initiativeName
         - description
+        - links
         - organizationId
         - organizationName
         - tcLink
@@ -663,6 +861,10 @@ components:
         description:
           type: string
           description: "ENG: Initiative's description - IT: Descrizione dell'iniziativa"
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkDTO'
         organizationId:
           type: string
           description: "ENG: Id of the organization that created the initiative - IT: Identificativo dell'organizzazione che ha creato l'iniziativa"
@@ -678,6 +880,20 @@ components:
         logoURL:
           type: string
           description: "ENG: URL for the initiative's logo image - IT: URL del logo dell'iniziativa"
+    LinkDTO:
+      type: object
+      properties:
+        description:
+          type: string
+          enum:
+            - PRODUCT_LIST
+            - STORE_LIST
+          description: >-
+            ENG: Link's description - IT: Descrizione del tipo di link
+        url:
+          type: string
+          description: >-
+            ENG: Url - IT: Url del link
     InitiativeErrorDTO:
       type: object
       properties:
@@ -732,6 +948,8 @@ components:
             - ONBOARDING_USER_NOT_ONBOARDED
             - ONBOARDING_INITIATIVE_NOT_FOUND
             - ONBOARDING_TOO_MANY_REQUESTS
+            - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
+            - ONBOARDING_WAITING_LIST
           description: >-
             "ENG: Error code:
             ONBOARDING_USER_UNSUBSCRIBED: The user has unsubscribed from initiative,

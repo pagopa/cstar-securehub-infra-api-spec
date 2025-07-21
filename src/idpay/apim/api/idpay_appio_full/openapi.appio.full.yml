@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: IDPAY IO API
+  title: IDPAY ITN IO API
   version: '1.0'
   description: |-
     IDPAY ITN IBAN IO
@@ -520,13 +520,15 @@ paths:
               example:
                 code: ONBOARDING_GENERIC_ERROR
                 message: An error occurred in the microservice admissibility
-  '/onboarding/user/initiative/status':
+  /onboarding/user/initiative/status:
     get:
       tags:
         - onboarding
       summary: >-
-        ENG: Returns all initiatives in Waiting List or In Evaluation status that the user is onboarded to or has requested
-        - IT: Ritorna tutte le iniziative in stato Lista Attesa o In Valutazione a cui l'utente è onboardato o che ha fatto richiesta
+        ENG: Returns all initiatives in Waiting List or In Evaluation status
+        that the user is onboarded to or has requested - IT: Ritorna tutte le
+        iniziative in stato Lista Attesa o In Valutazione a cui l'utente è
+        onboardato o che ha fatto richiesta
       operationId: onboardingInitiativeUserStatus
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
@@ -1408,6 +1410,8 @@ paths:
         ENG: Check if the idpay code already exists - IT: Verifica se è già
         stato generato il codice idpay
       operationId: getIdpayCodeStatus
+      parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
       responses:
         '200':
           description: Check successful
@@ -1444,6 +1448,8 @@ paths:
         generated,- IT: Generato il codice per idpay, se l'initiativeId non è
         presente verrà generato un nuovo codice
       operationId: generateCode
+      parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
       requestBody:
         description: 'ENG: Id of the iniziative - IT: Identificativo dell''iniziativa'
         required: false
@@ -1782,6 +1788,8 @@ paths:
         - payment
       summary: Create a transaction
       operationId: createBarCodeTransaction
+      parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
       requestBody:
         description: 'ENG: Id of the iniziative - IT: Identificativo dell''iniziativa'
         required: true
@@ -1844,16 +1852,6 @@ paths:
                 code: PAYMENT_GENERIC_ERROR
                 message: application error (connection microservice error)
 components:
-  parameters:
-    ApiVersionHeader:
-      name: X-Api-Version
-      in: header
-      description: 'ENG: Api Version - IT: Versione dell Api'
-      required: true
-      schema:
-        type: string
-        example: v1
-        default: v1
   schemas:
     IbanDTO:
       type: object
@@ -1947,6 +1945,15 @@ components:
         - $ref: '#/components/schemas/SelfConsentBoolDTO'
         - $ref: '#/components/schemas/SelfConsentMultiDTO'
         - $ref: '#/components/schemas/SelfConsentTextDTO'
+    ListOnboardingStatusDTO:
+      title: ListOnboardingStatusDTO
+      type: array
+      items:
+        $ref: '#/components/schemas/UserOnboardingStatusDTO'
+      description: >-
+        ENG: List of initiatives in Waiting List or In Evaluation status, to
+        which the user is onboarded - IT: Lista delle iniziative in stato Lista
+        d''attesa o In Valutazione, a cui l'utente è onboardato
     OnboardingPutDTO:
       title: OnboardingPutDTO
       type: object
@@ -1958,14 +1965,74 @@ components:
           description: >-
             ENG: Unique identifier of the subscribed initiative - IT:
             Identificativo univoco dell'iniziativa sottoscritta
-    ListOnboardingStatusDTO:
-      title: ListOnboardingStatusDTO
-      type: array
-      items:
-        $ref: '#/components/schemas/OnboardingStatusDTO'
-      description: >-
-        ENG: List of initiatives in Waiting List or In Evaluation status, to which the user is onboarded
-        - IT: Lista delle iniziative in stato Lista d''attesa o In Valutazione, a cui l'utente è onboardato
+    UserOnboardingStatusDTO:
+      title: UserOnboardingStatusDTO
+      type: object
+      required:
+        - initiativeName
+        - serviceId
+        - initiativeId
+        - status
+        - statusDate
+      properties:
+        initiativeName:
+          type: string
+          description: 'ENG: Name of the initiative - IT: Nome dell''iniziativa'
+        serviceId:
+          type: string
+          description: 'ENG: The service ID - IT: Identificativo del service'
+        initiativeId:
+          type: string
+          description: >-
+            ENG: Unique identifier of the subscribed initiative - IT:
+            Identificativo univoco dell'iniziativa sottoscritta
+        status:
+          enum:
+            - ACCEPTED_TC
+            - ON_EVALUATION
+            - ONBOARDING_KO
+            - ELIGIBLE_KO
+            - ONBOARDING_OK
+            - UNSUBSCRIBED
+            - INVITED
+            - DEMANDED
+            - SUSPENDED
+          type: string
+          description: >-
+            ENG: Actual status of the citizen onboarding for an initiative - IT:
+            Stato attuale del cittadino rispetto ad un'iniziativa
+        statusDate:
+          type: string
+          format: date-time
+          description: >-
+            ENG: Date on which the status changed to the current one - IT: Data
+            in cui lo stato è cambiato allo stato attuale
+        detailKo:
+          enum:
+            - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
+            - ONBOARDING_WAITING_LIST
+            - ONBOARDING_USER_UNSUBSCRIBED
+            - ONBOARDING_PAGE_SIZE_NOT_ALLOWED
+            - ONBOARDING_PDND_CONSENT_DENIED
+            - ONBOARDING_SELF_DECLARATION_NOT_VALID
+            - ONBOARDING_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS
+            - ONBOARDING_READMISSION_NOT_ALLOWED_FOR_USER_STATUS
+            - ONBOARDING_INVALID_REQUEST
+            - ONBOARDING_USER_NOT_IN_WHITELIST
+            - ONBOARDING_INITIATIVE_NOT_STARTED
+            - ONBOARDING_INITIATIVE_ENDED
+            - ONBOARDING_BUDGET_EXHAUSTED
+            - ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED
+            - ONBOARDING_TECHNICAL_ERROR
+            - ONBOARDING_UNSATISFIED_REQUIREMENTS
+            - ONBOARDING_GENERIC_ERROR
+            - ONBOARDING_USER_NOT_ONBOARDED
+            - ONBOARDING_INITIATIVE_NOT_FOUND
+            - ONBOARDING_TOO_MANY_REQUESTS
+          type: string
+          description: >-
+            "ENG: Identify the detail of the ko status. - IT: Identifica il
+            dettaglio dello status di ko"
     OnboardingStatusDTO:
       title: OnboardingStatusDTO
       type: object
@@ -2018,7 +2085,8 @@ components:
             - ONBOARDING_TOO_MANY_REQUESTS
           type: string
           description: >-
-            "ENG: Identify the detail of the ko status. - IT: Identifica il dettaglio dello status di ko"
+            "ENG: Identify the detail of the ko status. - IT: Identifica il
+            dettaglio dello status di ko"
         onboardingOkDate:
           type: string
           format: date-time
@@ -2064,7 +2132,7 @@ components:
             - ISEE
             - BIRTHDATE
             - RESIDENCE
-            - FAMILY
+            - FAMILY_UNIT
           description: >-
             ENG: A code that identifies the type of criteria - IT: Codice che
             identifica il tipo di criterio
@@ -2114,7 +2182,6 @@ components:
         - _type
         - code
         - description
-        - subDescription
         - value
       properties:
         _type:
@@ -2148,7 +2215,6 @@ components:
         - _type
         - code
         - description
-        - subDescription
         - value
       properties:
         _type:
@@ -2186,20 +2252,19 @@ components:
         description:
           type: string
           description: >-
-            ENG: Self-declaration description - IT: Descrizione
-            del record di autodichiarazione
+            ENG: Self-declaration description - IT: Descrizione del record di
+            autodichiarazione
         subDescription:
           type: string
           description: >-
-            ENG: Self-declaration sub-description - IT: Sotto descrizione
-            del record di autodichiarazione
+            ENG: Self-declaration sub-description - IT: Sotto descrizione del
+            record di autodichiarazione
     SelfDeclarationTextDTO:
       type: object
       required:
         - _type
         - code
         - description
-        - subDescription
         - value
       properties:
         _type:
@@ -2308,6 +2373,7 @@ components:
         - initiativeId
         - initiativeName
         - description
+        - links
         - organizationId
         - organizationName
         - tcLink
@@ -2322,6 +2388,10 @@ components:
         description:
           type: string
           description: 'ENG: Initiative''s description - IT: Descrizione dell''iniziativa'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkDTO'
         organizationId:
           type: string
           description: >-
@@ -2347,6 +2417,18 @@ components:
           description: >-
             ENG: URL for the initiative's logo image - IT: URL del logo
             dell'iniziativa
+    LinkDTO:
+      type: object
+      properties:
+        description:
+          type: string
+          enum:
+            - PRODUCT_LIST
+            - STORE_LIST
+          description: 'ENG: Link''s description - IT: Descrizione del tipo di link'
+        url:
+          type: string
+          description: 'ENG: Url - IT: Url del link'
     InitiativeErrorDTO:
       type: object
       properties:
@@ -3056,14 +3138,18 @@ components:
             - NOT_REFUNDABLE
             - UNSUBSCRIBED
             - SUSPENDED
+          type: string
+          description: >-
+            ENG: Actual status of the citizen wallet for an initiative - IT:
+            Stato attuale del portafoglio di un cittadino per un'iniziativa
+        voucherStatus:
+          enum:
             - USED
             - EXPIRED
             - ACTIVE
             - EXPIRING
           type: string
-          description: >-
-            ENG: Actual status of the citizen wallet for an initiative - IT:
-            Stato attuale del portafoglio di un cittadino per un'iniziativa
+          description: 'ENG: Actual status of the voucher - IT: Stato attuale del voucher'
     WalletDTO:
       type: object
       required:
@@ -3146,7 +3232,7 @@ components:
       required:
         - initiativeId
         - status
-        - endDate
+        - initiativeEndDate
         - nInstr
       properties:
         familyId:
@@ -3166,13 +3252,17 @@ components:
             - NOT_REFUNDABLE
             - UNSUBSCRIBED
             - SUSPENDED
+          type: string
+          description: 'ENG: The status of the Wallet - IT: Stato attuale del Wallet'
+        voucherStatus:
+          enum:
             - USED
             - EXPIRED
             - ACTIVE
             - EXPIRING
           type: string
-          description: 'ENG: The status of the initiative - IT: Stato dell''iniziativa'
-        endDate:
+          description: 'ENG: Actual status of the voucher - IT: Stato attuale del voucher'
+        initiativeEndDate:
           type: string
           format: date
           description: >-
@@ -3240,6 +3330,8 @@ components:
         serviceId:
           type: string
           description: 'ENG: The service ID - IT: Identificativo del service'
+        link:
+          $ref: '#/components/schemas/LinkDTO1'
     InitiativesWithInstrumentDTO:
       type: object
       required:
@@ -3365,6 +3457,28 @@ components:
         serviceId:
           type: string
           description: 'ENG: The service ID - IT: Identificativo del service'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkDTO1'
+          description: >-
+            ENG: The list of utils link of initiatives of a citizen - IT: Lista
+            dei link utili nell'iniziativa
+    LinkDTO1:
+      type: object
+      required:
+        - description
+        - url
+      properties:
+        description:
+          type: string
+          enum:
+            - MERCHANT
+            - PRODUCT
+          description: 'ENG: Type of Url - IT: Tipologia di Url '
+        url:
+          type: string
+          description: 'ENG: Url''s link - IT: Url del link'
     InitiativeRefundRuleDTO:
       type: object
       properties:
@@ -3773,6 +3887,16 @@ components:
           description: >-
             ENG: Status of the payment [CREATED: Created] - IT: Stato del
             pagamento [CREATED: Creato]
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      in: header
+      description: 'ENG: Api Version - IT: Versione dell Api'
+      required: true
+      schema:
+        type: string
+        example: v1
+        default: v1
   securitySchemes:
     bearerAuth:
       type: http

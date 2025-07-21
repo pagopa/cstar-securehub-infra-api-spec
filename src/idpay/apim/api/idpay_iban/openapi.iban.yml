@@ -13,6 +13,7 @@ paths:
       summary: "ENG: Returns the details of the IBAN associated to the initiative by the citizen - IT: Ritorna i dettagli di un IBAN associato ad una iniziativa"
       operationId: getIban
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
@@ -70,6 +71,7 @@ paths:
       summary: "ENG: Returns the list of IBAN associated to the citizen - IT: Ritorna la lista di IBAN associati ad un cittadino"
       operationId: getIbanList
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
@@ -106,6 +108,16 @@ paths:
                 code: "IBAN_GENERIC_ERROR"
                 message: "Application error"
 components:
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      in: header
+      description: 'ENG: Api Version - IT: Versione dell Api'
+      required: true
+      schema:
+        type: string
+        example: v1
+        default: v1
   schemas:
     IbanDTO:
       type: object

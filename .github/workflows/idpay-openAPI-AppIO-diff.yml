@@ -1,0 +1,39 @@
+name: 'Check diff on idpay AppIO full swagger'
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+    paths:
+      - 'src/idpay/apim/api/**'
+
+jobs:
+  main:
+    name: Check diff on idpay AppIO full swagger
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+      - name: Setup node
+        uses: actions/setup-node@1a4442cacd436585916779262731d5b162bc6ec7 # v3
+        with:
+          node-version: 18.16.x
+
+      - name: Install library
+        run: npm i -g openapi-merge-cli
+        #The.json file containing the inputs for the merge is inside the path "scripts/idpay-script/openapi-merge.json"
+      - name: Run script merge
+        working-directory: ./scripts/idpay-script
+        run: npx openapi-merge-cli
+
+      - name: Check-diff
+        run: |
+          git diff --shortstat HEAD:./idpay/apim/api/idpay_appio_full/openapi.appio.full.yml ./src/idpay/apim/api/idpay_appio_full/openapi.appio.full.merged.yml
+          git diff --color=always HEAD:./src/idpay/apim/api/idpay_appio_full/openapi.appio.full.yml ./src/idpay/apim/api/idpay_appio_full/openapi.appio.full.merged.yml
+            nChange=$(diff -y --suppress-common-lines ./src/idpay/apim/api/idpay_appio_full/openapi.appio.full.yml ./src/idpay/apim/api/idpay_appio_full/openapi.appio.full.merged.yml | wc -l)
+            if [ $nChange != 0 ]; then exit 1; else exit 0; fi
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

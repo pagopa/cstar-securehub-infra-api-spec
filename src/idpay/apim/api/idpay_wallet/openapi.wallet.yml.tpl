@@ -989,6 +989,10 @@ components:
           type: string
           format: date
           description: "ENG: End date for the time window in which it is possible to use the initiative's rewards - IT: Data che indica la fine del periodo di fruizione dell'iniziativa"
+        voucherEndDate:
+          type: string
+          format: date
+          description: "ENG: End date for the time window in which it is possible to use the voucher's rewards - IT: Data che indica la fine del periodo di fruizione del voucher"
         amountCents:
           type: integer
           format: int64
@@ -1035,6 +1039,8 @@ components:
         serviceId:
           type: string
           description: 'ENG: The service ID - IT: Identificativo del service'
+        link:
+          $ref: '#/components/schemas/LinkDTO'
     InitiativesWithInstrumentDTO:
       type: object
       required:
@@ -1145,6 +1151,26 @@ components:
         serviceId:
           type: string
           description: "ENG: The service ID - IT: Identificativo del service"
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkDTO'
+          description: "ENG: The list of utils link of initiatives of a citizen - IT: Lista dei link utili nell'iniziativa"
+    LinkDTO:
+      type: object
+      required:
+        - description
+        - url
+      properties:
+        description:
+          type: string
+          enum:
+            - MERCHANT
+            - PRODUCT
+          description: "ENG: Type of Url - IT: Tipologia di Url "
+        url:
+          type: string
+          description: "ENG: Url's link - IT: Url del link"
     InitiativeRefundRuleDTO:
       type: object
       properties:

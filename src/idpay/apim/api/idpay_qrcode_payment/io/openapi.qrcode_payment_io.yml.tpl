@@ -13,6 +13,7 @@ paths:
       summary: "ENG: Pre Authorize payment - IT: Preautorizzazione pagamento"
       operationId: putPreAuthPayment
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: trxCode
           in: path
           description: "ENG: The transaction's code - IT: Codice della transazione"
@@ -80,6 +81,7 @@ paths:
       summary: "ENG: Authorize payment - IT: Autorizzazione pagamento"
       operationId: putAuthPayment
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: trxCode
           in: path
           description: "ENG: The transaction's code - IT: Codice della transazione"
@@ -147,6 +149,7 @@ paths:
       summary: "ENG: Cancel payment - IT: Cancellazione pagamento"
       operationId: deletePayment
       parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
         - name: trxCode
           in: path
           description: "ENG: The transaction's code - IT: Codice della transazione"
@@ -204,6 +207,16 @@ paths:
                 code: 'PAYMENT_GENERIC_ERROR'
                 message: 'application error (connection microservice error)'
 components:
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      in: header
+      description: 'ENG: Api Version - IT: Versione dell Api'
+      required: true
+      schema:
+        type: string
+        example: v1
+        default: v1
   schemas:
     AuthPaymentResponseDTO:
       type: object

@@ -12,6 +12,8 @@ paths:
         - payment
       summary: Create a transaction
       operationId: createBarCodeTransaction
+      parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
       requestBody:
         description: 'ENG: Id of the iniziative - IT: Identificativo dell''iniziativa'
         required: true
@@ -74,6 +76,16 @@ paths:
                 code: PAYMENT_GENERIC_ERROR
                 message: 'application error (connection microservice error)'
 components:
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      in: header
+      description: 'ENG: Api Version - IT: Versione dell Api'
+      required: true
+      schema:
+        type: string
+        example: v1
+        default: v1
   schemas:
     TransactionErrorDTO:
       type: object
