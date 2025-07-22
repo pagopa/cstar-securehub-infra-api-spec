@@ -45,6 +45,7 @@ jobs:
           echo "🔍 Searching for OpenAPI YAML/TPL files..."
           summary=""
           failed_files=()
+          failed=0
 
           mapfile -t files < <(find src/idpay/apim/api -type f \( \
             -name "openapi*.yml" \
@@ -71,13 +72,14 @@ jobs:
               echo "❌ $file: FAILED"
               summary="$summary\n❌ $file: FAILED"
               failed_files+=("$file")
+              failed=1
             fi
           done
 
           echo -e "\n📋 Validation Summary:"
           echo -e "$summary"
 
-          if [ ${#failed_files[@]} -ne 0 ]; then
+          if [ $failed -eq 1 ]; then
             echo "❌ Found ${#failed_files[@]} OpenAPI file(s) with errors."
 
             # 📣 Commento automatico nella PR
