@@ -1,7 +1,12 @@
-name: Validate touched OpenAPI YAML/TPL files with Spectral
+name: Validate OpenAPI YAML/TPL files with Spectral
 
 on:
   pull_request:
+    paths:
+      - 'src/idpay/apim/api/**'
+  push:
+    branches:
+      - main
     paths:
       - 'src/idpay/apim/api/**'
 
@@ -30,23 +35,7 @@ jobs:
           npm install -g @stoplight/spectral-cli
           npm install @stoplight/spectral-owasp-ruleset
 
-      - name: Install GitHub CLI
-        run: |
-          sudo apt update
-          sudo apt install gh -y
-
-      - name: Get list of modified files from PR
-        id: get_files
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "📂 Fetching modified files in PR..."
-          pr_files=$(gh pr view "$GITHUB_REF_NAME" --json files -q '.files[].path')
-          echo "$pr_files" > modified_files.txt
-          echo "📄 Files modified in this PR:"
-          cat modified_files.txt
-
-      - name: Lint OpenAPI YAML/TPL files
+      - name: Validate OpenAPI YAML/TPL files
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -54,11 +43,25 @@ jobs:
           failed_files=()
           failed=0
 
-          echo "🔍 Filtering OpenAPI files..."
-          touched_files=$(grep -E '^src/idpay/apim/api/openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' modified_files.txt || true)
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "📂 Running in PR context. Fetching modified files..."
+            modified_files=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              "${{ github.api_url }}/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
+              | jq -r '.[].filename')
+
+            touched_files=$(echo "$modified_files" | grep -E '^src/idpay/apim/api/openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' || true)
+          else
+            echo "📂 Not a PR. Validating ALL OpenAPI files in repo..."
+            touched_files=$(find src/idpay/apim/api -type f \( \
+              -name "openapi*.yml" \
+              -o -name "openapi*.yaml" \
+              -o -name "openapi*.yml.tpl" \
+              -o -name "openapi*.yaml.tpl" \
+            \) || true)
+          fi
 
           if [ -z "$touched_files" ]; then
-            echo "✅ No OpenAPI files were modified in this PR."
+            echo "✅ No OpenAPI files to validate."
             exit 0
           fi
 
@@ -89,23 +92,14 @@ jobs:
           if [ $failed -eq 1 ]; then
             echo "❌ Found ${#failed_files[@]} OpenAPI file(s) with errors."
 
-            gh pr comment "$GITHUB_REF_NAME" \
-              --body "❌ **OpenAPI validation failed**\n\n$summary"
-
-            gh api \
-              -H "Accept: application/vnd.github+json" \
-              /repos/${{ github.repository }}/statuses/${{ github.sha }} \
-              -f state="failure" \
-              -f description="OpenAPI validation failed" \
-              -f context="OpenAPI Spectral Lint"
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -X POST \
+                -d "{\"body\": \"❌ **OpenAPI validation failed**\n\n$summary\"}" \
+                "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+            fi
 
             exit 1
           else
-            echo "✅ All modified OpenAPI files passed validation."
-
-            gh api \
-              -H "Accept: application/vnd.github+json" \
-              /repos/${{ github.repository }}/statuses/${{ github.sha }} \
-              -f state="success" \
-              -f description="OpenAPI validation passed" \
-              -f context="OpenAPI Spectral Lint"
+            echo "✅ All OpenAPI files passed validation."
+          fi
