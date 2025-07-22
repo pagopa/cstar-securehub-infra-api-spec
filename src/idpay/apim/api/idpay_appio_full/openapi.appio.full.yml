@@ -2,6 +2,9 @@ openapi: 3.0.3
 info:
   title: IDPAY ITN IO API
   version: '1.0'
+  contact:
+    name: PagoPA S.p.A.
+    email: cstar@pagopa.it
   description: |-
     IDPAY ITN IBAN IO
 
@@ -15,7 +18,12 @@ info:
 
     IDPAY ITN Payment IO
 servers:
-  - url: 'https://api-io.dev.cstar.pagopa.it/idpay-itn'
+  - description: Development Test
+    url: 'https://api-io.dev.cstar.pagopa.it/idpay-itn/wallet'
+    x-internal: true
+  - description: User Acceptance Test
+    url: 'https://api-io.uat.cstar.pagopa.it/idpay-itn/wallet'
+    x-internal: true
 security:
   - bearerAuth: []
 tags:
@@ -1908,7 +1916,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/instruments/{idWallet}':
+  '/wallet/{initiativeId}/instruments/by-wallet/{idWallet}':
     put:
       tags:
         - wallet
@@ -3811,6 +3819,7 @@ components:
           type: string
           description: 'ENG: Name of the initiative - IT: Nome dell''iniziativa'
           pattern: '^[ -~]{1,255}$'
+          example: Bonus Elettrodomestici
           maxLength: 255
         serviceId:
           type: string
@@ -4262,6 +4271,7 @@ components:
           type: string
           description: 'ENG: Initiative''s name - IT: Nome dell''iniziativa'
           pattern: '^[ -~]{1,255}$'
+          example: Bonus Elettrodomestici
           maxLength: 255
         description:
           type: string
@@ -4293,7 +4303,7 @@ components:
             ENG: URL that redirects to the terms and conditions - IT: URL che
             porta ai termini e condizioni
           pattern: >-
-            ^(https?|ftp):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         privacyLink:
           type: string
@@ -4301,7 +4311,7 @@ components:
             ENG: URL that redirects to the privacy policy - IT: URL che
             reindirizza all'informativa della privacy
           pattern: >-
-            ^(https?|ftp):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         logoURL:
           type: string
@@ -4309,7 +4319,7 @@ components:
             ENG: URL for the initiative's logo image - IT: URL del logo
             dell'iniziativa
           pattern: >-
-            ^(https?|ftp):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
     LinkDTO:
       type: object
@@ -4327,7 +4337,7 @@ components:
           type: string
           description: 'ENG: Url''s link - IT: Url del link'
           pattern: >-
-            ^(https?|ftp):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           minLength: 0
           maxLength: 255
     InitiativeErrorDTO:
@@ -4811,7 +4821,8 @@ components:
           description: 'ENG: Operation date - IT: Data dell''operazione'
         iban:
           type: string
-          maxLength: 32
+          minLength: 27
+          maxLength: 27
           pattern: '^[\w\s.,!?''"-]+$'
           description: 'ENG: IBAN of the citizen - IT: IBAN del cittadino'
         channel:
@@ -5052,7 +5063,8 @@ components:
           description: 'ENG: Event ID - IT: Identificativo dell''evento'
         iban:
           type: string
-          maxLength: 32
+          minLength: 27
+          maxLength: 27
           pattern: '^[\w\s.,!?''"-]+$'
           description: 'ENG: IBAN - IT: IBAN'
         operationDate:
@@ -5378,6 +5390,7 @@ components:
           type: string
           description: 'ENG: Name of the initiative - IT: Nome dell''iniziativa'
           pattern: '^[ -~]{1,255}$'
+          example: Bonus Elettrodomestici
           maxLength: 255
         status:
           enum:
@@ -5404,6 +5417,15 @@ components:
             ENG: End date for the time window in which it is possible to use the
             initiative's rewards - IT: Data che indica la fine del periodo di
             fruizione dell'iniziativa
+          minLength: 10
+          maxLength: 10
+        voucherStartDate:
+          type: string
+          format: date
+          description: >-
+            ENG: START date for the time window in which it is possible to use
+            the voucher's rewards - IT: Data che indica l'inizio del periodo di
+            fruizione del voucher
           minLength: 10
           maxLength: 10
         voucherEndDate:
@@ -5470,7 +5492,7 @@ components:
           type: string
           description: 'ENG: Url of the logo - IT: Url del logo'
           pattern: >-
-            ^(https?|ftp):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         organizationName:
           type: string
@@ -5487,7 +5509,7 @@ components:
           type: string
           description: 'ENG: webViewUrl - IT: Url della webView'
           pattern: >-
-            ^(https?|ftp):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         serviceId:
           type: string
@@ -5547,6 +5569,7 @@ components:
           type: string
           description: 'ENG: Name of the initiative - IT: Nome dell''iniziativa'
           pattern: '^[ -~]{1,255}$'
+          example: Bonus Elettrodomestici
           maxLength: 255
         idInstrument:
           type: string
@@ -5575,6 +5598,7 @@ components:
           type: string
           description: 'ENG: Name of the initiative - IT: Nome dell''iniziativa'
           pattern: '^[ -~]{1,255}$'
+          example: Bonus Elettrodomestici
           maxLength: 255
         status:
           type: string
@@ -5643,7 +5667,7 @@ components:
             ENG: URL that redirects to the privacy policy - IT: URL che
             reindirizza all informativa della privacy
           pattern: >-
-            ^(https?|ftp):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         tcLink:
           type: string
@@ -5651,13 +5675,13 @@ components:
             ENG: URL that redirects to the terms and conditions - IT: URL che
             porta ai termini e condizioni
           pattern: >-
-            ^(https?|ftp):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         logoURL:
           type: string
           description: 'ENG: Url of the logo - IT: Url del logo'
           pattern: >-
-            ^(https?|ftp):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         updateDate:
           type: string
@@ -5927,6 +5951,7 @@ components:
           pattern: '^[ -~]{1,255}$'
           maxLength: 255
           description: 'ENG: Name of the initiative - IT: Nome della iniziativa'
+          example: Bonus Elettrodomestici
         businessName:
           type: string
           pattern: '^[ -~]{1,255}$'
@@ -6195,6 +6220,7 @@ components:
           type: string
           pattern: '^[ -~]{1,255}$'
           maxLength: 255
+          example: Bonus Elettrodomestici
           description: 'ENG: Name of the initiative - IT: Nome dell''iniziativa'
         trxDate:
           type: string
