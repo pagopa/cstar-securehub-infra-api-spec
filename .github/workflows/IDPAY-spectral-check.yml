@@ -1,4 +1,4 @@
-name: Validate all OpenAPI YAML with Spectral
+name: Validate all OpenAPI YAML/TPL files with Spectral
 
 on:
   pull_request:
@@ -33,7 +33,12 @@ jobs:
           npm install -g @stoplight/spectral-cli
           npm install @stoplight/spectral-owasp-ruleset
 
-      - name: Lint OpenAPI YAML/TPL files (openapi*.*) and update PR
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install gh -y
+
+      - name: Lint OpenAPI YAML/TPL files and block PR if failing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -41,16 +46,22 @@ jobs:
           summary=""
           failed_files=()
 
-          set +e
-
-          files=$(find src/idpay/apim/api -type f \( \
+          # Cerca tutti i file openapi*.yml/yaml/tpl
+          mapfile -t files < <(find src/idpay/apim/api -type f \( \
             -name "openapi*.yml" \
             -o -name "openapi*.yaml" \
             -o -name "openapi*.yml.tpl" \
             -o -name "openapi*.yaml.tpl" \
           \))
 
-          for file in $files; do
+          # Se non ci sono file, esci con successo
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "✅ No OpenAPI files found to validate."
+            exit 0
+          fi
+
+          # Valida ogni file
+          for file in "${files[@]}"; do
             echo "🔎 Validating OpenAPI file: $file"
             output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
             exit_code=$?
@@ -71,11 +82,13 @@ jobs:
           echo -e "$summary"
 
           if [ ${#failed_files[@]} -ne 0 ]; then
-            echo "❌ Completed with errors in ${#failed_files[@]} OpenAPI file(s)."
+            echo "❌ Found ${#failed_files[@]} OpenAPI file(s) with errors."
 
+            # 📣 Commento automatico nella PR
             gh pr comment "$GITHUB_REF_NAME" \
               --body "❌ **OpenAPI validation failed**\n\n$summary"
 
+            # 🔥 Blocca merge aggiornando lo stato
             gh api \
               -H "Accept: application/vnd.github+json" \
               /repos/${{ github.repository }}/statuses/${{ github.sha }} \
@@ -87,6 +100,7 @@ jobs:
           else
             echo "✅ All OpenAPI files passed validation."
 
+            # ✅ Permette merge
             gh api \
               -H "Accept: application/vnd.github+json" \
               /repos/${{ github.repository }}/statuses/${{ github.sha }} \
