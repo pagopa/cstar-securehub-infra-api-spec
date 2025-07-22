@@ -4,11 +4,6 @@ on:
   pull_request:
     paths:
       - 'src/idpay/apim/api/**'
-  push:
-    branches:
-      - main
-    paths:
-      - 'src/idpay/apim/api/**'
 
 permissions:
   contents: read
@@ -40,28 +35,34 @@ jobs:
           sudo apt update
           sudo apt install gh -y
 
-      - name: Find and validate modified OpenAPI files
+      - name: Get list of modified files from PR
+        id: get_files
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "🔍 Searching for modified OpenAPI YAML/TPL files..."
+          echo "📂 Fetching modified files in PR..."
+          pr_files=$(gh pr view "$GITHUB_REF_NAME" --json files -q '.files[].path')
+          echo "$pr_files" > modified_files.txt
+          echo "📄 Files modified in this PR:"
+          cat modified_files.txt
+
+      - name: Lint OpenAPI YAML/TPL files
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           summary=""
           failed_files=()
           failed=0
 
-          # Trova la commit base della PR
-          BASE_SHA="${{ github.event.pull_request.base.sha }}"
-          echo "🔗 Comparing changes from base SHA: $BASE_SHA"
-
-          # Trova solo i file OpenAPI modificati nella PR
-          touched_files=$(git diff --name-only "$BASE_SHA"...HEAD | grep -E '^src/idpay/apim/api/openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' || true)
+          echo "🔍 Filtering OpenAPI files..."
+          touched_files=$(grep -E '^src/idpay/apim/api/openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' modified_files.txt || true)
 
           if [ -z "$touched_files" ]; then
             echo "✅ No OpenAPI files were modified in this PR."
             exit 0
           fi
 
-          echo "📂 Modified OpenAPI files:"
+          echo "📂 OpenAPI files to validate:"
           echo "$touched_files"
 
           for file in $touched_files; do
@@ -108,4 +109,3 @@ jobs:
               -f state="success" \
               -f description="OpenAPI validation passed" \
               -f context="OpenAPI Spectral Lint"
-          fi
