@@ -759,7 +759,7 @@ components:
         operationId:
           type: string
           maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
+          pattern: "^[\\w\\s.,!?'\"-]+$"
           description: "ENG: Id of the operation - IT: Identificativo dell'operazione"
         operationType:
           enum:
