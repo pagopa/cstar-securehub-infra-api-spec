@@ -3,8 +3,16 @@ info:
   title: IDPAY ITN Timeline IO API v2
   description: IDPAY ITN Timeline IO
   version: '2.0'
+  contact:
+    name: PagoPA S.p.A.
+    email: cstar@pagopa.it
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/timeline
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/timeline
+    x-internal: true
+  - description: User Acceptance Test
+    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/timeline
+    x-internal: true
 paths:
   '/{initiativeId}':
     get:
@@ -13,6 +21,7 @@ paths:
       summary: >-
           ENG: Returns the list of transactions and operations of an initiative of a
           citizen sorted by date (newest->oldest) - IT: Ritorna la lista ordinata di transazioni e operazioni di una iniziativa di un cittadino (nuove->vecchie)
+      description: Returns the list of transactions and operations of an initiative of a citizen sorted by date (newest->oldest)
       operationId: getTimeline
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
@@ -21,6 +30,9 @@ paths:
           description: "ENG: Language - IT: Lingua"
           schema:
             type: string
+            pattern: "^[ -~]{2,5}$"
+            minLength: 2
+            maxLength: 5
             example: it-IT
             default: it-IT
           required: true
@@ -30,21 +42,30 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 24
+            pattern: "$ ^[a-zA-Z0-9]+$"
         - name: operationType
           in: query
           description: "ENG: Operation type filter - IT: Filtro tipologia dell'operazione"
           schema:
             type: string
+            pattern: "$ ^[a-zA-Z0-9]+$"
         - name: page
           in: query
           description: "ENG: The number of the page - IT: Numero della pagina"
           schema:
             type: integer
+            format: int32
+            minimum: 1
+            maximum: 240
         - name: size
           in: query
           description: "ENG: Number of items, default 3 - max 10 - IT: Numero di elementi, default 3 - max 10"
           schema:
             type: integer
+            format: int32
+            minimum: 3
+            maximum: 10
       responses:
         '200':
           description: Ok
@@ -52,6 +73,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TimelineDTO'
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
         '400':
           description: Bad request
           content:
@@ -61,8 +91,28 @@ paths:
               example:
                 code: "TIMELINE_INVALID_REQUEST"
                 message: "Something went wrong handling request"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
         '401':
           description: Authentication failed
+          content:
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
         '404':
           description: The requested ID was not found
           content:
@@ -72,6 +122,15 @@ paths:
               example:
                 code: "TIMELINE_USER_NOT_FOUND"
                 message: "Timeline for the current user not found"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
         '429':
           description: Too many Request
           content:
@@ -81,6 +140,15 @@ paths:
               example:
                 code: "TIMELINE_TOO_MANY_REQUESTS"
                 message: "Too many requests"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
         '500':
           description: Server ERROR
           content:
@@ -90,11 +158,21 @@ paths:
               example:
                 code: "TIMELINE_GENERIC_ERROR"
                 message: "Application error"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
   '/{initiativeId}/{operationId}':
     get:
       tags:
         - timeline
       summary: "ENG: Returns the detail of a transaction - IT: Ritorna il dettaglio di una transazione"
+      description: "Returns the detail of a transaction"
       operationId: getTimelineDetail
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
@@ -103,6 +181,9 @@ paths:
           in: header
           schema:
             type: string
+            pattern: "^[ -~]{2,5}$"
+            minLength: 2
+            maxLength: 5
             example: it-IT
             default: it-IT
           required: true
@@ -112,12 +193,15 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 24
+            pattern: "$ ^[a-zA-Z0-9]+$"
         - name: operationId
           description: "ENG: The operation ID - IT: Identificativo dell'operazione"
           in: path
           required: true
           schema:
             type: string
+            pattern: "$ ^[a-zA-Z0-9]+$"
       responses:
         '200':
           description: Ok
@@ -125,8 +209,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OperationDTO'
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
         '401':
           description: Authentication failed
+          content:
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
         '404':
           description: The requested ID was not found
           content:
@@ -136,6 +240,15 @@ paths:
               example:
                 code: "TIMELINE_DETAIL_NOT_FOUND"
                 message: "Detail of Timeline not found"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
         '429':
           description: Too many Request
           content:
@@ -145,6 +258,15 @@ paths:
               example:
                 code: "TIMELINE_TOO_MANY_REQUESTS"
                 message: "Too many requests"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
         '500':
           description: Server ERROR
           content:
@@ -154,6 +276,15 @@ paths:
               example:
                 code: "TIMELINE_GENERIC_ERROR"
                 message: "Application error"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
 components:
   parameters:
     ApiVersionHeader:
@@ -163,8 +294,38 @@ components:
       required: true
       schema:
         type: string
+        enum: [v1]
         example: v1
         default: v1
+  headers:
+    Access-Control-Allow-Origin:
+      description: Indicates whether the response can be shared with requesting code from the given origin
+      schema:
+        type: string
+        pattern: "^[ -~]{1,2048}$"
+        minLength: 1
+        maxLength: 2048
+    RateLimit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
+    RateLimit-Reset:
+      description: The number of seconds left in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 60
+    Retry-After:
+      description: The number of seconds to wait before allowing a follow-up request
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
   schemas:
     OperationDTO:
       oneOf:
@@ -190,6 +351,8 @@ components:
           type: string
           description: "ENG: Date of the last update - IT: Data dell'ultimo aggiornamento"
           format: date-time
+          minLength: 19
+          maxLength: 19
         operationList:
           type: array
           items:
@@ -241,10 +404,13 @@ components:
           description: "ENG: Operation type [REJECTED_ADD_INSTRUMENT: Rejected add instrument,
                       REJECTED_DELETE_INSTRUMENT: Rejected delete instrument] - IT: Tipologia di operazione [REJECTED_ADD_INSTRUMENT: Respinto l'inserimento dello strumento,
                       REJECTED_DELETE_INSTRUMENT: Respinta la cancellazione dello strumento]"
+          example: "REJECTED_ADD_INSTRUMENT"
           type: string
         operationDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         brandLogo:
           type: string
@@ -266,6 +432,8 @@ components:
           enum:
             - CARD
             - IDPAYCODE
+          example: "CARD"
+          description: "ENG: Instrument type - IT: Tipologia di strumento"
     TransactionDetailDTO:
       type: object
       required:
@@ -282,6 +450,7 @@ components:
           enum:
             - TRANSACTION
             - REVERSAL
+          example: "REVERSAL"
           type: string
           description: "ENG: Operation type - IT: Tipologia di operazione"
         eventId:
@@ -306,6 +475,8 @@ components:
         operationDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         circuitType:
           type: string
@@ -326,6 +497,7 @@ components:
             - AUTHORIZED
             - REWARDED
             - CANCELLED
+          example: "CANCELLED"
           description: "ENG: Transaction status [AUTHORIZED: Transaction authorize, REWARDED: Transaction rewarded, CANCELLED: Transaction cancelled]  - IT: Stato della transazione [AUTHORIZED: Transazione autorizzata, REWARDED: Transazione premiata, CANCELLED: transazione cancellata]"
         channel:
           type: string
@@ -358,6 +530,8 @@ components:
         operationDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         brandLogo:
           type: string
@@ -396,6 +570,8 @@ components:
         operationDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         iban:
           type: string
@@ -421,6 +597,8 @@ components:
         operationDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
     RefundOperationDTO:
       type: object
@@ -446,6 +624,8 @@ components:
         operationDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         amountCents:
           type: integer
@@ -475,6 +655,8 @@ components:
         operationDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         brandLogo:
           type: string
@@ -506,6 +688,7 @@ components:
             - AUTHORIZED
             - REWARDED
             - CANCELLED
+          example: "CANCELLED"
           description: "ENG: Transaction status  - IT: Stato della transazione"
         channel:
           type: string
@@ -514,6 +697,7 @@ components:
             - QRCODE
             - IDPAYCODE
             - BARCODE
+          example: "BARCODE"
           description: "ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione"
         businessName:
           type: string
@@ -530,11 +714,14 @@ components:
         operationType:
           enum:
             - SUSPENDED
+          example: "SUSPENDED"
           type: string
           description: "ENG: Operation type [SUSPENDED: Suspended] - IT: Tipologia dell'operazione [SUSPENDED: sospeso]"
         operationDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
     RefundDetailDTO:
       type: object
@@ -553,6 +740,7 @@ components:
             - PAID_REFUND
             - REJECTED_REFUND
           type: string
+          example: "REJECTED_REFUND"
           description: "ENG: Operation type [PAID_REFUND: Paid refund, REJECTED_REFUND: Rejected refund] - IT: Tipologia dell'operazione [PAID_REFUND: Rimborso pagato, REJECTED_REFUND: Rimborso rifiutato]"
         eventId:
           type: string
@@ -563,6 +751,8 @@ components:
         operationDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         amountCents:
           type: integer
@@ -577,18 +767,26 @@ components:
         startDate:
           type: string
           format: date
+          minLength: 10
+          maxLength: 10
           description: "ENG: Start date - IT: Data di inizio"
         endDate:
           type: string
           format: date
+          minLength: 10
+          maxLength: 10
           description: "ENG: End date - IT Data di fine"
         transferDate:
           type: string
           format: date
+          minLength: 10
+          maxLength: 10
           description: "ENG: Transfer date - IT: Data della trasferenza"
         userNotificationDate:
           type: string
           format: date
+          minLength: 10
+          maxLength: 10
           description: "ENG: User notification date - IT: Data di notificazione all'utente"
         cro:
           type: string
@@ -606,11 +804,14 @@ components:
         operationType:
           enum:
             - READMITTED
+          example: "READMITTED"
           type: string
           description: "ENG: Operation type - IT: Tipologia dell'operazione"
         operationDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
     TimelineErrorDTO:
       type: object
@@ -640,6 +841,7 @@ components:
             TIMELINE_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
             TIMELINE_TOO_MANY_REQUESTS: Troppe richieste,
             TIMELINE_GENERIC_ERROR: Errore generico"
+          example: "TIMELINE_DETAIL_NOT_FOUND"
         message:
           type: string
           description: "ENG: Error message - IT: Messaggio di errore"
@@ -656,11 +858,14 @@ components:
         operationType:
           enum:
             - UNSUBSCRIBED
+          example: "UNSUBSCRIBED"
           type: string
           description: "ENG: Operation type - IT: Tipologia dell'operazione"
         operationDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
   securitySchemes:
     bearerAuth:
