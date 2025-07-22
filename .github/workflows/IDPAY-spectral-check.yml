@@ -49,7 +49,7 @@ jobs:
           failed=0
 
           echo "🔍 Filtering OpenAPI files..."
-          openapi_files=$(grep -E '^src/idpay/apim/api/openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' modified_files.txt || true)
+          openapi_files=$(grep -E '^src/idpay/apim/api/.*openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' modified_files.txt || true)
 
           if [ -z "$openapi_files" ]; then
             echo "✅ No OpenAPI files were modified in this PR."
