@@ -548,6 +548,8 @@ components:
           type: string
           minLength: 2
           maxLength: 2
+          pattern: '^\d{2}$'
+          example: "00"
           description: >-
               ENG: Circuit type - IT: Tipologia del circuito
               00-> Bancomat, 01->Visa, 02->Mastercard, 03->Amex, 04->JCB,
@@ -807,6 +809,8 @@ components:
           type: string
           minLength: 2
           maxLength: 2
+          pattern: '^\d{2}$'
+          example: "00"
           description: >-
              ENG: Circuit type - IT: Tipologia di circuito
              00-> Bancomat, 01->Visa, 02->Mastercard, 03->Amex, 04->JCB,

@@ -2,91 +2,165 @@ openapi: 3.0.1
 info:
   title: IDPAY ITN Onboarding Workflow IO API
   description: IDPAY ITN Onboarding Workflow IO
-  version: '1.0'
+  version: "1.0"
+  contact:
+    name: PagoPA S.p.A.
+    email: cstar@pagopa.it
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/onboarding
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/onboarding
+    x-internal: true
+  - description: User Acceptance Test
+    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/onboarding
+    x-internal: true
 paths:
   /service/{serviceId}:
     get:
       tags:
         - onboarding
       summary: "ENG: Retrieves the initiative ID starting from the corresponding service ID - IT: Ritrova l'identificativo dell'iniziativa a partire dall'idetificativo del service"
+      description: "Retrieves the initiative ID starting from the corresponding service ID"
       operationId: getInitiativeData
       parameters:
-        - $ref: '#/components/parameters/ApiVersionHeader'
+        - $ref: "#/components/parameters/ApiVersionHeader"
         - name: serviceId
           in: path
           description: "ENG: The service ID - IT: Identificativo del service"
           required: true
           schema:
             type: string
+            maxLength: 50
+            pattern: "$ ^[a-zA-Z0-9]+$"
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
           schema:
             type: string
+            pattern: "^[ -~]{2,5}$"
+            minLength: 2
+            maxLength: 5
             example: it-IT
             default: it-IT
           required: true
       responses:
-        '200':
+        "200":
           description: Get successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InitiativeDataDTO'
-        '400':
+                $ref: "#/components/schemas/InitiativeDataDTO"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InitiativeErrorDTO'
+                $ref: "#/components/schemas/InitiativeErrorDTO"
               example:
                 code: "INITIATIVE_INVALID_REQUEST"
                 message: "Something went wrong handling the request"
-        '401':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "401":
           description: Authentication failed
-        '404':
+          content:
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "404":
           description: The requested initiative was not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InitiativeErrorDTO'
+                $ref: "#/components/schemas/InitiativeErrorDTO"
               example:
                 code: "INITIATIVE_NOT_FOUND"
                 message: "Initiative not found"
-        '429':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "429":
           description: Too many Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InitiativeErrorDTO'
+                $ref: "#/components/schemas/InitiativeErrorDTO"
               example:
                 code: "INITIATIVE_TOO_MANY_REQUESTS"
                 message: "Too many requests"
-        '500':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "500":
           description: Server ERROR
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InitiativeErrorDTO'
+                $ref: "#/components/schemas/InitiativeErrorDTO"
               example:
                 code: "INITIATIVE_GENERIC_ERROR"
                 message: "Application error"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
 
   /:
     put:
       tags:
         - onboarding
       summary: "ENG: Acceptance of Terms & Conditions - IT: Accettazione dei Termini e condizioni"
+      description: "Acceptance of Terms & Conditions"
       operationId: onboardingCitizen
       parameters:
-        - $ref: '#/components/parameters/ApiVersionHeader'
+        - $ref: "#/components/parameters/ApiVersionHeader"
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
           schema:
             type: string
+            pattern: "^[ -~]{2,5}$"
+            minLength: 2
+            maxLength: 5
             example: it-IT
             default: it-IT
           required: true
@@ -96,72 +170,141 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OnboardingPutDTO'
+              $ref: "#/components/schemas/OnboardingPutDTO"
       responses:
-        '204':
+        "204":
           description: Acceptance successful
           content:
             application/json: {}
-        '400':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_INVALID_REQUEST"
                 message: "Something went wrong handling the request"
-        '401':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "401":
           description: Authentication failed
-        '403':
+          content:
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "403":
           description: This onboarding is forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_BUDGET_EXHAUSTED"
-                message: "Budget exhausted for initiative [%s]"
-        '404':
+                message: "Budget exhausted for initiative XXXXX"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "404":
           description: The requested resource was not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_INITIATIVE_NOT_FOUND"
-                message: "Cannot find initiative [%s]"
-        '429':
+                message: "Cannot find initiative XXXXX"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "429":
           description: Too many Requests
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_TOO_MANY_REQUESTS"
                 message: "Too many requests"
-        '500':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "500":
           description: Server ERROR
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_GENERIC_ERROR"
                 message: "An error occurred in the microservice admissibility"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
   /initiative:
     put:
       tags:
         - onboarding
       summary: "ENG: Checks the initiative prerequisites - IT: Verifica i prerequisiti dell'iniziativa"
+      description: "Checks the initiative prerequisites"
       operationId: checkPrerequisites
       parameters:
-        - $ref: '#/components/parameters/ApiVersionHeader'
+        - $ref: "#/components/parameters/ApiVersionHeader"
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
           schema:
             type: string
+            pattern: "^[ -~]{2,5}$"
+            minLength: 2
+            maxLength: 5
             example: it-IT
             default: it-IT
           required: true
@@ -171,80 +314,156 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OnboardingPutDTO'
-            example:
-              initiativeId: string
+              $ref: "#/components/schemas/OnboardingPutDTO"
       responses:
-        '200':
+        "200":
           description: Check successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RequiredCriteriaDTO'
-        '202':
+                $ref: "#/components/schemas/RequiredCriteriaDTO"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "202":
           description: Accepted - Request Taken Over
           content:
-            application/json: { }
-        '400':
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_INVALID_REQUEST"
                 message: "Something went wrong handling the request"
-        '401':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "401":
           description: Authentication failed
-        '403':
+          content:
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "403":
           description: This onboarding is forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_BUDGET_EXHAUSTED"
-                message: "Budget exhausted for initiative [%s]"
-        '404':
+                message: "Budget exhausted for initiative XXXXX"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "404":
           description: The requested resource was not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_INITIATIVE_NOT_FOUND"
-                message: "Cannot find initiative [%s]"
-        '429':
+                message: "Cannot find initiative XXXXX"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "429":
           description: Too many Requests
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_TOO_MANY_REQUESTS"
                 message: "Too many requests"
-        '500':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "500":
           description: Server ERROR
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_GENERIC_ERROR"
                 message: "An error occurred in the microservice admissibility"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
   /consent:
     put:
       tags:
         - onboarding
       summary: "ENG: Saves the consensus of both PDND and self-declaration - IT: Salva i consensi di PDND e le autodichiarazioni"
+      description: "Saves the consensus of both PDND and self-declaration"
       operationId: consentOnboarding
       parameters:
-        - $ref: '#/components/parameters/ApiVersionHeader'
+        - $ref: "#/components/parameters/ApiVersionHeader"
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
           schema:
             type: string
+            pattern: "^[ -~]{2,5}$"
+            minLength: 2
+            maxLength: 5
             example: it-IT
             default: it-IT
           required: true
@@ -256,72 +475,141 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConsentPutDTO'
+              $ref: "#/components/schemas/ConsentPutDTO"
       responses:
-        '202':
+        "202":
           description: Accepted - Request Taken Over
           content:
             application/json: {}
-        '400':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_INVALID_REQUEST"
                 message: "Something went wrong handling the request"
-        '401':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "401":
           description: Authentication failed
-        '403':
+          content:
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "403":
           description: This onboarding is forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_BUDGET_EXHAUSTED"
-                message: "Budget exhausted for initiative [%s]"
-        '404':
+                message: "Budget exhausted for initiative XXXXX"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "404":
           description: The requested resource was not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_INITIATIVE_NOT_FOUND"
-                message: "Cannot find initiative [%s]"
-        '429':
+                message: "Cannot find initiative XXXXX"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "429":
           description: Too many Requests
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_TOO_MANY_REQUESTS"
                 message: "Too many requests"
-        '500':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "500":
           description: Server ERROR
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_GENERIC_ERROR"
                 message: "An error occurred in the microservice admissibility"
-  '/{initiativeId}/status':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+  "/{initiativeId}/status":
     get:
       tags:
         - onboarding
       summary: "ENG: Returns the actual onboarding status along with the date on which that status changed and, if present, the date upon which the onboarding successfully went through - IT: Ritorna lo stato attuale dell'adesione insieme alla data in cui quello stato è cambiato e, se presente, la data in cui l'adesione è avvenuta con successo"
+      description: "Returns the actual onboarding status along with the date on which that status changed and, if present, the date upon which the onboarding successfully went through"
       operationId: onboardingStatus
       parameters:
-        - $ref: '#/components/parameters/ApiVersionHeader'
+        - $ref: "#/components/parameters/ApiVersionHeader"
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
           schema:
             type: string
+            pattern: "^[ -~]{2,5}$"
+            minLength: 2
+            maxLength: 5
             example: it-IT
             default: it-IT
           required: true
@@ -331,116 +619,255 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 24
+            pattern: "$ ^[a-zA-Z0-9]+$"
       responses:
-        '200':
+        "200":
           description: Check successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingStatusDTO'
-        '400':
+                $ref: "#/components/schemas/OnboardingStatusDTO"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_INVALID_REQUEST"
                 message: "Something went wrong handling the request"
-        '401':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "401":
           description: Authentication failed
-        '404':
+          content:
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "404":
           description: The requested resource was not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_USER_NOT_ONBOARDED"
-                message: "The current user is not onboarded on initiative [%s]"
-        '429':
+                message: "The current user is not onboarded on initiative XXXXX"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "429":
           description: Too many Requests
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_TOO_MANY_REQUESTS"
                 message: "Too many requests"
-        '500':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "500":
           description: Server ERROR
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_GENERIC_ERROR"
                 message: "An error occurred in the microservice admissibility"
-  '/user/initiative/status':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+  "/user/initiative/status":
     get:
       tags:
         - onboarding
       summary: >-
         ENG: Returns all initiatives in Waiting List or In Evaluation status that the user is onboarded to or has requested
         - IT: Ritorna tutte le iniziative in stato Lista Attesa o In Valutazione a cui l'utente è onboardato o che ha fatto richiesta
+      description: "Returns all initiatives in Waiting List or In Evaluation status that the user is onboarded to or has requested"
       operationId: onboardingInitiativeUserStatus
       parameters:
-        - $ref: '#/components/parameters/ApiVersionHeader'
+        - $ref: "#/components/parameters/ApiVersionHeader"
         - name: Accept-Language
           in: header
-          description: 'ENG: Language - IT: Lingua'
+          description: "ENG: Language - IT: Lingua"
           schema:
             type: string
+            pattern: "^[ -~]{2,5}$"
+            minLength: 2
+            maxLength: 5
             example: it-IT
             default: it-IT
           required: true
       responses:
-        '200':
+        "200":
           description: Check successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListOnboardingStatusDTO'
-        '400':
+                $ref: "#/components/schemas/ListOnboardingStatusDTO"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: ONBOARDING_INVALID_REQUEST
                 message: Something went wrong handling the request
-        '401':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "401":
           description: Authentication failed
-        '429':
+          content:
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "429":
           description: Too many Requests
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: ONBOARDING_TOO_MANY_REQUESTS
                 message: Too many requests
-        '500':
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "500":
           description: Server ERROR
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: ONBOARDING_GENERIC_ERROR
                 message: An error occurred in the microservice admissibility
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
 components:
   parameters:
     ApiVersionHeader:
       name: X-Api-Version
       in: header
-      description: 'ENG: Api Version - IT: Versione dell Api'
+      description: "ENG: Api Version - IT: Versione dell Api"
       required: true
       schema:
         type: string
+        enum: [v1]
         example: v1
         default: v1
+  headers:
+    Access-Control-Allow-Origin:
+      description: Indicates whether the response can be shared with requesting code from the given origin
+      schema:
+        type: string
+        pattern: "^[ -~]{1,2048}$"
+        minLength: 1
+        maxLength: 2048
+    RateLimit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
+    RateLimit-Reset:
+      description: The number of seconds left in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 60
+    Retry-After:
+      description: The number of seconds to wait before allowing a follow-up request
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
   schemas:
     ConsentPutDTO:
       title: ConsentPutDTO
@@ -453,6 +880,8 @@ components:
         initiativeId:
           type: string
           description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
+          maxLength: 24
+          pattern: "$ ^[a-zA-Z0-9]+$"
         pdndAccept:
           type: boolean
           description: "ENG: Flag for PDND acceptation - IT: Flag per l'accettazione PDND"
@@ -461,19 +890,21 @@ components:
           items:
             $ref: "#/components/schemas/SelfConsentDTO"
           description: "ENG: The list of accepted self-declared criteria - IT: Lista dei criteri autodichiarati"
+          maxItems: 10
     SelfConsentDTO:
       oneOf:
-        - $ref: '#/components/schemas/SelfConsentBoolDTO'
-        - $ref: '#/components/schemas/SelfConsentMultiDTO'
-        - $ref: '#/components/schemas/SelfConsentTextDTO'
+        - $ref: "#/components/schemas/SelfConsentBoolDTO"
+        - $ref: "#/components/schemas/SelfConsentMultiDTO"
+        - $ref: "#/components/schemas/SelfConsentTextDTO"
     ListOnboardingStatusDTO:
       title: ListOnboardingStatusDTO
       type: array
       items:
-        $ref: '#/components/schemas/UserOnboardingStatusDTO'
+        $ref: "#/components/schemas/UserOnboardingStatusDTO"
       description: >-
         ENG: List of initiatives in Waiting List or In Evaluation status, to which the user is onboarded
         - IT: Lista delle iniziative in stato Lista d''attesa o In Valutazione, a cui l'utente è onboardato
+      maxItems: 10
     OnboardingPutDTO:
       title: OnboardingPutDTO
       type: object
@@ -483,6 +914,8 @@ components:
         initiativeId:
           type: string
           description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
+          maxLength: 24
+          pattern: "$ ^[a-zA-Z0-9]+$"
     UserOnboardingStatusDTO:
       title: UserOnboardingStatusDTO
       type: object
@@ -496,12 +929,19 @@ components:
         initiativeName:
           type: string
           description: "ENG: Name of the initiative - IT: Nome dell'iniziativa"
+          pattern: "^[ -~]{1,255}$"
+          example: "Bonus Elettrodomestici"
+          maxLength: 255
         serviceId:
           type: string
-          description: 'ENG: The service ID - IT: Identificativo del service'
+          description: "ENG: The service ID - IT: Identificativo del service"
+          maxLength: 50
+          pattern: "$ ^[a-zA-Z0-9]+$"
         initiativeId:
           type: string
           description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
+          maxLength: 24
+          pattern: "$ ^[a-zA-Z0-9]+$"
         status:
           enum:
             - ACCEPTED_TC
@@ -518,6 +958,8 @@ components:
         statusDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Date on which the status changed to the current one - IT: Data in cui lo stato è cambiato allo stato attuale"
         detailKo:
           enum:
@@ -567,6 +1009,8 @@ components:
         statusDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Date on which the status changed to the current one - IT: Data in cui lo stato è cambiato allo stato attuale"
         detailKo:
           enum:
@@ -596,6 +1040,8 @@ components:
         onboardingOkDate:
           type: string
           format: date-time
+          minLength: 19
+          maxLength: 19
           description: "ENG: Date on which the onboarding successfully went through - IT: Data in cui l'adesione è avvenuta con successo"
     RequiredCriteriaDTO:
       type: object
@@ -606,18 +1052,20 @@ components:
         pdndCriteria:
           type: array
           items:
-            $ref: '#/components/schemas/PDNDCriteriaDTO'
+            $ref: "#/components/schemas/PDNDCriteriaDTO"
           description: "ENG: The list of checks made on the PDND platform - IT: Lista dei controlli effettutati dalla piattaforma PDND"
+          maxItems: 5
         selfDeclarationList:
           type: array
           items:
             $ref: "#/components/schemas/SelfDeclarationDTO"
           description: "ENG: The list of required self-declared criteria - IT: Lista dei criteri richiesti da autodichiarare"
+          maxItems: 10
     SelfDeclarationDTO:
       oneOf:
-        - $ref: '#/components/schemas/SelfDeclarationBoolDTO'
-        - $ref: '#/components/schemas/SelfDeclarationMultiDTO'
-        - $ref: '#/components/schemas/SelfDeclarationTextDTO'
+        - $ref: "#/components/schemas/SelfDeclarationBoolDTO"
+        - $ref: "#/components/schemas/SelfDeclarationMultiDTO"
+        - $ref: "#/components/schemas/SelfDeclarationTextDTO"
     PDNDCriteriaDTO:
       type: object
       required:
@@ -637,16 +1085,25 @@ components:
         description:
           type: string
           description: "ENG: Description of the criteria - IT: Descrizione del criterio"
+          maxLength: 255
+          example: "descrizione del criterio"
+          pattern: "^[ -~]{0,255}$"
         value:
           type: string
           description: >-
             "ENG: The expected value for the criteria. It is used in conjunction with
             the operator to define a range or an equality over that criteria. - IT: Valore atteso dal criterio. E' usato insieme al campo operator per definire un insieme di valori o un'uguaglianza con un valore"
+          maxLength: 255
+          example: "valore del criterio"
+          pattern: "^[ -~]{0,255}$"
         value2:
           type: string
           description: >-
             "ENG: In situations where the operator expects two values (e.g BETWEEN)
             this field is populated - IT: Popolato quando il campo operator si aspetta due valori (e.g BETWEEN)"
+          maxLength: 255
+          example: "BETWEEN"
+          pattern: "^[ -~]{0,255}$"
         operator:
           type: string
           description: "ENG: Represents the relation between the criteria and the value field - IT: Rappresenta la relazione tra il criterio ed il campo value"
@@ -681,14 +1138,22 @@ components:
         code:
           type: string
           description: "ENG: Self-declaration code - IT: Codice dell'autodichiarazione"
+          maxLength: 10
+          pattern: "^[ -~]{1,10}$"
         description:
           type: string
+          example: "descrizione"
           description: "ENG: Self-declaration description - IT: Descrizione dell'autodichiarazione"
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
         subDescription:
           type: string
+          example: "sotto descrizione"
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
             dell'autodichiarazione
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
         value:
           type: boolean
           description: "ENG: Indicates whether the self-declaration is accepted or not - IT: Indica se l'autodichiarazione è accettata o no"
@@ -708,21 +1173,30 @@ components:
         code:
           type: string
           description: "ENG: Self-declaration code - IT: Codice dell'autodichiarazione"
+          maxLength: 10
+          pattern: "^[ -~]{1,10}$"
         description:
           type: string
+          example: "descrizione"
           description: "ENG: Self-declaration description - IT: Descrizione dell'autodichiarazione"
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
         subDescription:
           type: string
+          example: "sotto descrizione"
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
             dell'autodichiarazione
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
         value:
           type: array
           items:
-            $ref: '#/components/schemas/RowDataDTO'
+            $ref: "#/components/schemas/RowDataDTO"
           description: >-
             ENG: Indicates self-declaration values - IT: Indica i valori per
             l'autodichiarazione
+          maxItems: 10
     RowDataDTO:
       type: object
       required:
@@ -730,14 +1204,20 @@ components:
       properties:
         description:
           type: string
+          example: "descrizione"
           description: >-
             ENG: Self-declaration description - IT: Descrizione
             del record di autodichiarazione
+          pattern: "^[ -~]{0,250}$"
+          maxLength: 250
         subDescription:
           type: string
+          example: "sotto descrizione"
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
             del record di autodichiarazione
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
     SelfDeclarationTextDTO:
       type: object
       required:
@@ -755,22 +1235,32 @@ components:
             - text
         code:
           type: string
-          description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
+          description: "ENG: Self-declaration code - IT: Codice dell'autodichiarazione"
+          maxLength: 10
+          pattern: "^[ -~]{1,10}$"
         description:
           type: string
+          example: "descrizione"
           description: >-
             ENG: Self-declaration description - IT: Descrizione
             dell'autodichiarazione
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
         subDescription:
           type: string
+          example: "sotto descrizione"
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
             dell'autodichiarazione
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
         value:
           type: string
           description: >-
             ENG: Indicates self-declaration values - IT: Indica i valori per
             l'autodichiarazione
+          pattern: "^[ -~]{0,250}$"
+          maxLength: 250
     SelfConsentBoolDTO:
       type: object
       required:
@@ -786,6 +1276,8 @@ components:
         code:
           type: string
           description: "ENG: Self-consent code - IT: Codice dell'auto consenso"
+          maxLength: 10
+          pattern: "^[ -~]{1,10}$"
         accepted:
           type: boolean
           description: "ENG: Indicates whether the self-consent is accepted or not - IT: Indica se l'auto consenso è accettato o no"
@@ -804,9 +1296,14 @@ components:
         code:
           type: string
           description: "ENG: Self-consent code - IT: Codice dell'auto consenso"
+          pattern: "^[ -~]{0,10}$"
+          maxLength: 10
         value:
           type: string
+          example: "0, 1"
           description: "ENG: Indicates self-consent values - IT: Indica i valori per gli auto consensi"
+          pattern: "^[ -~]{0,10}$"
+          maxLength: 10
     SelfConsentTextDTO:
       type: object
       required:
@@ -818,28 +1315,19 @@ components:
           type: string
           enum:
             - text
-          description: 'ENG: Self-consent value type free text - IT: Auto consenso di tipo testo libero'
+          description: "ENG: Self-consent value type free text - IT: Auto consenso di tipo testo libero"
         code:
           type: string
-          description: 'ENG: Self-consent code - IT: Codice dell''auto consenso'
+          description: "ENG: Self-consent code - IT: Codice dell'auto consenso"
+          pattern: "^[ -~]{0,10}$"
+          maxLength: 10
         value:
           type: string
           description: >-
             ENG: Indicates self-consent values - IT: Indica i valori per gli
             auto consensi
-    ErrorDTO:
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: "ENG: Error code - IT: Codice di errore"
-        message:
-          type: string
-          description: "ENG: Error message - IT: Messaggio di errore"
+          pattern: "^[ -~]{0,255}$"
+          maxLength: 255
     InitiativeDataDTO:
       type: object
       required:
@@ -855,45 +1343,68 @@ components:
         initiativeId:
           type: string
           description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
+          maxLength: 24
+          pattern: "$ ^[a-zA-Z0-9]+$"
         initiativeName:
           type: string
           description: "ENG: Initiative's name - IT: Nome dell'iniziativa"
+          pattern: "^[ -~]{1,255}$"
+          example: "Bonus Elettrodomestici"
+          maxLength: 255
         description:
           type: string
+          example: "Descrizione dell'iniziativa"
           description: "ENG: Initiative's description - IT: Descrizione dell'iniziativa"
+          pattern: "^[ -~]{1,255}$"
+          maxLength: 255
         links:
           type: array
           items:
-            $ref: '#/components/schemas/LinkDTO'
+            $ref: "#/components/schemas/LinkDTO"
+          maxItems: 10
         organizationId:
           type: string
           description: "ENG: Id of the organization that created the initiative - IT: Identificativo dell'organizzazione che ha creato l'iniziativa"
+          pattern: "^[ -~]{1,50}$"
+          maxLength: 50
         organizationName:
           type: string
           description: "ENG: Name of the organization that created the initiative - IT: Nome dell'organizzazione che ha creato l'iniziativa"
+          pattern: "^[ -~]{1,50}$"
+          maxLength: 50
         tcLink:
           type: string
           description: "ENG: URL that redirects to the terms and conditions - IT: URL che porta ai termini e condizioni"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          maxLength: 255
         privacyLink:
           type: string
           description: "ENG: URL that redirects to the privacy policy - IT: URL che reindirizza all'informativa della privacy"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          maxLength: 255
         logoURL:
           type: string
           description: "ENG: URL for the initiative's logo image - IT: URL del logo dell'iniziativa"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          maxLength: 255
     LinkDTO:
       type: object
+      required:
+        - description
+        - url
       properties:
         description:
           type: string
           enum:
-            - PRODUCT_LIST
-            - STORE_LIST
-          description: >-
-            ENG: Link's description - IT: Descrizione del tipo di link
+            - MERCHANT
+            - PRODUCT
+          description: "ENG: Link's description - IT: Descrizione del tipo di link"
         url:
           type: string
-          description: >-
-            ENG: Url - IT: Url del link
+          description: "ENG: Url's link - IT: Url del link"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          minLength: 0
+          maxLength: 255
     InitiativeErrorDTO:
       type: object
       properties:
@@ -921,6 +1432,8 @@ components:
         message:
           type: string
           description: "ENG: Error message - IT: Messaggio di errore"
+          maxLength: 250
+          pattern: "^[\\w\\s.,!?'\"-]+$"
     OnboardingErrorDTO:
       type: object
       required:
@@ -996,13 +1509,15 @@ components:
             ONBOARDING_TOO_MANY_REQUESTS: Troppe richieste"
         message:
           type: string
-          description: 'ENG: Error message- IT: Messaggio di errore'
+          description: "ENG: Error message- IT: Messaggio di errore"
+          maxLength: 250
+          pattern: "^[\\w\\s.,!?'\"-]+$"
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
 security:
-  - bearerAuth: [ ]
+  - bearerAuth: []
 tags:
   - name: onboarding
-    description: ''
+    description: ""

@@ -1833,12 +1833,14 @@ components:
           pattern: "^[ -~]{0,10}$"
         brandLogo:
           type: string
+          example: "https://cstarpayment/logo.png"
           description: "ENG: Card's brand logo URL - IT: URL del logo del marchio della carta"
           minLength: 1
           maxLength: 2048
           pattern: "^[ -~]{1,2048}$"
         brand:
           type: string
+          example: "https://cstarpayment/cardBrand"
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
           maxLength: 24
           pattern: "$ ^[a-zA-Z0-9]+$"
@@ -2013,6 +2015,7 @@ components:
           pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
         brand:
           type: string
+          example: "https://cstarpayment/cardBrand"
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
           maxLength: 50
           pattern: "$ ^[a-zA-Z0-9]+$"

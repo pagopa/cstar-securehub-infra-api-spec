@@ -3995,6 +3995,7 @@ components:
           type: string
           description: 'ENG: Description of the criteria - IT: Descrizione del criterio'
           maxLength: 255
+          example: descrizione del criterio
           pattern: '^[ -~]{0,255}$'
         value:
           type: string
@@ -4005,6 +4006,7 @@ components:
             campo operator per definire un insieme di valori o un'uguaglianza
             con un valore"
           maxLength: 255
+          example: valore del criterio
           pattern: '^[ -~]{0,255}$'
         value2:
           type: string
@@ -4013,6 +4015,7 @@ components:
             BETWEEN) this field is populated - IT: Popolato quando il campo
             operator si aspetta due valori (e.g BETWEEN)"
           maxLength: 255
+          example: BETWEEN
           pattern: '^[ -~]{0,255}$'
         operator:
           type: string
@@ -4059,6 +4062,7 @@ components:
           pattern: '^[ -~]{1,10}$'
         description:
           type: string
+          example: descrizione
           description: >-
             ENG: Self-declaration description - IT: Descrizione
             dell'autodichiarazione
@@ -4066,6 +4070,7 @@ components:
           pattern: '^[ -~]{0,255}$'
         subDescription:
           type: string
+          example: sotto descrizione
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
             dell'autodichiarazione
@@ -4098,6 +4103,7 @@ components:
           pattern: '^[ -~]{1,10}$'
         description:
           type: string
+          example: descrizione
           description: >-
             ENG: Self-declaration description - IT: Descrizione
             dell'autodichiarazione
@@ -4105,6 +4111,7 @@ components:
           pattern: '^[ -~]{0,255}$'
         subDescription:
           type: string
+          example: sotto descrizione
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
             dell'autodichiarazione
@@ -4125,6 +4132,7 @@ components:
       properties:
         description:
           type: string
+          example: descrizione
           description: >-
             ENG: Self-declaration description - IT: Descrizione del record di
             autodichiarazione
@@ -4132,6 +4140,7 @@ components:
           maxLength: 250
         subDescription:
           type: string
+          example: sotto descrizione
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione del
             record di autodichiarazione
@@ -4159,6 +4168,7 @@ components:
           pattern: '^[ -~]{1,10}$'
         description:
           type: string
+          example: descrizione
           description: >-
             ENG: Self-declaration description - IT: Descrizione
             dell'autodichiarazione
@@ -4166,6 +4176,7 @@ components:
           pattern: '^[ -~]{0,255}$'
         subDescription:
           type: string
+          example: sotto descrizione
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
             dell'autodichiarazione
@@ -4219,6 +4230,7 @@ components:
           maxLength: 10
         value:
           type: string
+          example: '0, 1'
           description: >-
             ENG: Indicates self-consent values - IT: Indica i valori per gli
             auto consensi
@@ -4275,6 +4287,7 @@ components:
           maxLength: 255
         description:
           type: string
+          example: Descrizione dell'iniziativa
           description: 'ENG: Initiative''s description - IT: Descrizione dell''iniziativa'
           pattern: '^[ -~]{1,255}$'
           maxLength: 255
@@ -4674,6 +4687,8 @@ components:
           type: string
           minLength: 2
           maxLength: 2
+          pattern: '^\d{2}$'
+          example: '00'
           description: >-
             ENG: Circuit type - IT: Tipologia del circuito 00-> Bancomat,
             01->Visa, 02->Mastercard, 03->Amex, 04->JCB, 05->UnionPay,
@@ -4958,6 +4973,8 @@ components:
           type: string
           minLength: 2
           maxLength: 2
+          pattern: '^\d{2}$'
+          example: '00'
           description: >-
             ENG: Circuit type - IT: Tipologia di circuito 00-> Bancomat,
             01->Visa, 02->Mastercard, 03->Amex, 04->JCB, 05->UnionPay,
@@ -5314,6 +5331,7 @@ components:
           pattern: '^[ -~]{0,10}$'
         brandLogo:
           type: string
+          example: 'https://cstarpayment/logo.png'
           description: >-
             ENG: Card's brand logo URL - IT: URL del logo del marchio della
             carta
@@ -5322,6 +5340,7 @@ components:
           pattern: '^[ -~]{1,2048}$'
         brand:
           type: string
+          example: 'https://cstarpayment/cardBrand'
           description: >-
             ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della
             carta come mastercard, visa, ecc...
@@ -5519,6 +5538,7 @@ components:
           pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
         brand:
           type: string
+          example: 'https://cstarpayment/cardBrand'
           description: >-
             ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della
             carta come mastercard, visa, ecc...
