@@ -29,6 +29,7 @@ jobs:
         run: |
           npm install -g @stoplight/spectral-cli
           npm install @stoplight/spectral-owasp-ruleset
+          npm install -g yaml-language-server
 
       - name: Get list of modified files from GitHub API
         run: |
@@ -63,15 +64,30 @@ jobs:
 
           for file in $openapi_files; do
             echo "🔎 Validating OpenAPI file: $file"
+
+            # ✅ Pre-check YAML syntax
+            if ! yq eval '.' "$file" >/dev/null 2>&1; then
+              echo "❌ Invalid YAML syntax in $file, skipping validation."
+              summary="$summary\n❌ **$file**: Invalid YAML syntax. Fix the file before validation."
+              failed_files+=("$file")
+              failed=1
+              continue
+            fi
+
             set +e
-            lint_output=$(spectral lint --format json -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
+            lint_output=$(spectral lint --format json --quiet -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
             exit_code=$?
             set -e
 
-            json_output=$(echo "$lint_output" | sed -n '/^[\[{]/,$p')
-
-            error_count=$(echo "$json_output" | jq '[.[] | select(.severity == 0)] | length')
-            warning_count=$(echo "$json_output" | jq '[.[] | select(.severity == 1)] | length')
+            # ✅ Parse JSON output
+            if echo "$lint_output" | jq empty > /dev/null 2>&1; then
+              error_count=$(echo "$lint_output" | jq '[.[] | select(.severity == 0)] | length')
+              warning_count=$(echo "$lint_output" | jq '[.[] | select(.severity == 1)] | length')
+            else
+              echo "⚠️ Spectral produced non-JSON output, fallback to raw grep."
+              error_count=$(echo "$lint_output" | grep -iE '\berror\b' | wc -l || true)
+              warning_count=$(echo "$lint_output" | grep -iE '\bwarning\b' | wc -l || true)
+            fi
 
             total_errors=$((total_errors + error_count))
             total_warnings=$((total_warnings + warning_count))
@@ -94,7 +110,7 @@ jobs:
           if [ $failed -eq 1 ]; then
             echo "❌ Found ${#failed_files[@]} OpenAPI file(s) with errors."
 
-            # 📣 Commento automatico nella PR con errori e warning
+            # 📣 Commento automatico nella PR
             curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -X POST \
               -d "{\"body\": \"❌ **OpenAPI validation failed**\n\n$summary\"}" \
@@ -104,7 +120,7 @@ jobs:
           else
             echo "✅ All modified OpenAPI files passed validation."
 
-            # 📣 Commento automatico nella PR per dire che è tutto OK
+            # 📣 Commento automatico per success
             curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -X POST \
               -d "{\"body\": \"✅ **OpenAPI validation passed**\n\n$summary\"}" \
