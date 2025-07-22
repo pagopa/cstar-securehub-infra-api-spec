@@ -61,17 +61,18 @@ jobs:
 
           for file in $openapi_files; do
             echo "🔎 Validating OpenAPI file: $file"
-            output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
-            exit_code=$?
+            spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1 | tee spectral_output.log
+            exit_code=${PIPESTATUS[0]}
 
-            echo "$output"
+            echo "📄 Validation output for $file:"
+            cat spectral_output.log
 
             if [ $exit_code -eq 0 ]; then
               echo "✅ $file: PASSED"
               summary="$summary\n✅ **$file**: PASSED"
             else
               echo "❌ $file: FAILED (exit code $exit_code)"
-              summary="$summary\n❌ **$file**: FAILED\n\`\`\`\n$output\n\`\`\`"
+              summary="$summary\n❌ **$file**: FAILED\n\`\`\`\n$(cat spectral_output.log)\n\`\`\`"
               failed_files+=("$file")
               failed=1
             fi
