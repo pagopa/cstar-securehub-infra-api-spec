@@ -47,6 +47,8 @@ jobs:
           summary=""
           failed_files=()
           failed=0
+          total_errors=0
+          total_warnings=0
 
           echo "🔍 Filtering OpenAPI files..."
           openapi_files=$(grep -E '^src/idpay/apim/api/.*openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' modified_files.txt || true)
@@ -62,23 +64,26 @@ jobs:
           for file in $openapi_files; do
             echo "🔎 Validating OpenAPI file: $file"
             set +e
-            spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1 | tee spectral_output.log
-            exit_code=${PIPESTATUS[0]}
+            lint_output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
+            exit_code=$?
             set -e
 
-            echo "📄 Validation output for $file:"
-            cat spectral_output.log
+            error_count=$(echo "$lint_output" | grep -c '"severity": 0' || true)
+            warning_count=$(echo "$lint_output" | grep -c '"severity": 1' || true)
+
+            total_errors=$((total_errors + error_count))
+            total_warnings=$((total_warnings + warning_count))
 
             if [ $exit_code -eq 0 ]; then
-              echo "✅ $file: PASSED"
-              summary="$summary\n✅ **$file**: PASSED"
+              summary="$summary\n✅ **$file**: PASSED (0 errors, 0 warnings)"
             else
-              echo "❌ $file: FAILED (exit code $exit_code)"
-              summary="$summary\n❌ **$file**: FAILED\n\`\`\`\n$(cat spectral_output.log)\n\`\`\`"
+              summary="$summary\n❌ **$file**: FAILED\n* 🟥 Errors: $error_count\n* 🟨 Warnings: $warning_count\n\`\`\`\n$lint_output\n\`\`\`"
               failed_files+=("$file")
               failed=1
             fi
           done
+
+          summary="$summary\n\n📊 **Total summary:**\n* 🟥 Total Errors: $total_errors\n* 🟨 Total Warnings: $total_warnings"
 
           echo -e "\n📋 Validation Summary:"
           echo -e "$summary"
