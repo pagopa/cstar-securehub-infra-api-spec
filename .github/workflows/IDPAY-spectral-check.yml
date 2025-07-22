@@ -1,0 +1,78 @@
+name: Validate modified OpenAPI YAML/TPL files
+
+on:
+  pull_request:
+    paths:
+      - 'src/idpay/apim/api/**'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-openapi:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Spectral CLI and rulesets
+        run: |
+          npm install -g @stoplight/spectral-cli
+          npm install @stoplight/spectral-owasp-ruleset
+
+      - name: Get list of modified OpenAPI files
+        id: get_modified_files
+        run: |
+          echo "📂 Fetching modified OpenAPI files in this PR..."
+          curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "${{ github.api_url }}/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
+            | jq -r '.[].filename' \
+            | grep -E '^src/idpay/apim/api/.*openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' || true
+
+      - name: Validate OpenAPI files with Spectral
+        run: |
+          files=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "${{ github.api_url }}/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
+            | jq -r '.[].filename' \
+            | grep -E '^src/idpay/apim/api/.*openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' || true)
+
+          if [ -z "$files" ]; then
+            echo "✅ No OpenAPI files were modified in this PR."
+            exit 0
+          fi
+
+          echo "🔍 OpenAPI files to validate:"
+          echo "$files"
+
+          failed=0
+          for file in $files; do
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "🔎 Validating $file"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+            # Run Spectral and display full results
+            spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file"
+            if [ $? -ne 0 ]; then
+              failed=1
+            else
+              echo "✅ $file: Passed validation."
+            fi
+          done
+
+          if [ $failed -eq 1 ]; then
+            echo ""
+            echo "❌ Validation failed for one or more OpenAPI files."
+            exit 1
+          else
+            echo ""
+            echo "✅ All modified OpenAPI files passed validation."
+          fi
