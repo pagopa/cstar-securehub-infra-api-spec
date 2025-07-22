@@ -64,6 +64,8 @@ jobs:
             output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
             exit_code=$?
 
+            echo "$output"
+
             if [ $exit_code -eq 0 ]; then
               echo "✅ $file: PASSED"
               summary="$summary\n✅ **$file**: PASSED"
@@ -89,8 +91,3 @@ jobs:
             exit 1
           else
             echo "✅ All modified OpenAPI files passed validation."
-
-            curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -X POST \
-              -d "{\"body\": \"✅ **OpenAPI validation passed**\n\n$summary\"}" \
-              "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
