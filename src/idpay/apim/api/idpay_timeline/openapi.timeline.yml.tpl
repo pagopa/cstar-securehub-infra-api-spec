@@ -679,7 +679,8 @@ components:
           description: "ENG: Operation date - IT: Data dell'operazione"
         iban:
           type: string
-          maxLength: 32
+          minLength: 27
+          maxLength: 27
           pattern: "^[\\w\\s.,!?'\"-]+$"
           description: "ENG: IBAN of the citizen - IT: IBAN del cittadino"
         channel:
@@ -904,7 +905,8 @@ components:
           description: "ENG: Event ID - IT: Identificativo dell'evento"
         iban:
           type: string
-          maxLength: 32
+          minLength: 27
+          maxLength: 27
           pattern: "^[\\w\\s.,!?'\"-]+$"
           description: "ENG: IBAN - IT: IBAN"
         operationDate:
