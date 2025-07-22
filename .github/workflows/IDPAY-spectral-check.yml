@@ -1,4 +1,4 @@
-name: Validate OpenAPI YAML/TPL files with Spectral
+name: Validate touched OpenAPI YAML/TPL files with Spectral
 
 on:
   pull_request:
@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -47,7 +49,12 @@ jobs:
           failed_files=()
           failed=0
 
-          touched_files=$(git diff --name-only origin/main...HEAD | grep -E '^src/idpay/apim/api/openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' || true)
+          # Trova la commit base della PR
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          echo "🔗 Comparing changes from base SHA: $BASE_SHA"
+
+          # Trova solo i file OpenAPI modificati nella PR
+          touched_files=$(git diff --name-only "$BASE_SHA"...HEAD | grep -E '^src/idpay/apim/api/openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' || true)
 
           if [ -z "$touched_files" ]; then
             echo "✅ No OpenAPI files were modified in this PR."
@@ -81,11 +88,9 @@ jobs:
           if [ $failed -eq 1 ]; then
             echo "❌ Found ${#failed_files[@]} OpenAPI file(s) with errors."
 
-            # 📣 Commento automatico nella PR
             gh pr comment "$GITHUB_REF_NAME" \
               --body "❌ **OpenAPI validation failed**\n\n$summary"
 
-            # 🔥 Blocca merge aggiornando lo stato
             gh api \
               -H "Accept: application/vnd.github+json" \
               /repos/${{ github.repository }}/statuses/${{ github.sha }} \
@@ -97,7 +102,6 @@ jobs:
           else
             echo "✅ All modified OpenAPI files passed validation."
 
-            # ✅ Permette merge
             gh api \
               -H "Accept: application/vnd.github+json" \
               /repos/${{ github.repository }}/statuses/${{ github.sha }} \
