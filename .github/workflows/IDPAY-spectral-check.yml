@@ -69,7 +69,7 @@ jobs:
             set -e
 
             error_count=$(echo "$lint_output" | sed 's/^[[:space:]]*//' | grep -iE '^Error:' | wc -l || true)
-            warning_count=$(echo "$lint_output" | sed 's/^[[:space:]]*//' | grep -iE '^Warning:' | wc -l || true)e)
+            warning_count=$(echo "$lint_output" | sed 's/^[[:space:]]*//' | grep -iE '^Warning:' | wc -l || true)
 
             total_errors=$((total_errors + error_count))
             total_warnings=$((total_warnings + warning_count))
