@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # Fetch completo per il diff
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -62,27 +62,29 @@ jobs:
           echo "$openapi_files"
 
           for file in $openapi_files; do
-              echo "🔎 Validating OpenAPI file: $file"
-              set +e
-              lint_output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
-              exit_code=$?
-              set -e
+            echo "🔎 Validating OpenAPI file: $file"
+            set +e
+            lint_output=$(spectral lint --format json -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file")
+            exit_code=$?
+            set -e
 
-              error_count=$(echo "$lint_output" | grep -ci '^error ' || true)
-              warning_count=$(echo "$lint_output" | grep -ci '^warning ' || true)
+            # ✅ Conta errori e warning dal JSON
+            error_count=$(echo "$lint_output" | jq '[.[] | select(.severity == 0)] | length')
+            warning_count=$(echo "$lint_output" | jq '[.[] | select(.severity == 1)] | length')
 
-              total_errors=$((total_errors + error_count))
-              total_warnings=$((total_warnings + warning_count))
+            total_errors=$((total_errors + error_count))
+            total_warnings=$((total_warnings + warning_count))
 
-              if [ $exit_code -eq 0 ]; then
-                summary="$summary\n✅ **$file**: PASSED (0 errors, 0 warnings)"
-              else
-                summary="$summary\n❌ **$file**: FAILED\n* 🟥 Errors: $error_count\n* 🟨 Warnings: $warning_count\n\`\`\`\n$lint_output\n\`\`\`"
-                failed_files+=("$file")
-                failed=1
-              fi
+            if [ $exit_code -eq 0 ]; then
+              summary="$summary\n✅ **$file**: PASSED (0 errors, 0 warnings)"
+            else
+              summary="$summary\n❌ **$file**: FAILED\n* 🟥 Errors: $error_count\n* 🟨 Warnings: $warning_count\n\`\`\`json\n$lint_output\n\`\`\`"
+              failed_files+=("$file")
+              failed=1
+            fi
           done
 
+          # 📊 Aggiungi il riepilogo totale
           summary="$summary\n\n📊 **Total summary:**\n* 🟥 Total Errors: $total_errors\n* 🟨 Total Warnings: $total_warnings"
 
           echo -e "\n📋 Validation Summary:"
@@ -91,6 +93,7 @@ jobs:
           if [ $failed -eq 1 ]; then
             echo "❌ Found ${#failed_files[@]} OpenAPI file(s) with errors."
 
+            # 📣 Commento automatico nella PR con errori e warning
             curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -X POST \
               -d "{\"body\": \"❌ **OpenAPI validation failed**\n\n$summary\"}" \
@@ -100,6 +103,7 @@ jobs:
           else
             echo "✅ All modified OpenAPI files passed validation."
 
+            # 📣 Commento automatico nella PR per dire che è tutto OK
             curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -X POST \
               -d "{\"body\": \"✅ **OpenAPI validation passed**\n\n$summary\"}" \
