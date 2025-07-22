@@ -68,8 +68,8 @@ jobs:
             exit_code=$?
             set -e
 
-            error_count=$(echo "$lint_output" | grep -iE '\berror\b' | wc -l || true)
-            warning_count=$(echo "$lint_output" | grep -iE '\bwarning\b' | wc -l || true)
+            error_count=$(echo "$lint_output" | grep -iE '\berror\b' | uniq | wc -l || true)
+            warning_count=$(echo "$lint_output" | grep -iE '\bwarning\b' | uniq | wc -l || true)
 
             total_errors=$((total_errors + error_count))
             total_warnings=$((total_warnings + warning_count))
