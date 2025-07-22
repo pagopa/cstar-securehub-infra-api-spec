@@ -1,4 +1,4 @@
-name: Validate all OpenAPI YAML with Spectral
+name: Validate all OpenAPI YAML/TPL files with Spectral
 
 on:
   pull_request:
@@ -33,7 +33,12 @@ jobs:
           npm install -g @stoplight/spectral-cli
           npm install @stoplight/spectral-owasp-ruleset
 
-      - name: Lint OpenAPI YAML/TPL files (openapi*.*) and update PR
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install gh -y
+
+      - name: Lint OpenAPI YAML/TPL files and block PR if failing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -42,15 +47,12 @@ jobs:
           failed_files=()
 
           set +e
-
-          files=$(find src/idpay/apim/api -type f \( \
+          find src/idpay/apim/api -type f \( \
             -name "openapi*.yml" \
             -o -name "openapi*.yaml" \
             -o -name "openapi*.yml.tpl" \
             -o -name "openapi*.yaml.tpl" \
-          \))
-
-          for file in $files; do
+          \) -print0 | while IFS= read -r -d '' file; do
             echo "🔎 Validating OpenAPI file: $file"
             output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
             exit_code=$?
@@ -71,7 +73,7 @@ jobs:
           echo -e "$summary"
 
           if [ ${#failed_files[@]} -ne 0 ]; then
-            echo "❌ Completed with errors in ${#failed_files[@]} OpenAPI file(s)."
+            echo "❌ Found ${#failed_files[@]} OpenAPI file(s) with errors."
 
             gh pr comment "$GITHUB_REF_NAME" \
               --body "❌ **OpenAPI validation failed**\n\n$summary"
