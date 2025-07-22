@@ -523,6 +523,7 @@ components:
         maskedPan:
           type: string
           example: "1234-****-****-5678"
+          maxLength: 19
           pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
           description: "ENG: Masked Pan - IT: Masked Pan"
         amountCents:
@@ -633,6 +634,7 @@ components:
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
         maskedPan:
           type: string
+          maxLength: 19
           example: "1234-****-****-5678"
           pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
           description: "ENG: Masked Pan - IT: Masked Pan"
@@ -794,6 +796,7 @@ components:
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
         maskedPan:
           type: string
+          maxLength: 19
           example: "1234-****-****-5678"
           pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
           description: "ENG: Masked PAN - IT: Masked PAN"
