@@ -29,6 +29,8 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 24
+            pattern: "$ ^[a-zA-Z0-9]+$"
       responses:
         '200':
           description: Ok
@@ -65,6 +67,13 @@ paths:
               $ref: "#/components/headers/Retry-After"
         '401':
           description: Token not validated correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
+              example:
+                code: 'PAYMENT_AUTH_ERROR'
+                message: 'Invalid token'
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -161,6 +170,8 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 24
+            pattern: "$ ^[a-zA-Z0-9]+$"
       responses:
         '200':
           description: Ok
@@ -332,6 +343,13 @@ paths:
               $ref: "#/components/headers/Retry-After"
         '401':
           description: Token not validated correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
+              example:
+                code: 'PAYMENT_AUTH_ERROR'
+                message: 'Invalid token'
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -554,6 +572,7 @@ components:
             - PAYMENT_MERCHANT_NOT_ONBOARDED
             - PAYMENT_INVALID_REQUEST
             - PAYMENT_TRANSACTION_VERSION_PENDING
+            - PAYMENT_AUTH_ERROR
           description: >-
             "ENG: Error code: PAYMENT_NOT_FOUND_OR_EXPIRED: transaction not
             found or expired, PAYMENT_TRANSACTION_EXPIRED: transaction expired,
