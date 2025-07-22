@@ -2,7 +2,13 @@ openapi: 3.0.3
 info:
   title: IDPAY ITN IO API
   version: "1.0"
+  contact:
+    name: PagoPA S.p.A.
+    email: cstar@pagopa.it
 servers:
-  - url: "https://api-io.dev.cstar.pagopa.it/idpay-itn"
-security:
-  - bearerAuth: []
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/wallet
+    x-internal: true
+  - description: User Acceptance Test
+    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/wallet
+    x-internal: true
