@@ -509,7 +509,7 @@ paths:
               $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
               $ref: "#/components/headers/Retry-After"
-  /{initiativeId}/instruments/{idWallet}:
+  /{initiativeId}/instruments/by-wallet/{idWallet}:
     put:
       tags:
         - wallet
