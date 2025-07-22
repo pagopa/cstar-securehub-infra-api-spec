@@ -145,7 +145,7 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: 'PAYMENT_GENERIC_ERROR'
-                message: 'application error (connection microservice error)'
+                message: 'application error connection microservice error'
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -286,7 +286,7 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: 'PAYMENT_GENERIC_ERROR'
-                message: 'application error (connection microservice error)'
+                message: 'application error connection microservice error'
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -423,7 +423,7 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: 'PAYMENT_GENERIC_ERROR'
-                message: 'application error (connection microservice error)'
+                message: 'application error connection microservice error'
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
