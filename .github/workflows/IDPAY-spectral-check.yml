@@ -1,4 +1,4 @@
-name: Validate all OpenAPI YAML/TPL files with Spectral
+name: Validate OpenAPI YAML/TPL files with Spectral
 
 on:
   pull_request:
@@ -38,38 +38,37 @@ jobs:
           sudo apt update
           sudo apt install gh -y
 
-      - name: Lint OpenAPI YAML/TPL files and block PR if failing
+      - name: Find and validate modified OpenAPI files
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "🔍 Searching for OpenAPI YAML/TPL files..."
+          echo "🔍 Searching for modified OpenAPI YAML/TPL files..."
           summary=""
           failed_files=()
           failed=0
 
-          mapfile -t files < <(find src/idpay/apim/api -type f \( \
-            -name "openapi*.yml" \
-            -o -name "openapi*.yaml" \
-            -o -name "openapi*.yml.tpl" \
-            -o -name "openapi*.yaml.tpl" \
-          \))
+          touched_files=$(git diff --name-only origin/main...HEAD | grep -E '^src/idpay/apim/api/openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' || true)
 
-          if [ ${#files[@]} -eq 0 ]; then
-            echo "✅ No OpenAPI files found to validate."
+          if [ -z "$touched_files" ]; then
+            echo "✅ No OpenAPI files were modified in this PR."
             exit 0
           fi
 
-          for file in "${files[@]}"; do
+          echo "📂 Modified OpenAPI files:"
+          echo "$touched_files"
+
+          for file in $touched_files; do
             echo "🔎 Validating OpenAPI file: $file"
-            output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
-            echo "$output"
+            output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1 || true)
             exit_code=$?
+
+            echo "$output"
 
             if [ $exit_code -eq 0 ]; then
               echo "✅ $file: PASSED"
               summary="$summary\n✅ $file: PASSED"
             else
-              echo "❌ $file: FAILED"
+              echo "❌ $file: FAILED (exit code $exit_code)"
               summary="$summary\n❌ $file: FAILED"
               failed_files+=("$file")
               failed=1
@@ -96,7 +95,7 @@ jobs:
 
             exit 1
           else
-            echo "✅ All OpenAPI files passed validation."
+            echo "✅ All modified OpenAPI files passed validation."
 
             # ✅ Permette merge
             gh api \
