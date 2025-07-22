@@ -3,7 +3,7 @@ name: Validate changed OpenAPI files with Spectral
 on:
   pull_request:
     paths:
-      - 'src/idpay/apim/api/**' # ascolta le modifiche dentro api
+      - 'src/idpay/apim/api/**'
 
 permissions:
   contents: read
@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # recupera tutta la storia git per fare il diff
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -30,25 +30,26 @@ jobs:
           npm install -g @stoplight/spectral-cli
           npm install @stoplight/spectral-owasp-ruleset
 
-      - name: Find and validate modified OpenAPI files
+      - name: Get list of modified files from GitHub API
+        run: |
+          echo "📂 Fetching modified files in PR from GitHub API..."
+          curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "${{ github.api_url }}/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
+            | jq -r '.[].filename' > modified_files.txt
+
+          echo "📄 Files modified in this PR:"
+          cat modified_files.txt
+
+      - name: Validate OpenAPI YAML/TPL files
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "📂 Detecting OpenAPI files changed in PR..."
           summary=""
           failed_files=()
           failed=0
 
-          # Trova la base SHA della PR
-          BASE_SHA="${{ github.event.pull_request.base.sha }}"
-          echo "🔗 Comparing changes from base SHA: $BASE_SHA"
-
-          # Lista dei file modificati tra base e HEAD
-          modified_files=$(git diff --name-only "$BASE_SHA"...HEAD)
-          echo "$modified_files" > all_modified_files.txt
-
-          # Filtra solo gli OpenAPI
-          openapi_files=$(grep -E '^src/idpay/apim/api/openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' all_modified_files.txt || true)
+          echo "🔍 Filtering OpenAPI files..."
+          openapi_files=$(grep -E '^src/idpay/apim/api/openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' modified_files.txt || true)
 
           if [ -z "$openapi_files" ]; then
             echo "✅ No OpenAPI files were modified in this PR."
@@ -91,4 +92,3 @@ jobs:
             exit 1
           else
             echo "✅ All modified OpenAPI files passed validation."
-          fi
