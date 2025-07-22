@@ -510,6 +510,7 @@ components:
           pattern: "^[ -~]{1,255}$"
           maxLength: 255
           description: "ENG: Name of the initiative - IT: Nome della iniziativa"
+          example: "Bonus Elettrodomestici"
         businessName:
           type: string
           pattern: "^[ -~]{1,255}$"

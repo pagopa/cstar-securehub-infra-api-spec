@@ -1883,6 +1883,7 @@ components:
           type: string
           description: "ENG: Name of the initiative - IT: Nome dell'iniziativa"
           pattern: "^[ -~]{1,255}$"
+          example: "Bonus Elettrodomestici"
           maxLength: 255
         status:
           enum:
@@ -1906,6 +1907,12 @@ components:
           type: string
           format: date
           description: "ENG: End date for the time window in which it is possible to use the initiative's rewards - IT: Data che indica la fine del periodo di fruizione dell'iniziativa"
+          minLength: 10
+          maxLength: 10
+        voucherStartDate:
+          type: string
+          format: date
+          description: "ENG: START date for the time window in which it is possible to use the voucher's rewards - IT: Data che indica l'inizio del periodo di fruizione del voucher"
           minLength: 10
           maxLength: 10
         voucherEndDate:
@@ -1960,7 +1967,7 @@ components:
         logoURL:
           type: string
           description: "ENG: Url of the logo - IT: Url del logo"
-          pattern: "^(https?|ftp):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
           maxLength: 255
         organizationName:
           type: string
@@ -1976,7 +1983,7 @@ components:
         webViewUrl:
           type: string
           description: 'ENG: webViewUrl - IT: Url della webView'
-          pattern: "^(https?|ftp):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
           maxLength: 255
         serviceId:
           type: string
@@ -2031,6 +2038,7 @@ components:
           type: string
           description: "ENG: Name of the initiative - IT: Nome dell'iniziativa"
           pattern: "^[ -~]{1,255}$"
+          example: "Bonus Elettrodomestici"
           maxLength: 255
         idInstrument:
           type: string
@@ -2052,6 +2060,7 @@ components:
           type: string
           description: "ENG: Name of the initiative - IT: Nome dell'iniziativa"
           pattern: "^[ -~]{1,255}$"
+          example: "Bonus Elettrodomestici"
           maxLength: 255
         status:
           type: string
@@ -2105,17 +2114,17 @@ components:
         privacyLink:
           type: string
           description: "ENG: URL that redirects to the privacy policy - IT: URL che reindirizza all informativa della privacy"
-          pattern: "^(https?|ftp):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
           maxLength: 255
         tcLink:
           type: string
           description: "ENG: URL that redirects to the terms and conditions - IT: URL che porta ai termini e condizioni"
-          pattern: "^(https?|ftp):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
           maxLength: 255
         logoURL:
           type: string
           description: "ENG: Url of the logo - IT: Url del logo"
-          pattern: "^(https?|ftp):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
           maxLength: 255
         updateDate:
           type: string
@@ -2149,7 +2158,7 @@ components:
         url:
           type: string
           description: "ENG: Url's link - IT: Url del link"
-          pattern: "^(https?|ftp):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
           minLength: 0
           maxLength: 255
     InitiativeRefundRuleDTO:

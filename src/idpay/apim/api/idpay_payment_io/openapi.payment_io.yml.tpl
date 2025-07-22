@@ -329,6 +329,7 @@ components:
           type: string
           pattern: "^[ -~]{1,255}$"
           maxLength: 255
+          example: "Bonus Elettrodomestici"
           description: 'ENG: Name of the initiative - IT: Nome dell''iniziativa'
         trxDate:
           type: string
