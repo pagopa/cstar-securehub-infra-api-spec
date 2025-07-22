@@ -1,14 +1,9 @@
-name: Validate OpenAPI YAML/TPL files with Spectral
+name: Validate changed OpenAPI files with Spectral
 
 on:
   pull_request:
     paths:
-      - 'src/idpay/apim/api/**'
-  push:
-    branches:
-      - main
-    paths:
-      - 'src/idpay/apim/api/**'
+      - 'src/idpay/apim/api/**' # ascolta le modifiche dentro api
 
 permissions:
   contents: read
@@ -23,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # recupera tutta la storia git per fare il diff
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -35,40 +30,35 @@ jobs:
           npm install -g @stoplight/spectral-cli
           npm install @stoplight/spectral-owasp-ruleset
 
-      - name: Validate OpenAPI YAML/TPL files
+      - name: Find and validate modified OpenAPI files
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          echo "📂 Detecting OpenAPI files changed in PR..."
           summary=""
           failed_files=()
           failed=0
 
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "📂 Running in PR context. Fetching modified files..."
-            modified_files=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              "${{ github.api_url }}/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
-              | jq -r '.[].filename')
+          # Trova la base SHA della PR
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          echo "🔗 Comparing changes from base SHA: $BASE_SHA"
 
-            touched_files=$(echo "$modified_files" | grep -E '^src/idpay/apim/api/openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' || true)
-          else
-            echo "📂 Not a PR. Validating ALL OpenAPI files in repo..."
-            touched_files=$(find src/idpay/apim/api -type f \( \
-              -name "openapi*.yml" \
-              -o -name "openapi*.yaml" \
-              -o -name "openapi*.yml.tpl" \
-              -o -name "openapi*.yaml.tpl" \
-            \) || true)
-          fi
+          # Lista dei file modificati tra base e HEAD
+          modified_files=$(git diff --name-only "$BASE_SHA"...HEAD)
+          echo "$modified_files" > all_modified_files.txt
 
-          if [ -z "$touched_files" ]; then
-            echo "✅ No OpenAPI files to validate."
+          # Filtra solo gli OpenAPI
+          openapi_files=$(grep -E '^src/idpay/apim/api/openapi.*\.(yml|yaml|yml.tpl|yaml.tpl)$' all_modified_files.txt || true)
+
+          if [ -z "$openapi_files" ]; then
+            echo "✅ No OpenAPI files were modified in this PR."
             exit 0
           fi
 
           echo "📂 OpenAPI files to validate:"
-          echo "$touched_files"
+          echo "$openapi_files"
 
-          for file in $touched_files; do
+          for file in $openapi_files; do
             echo "🔎 Validating OpenAPI file: $file"
             output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1 || true)
             exit_code=$?
@@ -92,14 +82,13 @@ jobs:
           if [ $failed -eq 1 ]; then
             echo "❌ Found ${#failed_files[@]} OpenAPI file(s) with errors."
 
-            if [ "${{ github.event_name }}" = "pull_request" ]; then
-              curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                -X POST \
-                -d "{\"body\": \"❌ **OpenAPI validation failed**\n\n$summary\"}" \
-                "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
-            fi
+            # 📣 Commento automatico nella PR
+            curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -X POST \
+              -d "{\"body\": \"❌ **OpenAPI validation failed**\n\n$summary\"}" \
+              "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
 
             exit 1
           else
-            echo "✅ All OpenAPI files passed validation."
+            echo "✅ All modified OpenAPI files passed validation."
           fi
