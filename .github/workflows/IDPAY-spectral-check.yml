@@ -46,7 +46,6 @@ jobs:
           summary=""
           failed_files=()
 
-          # Cerca tutti i file openapi*.yml/yaml/tpl
           mapfile -t files < <(find src/idpay/apim/api -type f \( \
             -name "openapi*.yml" \
             -o -name "openapi*.yaml" \
@@ -54,19 +53,16 @@ jobs:
             -o -name "openapi*.yaml.tpl" \
           \))
 
-          # Se non ci sono file, esci con successo
           if [ ${#files[@]} -eq 0 ]; then
             echo "✅ No OpenAPI files found to validate."
             exit 0
           fi
 
-          # Valida ogni file
           for file in "${files[@]}"; do
             echo "🔎 Validating OpenAPI file: $file"
             output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
-            exit_code=$?
-
             echo "$output"
+            exit_code=$?
 
             if [ $exit_code -eq 0 ]; then
               echo "✅ $file: PASSED"
