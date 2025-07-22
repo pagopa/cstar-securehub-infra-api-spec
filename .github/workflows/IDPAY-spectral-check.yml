@@ -1,4 +1,4 @@
-name: Validate changed OpenAPI files with Spectral
+name: Validate OpenAPI YAML/TPL files with Spectral
 
 on:
   pull_request:
@@ -61,7 +61,7 @@ jobs:
 
           for file in $openapi_files; do
             echo "🔎 Validating OpenAPI file: $file"
-            output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1 || true)
+            output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
             exit_code=$?
 
             echo "$output"
