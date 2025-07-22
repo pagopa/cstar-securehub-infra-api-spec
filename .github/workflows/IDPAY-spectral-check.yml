@@ -1,0 +1,98 @@
+name: Validate all OpenAPI YAML with Spectral
+
+on:
+  pull_request:
+    paths:
+      - 'src/idpay/apim/api/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/idpay/apim/api/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+  statuses: write
+
+jobs:
+  validate-openapi:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Spectral CLI and rulesets
+        run: |
+          npm install -g @stoplight/spectral-cli
+          npm install @stoplight/spectral-owasp-ruleset
+
+      - name: Lint OpenAPI YAML/TPL files (openapi*.*) and update PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🔍 Searching for OpenAPI YAML/TPL files..."
+          summary=""
+          failed_files=()
+
+          set +e
+
+
+          find src/idpay/apim/api -type f \( \
+            -name "openapi*.yml" \
+            -o -name "openapi*.yaml" \
+            -o -name "openapi*.yml.tpl" \
+            -o -name "openapi*.yaml.tpl" \
+          \) -print0 | while IFS= read -r -d '' file; do
+            echo "🔎 Validating OpenAPI file: $file"
+            output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
+            exit_code=$?
+
+            echo "$output"
+
+            if [ $exit_code -eq 0 ]; then
+              echo "✅ $file: PASSED"
+              summary="$summary\n✅ $file: PASSED"
+            else
+              echo "❌ $file: FAILED"
+              summary="$summary\n❌ $file: FAILED"
+              failed_files+=("$file")
+            fi
+          done
+
+          echo -e "\n📋 Validation Summary:"
+          echo -e "$summary"
+
+          if [ ${#failed_files[@]} -ne 0 ]; then
+            echo "❌ Completed with errors in ${#failed_files[@]} OpenAPI file(s)."
+
+            # 📣 Commento automatico nella PR
+            gh pr comment "$GITHUB_REF_NAME" \
+              --body "❌ **OpenAPI validation failed**\n\n$summary"
+
+            # 🔥 Merge blocking
+            gh api \
+              -H "Accept: application/vnd.github+json" \
+              /repos/${{ github.repository }}/statuses/${{ github.sha }} \
+              -f state="failure" \
+              -f description="OpenAPI validation failed" \
+              -f context="OpenAPI Spectral Lint"
+
+            exit 1
+          else
+            echo "✅ All OpenAPI files passed validation."
+
+            # ✅ Success state
+            gh api \
+              -H "Accept: application/vnd.github+json" \
+              /repos/${{ github.repository }}/statuses/${{ github.sha }} \
+              -f state="success" \
+              -f description="OpenAPI validation passed" \
+              -f context="OpenAPI Spectral Lint"
+          fi
