@@ -64,22 +64,13 @@ jobs:
           for file in $openapi_files; do
             echo "🔎 Validating OpenAPI file: $file"
             set +e
-            lint_output=$(spectral lint --format json -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
+            lint_output=$(spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
             exit_code=$?
             set -e
 
-            # ✅ Verifica se l'output è JSON valido
-            if echo "$lint_output" | jq empty >/dev/null 2>&1; then
-              # Conta errori e warning
-              error_count=$(echo "$lint_output" | jq '[.[] | select(.severity == 0)] | length')
-              warning_count=$(echo "$lint_output" | jq '[.[] | select(.severity == 1)] | length')
-            else
-              echo "⚠️ Spectral output for $file is not valid JSON. Counting as 1 error."
-              error_count=1
-              warning_count=0
-              lint_output="Invalid JSON output:\n$lint_output"
-              exit_code=1
-            fi
+            # ✅ Conta errori e warning (case-insensitive, robusto)
+            error_count=$(echo "$lint_output" | grep -iE '^error ' | wc -l || true)
+            warning_count=$(echo "$lint_output" | grep -iE '^warning ' | wc -l || true)
 
             total_errors=$((total_errors + error_count))
             total_warnings=$((total_warnings + warning_count))
@@ -87,13 +78,13 @@ jobs:
             if [ $exit_code -eq 0 ]; then
               summary="$summary\n✅ **$file**: PASSED (0 errors, 0 warnings)"
             else
-              summary="$summary\n❌ **$file**: FAILED\n* 🟥 Errors: $error_count\n* 🟨 Warnings: $warning_count\n\`\`\`json\n$lint_output\n\`\`\`"
+              summary="$summary\n❌ **$file**: FAILED\n* 🟥 Errors: $error_count\n* 🟨 Warnings: $warning_count\n\`\`\`\n$lint_output\n\`\`\`"
               failed_files+=("$file")
               failed=1
             fi
           done
 
-          # 📊 Aggiungi il riepilogo totale
+          # 📊 Riepilogo totale
           summary="$summary\n\n📊 **Total summary:**\n* 🟥 Total Errors: $total_errors\n* 🟨 Total Warnings: $total_warnings"
 
           echo -e "\n📋 Validation Summary:"
