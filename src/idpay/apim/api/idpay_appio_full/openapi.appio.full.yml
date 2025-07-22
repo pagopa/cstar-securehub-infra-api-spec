@@ -3600,7 +3600,7 @@ components:
           enum:
             - CREATED
           description: >-
-            ENG: Status of the payment trx [CREATED: Created] - IT: Stato del
+            ENG: Status of the payment [CREATED: Created] - IT: Stato del
             pagamento [CREATED: Creato]
   securitySchemes:
     bearerAuth:
