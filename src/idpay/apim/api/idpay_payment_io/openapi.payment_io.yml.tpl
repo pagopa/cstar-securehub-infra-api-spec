@@ -31,7 +31,7 @@ paths:
             schema:
               $ref: '#/components/schemas/TransactionBarCodeRequest'
             example:
-              initiativeId: string
+              initiativeId: "InitiativeId"
       responses:
         '201':
           description: Created
@@ -56,7 +56,7 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_INVALID_REQUEST
-                message: Required initiativeId is not present
+                message: "Required initiativeId is not present"
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -87,7 +87,7 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_USER_NOT_ONBOARDED
-                message: User not onboarded
+                message: "User not onboarded"
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
