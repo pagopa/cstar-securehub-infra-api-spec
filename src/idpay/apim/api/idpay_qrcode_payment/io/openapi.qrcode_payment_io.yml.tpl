@@ -311,6 +311,8 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 24
+            pattern: "$ ^[a-zA-Z0-9]+$"
       responses:
         '200':
           description: Cancel Ok
@@ -632,6 +634,8 @@ components:
             attualmente bloccata"
         message:
           type: string
+          maxLength: 2500
+          pattern: "^[\\w\\s.,!?'\"-]+$"
           description: "ENG: Error message- IT: Messaggio di errore"
   securitySchemes:
     Bearer:
