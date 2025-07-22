@@ -68,18 +68,18 @@ jobs:
             exit_code=$?
             set -e
 
-            error_count=$(echo "$lint_output" | grep -c '"severity": 0' || true)
-            warning_count=$(echo "$lint_output" | grep -c '"severity": 1' || true)
+            error_count=$(echo "$lint_output" | grep -c '^Error:' || true)
+            warning_count=$(echo "$lint_output" | grep -c '^Warning:' || true)
 
             total_errors=$((total_errors + error_count))
             total_warnings=$((total_warnings + warning_count))
 
             if [ $exit_code -eq 0 ]; then
-              summary="$summary\n✅ **$file**: PASSED (0 errors, 0 warnings)"
+                summary="$summary\n✅ *$file*: PASSED (0 errors, 0 warnings)"
             else
-              summary="$summary\n❌ **$file**: FAILED\n* 🟥 Errors: $error_count\n* 🟨 Warnings: $warning_count\n\`\`\`\n$lint_output\n\`\`\`"
-              failed_files+=("$file")
-              failed=1
+                summary="$summary\n❌ *$file: FAILED\n 🟥 Errors: $error_count\n* 🟨 Warnings: $warning_count\n\⁠ \ ⁠\⁠ \n$lint_output\n\ ⁠\⁠ \ ⁠"
+                failed_files+=("$file")
+                failed=1
             fi
           done
 
