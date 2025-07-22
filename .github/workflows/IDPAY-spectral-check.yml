@@ -64,13 +64,22 @@ jobs:
           for file in $openapi_files; do
             echo "🔎 Validating OpenAPI file: $file"
             set +e
-            lint_output=$(spectral lint --format json -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file")
+            lint_output=$(spectral lint --format json -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file" 2>&1)
             exit_code=$?
             set -e
 
-            # ✅ Conta errori e warning dal JSON
-            error_count=$(echo "$lint_output" | jq '[.[] | select(.severity == 0)] | length')
-            warning_count=$(echo "$lint_output" | jq '[.[] | select(.severity == 1)] | length')
+            # ✅ Verifica se l'output è JSON valido
+            if echo "$lint_output" | jq empty >/dev/null 2>&1; then
+              # Conta errori e warning
+              error_count=$(echo "$lint_output" | jq '[.[] | select(.severity == 0)] | length')
+              warning_count=$(echo "$lint_output" | jq '[.[] | select(.severity == 1)] | length')
+            else
+              echo "⚠️ Spectral output for $file is not valid JSON. Counting as 1 error."
+              error_count=1
+              warning_count=0
+              lint_output="Invalid JSON output:\n$lint_output"
+              exit_code=1
+            fi
 
             total_errors=$((total_errors + error_count))
             total_warnings=$((total_warnings + warning_count))
