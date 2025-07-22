@@ -68,9 +68,10 @@ jobs:
             exit_code=$?
             set -e
 
-            # ✅ Conta errori e warning dal JSON
-            error_count=$(echo "$lint_output" | jq '[.[] | select(.severity == 0)] | length')
-            warning_count=$(echo "$lint_output" | jq '[.[] | select(.severity == 1)] | length')
+            json_output=$(echo "$lint_output" | sed -n '/^[\[{]/,$p')
+
+            error_count=$(echo "$json_output" | jq '[.[] | select(.severity == 0)] | length')
+            warning_count=$(echo "$json_output" | jq '[.[] | select(.severity == 1)] | length')
 
             total_errors=$((total_errors + error_count))
             total_warnings=$((total_warnings + warning_count))
