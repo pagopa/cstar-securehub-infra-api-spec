@@ -464,7 +464,7 @@ components:
         maskedPan:
           type: string
           maxLength: 19
-          example: "1234-****-****-5678, 1234 **** **** 5678, 1234********5678"
+          example: "1234-****-****-5678"
           pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
           description: "ENG: masked PAN - IT: masked PAN"
         channel:
@@ -522,7 +522,7 @@ components:
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
         maskedPan:
           type: string
-          example: "1234-****-****-5678, 1234 **** **** 5678, 1234********5678"
+          example: "1234-****-****-5678"
           pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
           description: "ENG: Masked Pan - IT: Masked Pan"
         amountCents:
@@ -592,6 +592,7 @@ components:
         businessName:
           type: string
           maxLength: 250
+          pattern: "$ ^[a-zA-Z0-9]+$"
     InstrumentOperationDTO:
       type: object
       required:
@@ -632,7 +633,7 @@ components:
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
         maskedPan:
           type: string
-          example: "1234-****-****-5678, 1234 **** **** 5678, 1234********5678"
+          example: "1234-****-****-5678"
           pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
           description: "ENG: Masked Pan - IT: Masked Pan"
         channel:
@@ -677,6 +678,7 @@ components:
         iban:
           type: string
           maxLength: 32
+          pattern: "^[\\w\\s.,!?'\"-]+$"
           description: "ENG: IBAN of the citizen - IT: IBAN del cittadino"
         channel:
           type: string
@@ -792,7 +794,7 @@ components:
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
         maskedPan:
           type: string
-          example: "1234-****-****-5678, 1234 **** **** 5678, 1234********5678"
+          example: "1234-****-****-5678"
           pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
           description: "ENG: Masked PAN - IT: Masked PAN"
         amountCents:
@@ -900,6 +902,7 @@ components:
         iban:
           type: string
           maxLength: 32
+          pattern: "^[\\w\\s.,!?'\"-]+$"
           description: "ENG: IBAN - IT: IBAN"
         operationDate:
           type: string
@@ -1008,7 +1011,7 @@ components:
         message:
           type: string
           maxLength: 2500
-          pattern: "$ ^[a-zA-Z0-9]+$"
+          pattern: "^[\\w\\s.,!?'\"-]+$"
           description: "ENG: Error message - IT: Messaggio di errore"
     UnsubscribeOperationDTO:
       type: object
