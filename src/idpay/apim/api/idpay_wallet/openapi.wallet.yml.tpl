@@ -1992,8 +1992,6 @@ components:
           description: 'ENG: The service ID - IT: Identificativo del service'
           maxLength: 24
           pattern: "$ ^[a-zA-Z0-9]+$"
-        link:
-          $ref: '#/components/schemas/LinkDTO'
     InitiativesWithInstrumentDTO:
       type: object
       required:
@@ -2140,30 +2138,6 @@ components:
           description: "ENG: The service ID - IT: Identificativo del service"
           maxLength: 50
           pattern: "$ ^[a-zA-Z0-9]+$"
-        links:
-          type: array
-          maxItems: 4
-          items:
-            $ref: '#/components/schemas/LinkDTO'
-          description: "ENG: The list of utils link of initiatives of a citizen - IT: Lista dei link utili nell'iniziativa"
-    LinkDTO:
-      type: object
-      required:
-        - description
-        - url
-      properties:
-        description:
-          type: string
-          enum:
-            - MERCHANT
-            - PRODUCT
-          description: "ENG: Link's description - IT: Descrizione del tipo di link"
-        url:
-          type: string
-          description: "ENG: Url's link - IT: Url del link"
-          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
-          minLength: 0
-          maxLength: 255
     InitiativeRefundRuleDTO:
       type: object
       properties:
