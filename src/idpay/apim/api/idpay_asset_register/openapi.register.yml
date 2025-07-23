@@ -47,11 +47,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserPermissionDTO'
               example:
-                role: string
+                role: operatore
                 permissions:
                   - id: string
                     name: string
-                    mode: string
+                    mode: enabled
         '400':
           description: Bad request
           headers:
@@ -345,8 +345,15 @@ paths:
           required: true
           schema:
             type: string
-            maxLength: 255
-            pattern: .*
+            enum:
+              - WASHINGMACHINES
+              - WASHERDRIERS
+              - OVENS
+              - RANGEHOODS
+              - DISHWASHERS
+              - TUMBLEDRYERS
+              - REFRIGERATINGAPPL
+              - COOKINGHOBS
       requestBody:
         content:
           multipart/form-data:
@@ -357,7 +364,7 @@ paths:
               properties:
                 csv:
                   type: string
-                  maxLength: 255
+                  maxLength: 2097152  # 2 MB in byte
                   format: binary
       responses:
         '200':
@@ -463,13 +470,6 @@ paths:
             format: int32
             minimum: 0
             maximum: 10000
-        - name: sort
-          in: query
-          required: false
-          schema:
-            type: string
-            maxLength: 255
-            pattern: .*
       responses:
         '200':
           description: Ok
@@ -555,7 +555,7 @@ paths:
     post:
       tags:
         - products-upload
-      summary: Veerify CSV file containing a list of products
+      summary: Verify CSV file containing a list of products
       description: 'ENG: Verify CSV file containing a list of products <br> IT: Verifica
         del file CSV conentente una lista di prodotti'
       operationId: verifyProductList
@@ -565,8 +565,15 @@ paths:
           required: true
           schema:
             type: string
-            maxLength: 255
-            pattern: .*
+            enum:
+              - WASHINGMACHINES
+              - WASHERDRIERS
+              - OVENS
+              - RANGEHOODS
+              - DISHWASHERS
+              - TUMBLEDRYERS
+              - REFRIGERATINGAPPL
+              - COOKINGHOBS
       requestBody:
         content:
           multipart/form-data:
@@ -577,7 +584,7 @@ paths:
               properties:
                 csv:
                   type: string
-                  maxLength: 255
+                  maxLength: 2097152  # 2 MB in byte
                   format: binary
       responses:
         '200':
@@ -674,8 +681,9 @@ paths:
           required: true
           schema:
             type: string
-            maxLength: 255
-            pattern: .*
+            minLength: 24
+            maxLength: 24
+            pattern: "^[a-fA-F0-9]{24}$" # Mongo ID
           description: 'ENG: ID of the upload<br> IT: ID del caricamento'
       responses:
         '200':
@@ -772,8 +780,8 @@ paths:
           required: true
           schema:
             type: string
-            maxLength: 255
-            pattern: .*
+            maxLength: 36
+            pattern: "^$|^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$" # UUID v4
       responses:
         '200':
           description: Ok
@@ -884,50 +892,67 @@ paths:
           required: false
           schema:
             type: string
-            maxLength: 100
-            pattern: .*
+            enum:
+              - category, desc
+              - batchName, desc
+              - energyClass, desc
+              - gtinCode, desc
+              - eprelCode, desc
+              - category, asc
+              - batchName, asc
+              - energyClass, asc
+              - gtinCode, asc
+              - eprelCode, asc
         - name: category
           in: query
-          required: false
+          required: true
           schema:
             type: string
-            maxLength: 100
-            pattern: .*
+            enum:
+              - WASHINGMACHINES
+              - WASHERDRIERS
+              - OVENS
+              - RANGEHOODS
+              - DISHWASHERS
+              - TUMBLEDRYERS
+              - REFRIGERATINGAPPL
+              - COOKINGHOBS
         - name: eprelCode
           in: query
           required: false
           schema:
             type: string
             maxLength: 50
-            pattern: .*
+            pattern: "^\\d+$"
         - name: gtinCode
           in: query
           required: false
           schema:
             type: string
-            maxLength: 50
-            pattern: .*
+            maxLength: 14
+            pattern: "^[a-zA-Z0-9]{1,14}$"
         - name: productCode
           in: query
           required: false
           schema:
             type: string
-            maxLength: 50
-            pattern: .*
+            maxLength: 100
+            pattern: "^[a-zA-Z0-9 ]{0,100}$"
         - name: productFileId
           in: query
           required: false
           schema:
             type: string
-            maxLength: 50
-            pattern: .*
+            minLength: 24
+            maxLength: 24
+            pattern: "^[a-fA-F0-9]{24}$" # Mongo ID
         - name: x-organization-selected
           in: header
           required: true
           schema:
             type: string
-            maxLength: 100
-            pattern: .*
+            maxLength: 36
+            pattern: "^$|^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$" # UUID v4
       responses:
         '200':
           description: Ok
@@ -1013,8 +1038,8 @@ paths:
           required: true
           schema:
             type: string
-            maxLength: 255
-            pattern: .*
+            maxLength: 36
+            pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$" # UUID v4
           description: 'ENG: ID of the producer IT: ID del produttore'
       responses:
         '200':
@@ -1198,10 +1223,8 @@ components:
         maxLength: 255
         pattern: .*
     Retry-After:
-      description: 'Indicates how long the user agent should wait before making a
-        follow-up request.
-
-        '
+      description: Indicates how long the user agent should wait before making a
+        follow-up request
       schema:
         type: integer
         format: int64
@@ -1214,8 +1237,9 @@ components:
       properties:
         role:
           type: string
-          maxLength: 255
-          pattern: .*
+          enum:
+            - operatore
+            - invitalia
         permissions:
           type: array
           items:
@@ -1225,7 +1249,7 @@ components:
     PermissionDTO:
       type: object
       properties:
-        id:
+        description:
           type: string
           maxLength: 255
           pattern: .*
@@ -1236,7 +1260,9 @@ components:
         mode:
           type: string
           maxLength: 255
-          pattern: .*
+          enum:
+            - disabled
+            - enabled
     PortalConsentDTO:
       type: object
       properties:
@@ -1281,8 +1307,9 @@ components:
         status:
           type: string
           description: 'ENG: Status of the upload <br> IT: Stato del caricamento'
-          maxLength: 255
-          pattern: .*
+          enum:
+            - OK
+            - KO
         errorKey:
           type: string
           description: 'ENG: Error Key: <ul><li>product.invalid.file.maxrow: too many
@@ -1296,22 +1323,30 @@ components:
             caricato ha generato un report file di errori</li></li><li>product.invalid.file.vat.wrong:
             partita IVA o CF non valido</li><li>product.invalid.file.extension: estensione
             file non valita (deve essere un csv)</li></ul>'
-          maxLength: 255
-          pattern: .*
+          enum:
+            - product.invalid.file.extension
+            - product.invalid.file.maxrow
+            - product.invalid.file.maxsize
+            - product.invalid.file.header
+            - product.invalid.file.report
+            - product.invalid.file.category
+            - product.invalid.file.empty
+            - product.invalid.file.already_in_progress
         productFileId:
           type: string
           description: 'ENG: Id of the partlial upload <br> IT: Id del caricamento
             parziale'
-          maxLength: 255
-          pattern: .*
+          minLength: 24
+          maxLength: 24
+          pattern: "^[a-fA-F0-9]{24}$" # Mongo ID
     CsvDTO:
       title: CsvDTO
       type: object
       properties:
         data:
           type: string
-          maxLength: 255
-          pattern: .*
+          maxLength: 2097152  # 2 MB in byte
+          pattern: ".*"
     RegisterErrorDTO:
       type: object
       required:
@@ -1377,32 +1412,45 @@ components:
         productFileId:
           type: string
           description: 'ENG: The name of batch <br> IT: Nome del lotto'
-          maxLength: 255
-          pattern: .*
+          minLength: 24
+          maxLength: 24
+          pattern: "^[a-fA-F0-9]{24}$" # Mongo ID
         category:
           type: string
           description: 'ENG: The category of product in file <br> IT: Categoria dei
             prodotti contenuti nel file'
-          maxLength: 255
-          pattern: .*
+          enum:
+            - Lavatrice
+            - Lavasciuga
+            - Piano cottura
+            - Frigorifero
+            - Asciugatrice
+            - Lavastoviglie
+            - Cappa da cucina
+            - Forno
         fileName:
           type: string
           description: 'ENG: The original name of file <br> IT: Nome originale del
             file csv'
           maxLength: 255
-          pattern: .*
+          pattern: "^.*\\.csv$"
         batchName:
           type: string
           description: 'ENG: The computed name of file <br> IT: Nome ricalcolato del
             file csv'
+          pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
           maxLength: 255
-          pattern: .*
         uploadStatus:
           type: string
           description: 'ENG: The state of batch uploaded <br> IT: Lo stato del lotto
             caricato'
           maxLength: 255
-          pattern: .*
+          enum:
+            - FORMAL_ERROR
+            - PARTIAL
+            - UPLOADED
+            - IN_PROCESS
+            - LOADED
         dateUpload:
           type: string
           description: 'ENG: The date of upload <br> IT: La data di caricamento'
@@ -1472,13 +1520,14 @@ components:
           type: string
           description: 'ENG: The id of file which insert the product <br> IT: Id del
             lotto che ha censito il prodotto'
-          maxLength: 255
-          pattern: .*
+          minLength: 24
+          maxLength: 24
+          pattern: "^[a-fA-F0-9]{24}$" # Mongo ID
         organizationId:
           type: string
           description: 'ENG: The name of organization <br> IT: Id del produttore'
-          maxLength: 255
-          pattern: .*
+          maxLength: 36
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$" # UUID v4
         registrationDate:
           type: string
           format: date-time
@@ -1488,63 +1537,81 @@ components:
         status:
           type: string
           description: 'ENG: The status of the product <br> IT: Lo statos del prodotto'
-          maxLength: 255
-          pattern: .*
+          enum:
+            - APPROVED
+            - REJECTED
+            - SUPERVISION
         model:
           type: string
           description: 'ENG: The mode of the product <br> IT: il modello del prodotto'
-          maxLength: 255
-          pattern: .*
+          maxLength: 100
+          pattern: "^.{1,100}$"
         productGroup:
           type: string
           description: 'ENG: The EPREL category <br> IT: categoria EPREL'
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
         category:
           type: string
           description: 'ENG: The category of the product <br> IT: categoria del prodotto'
-          maxLength: 255
-          pattern: .*
+          enum:
+            - Lavatrice
+            - Lavasciuga
+            - Piano cottura
+            - Frigorifero
+            - Asciugatrice
+            - Lavastoviglie
+            - Cappa da cucina
+            - Forno
         brand:
           type: string
           description: 'ENG: The brand of the product <br> IT: brand del prodotto'
-          maxLength: 255
-          pattern: .*
+          maxLength: 100
+          pattern: "^.{1,100}$"
         eprelCode:
           type: string
           description: 'ENG: The EPREL code of the product <br> IT: Il code EPREL
             del prodotto'
-          maxLength: 255
-          pattern: .*
+          maxLength: 50
+          pattern: "^\\d+$"
         gtinCode:
           type: string
           description: 'ENG: The GTIN code of the product <br> IT: Il code GTIN del
             prodotto'
-          maxLength: 255
-          pattern: .*
+          maxLength: 14
+          pattern: "^[a-zA-Z0-9]{1,14}$"
         productCode:
           type: string
           description: 'ENG: The product code <br> IT: Il codice prodotto'
-          maxLength: 255
-          pattern: .*
+          maxLength: 100
+          pattern: "^[a-zA-Z0-9 ]{0,100}$"
         energyClass:
           type: string
           description: 'ENG: The product energy class <br> IT: La classe energetica
             del prodotto'
-          maxLength: 255
-          pattern: .*
+          enum:
+            - A+++
+            - A++
+            - A+
+            - A
+            - B
+            - C
+            - D
+            - E
+            - F
+            - G
         countryOfProduction:
           type: string
           description: 'ENG: The production country of the product <br> IT: il paese
             di produzione del prodotto'
-          maxLength: 255
-          pattern: .*
+          maxLength: 2
+          pattern: "^[A-Z]{2}$"
         batchName:
           type: string
           description: 'ENG: The batch name the product <br> IT: il nomelotto del
             prodotto'
+          pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
           maxLength: 255
-          pattern: .*
         linkEprel:
           type: string
           description: 'ENG: The EPREL product link <br> IT: Il link EPREL del prodotto'
@@ -1554,12 +1621,12 @@ components:
           type: string
           description: 'ENG: The capacity of the product <br> IT: Capacità del  prodotto'
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
         productName:
           type: string
           description: 'ENG: The name of the product  <br> IT: Nome del prodotto'
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
     InstitutionResponse:
       title: InstitutionResponse
       type: object
@@ -1567,39 +1634,39 @@ components:
         address:
           type: string
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
         city:
           type: string
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
         country:
           type: string
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
         county:
           type: string
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
         description:
           type: string
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
         digitalAddress:
           type: string
           maxLength: 255
-          pattern: .*
+          format: email
         fiscalCode:
           type: string
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
         vatNumber:
           type: string
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
         zipCode:
           type: string
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
     InstitutionsResponse:
       title: InstitutionResponse
       type: object
@@ -1611,11 +1678,11 @@ components:
               instituionId:
                 type: string
                 maxLength: 255
-                pattern: .*
+                pattern: "^$|^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
               description:
                 type: string
                 maxLength: 255
-                pattern: .*
+                pattern: ".*"
               createAt:
                 type: string
                 maxLength: 255
@@ -1635,12 +1702,13 @@ components:
             properties:
               productFileId:
                 type: string
-                maxLength: 255
-                pattern: .*
+                minLength: 24
+                maxLength: 24
+                pattern: "^[a-fA-F0-9]{24}$" # Mongo ID
               batchName:
                 type: string
+                pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
                 maxLength: 255
-                pattern: .*
           maxItems: 1000
     ErrorDTO:
       type: object
@@ -1651,11 +1719,11 @@ components:
         code:
           type: string
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
         message:
           type: string
           maxLength: 255
-          pattern: .*
+          pattern: ".*"
   securitySchemes:
     Bearer:
       type: apiKey
