@@ -26,7 +26,7 @@ locals {
   #
   apim_rg_name   = "cstar-${var.env_short}-api-rg"
   apim_name      = "cstar-${var.env_short}-apim"
-  apim_logger_id = "${data.azurerm_api_management.apim_core.id}/loggers/${local.apim_name}-logger"
+  apim_logger_id = "${data.azurerm_api_management.apim_core.id}/loggers/${local.project}-apim-logger"
 
   #
   # Data

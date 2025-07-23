@@ -23,6 +23,13 @@
                 </return-response>
             </when>
         </choose>
+        <choose>
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") == "invitalia")">
+                <set-header name="x-organization-id" exists-action="override">
+                    <value>@((String)context.Request.Headers["x-organization-selected"].FirstOrDefault())</value>
+                </set-header>
+            </when>
+        </choose>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
         <rewrite-uri template="@("/idpay/register/products")" />
     </inbound>

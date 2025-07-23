@@ -23,7 +23,6 @@ module "idpay_itn_api_register_product" {
     origins                = local.origins.base
     rate_limit_portal      = var.rate_limit_portal_product
   })
-
 }
 
 #
@@ -100,6 +99,28 @@ module "idpay_itn_register_portal_api" {
       operation_id = "getProducts"
       xml_content = templatefile("./apim/api/idpay_asset_register/get-products.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "getBatchNameList"
+      xml_content = templatefile("./apim/api/idpay_asset_register/get-product-files-batch-name.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "getInstitutionsList"
+      xml_content = templatefile("./apim/api/idpay_asset_register/get-institutions.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname,
+        selc_base_url                  = var.selc_base_url,
+        selfcare_api_key_reference     = azurerm_api_management_named_value.selfcare_api_key.display_name
+      })
+    },
+    {
+      operation_id = "verifyProductList"
+      xml_content = templatefile("./apim/api/idpay_asset_register/post-product-files-verify.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname,
+        selc_base_url                  = var.selc_base_url,
+        selfcare_api_key_reference     = azurerm_api_management_named_value.selfcare_api_key.display_name
       })
     }
   ]

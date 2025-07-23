@@ -1,0 +1,510 @@
+openapi: 3.0.3
+
+info:
+  title: RTP Service Providers API
+  version: 1.0.0
+  description: |
+    API to handle Technical Service Providers (TSPs) and Service Providers (SPs) which use PagoPA as RTP Service Provider.
+  contact:
+    name: PagoPA S.p.A.
+    email: rtp@pagopa.it
+
+servers:
+  - description: Development/Test
+    url: https://api-rtp.dev.cstar.pagopa.it
+    x-internal: true
+  - description: User Acceptance Test
+    url: https://api-rtp.uat.cstar.pagopa.it
+    x-internal: false
+  - description: Production
+    url: https://api-rtp.cstar.pagopa.it
+    x-internal: false
+
+tags:
+  - name: create
+    description: Create operation.
+  - name: read
+    description: Read operation.
+  - name: update
+    description: Update operation.
+  - name: delete
+    description: Delete operation.
+
+paths:
+  /service-providers:
+    get:
+      operationId: getServiceProviders
+      summary: Returns Service Providers.
+      description: |
+        The operation returns all Technical Service Providers (TSPs) and Service Providers (SPs)
+        which use PagoPA as RTP Service Provider.
+      tags: [read]
+      security:
+        - oAuth2: [read_rtp_service_providers]
+      parameters:
+        - $ref: "#/components/parameters/RequestId"
+        - $ref: "#/components/parameters/Version"
+      responses:
+        "200":
+          #description: Ok.
+          $ref: "#/components/responses/ServiceProvidersResponse"
+        "400":
+          #description: Bad request.
+          $ref: "#/components/responses/Error"
+        "401":
+          #description: Access token is missing or invalid.
+          $ref: "#/components/responses/Error"
+        "403":
+          #description: Forbidden.
+          $ref: "#/components/responses/Error"
+        "406":
+          #description: Not acceptable. Did you require application/json?
+          $ref: "#/components/responses/Error"
+        "429":
+          #description: Too many request.
+          $ref: "#/components/responses/Error"
+        "500":
+          #description: Server error.
+          $ref: "#/components/responses/Error"
+        default:
+          #description: Unexpected error.
+          $ref: "#/components/responses/Error"
+
+components:
+  # ============================================================================
+  # Schemas.
+  # ============================================================================
+  schemas:
+    # --------------------------------------------------------------------------
+    # Basic types for CORS stuff.
+    # --------------------------------------------------------------------------
+    AccessControlAllowOrigin:
+      description: |
+        Indicates whether the response can be shared with requesting code from
+        the given origin.
+      type: string
+      pattern: "^[ -~]{1,2048}$"
+      minLength: 1
+      maxLength: 2048
+
+    # --------------------------------------------------------------------------
+    # Basic types for rate limit handling.
+    # --------------------------------------------------------------------------
+    RateLimitLimit:
+      description: The number of allowed requests in the current period.
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 240
+
+    RateLimitReset:
+      description: The number of seconds left in the current period.
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 60
+
+    RetryAfter:
+      description: |
+        The number of seconds to wait before allowing a follow-up request.
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 240
+    MtlsEnabled:
+      description: Flag indicating if MTLS is enabled for a service provider.
+      type: boolean
+      example: true
+    Role:
+      description: Role of the service provider.
+      type: string
+      pattern: "^[ -~]{1,64}$"
+      minLength: 1
+      maxLength: 64
+      example: "ADMIN"
+    Errors:
+      description: Body of an error response.
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          $ref: "#/components/schemas/ErrorCode"
+        description:
+          $ref: "#/components/schemas/ErrorDescription"
+        status:
+          $ref: "#/components/schemas/StatusCode"
+      required:
+        - code
+        - description
+        - status
+
+
+
+    # --------------------------------------------------------------------------
+    # Basic types for error handling.
+    # --------------------------------------------------------------------------
+    ErrorCode:
+      description: Error code.
+      type: string
+      pattern: "^[A-F0-9]{9}$"
+      minLength: 9
+      maxLength: 9
+      example: "01000000F"
+
+    ErrorDescription:
+      description: Error description.
+      type: string
+      pattern: "^[ -~]{0,256}$"
+      minLength: 0
+      maxLength: 256
+      example: "Wrong party identifier"
+
+    StatusCode:
+      description: HTTP status code.
+      type: integer
+      format: int32
+      minimum: 0
+      maximum: 999
+      example: 401
+
+    # --------------------------------------------------------------------------
+    # Basic types for technical stuff.
+    # --------------------------------------------------------------------------
+    RequestId:
+      description: Identifier of the request.
+      type: string
+      format: uuid
+      pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+      minLength: 36
+      maxLength: 36
+      example: "bd615b4a-066d-443e-8dd2-a28a39931fef"
+
+    Version:
+      description: Version of the required API.
+      type: string
+      pattern: "^[ -~]{1,64}$"
+      minLength: 1
+      maxLength: 64
+      example: "v1"
+
+    # --------------------------------------------------------------------------
+    # Domain specific basic types.
+    # --------------------------------------------------------------------------
+    Name:
+      description: Name of the service provider.
+      type: string
+      pattern: "^[ -~]{1,64}$"
+      minLength: 1
+      maxLength: 64
+      example: "Example Provider"
+
+    ProviderId:
+      description: ID of the service provider.
+      type: string
+      pattern: "^[ -~]{1,64}$"
+      minLength: 1
+      maxLength: 64
+      example: "PROVIDER123"
+
+    ServiceEndpoint:
+      description: Endpoint URL for the service.
+      type: string
+      format: uri
+      pattern: "^https://[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\\.[a-zA-Z]{2,})+(/[a-zA-Z0-9._~:/?#[\\]@!$&'()*+,;=]*)?$"
+      minLength: 1
+      maxLength: 256
+      example: "https://api.example.org/v1/service"
+
+    CertificateSerialNumber:
+      description: Serial number of the certificate.
+      type: string
+      pattern: "^[A-F0-9]{1,64}$"
+      minLength: 1
+      maxLength: 64
+      example: "A1B2C3D4E5F67890"
+
+    # ------------------------------------------------------
+    # Domain specific complex types.
+    # ------------------------------------------------------
+    OAuth2Config:
+      description: OAuth2 configuration.
+      type: object
+      additionalProperties: false
+      properties:
+        token_endpoint:
+          description: OAuth2 token endpoint.
+          type: string
+          format: uri
+          pattern: "^https://[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\\.[a-zA-Z]{2,})+(/[a-zA-Z0-9._~:/?#[\\]@!$&'()*+,;=\\-]*)?$"
+          minLength: 1
+          maxLength: 256
+          example: "https://auth.example.org/oauth2/token"
+        method:
+          description: HTTP method for token request.
+          type: string
+          enum: ["GET", "POST"]
+          example: "POST"
+        credentials_transport_mode:
+          description: Mode of transporting credentials.
+          type: string
+          enum: ["BASIC_AUTHENTICATION", "REQUEST_BODY"]
+          example: "BASIC_AUTHENTICATION"
+        client_id:
+          description: OAuth2 client ID.
+          type: string
+          minLength: 1
+          maxLength: 128
+          pattern: "^[ -~]{1,128}$"
+          example: "example-client-id"
+        client_secret_kv_url:
+          description: KeyVault URL for client secret.
+          type: string
+          format: uri
+          pattern: "^https://[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\\.[a-zA-Z]{2,})+(/[a-zA-Z0-9._~:/?#[\\]@!$&'()*+,;=\\-]*)?$"
+          maxLength: 256
+          example: "https://example-keyvault.vault.azure.net/secrets/example-secret"
+        client_secret_env_var:
+          description: Environment variable name for client secret.
+          type: string
+          minLength: 1
+          maxLength: 128
+          pattern: "^[A-Za-z0-9_-]{1,128}$"
+          example: "CLIENT_SECRET_ENV_VAR"
+        scope:
+          description: OAuth2 scope.
+          type: string
+          minLength: 1
+          maxLength: 128
+          pattern: "^[ -~]{1,128}$"
+          example: "read write"
+        mtls_enabled:
+          description: Flag indicating if MTLS is enabled for OAuth2.
+          type: boolean
+          example: true
+      required:
+        - token_endpoint
+        - method
+
+    TSP:
+      description: Technical Service Provider data.
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: "#/components/schemas/ProviderId"
+        name:
+          $ref: "#/components/schemas/Name"
+        service_endpoint:
+          $ref: "#/components/schemas/ServiceEndpoint"
+        certificate_serial_number:
+          $ref: "#/components/schemas/CertificateSerialNumber"
+        mtls_enabled:
+          $ref: "#/components/schemas/MtlsEnabled"
+        oauth2:
+          $ref: "#/components/schemas/OAuth2Config"
+      required:
+        - id
+        - name
+        - service_endpoint
+        - certificate_serial_number
+        - mtls_enabled
+      example:
+        id: "TSP001"
+        name: "Example TSP"
+        service_endpoint: "https://api.example.org/v1/service"
+        certificate_serial_number: "A1B2C3D4E5F67890"
+        mtls_enabled: true
+
+    TSPs:
+      description: List of Technical Service Providers.
+      type: array
+      minItems: 0
+      maxItems: 128
+      items:
+        $ref: "#/components/schemas/TSP"
+      example:
+        - id: "TSP001"
+          name: "Example TSP 1"
+          service_endpoint: "https://api.example.org/v1/service1"
+          certificate_serial_number: "A1B2C3D4E5F67890"
+          mtls_enabled: true
+        - id: "TSP002"
+          name: "Example TSP 2"
+          service_endpoint: "https://api.example.org/v1/service2"
+          certificate_serial_number: "F6E5D4C3B2A10987"
+          mtls_enabled: true
+
+    SP:
+      description: Service Provider data.
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: "#/components/schemas/ProviderId"
+        name:
+          $ref: "#/components/schemas/Name"
+        tsp_id:
+          $ref: "#/components/schemas/ProviderId"
+        role:
+          $ref: "#/components/schemas/Role"
+      required:
+        - id
+        - name
+        - tsp_id
+      example:
+        id: "SP001"
+        name: "Example Service Provider"
+        tsp_id: "TSP001"
+        role: "ADMIN"
+
+    SPs:
+      description: List of Service Providers.
+      type: array
+      minItems: 0
+      maxItems: 128
+      items:
+        $ref: "#/components/schemas/SP"
+      example:
+        - id: "SP001"
+          name: "Example Service Provider 1"
+          tsp_id: "TSP001"
+          role: "ADMIN"
+        - id: "SP002"
+          name: "Example Service Provider 2"
+          tsp_id: "TSP002"
+          role: "ADMIN"
+
+    ServiceProviders:
+      description: Combined Technical Service Providers and Service Providers.
+      type: object
+      additionalProperties: false
+      properties:
+        tsps:
+          $ref: "#/components/schemas/TSPs"
+        sps:
+          $ref: "#/components/schemas/SPs"
+      required:
+        - tsps
+        - sps
+      example:
+        tsps:
+          - id: "TSP001"
+            name: "Example TSP 1"
+            service_endpoint: "https://api.example.org/v1/service1"
+            certificate_serial_number: "A1B2C3D4E5F67890"
+            mtls_enabled: true
+          - id: "TSP002"
+            name: "Example TSP 2"
+            service_endpoint: "https://api.example.org/v1/service2"
+            certificate_serial_number: "F6E5D4C3B2A10987"
+            mtls_enabled: true
+        sps:
+          - id: "SP001"
+            name: "Example Service Provider 1"
+            tsp_id: "TSP001"
+            role: "ADMIN"
+          - id: "SP002"
+            name: "Example Service Provider 2"
+            tsp_id: "TSP002"
+            role: "ADMIN"
+
+  # ============================================================================
+  # Parameters.
+  # ============================================================================
+  parameters:
+    RequestId:
+      name: RequestId
+      in: header
+      description: Identifier of the request.
+      required: true
+      schema:
+        $ref: "#/components/schemas/RequestId"
+
+    Version:
+      name: Version
+      in: header
+      description: Version of the required API.
+      required: true
+      schema:
+        $ref: "#/components/schemas/Version"
+
+  # ============================================================================
+  # Responses
+  # ============================================================================
+  responses:
+    Error:
+      description: Response returned when an error occured.
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: "#/components/schemas/AccessControlAllowOrigin"
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: "#/components/schemas/RateLimitLimit"
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: "#/components/schemas/RateLimitReset"
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: "#/components/schemas/RetryAfter"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Errors"
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            minLength: 0
+            maxLength: 65535
+
+    ServiceProvidersResponse:
+      description: Response to the request to get Service Providers.
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: "#/components/schemas/AccessControlAllowOrigin"
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: "#/components/schemas/RateLimitLimit"
+        RateLimit-Reset:
+          description: The number of seconds left in the current period.
+          required: false
+          schema:
+            $ref: "#/components/schemas/RateLimitReset"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ServiceProviders"
+  # ============================================================================
+  # Security schemes.
+  # ============================================================================
+  securitySchemes:
+    oAuth2:
+      description: |
+        A bearer token in the format of a JWS and conforms to the specifications
+        included in RFC8725.
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /token
+          refreshUrl: /token
+          scopes:
+            read_rtp_service_providers: Read RTP service providers.

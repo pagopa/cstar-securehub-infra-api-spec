@@ -39,16 +39,20 @@
                     </set-header>
                     <set-body>@{
                             var json = ((IResponse)context.Variables["institutionResponse"]).Body.As<JObject>();
+                            var onboardingArray = json["onboarding"] as JArray;
+                            var vatNumber = onboardingArray?
+                                .Children<JObject>()
+                                .FirstOrDefault(o => o["billing"] != null)?["billing"]?["vatNumber"] ?? "-";
                             return new JObject {
-                                ["address"] = json["address"],
-                                ["city"] = json["city"],
-                                ["county"] = json["county"],
-                                ["country"] = json["country"],
-                                ["zipCode"] = json["zipCode"],
-                                ["digitalAddress"] = json["digitalAddress"],
-                                ["description"] = json["description"],
-                                ["taxCode"] = json["taxCode"],
-                                ["externalId"] = json["externalId"]
+                                ["address"] = json["address"] ?? "-",
+                                ["city"] = json["city"] ?? "-",
+                                ["county"] = json["county"] ?? "-",
+                                ["country"] = json["country"] ?? "-",
+                                ["zipCode"] = json["zipCode"] ?? "-",
+                                ["digitalAddress"] = json["digitalAddress"] ?? "-",
+                                ["description"] = json["description"] ?? "-",
+                                ["fiscalCode"] = json["taxCode"] ?? "-",
+                                ["vatNumber"] = vatNumber
                             }.ToString();
                         }</set-body>
                 </return-response>
