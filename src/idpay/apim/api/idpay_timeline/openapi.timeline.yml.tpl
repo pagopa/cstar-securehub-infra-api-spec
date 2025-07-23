@@ -673,7 +673,7 @@ components:
           type: string
           minLength: 27
           maxLength: 27
-          pattern: "^[\\w\\s.,!?'\"-]+$"
+          pattern: "^IT[0-9]{2}[A-Z0-9]{23}$"
           description: "ENG: IBAN of the citizen - IT: IBAN del cittadino"
         channel:
           type: string
@@ -756,7 +756,7 @@ components:
         operationId:
           type: string
           maxLength: 24
-          pattern: "^[\\w\\s.,!?'\"-]+$"
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
           description: "ENG: Id of the operation - IT: Identificativo dell'operazione"
         operationType:
           enum:
@@ -891,7 +891,7 @@ components:
           type: string
           minLength: 27
           maxLength: 27
-          pattern: "^[\\w\\s.,!?'\"-]+$"
+          pattern: "^IT[0-9]{2}[A-Z0-9]{23}$"
           description: "ENG: IBAN - IT: IBAN"
         operationDate:
           type: string
