@@ -1842,8 +1842,8 @@ components:
           type: string
           example: "https://cstarpayment/cardBrand"
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
+          maxLength: 2048
+          pattern: '^https://[a-zA-Z0-9./_-]+$'
         status:
           enum:
             - ACTIVE
@@ -2015,8 +2015,8 @@ components:
           type: string
           example: "https://cstarpayment/cardBrand"
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
-          maxLength: 50
-          pattern: "$ ^[a-zA-Z0-9]+$"
+          maxLength: 2048
+          pattern: '^https://[a-zA-Z0-9./_-]+$'
         initiativeList:
           type: array
           maxItems: 100
@@ -2260,8 +2260,8 @@ components:
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
-          maxLength: 250
-          pattern: "^[\\w\\s.,!?'\"-]+$"
+          maxLength: 2500
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
     InitiativeErrorDTO:
       type: object
       properties:
@@ -2289,8 +2289,8 @@ components:
         message:
           type: string
           description: "ENG: Error message - IT: Messaggio di errore"
-          maxLength: 250
-          pattern: "^[\\w\\s.,!?'\"-]+$"
+          maxLength: 2500
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
     PaymentInstrumentErrorDTO:
       type: object
       required:
@@ -2349,7 +2349,7 @@ components:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
           maxLength: 250
-          pattern: "^[\\w\\s.,!?'\"-]+$"
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
   securitySchemes:
     bearerAuth:
       type: http

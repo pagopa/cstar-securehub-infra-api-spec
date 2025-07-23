@@ -358,8 +358,8 @@ components:
         message:
           type: string
           description: "ENG: Error message - IT: Messaggio di errore"
-          maxLength: 250
-          pattern: "^[\\w\\s.,!?'\"-]+$"
+          maxLength: 2500
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
   securitySchemes:
     bearerAuth:
       type: http

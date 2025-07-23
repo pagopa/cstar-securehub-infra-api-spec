@@ -750,7 +750,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ListOnboardingStatusDTO"
+                $ref: "#/components/schemas/ListUsersOnboardingStatusDTO"
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -896,8 +896,8 @@ components:
         - $ref: "#/components/schemas/SelfConsentBoolDTO"
         - $ref: "#/components/schemas/SelfConsentMultiDTO"
         - $ref: "#/components/schemas/SelfConsentTextDTO"
-    ListOnboardingStatusDTO:
-      title: ListOnboardingStatusDTO
+    ListUsersOnboardingStatusDTO:
+      title: ListUsersOnboardingStatusDTO
       type: array
       items:
         $ref: "#/components/schemas/UserOnboardingStatusDTO"
@@ -1413,8 +1413,8 @@ components:
         message:
           type: string
           description: "ENG: Error message - IT: Messaggio di errore"
-          maxLength: 250
-          pattern: "^[\\w\\s.,!?'\"-]+$"
+          maxLength: 2500
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
     OnboardingErrorDTO:
       type: object
       required:
@@ -1491,8 +1491,8 @@ components:
         message:
           type: string
           description: "ENG: Error message- IT: Messaggio di errore"
-          maxLength: 250
-          pattern: "^[\\w\\s.,!?'\"-]+$"
+          maxLength: 2500
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
   securitySchemes:
     bearerAuth:
       type: http

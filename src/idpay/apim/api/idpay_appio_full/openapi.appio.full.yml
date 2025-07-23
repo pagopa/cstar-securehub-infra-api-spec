@@ -1033,7 +1033,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListOnboardingStatusDTO'
+                $ref: '#/components/schemas/ListUsersOnboardingStatusDTO'
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -3749,8 +3749,8 @@ components:
         message:
           type: string
           description: 'ENG: Error message - IT: Messaggio di errore'
-          maxLength: 250
-          pattern: '^[\w\s.,!?''"-]+$'
+          maxLength: 2500
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
     ConsentPutDTO:
       title: ConsentPutDTO
       type: object
@@ -3782,8 +3782,8 @@ components:
         - $ref: '#/components/schemas/SelfConsentBoolDTO'
         - $ref: '#/components/schemas/SelfConsentMultiDTO'
         - $ref: '#/components/schemas/SelfConsentTextDTO'
-    ListOnboardingStatusDTO:
-      title: ListOnboardingStatusDTO
+    ListUsersOnboardingStatusDTO:
+      title: ListUsersOnboardingStatusDTO
       type: array
       items:
         $ref: '#/components/schemas/UserOnboardingStatusDTO'
@@ -4268,7 +4268,6 @@ components:
         - initiativeId
         - initiativeName
         - description
-        - links
         - organizationId
         - organizationName
         - tcLink
@@ -4291,11 +4290,6 @@ components:
           description: 'ENG: Initiative''s description - IT: Descrizione dell''iniziativa'
           pattern: '^[ -~]{1,255}$'
           maxLength: 255
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/LinkDTO'
-          maxItems: 10
         organizationId:
           type: string
           description: >-
@@ -4334,24 +4328,13 @@ components:
           pattern: >-
             ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
-    LinkDTO:
-      type: object
-      required:
-        - description
-        - url
-      properties:
-        description:
+        thumbnailUrl:
           type: string
-          enum:
-            - MERCHANT
-            - PRODUCT
-          description: 'ENG: Link''s description - IT: Descrizione del tipo di link'
-        url:
-          type: string
-          description: 'ENG: Url''s link - IT: Url del link'
+          description: >-
+            ENG: ToS Initiative Image URL - IT: URL dell'immagine
+            dell'iniziativa per i ToS
           pattern: >-
             ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
-          minLength: 0
           maxLength: 255
     InitiativeErrorDTO:
       type: object
@@ -4380,8 +4363,8 @@ components:
         message:
           type: string
           description: 'ENG: Error message - IT: Messaggio di errore'
-          maxLength: 250
-          pattern: '^[\w\s.,!?''"-]+$'
+          maxLength: 2500
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
     OnboardingErrorDTO:
       type: object
       required:
@@ -4466,8 +4449,8 @@ components:
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
-          maxLength: 250
-          pattern: '^[\w\s.,!?''"-]+$'
+          maxLength: 2500
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
     OperationDTO:
       oneOf:
         - $ref: '#/components/schemas/TransactionDetailDTO'
@@ -5174,7 +5157,7 @@ components:
         message:
           type: string
           maxLength: 2500
-          pattern: '^[\w\s.,!?''"-]+$'
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
           description: 'ENG: Error message - IT: Messaggio di errore'
     UnsubscribeOperationDTO:
       type: object
@@ -5344,8 +5327,8 @@ components:
           description: >-
             ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della
             carta come mastercard, visa, ecc...
-          maxLength: 24
-          pattern: '$ ^[a-zA-Z0-9]+$'
+          maxLength: 2048
+          pattern: '^https://[a-zA-Z0-9./_-]+$'
         status:
           enum:
             - ACTIVE
@@ -5515,8 +5498,6 @@ components:
           description: 'ENG: The service ID - IT: Identificativo del service'
           maxLength: 24
           pattern: '$ ^[a-zA-Z0-9]+$'
-        link:
-          $ref: '#/components/schemas/LinkDTO'
     InitiativesWithInstrumentDTO:
       type: object
       required:
@@ -5542,8 +5523,8 @@ components:
           description: >-
             ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della
             carta come mastercard, visa, ecc...
-          maxLength: 50
-          pattern: '$ ^[a-zA-Z0-9]+$'
+          maxLength: 2048
+          pattern: '^https://[a-zA-Z0-9./_-]+$'
         initiativeList:
           type: array
           maxItems: 100
@@ -5694,14 +5675,6 @@ components:
           description: 'ENG: The service ID - IT: Identificativo del service'
           maxLength: 50
           pattern: '$ ^[a-zA-Z0-9]+$'
-        links:
-          type: array
-          maxItems: 4
-          items:
-            $ref: '#/components/schemas/LinkDTO'
-          description: >-
-            ENG: The list of utils link of initiatives of a citizen - IT: Lista
-            dei link utili nell'iniziativa
     InitiativeRefundRuleDTO:
       type: object
       properties:
@@ -5841,8 +5814,8 @@ components:
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
-          maxLength: 250
-          pattern: '^[\w\s.,!?''"-]+$'
+          maxLength: 2500
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
     PaymentInstrumentErrorDTO:
       type: object
       required:
@@ -5915,7 +5888,7 @@ components:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
           maxLength: 250
-          pattern: '^[\w\s.,!?''"-]+$'
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
     AuthPaymentResponseDTO:
       type: object
       required:
@@ -6082,7 +6055,7 @@ components:
         message:
           type: string
           maxLength: 2500
-          pattern: '^[\w\s.,!?''"-]+$'
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
           description: 'ENG: Error message- IT: Messaggio di errore'
     TransactionErrorDTO1:
       type: object
@@ -6177,7 +6150,7 @@ components:
         message:
           type: string
           maxLength: 2500
-          pattern: '^[\w\s.,!?''"-]+$'
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
           description: 'ENG: Error message- IT: Messaggio di errore'
     TransactionBarCodeRequest:
       type: object
