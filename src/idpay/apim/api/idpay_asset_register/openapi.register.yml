@@ -1600,6 +1600,17 @@ components:
             - E
             - F
             - G
+          x-enum-varnames:
+            - A_TRIPLE_PLUS
+            - A_DOUBLE_PLUS
+            - A_PLUS
+            - A
+            - B
+            - C
+            - D
+            - E
+            - F
+            - G
         countryOfProduction:
           type: string
           description: 'ENG: The production country of the product <br> IT: il paese
