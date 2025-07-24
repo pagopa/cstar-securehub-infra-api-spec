@@ -636,7 +636,7 @@ components:
         message:
           type: string
           maxLength: 2500
-          pattern: "^[\\w\\s.,!?'\"-]+$"
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
           description: "ENG: Error message- IT: Messaggio di errore"
   securitySchemes:
     Bearer:

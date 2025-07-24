@@ -750,7 +750,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ListOnboardingStatusDTO"
+                $ref: "#/components/schemas/ListUsersOnboardingStatusDTO"
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -896,8 +896,8 @@ components:
         - $ref: "#/components/schemas/SelfConsentBoolDTO"
         - $ref: "#/components/schemas/SelfConsentMultiDTO"
         - $ref: "#/components/schemas/SelfConsentTextDTO"
-    ListOnboardingStatusDTO:
-      title: ListOnboardingStatusDTO
+    ListUsersOnboardingStatusDTO:
+      title: ListUsersOnboardingStatusDTO
       type: array
       items:
         $ref: "#/components/schemas/UserOnboardingStatusDTO"
@@ -944,15 +944,8 @@ components:
           pattern: "$ ^[a-zA-Z0-9]+$"
         status:
           enum:
-            - ACCEPTED_TC
+            - ON_WAITING_LIST
             - ON_EVALUATION
-            - ONBOARDING_KO
-            - ELIGIBLE_KO
-            - ONBOARDING_OK
-            - UNSUBSCRIBED
-            - INVITED
-            - DEMANDED
-            - SUSPENDED
           type: string
           description: "ENG: Actual status of the citizen onboarding for an initiative - IT: Stato attuale del cittadino rispetto ad un'iniziativa"
         statusDate:
@@ -961,31 +954,6 @@ components:
           minLength: 19
           maxLength: 19
           description: "ENG: Date on which the status changed to the current one - IT: Data in cui lo stato è cambiato allo stato attuale"
-        detailKo:
-          enum:
-            - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
-            - ONBOARDING_WAITING_LIST
-            - ONBOARDING_USER_UNSUBSCRIBED
-            - ONBOARDING_PAGE_SIZE_NOT_ALLOWED
-            - ONBOARDING_PDND_CONSENT_DENIED
-            - ONBOARDING_SELF_DECLARATION_NOT_VALID
-            - ONBOARDING_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS
-            - ONBOARDING_READMISSION_NOT_ALLOWED_FOR_USER_STATUS
-            - ONBOARDING_INVALID_REQUEST
-            - ONBOARDING_USER_NOT_IN_WHITELIST
-            - ONBOARDING_INITIATIVE_NOT_STARTED
-            - ONBOARDING_INITIATIVE_ENDED
-            - ONBOARDING_BUDGET_EXHAUSTED
-            - ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED
-            - ONBOARDING_TECHNICAL_ERROR
-            - ONBOARDING_UNSATISFIED_REQUIREMENTS
-            - ONBOARDING_GENERIC_ERROR
-            - ONBOARDING_USER_NOT_ONBOARDED
-            - ONBOARDING_INITIATIVE_NOT_FOUND
-            - ONBOARDING_TOO_MANY_REQUESTS
-          type: string
-          description: >-
-            "ENG: Identify the detail of the ko status. - IT: Identifica il dettaglio dello status di ko"
     OnboardingStatusDTO:
       title: OnboardingStatusDTO
       type: object
@@ -1012,31 +980,6 @@ components:
           minLength: 19
           maxLength: 19
           description: "ENG: Date on which the status changed to the current one - IT: Data in cui lo stato è cambiato allo stato attuale"
-        detailKo:
-          enum:
-            - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
-            - ONBOARDING_WAITING_LIST
-            - ONBOARDING_USER_UNSUBSCRIBED
-            - ONBOARDING_PAGE_SIZE_NOT_ALLOWED
-            - ONBOARDING_PDND_CONSENT_DENIED
-            - ONBOARDING_SELF_DECLARATION_NOT_VALID
-            - ONBOARDING_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS
-            - ONBOARDING_READMISSION_NOT_ALLOWED_FOR_USER_STATUS
-            - ONBOARDING_INVALID_REQUEST
-            - ONBOARDING_USER_NOT_IN_WHITELIST
-            - ONBOARDING_INITIATIVE_NOT_STARTED
-            - ONBOARDING_INITIATIVE_ENDED
-            - ONBOARDING_BUDGET_EXHAUSTED
-            - ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED
-            - ONBOARDING_TECHNICAL_ERROR
-            - ONBOARDING_UNSATISFIED_REQUIREMENTS
-            - ONBOARDING_GENERIC_ERROR
-            - ONBOARDING_USER_NOT_ONBOARDED
-            - ONBOARDING_INITIATIVE_NOT_FOUND
-            - ONBOARDING_TOO_MANY_REQUESTS
-          type: string
-          description: >-
-            "ENG: Identify the detail of the ko status. - IT: Identifica il dettaglio dello status di ko"
         onboardingOkDate:
           type: string
           format: date-time
@@ -1334,7 +1277,6 @@ components:
         - initiativeId
         - initiativeName
         - description
-        - links
         - organizationId
         - organizationName
         - tcLink
@@ -1357,11 +1299,6 @@ components:
           description: "ENG: Initiative's description - IT: Descrizione dell'iniziativa"
           pattern: "^[ -~]{1,255}$"
           maxLength: 255
-        links:
-          type: array
-          items:
-            $ref: "#/components/schemas/LinkDTO"
-          maxItems: 10
         organizationId:
           type: string
           description: "ENG: Id of the organization that created the initiative - IT: Identificativo dell'organizzazione che ha creato l'iniziativa"
@@ -1387,23 +1324,10 @@ components:
           description: "ENG: URL for the initiative's logo image - IT: URL del logo dell'iniziativa"
           pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
           maxLength: 255
-    LinkDTO:
-      type: object
-      required:
-        - description
-        - url
-      properties:
-        description:
+        thumbnailUrl:
           type: string
-          enum:
-            - MERCHANT
-            - PRODUCT
-          description: "ENG: Link's description - IT: Descrizione del tipo di link"
-        url:
-          type: string
-          description: "ENG: Url's link - IT: Url del link"
+          description: "ENG: ToS Initiative Image URL - IT: URL dell'immagine dell'iniziativa per i ToS"
           pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
-          minLength: 0
           maxLength: 255
     InitiativeErrorDTO:
       type: object
@@ -1432,8 +1356,8 @@ components:
         message:
           type: string
           description: "ENG: Error message - IT: Messaggio di errore"
-          maxLength: 250
-          pattern: "^[\\w\\s.,!?'\"-]+$"
+          maxLength: 2500
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
     OnboardingErrorDTO:
       type: object
       required:
@@ -1510,8 +1434,8 @@ components:
         message:
           type: string
           description: "ENG: Error message- IT: Messaggio di errore"
-          maxLength: 250
-          pattern: "^[\\w\\s.,!?'\"-]+$"
+          maxLength: 2500
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
   securitySchemes:
     bearerAuth:
       type: http
