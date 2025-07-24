@@ -905,7 +905,7 @@ paths:
               - eprelCode, asc
         - name: category
           in: query
-          required: false
+          required: true
           schema:
             type: string
             enum:
