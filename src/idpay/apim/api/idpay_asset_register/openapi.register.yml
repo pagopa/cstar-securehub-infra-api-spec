@@ -1587,32 +1587,12 @@ components:
           description: 'ENG: The product code <br> IT: Il codice prodotto'
           maxLength: 100
           pattern: "^[a-zA-Z0-9 ]{0,100}$"
+          nullable: true
         energyClass:
           type: string
-          description: 'ENG: The product energy class <br> IT: La classe energetica
-            del prodotto'
-          enum:
-            - A+++
-            - A++
-            - A+
-            - A
-            - B
-            - C
-            - D
-            - E
-            - F
-            - G
-          x-enum-varnames:
-            - A_TRIPLE_PLUS
-            - A_DOUBLE_PLUS
-            - A_PLUS
-            - A
-            - B
-            - C
-            - D
-            - E
-            - F
-            - G
+          description: 'ENG: The product energy class <br> IT: La classe energetica del prodotto'
+          pattern: "^(A\\+\\+\\+|A\\+\\+|A\\+|A|B|C|D|E|F|G)$"
+          nullable: true
         countryOfProduction:
           type: string
           description: 'ENG: The production country of the product <br> IT: il paese
@@ -1623,18 +1603,20 @@ components:
           type: string
           description: 'ENG: The batch name the product <br> IT: il nomelotto del
             prodotto'
-          pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
+          pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoviglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
           maxLength: 255
         linkEprel:
           type: string
           description: 'ENG: The EPREL product link <br> IT: Il link EPREL del prodotto'
           maxLength: 255
           format: uri
+          nullable: true
         capacity:
           type: string
           description: 'ENG: The capacity of the product <br> IT: Capacità del  prodotto'
           maxLength: 255
           pattern: ".*"
+          nullable: true
         productName:
           type: string
           description: 'ENG: The name of the product  <br> IT: Nome del prodotto'
