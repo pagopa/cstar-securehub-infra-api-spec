@@ -1440,7 +1440,7 @@ components:
           type: string
           description: 'ENG: The computed name of file <br> IT: Nome ricalcolato del
             file csv'
-          pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
+          pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoviglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
           maxLength: 255
         uploadStatus:
           type: string
@@ -1518,13 +1518,6 @@ components:
     ProductDTO:
       type: object
       properties:
-        productFileId:
-          type: string
-          description: 'ENG: The id of file which insert the product <br> IT: Id del
-            lotto che ha censito il prodotto'
-          minLength: 24
-          maxLength: 24
-          pattern: "^[a-fA-F0-9]{24}$" # Mongo ID
         organizationId:
           type: string
           description: 'ENG: The name of organization <br> IT: Id del produttore'
@@ -1575,7 +1568,7 @@ components:
           description: 'ENG: The EPREL code of the product <br> IT: Il code EPREL
             del prodotto'
           maxLength: 50
-          pattern: "^\\d+$"
+          pattern: "^\\\\d+$"
         gtinCode:
           type: string
           description: 'ENG: The GTIN code of the product <br> IT: Il code GTIN del
@@ -1591,7 +1584,7 @@ components:
         energyClass:
           type: string
           description: 'ENG: The product energy class <br> IT: La classe energetica del prodotto'
-          pattern: "^(A\\+\\+\\+|A\\+\\+|A\\+|A|B|C|D|E|F|G)$"
+          pattern: "^(A\\\\+\\\\+\\\\+|A\\\\+\\\\+|A\\\\+|A|B|C|D|E|F|G)$"
           nullable: true
         countryOfProduction:
           type: string
@@ -1603,7 +1596,7 @@ components:
           type: string
           description: 'ENG: The batch name the product <br> IT: il nomelotto del
             prodotto'
-          pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoviglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
+          pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoviglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\\\.csv$"
           maxLength: 255
         linkEprel:
           type: string
@@ -1702,7 +1695,7 @@ components:
                 pattern: "^[a-fA-F0-9]{24}$" # Mongo ID
               batchName:
                 type: string
-                pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
+                pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoviglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
                 maxLength: 255
           maxItems: 1000
     ErrorDTO:
