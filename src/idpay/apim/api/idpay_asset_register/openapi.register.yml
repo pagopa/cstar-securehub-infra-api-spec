@@ -1,12 +1,18 @@
 openapi: 3.0.1
 info:
   title: IDPAY ITN Register Portal Operation API
-  version: '1.0'
-  description: API for managing user permissions and portal consent in the IDPAY ITN
-    Register.
+  description: IDPAY ITN Register Portal Operation API
+  version: "1.0"
   contact:
-    name: API Support
-    email: support@pagopa.it
+    name: PagoPA S.p.A.
+    email: cstar@pagopa.it
+servers:
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/onboarding
+    x-internal: true
+  - description: User Acceptance Test
+    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/onboarding
+    x-internal: true
 tags:
   - name: products
     description: Operations related to product listing and filtering
@@ -18,10 +24,6 @@ tags:
     description: Operations for uploading and verifying product files
   - name: institutions
     description: Operations related to institutions and producers
-servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/register
-    description: production server
-    x-internal: false
 paths:
   /permissions:
     get:
