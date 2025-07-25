@@ -4,6 +4,7 @@
 
 module "idpay_api_mock_product" {
   source = "./.terraform/modules/__v4__/api_management_product"
+  count  = var.enable_flags.mock_io_api ? 1 : 0
 
 
   product_id   = "idpay_itn_api_mock_product"
@@ -23,6 +24,8 @@ module "idpay_api_mock_product" {
 
 ## IDPAY Mock API ##
 resource "azurerm_api_management_api" "idpay_mock_api" {
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
   name                = "${var.env_short}-idpay-int-mock-api"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
@@ -38,10 +41,12 @@ resource "azurerm_api_management_api" "idpay_mock_api" {
 }
 
 resource "azurerm_api_management_product_api" "idpay_mock_product_api" {
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
-  api_name            = azurerm_api_management_api.idpay_mock_api.name
-  product_id          = module.idpay_api_mock_product.product_id
+  api_name            = azurerm_api_management_api.idpay_mock_api[0].name
+  product_id          = module.idpay_api_mock_product[0].product_id
   depends_on          = [module.idpay_api_mock_product, azurerm_api_management_api.idpay_mock_api]
 }
 
@@ -49,8 +54,10 @@ resource "azurerm_api_management_product_api" "idpay_mock_product_api" {
 ## IDPAY Mock Operations ##
 ## IDPAY Mock Notificator (messages) ##
 resource "azurerm_api_management_api_operation" "idpay_mock_notificator_messages" {
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
   operation_id        = "idpay_mock_notificator_messages"
-  api_name            = azurerm_api_management_api.idpay_mock_api.name
+  api_name            = azurerm_api_management_api.idpay_mock_api[0].name
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
   display_name        = "IDPAY Mock notificator messages"
@@ -60,23 +67,27 @@ resource "azurerm_api_management_api_operation" "idpay_mock_notificator_messages
 }
 
 resource "azurerm_api_management_api_operation_policy" "idpay_mock_notificator_messages_policy" {
-  api_name            = azurerm_api_management_api_operation.idpay_mock_notificator_messages.api_name
-  api_management_name = azurerm_api_management_api_operation.idpay_mock_notificator_messages.api_management_name
-  resource_group_name = azurerm_api_management_api_operation.idpay_mock_notificator_messages.resource_group_name
-  operation_id        = azurerm_api_management_api_operation.idpay_mock_notificator_messages.operation_id
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
+  api_name            = azurerm_api_management_api_operation.idpay_mock_notificator_messages[0].api_name
+  api_management_name = azurerm_api_management_api_operation.idpay_mock_notificator_messages[0].api_management_name
+  resource_group_name = azurerm_api_management_api_operation.idpay_mock_notificator_messages[0].resource_group_name
+  operation_id        = azurerm_api_management_api_operation.idpay_mock_notificator_messages[0].operation_id
 
   xml_content = templatefile("./apim/api/idpay_mock_api/mock_notificator_messages.xml.tpl", {
     env = var.env
   })
 
-  depends_on = [azurerm_api_management_api_operation.idpay_mock_notificator_messages]
+  depends_on = [azurerm_api_management_api_operation.idpay_mock_notificator_messages[0]]
 
 }
 
 ## IDPAY Mock Notificator (profiles) ##
 resource "azurerm_api_management_api_operation" "idpay_mock_notificator_profiles" {
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
   operation_id        = "idpay_mock_notificator_profiles"
-  api_name            = azurerm_api_management_api.idpay_mock_api.name
+  api_name            = azurerm_api_management_api.idpay_mock_api[0].name
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
   display_name        = "IDPAY Mock notificator profiles"
@@ -86,22 +97,26 @@ resource "azurerm_api_management_api_operation" "idpay_mock_notificator_profiles
 }
 
 resource "azurerm_api_management_api_operation_policy" "idpay_mock_notificator_profiles_policy" {
-  api_name            = azurerm_api_management_api_operation.idpay_mock_notificator_profiles.api_name
-  api_management_name = azurerm_api_management_api_operation.idpay_mock_notificator_profiles.api_management_name
-  resource_group_name = azurerm_api_management_api_operation.idpay_mock_notificator_profiles.resource_group_name
-  operation_id        = azurerm_api_management_api_operation.idpay_mock_notificator_profiles.operation_id
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
+  api_name            = azurerm_api_management_api_operation.idpay_mock_notificator_profiles[0].api_name
+  api_management_name = azurerm_api_management_api_operation.idpay_mock_notificator_profiles[0].api_management_name
+  resource_group_name = azurerm_api_management_api_operation.idpay_mock_notificator_profiles[0].resource_group_name
+  operation_id        = azurerm_api_management_api_operation.idpay_mock_notificator_profiles[0].operation_id
 
   xml_content = templatefile("./apim/api/idpay_mock_api/mock_notificator_profiles.xml.tpl", {
   })
 
-  depends_on = [azurerm_api_management_api_operation.idpay_mock_notificator_profiles]
+  depends_on = [azurerm_api_management_api_operation.idpay_mock_notificator_profiles[0]]
 
 }
 
 ## IDPAY MOCK BE IO - create service ##
 resource "azurerm_api_management_api_operation" "idpay_mock_create_service" {
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
   operation_id        = "idpay_mock_create_service"
-  api_name            = azurerm_api_management_api.idpay_mock_api.name
+  api_name            = azurerm_api_management_api.idpay_mock_api[0].name
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
   display_name        = "IDPAY Mock BE IO create services"
@@ -111,23 +126,27 @@ resource "azurerm_api_management_api_operation" "idpay_mock_create_service" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "idpay_mock_create_service_policy" {
-  api_name            = azurerm_api_management_api_operation.idpay_mock_create_service.api_name
-  api_management_name = azurerm_api_management_api_operation.idpay_mock_create_service.api_management_name
-  resource_group_name = azurerm_api_management_api_operation.idpay_mock_create_service.resource_group_name
-  operation_id        = azurerm_api_management_api_operation.idpay_mock_create_service.operation_id
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
+  api_name            = azurerm_api_management_api_operation.idpay_mock_create_service[0].api_name
+  api_management_name = azurerm_api_management_api_operation.idpay_mock_create_service[0].api_management_name
+  resource_group_name = azurerm_api_management_api_operation.idpay_mock_create_service[0].resource_group_name
+  operation_id        = azurerm_api_management_api_operation.idpay_mock_create_service[0].operation_id
 
   xml_content = templatefile("./apim/api/idpay_mock_api/mock_create_service.xml.tpl", {
     env = var.env
   })
 
-  depends_on = [azurerm_api_management_api_operation.idpay_mock_create_service]
+  depends_on = [azurerm_api_management_api_operation.idpay_mock_create_service[0]]
 
 }
 
 ## IDPAY MOCK BE IO - delete service ##
 resource "azurerm_api_management_api_operation" "idpay_mock_delete_service" {
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
   operation_id        = "idpay_mock_delete_service"
-  api_name            = azurerm_api_management_api.idpay_mock_api.name
+  api_name            = azurerm_api_management_api.idpay_mock_api[0].name
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
   display_name        = "IDPAY Mock BE IO delete services"
@@ -142,23 +161,27 @@ resource "azurerm_api_management_api_operation" "idpay_mock_delete_service" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "idpay_mock_delete_service_policy" {
-  api_name            = azurerm_api_management_api_operation.idpay_mock_delete_service.api_name
-  api_management_name = azurerm_api_management_api_operation.idpay_mock_delete_service.api_management_name
-  resource_group_name = azurerm_api_management_api_operation.idpay_mock_delete_service.resource_group_name
-  operation_id        = azurerm_api_management_api_operation.idpay_mock_delete_service.operation_id
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
+  api_name            = azurerm_api_management_api_operation.idpay_mock_delete_service[0].api_name
+  api_management_name = azurerm_api_management_api_operation.idpay_mock_delete_service[0].api_management_name
+  resource_group_name = azurerm_api_management_api_operation.idpay_mock_delete_service[0].resource_group_name
+  operation_id        = azurerm_api_management_api_operation.idpay_mock_delete_service[0].operation_id
 
   xml_content = templatefile("./apim/api/idpay_mock_api/mock_delete_service.xml.tpl", {
     env = var.env
   })
 
-  depends_on = [azurerm_api_management_api_operation.idpay_mock_delete_service]
+  depends_on = [azurerm_api_management_api_operation.idpay_mock_delete_service[0]]
 
 }
 
 ## IDPAY MOCK BE IO - update service ##
 resource "azurerm_api_management_api_operation" "idpay_mock_update_service" {
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
   operation_id        = "idpay_mock_update_service"
-  api_name            = azurerm_api_management_api.idpay_mock_api.name
+  api_name            = azurerm_api_management_api.idpay_mock_api[0].name
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
   display_name        = "IDPAY Mock BE IO update services"
@@ -173,23 +196,27 @@ resource "azurerm_api_management_api_operation" "idpay_mock_update_service" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "idpay_mock_update_service_policy" {
-  api_name            = azurerm_api_management_api_operation.idpay_mock_update_service.api_name
-  api_management_name = azurerm_api_management_api_operation.idpay_mock_update_service.api_management_name
-  resource_group_name = azurerm_api_management_api_operation.idpay_mock_update_service.resource_group_name
-  operation_id        = azurerm_api_management_api_operation.idpay_mock_update_service.operation_id
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
+  api_name            = azurerm_api_management_api_operation.idpay_mock_update_service[0].api_name
+  api_management_name = azurerm_api_management_api_operation.idpay_mock_update_service[0].api_management_name
+  resource_group_name = azurerm_api_management_api_operation.idpay_mock_update_service[0].resource_group_name
+  operation_id        = azurerm_api_management_api_operation.idpay_mock_update_service[0].operation_id
 
   xml_content = templatefile("./apim/api/idpay_mock_api/mock_update_service.xml.tpl", {
     env = var.env
   })
 
-  depends_on = [azurerm_api_management_api_operation.idpay_mock_update_service]
+  depends_on = [azurerm_api_management_api_operation.idpay_mock_update_service[0]]
 
 }
 
 ## IDPAY MOCK BE IO - upload service logo ##
 resource "azurerm_api_management_api_operation" "idpay_mock_upload_service_logo" {
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
   operation_id        = "idpay_mock_upload_service_logo"
-  api_name            = azurerm_api_management_api.idpay_mock_api.name
+  api_name            = azurerm_api_management_api.idpay_mock_api[0].name
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
   display_name        = "IDPAY Mock BE IO upload services logo"
@@ -204,22 +231,26 @@ resource "azurerm_api_management_api_operation" "idpay_mock_upload_service_logo"
 }
 
 resource "azurerm_api_management_api_operation_policy" "idpay_mock_upload_service_logo_policy" {
-  api_name            = azurerm_api_management_api_operation.idpay_mock_upload_service_logo.api_name
-  api_management_name = azurerm_api_management_api_operation.idpay_mock_upload_service_logo.api_management_name
-  resource_group_name = azurerm_api_management_api_operation.idpay_mock_upload_service_logo.resource_group_name
-  operation_id        = azurerm_api_management_api_operation.idpay_mock_upload_service_logo.operation_id
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
+  api_name            = azurerm_api_management_api_operation.idpay_mock_upload_service_logo[0].api_name
+  api_management_name = azurerm_api_management_api_operation.idpay_mock_upload_service_logo[0].api_management_name
+  resource_group_name = azurerm_api_management_api_operation.idpay_mock_upload_service_logo[0].resource_group_name
+  operation_id        = azurerm_api_management_api_operation.idpay_mock_upload_service_logo[0].operation_id
 
   xml_content = templatefile("./apim/api/idpay_mock_api/mock_upload_service_logo.xml.tpl", {
   })
 
-  depends_on = [azurerm_api_management_api_operation.idpay_mock_upload_service_logo]
+  depends_on = [azurerm_api_management_api_operation.idpay_mock_upload_service_logo[0]]
 
 }
 
 ## IDPAY MOCK BE IO - retrieve service token ##
 resource "azurerm_api_management_api_operation" "idpay_mock_retrieve_service_token" {
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
   operation_id        = "idpay_mock_retrieve_service_token"
-  api_name            = azurerm_api_management_api.idpay_mock_api.name
+  api_name            = azurerm_api_management_api.idpay_mock_api[0].name
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
   display_name        = "IDPAY Mock BE IO retrieve service token"
@@ -234,23 +265,27 @@ resource "azurerm_api_management_api_operation" "idpay_mock_retrieve_service_tok
 }
 
 resource "azurerm_api_management_api_operation_policy" "idpay_mock_retrieve_service_token_policy" {
-  api_name            = azurerm_api_management_api_operation.idpay_mock_retrieve_service_token.api_name
-  api_management_name = azurerm_api_management_api_operation.idpay_mock_retrieve_service_token.api_management_name
-  resource_group_name = azurerm_api_management_api_operation.idpay_mock_retrieve_service_token.resource_group_name
-  operation_id        = azurerm_api_management_api_operation.idpay_mock_retrieve_service_token.operation_id
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
+  api_name            = azurerm_api_management_api_operation.idpay_mock_retrieve_service_token[0].api_name
+  api_management_name = azurerm_api_management_api_operation.idpay_mock_retrieve_service_token[0].api_management_name
+  resource_group_name = azurerm_api_management_api_operation.idpay_mock_retrieve_service_token[0].resource_group_name
+  operation_id        = azurerm_api_management_api_operation.idpay_mock_retrieve_service_token[0].operation_id
 
   xml_content = templatefile("./apim/api/idpay_mock_api/mock_retrieve_service_token.xml.tpl", {
     env = var.env
   })
 
-  depends_on = [azurerm_api_management_api_operation.idpay_mock_retrieve_service_token]
+  depends_on = [azurerm_api_management_api_operation.idpay_mock_retrieve_service_token[0]]
 
 }
 
 ## IDPAY ONE TRUST ##
 resource "azurerm_api_management_api_operation" "idpay_mock_tos_version" {
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
   operation_id        = "idpay_mock_tos_version"
-  api_name            = azurerm_api_management_api.idpay_mock_api.name
+  api_name            = azurerm_api_management_api.idpay_mock_api[0].name
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
   display_name        = "IDPAY Mock TOS Version"
@@ -265,14 +300,16 @@ resource "azurerm_api_management_api_operation" "idpay_mock_tos_version" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "idpay_mock_tos_version_policy" {
-  api_name            = azurerm_api_management_api_operation.idpay_mock_tos_version.api_name
-  api_management_name = azurerm_api_management_api_operation.idpay_mock_tos_version.api_management_name
-  resource_group_name = azurerm_api_management_api_operation.idpay_mock_tos_version.resource_group_name
-  operation_id        = azurerm_api_management_api_operation.idpay_mock_tos_version.operation_id
+  count = var.enable_flags.mock_io_api ? 1 : 0
+
+  api_name            = azurerm_api_management_api_operation.idpay_mock_tos_version[0].api_name
+  api_management_name = azurerm_api_management_api_operation.idpay_mock_tos_version[0].api_management_name
+  resource_group_name = azurerm_api_management_api_operation.idpay_mock_tos_version[0].resource_group_name
+  operation_id        = azurerm_api_management_api_operation.idpay_mock_tos_version[0].operation_id
 
   xml_content = templatefile("./apim/api/idpay_mock_api/mock_tos_version.xml.tpl", {
   })
 
-  depends_on = [azurerm_api_management_api_operation.idpay_mock_tos_version]
+  depends_on = [azurerm_api_management_api_operation.idpay_mock_tos_version[0]]
 
 }
