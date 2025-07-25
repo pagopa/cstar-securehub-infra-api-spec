@@ -37,7 +37,7 @@ jobs:
             src/idpay/apim/api/idpay_wallet/openapi.wallet.yml.tpl
             src/idpay/apim/api/idpay_qrcode_payment/io/openapi.qrcode_payment_io.yml.tpl
             src/idpay/apim/api/idpay_payment_io/openapi.payment_io.yml.tpl
-            merge-config.json
+            scripts/idpay-script/openapi-merge.json
 
       - name: Check if relevant files were modified
         id: should_merge
@@ -55,7 +55,7 @@ jobs:
           exit 0
 
       - name: Merge OpenAPI files
-        run: openapi-merge-cli --config merge-config.json
+        run: openapi-merge-cli --config scripts/idpay-script/openapi-merge.json
 
       - name: Commit and push merged OpenAPI file to PR branch
         run: |
@@ -69,4 +69,3 @@ jobs:
           else
             git commit -m "🤖 Merge OpenAPI specs via GitHub Action in PR"
             git push origin HEAD
-          fi
