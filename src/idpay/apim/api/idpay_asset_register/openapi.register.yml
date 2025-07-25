@@ -1,12 +1,18 @@
 openapi: 3.0.1
 info:
   title: IDPAY ITN Register Portal Operation API
-  version: '1.0'
-  description: API for managing user permissions and portal consent in the IDPAY ITN
-    Register.
+  description: IDPAY ITN Register Portal Operation API
+  version: "1.0"
   contact:
-    name: API Support
-    email: support@pagopa.it
+    name: PagoPA S.p.A.
+    email: cstar@pagopa.it
+servers:
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/onboarding
+    x-internal: true
+  - description: User Acceptance Test
+    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/onboarding
+    x-internal: true
 tags:
   - name: products
     description: Operations related to product listing and filtering
@@ -18,10 +24,6 @@ tags:
     description: Operations for uploading and verifying product files
   - name: institutions
     description: Operations related to institutions and producers
-servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/register
-    description: production server
-    x-internal: false
 paths:
   /permissions:
     get:
@@ -905,7 +907,7 @@ paths:
               - eprelCode, asc
         - name: category
           in: query
-          required: true
+          required: false
           schema:
             type: string
             enum:
@@ -1438,7 +1440,7 @@ components:
           type: string
           description: 'ENG: The computed name of file <br> IT: Nome ricalcolato del
             file csv'
-          pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
+          pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoviglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
           maxLength: 255
         uploadStatus:
           type: string
@@ -1516,13 +1518,6 @@ components:
     ProductDTO:
       type: object
       properties:
-        productFileId:
-          type: string
-          description: 'ENG: The id of file which insert the product <br> IT: Id del
-            lotto che ha censito il prodotto'
-          minLength: 24
-          maxLength: 24
-          pattern: "^[a-fA-F0-9]{24}$" # Mongo ID
         organizationId:
           type: string
           description: 'ENG: The name of organization <br> IT: Id del produttore'
@@ -1573,7 +1568,7 @@ components:
           description: 'ENG: The EPREL code of the product <br> IT: Il code EPREL
             del prodotto'
           maxLength: 50
-          pattern: "^\\d+$"
+          pattern: "^\\\\d+$"
         gtinCode:
           type: string
           description: 'ENG: The GTIN code of the product <br> IT: Il code GTIN del
@@ -1585,32 +1580,13 @@ components:
           description: 'ENG: The product code <br> IT: Il codice prodotto'
           maxLength: 100
           pattern: "^[a-zA-Z0-9 ]{0,100}$"
+          nullable: true
         energyClass:
           type: string
-          description: 'ENG: The product energy class <br> IT: La classe energetica
-            del prodotto'
-          enum:
-            - A+++
-            - A++
-            - A+
-            - A
-            - B
-            - C
-            - D
-            - E
-            - F
-            - G
-          x-enum-varnames:
-            - A_TRIPLE_PLUS
-            - A_DOUBLE_PLUS
-            - A_PLUS
-            - A
-            - B
-            - C
-            - D
-            - E
-            - F
-            - G
+          description: 'ENG: The product energy class <br> IT: La classe energetica del prodotto'
+          maxLength: 4
+          pattern: "^(A\\\\+\\\\+\\\\+|A\\\\+\\\\+|A\\\\+|A|B|C|D|E|F|G)$"
+          nullable: true
         countryOfProduction:
           type: string
           description: 'ENG: The production country of the product <br> IT: il paese
@@ -1621,18 +1597,20 @@ components:
           type: string
           description: 'ENG: The batch name the product <br> IT: il nomelotto del
             prodotto'
-          pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
+          pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoviglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\\\.csv$"
           maxLength: 255
         linkEprel:
           type: string
           description: 'ENG: The EPREL product link <br> IT: Il link EPREL del prodotto'
           maxLength: 255
           format: uri
+          nullable: true
         capacity:
           type: string
           description: 'ENG: The capacity of the product <br> IT: Capacità del  prodotto'
           maxLength: 255
           pattern: ".*"
+          nullable: true
         productName:
           type: string
           description: 'ENG: The name of the product  <br> IT: Nome del prodotto'
@@ -1718,7 +1696,7 @@ components:
                 pattern: "^[a-fA-F0-9]{24}$" # Mongo ID
               batchName:
                 type: string
-                pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
+                pattern: "^(Frigoriferi|Cappe_Da_Cucina|Lavatrici|Lavastoviglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$"
                 maxLength: 255
           maxItems: 1000
     ErrorDTO:
