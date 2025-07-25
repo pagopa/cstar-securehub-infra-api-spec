@@ -16,8 +16,6 @@ module "idpay_itn_api_acquirer_product" {
   subscription_required = true
   approval_required     = false
 
-  subscriptions_limit = 0
-
   policy_xml = file("./apim/api_product/acquirer/policy_acquirer.xml")
 
   groups = ["developers"]
