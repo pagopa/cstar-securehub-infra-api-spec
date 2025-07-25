@@ -17,7 +17,7 @@ jobs:
           ignore_patterns: ".github,.devops,.vscode,.terraform-version,90_aws"
           start_folder: "src"
           include_folders: "tag_config"
-          include_patterns: "src,domains"
+          include_patterns: "src"
           stopper_folders: "env,tests,api,api_product,api_fragment"
 
       - name: 👀 See folders downloaded
