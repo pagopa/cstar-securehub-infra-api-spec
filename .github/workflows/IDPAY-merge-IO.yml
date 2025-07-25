@@ -1,0 +1,72 @@
+name: Merge OpenAPI Specs in PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+jobs:
+  merge-openapi:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.head_ref }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install openapi-merge-cli
+        run: npm install -g openapi-merge-cli
+
+      - name: Get list of changed files in PR
+        id: file_changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            src/idpay/apim/api/idpay_appio_full/openapi.server.url.yml
+            src/idpay/apim/api/idpay_iban/openapi.iban.yml
+            src/idpay/apim/api/idpay_onboarding_workflow/openapi.onboarding.yml
+            src/idpay/apim/api/idpay_timeline/openapi.timeline.yml.tpl
+            src/idpay/apim/api/idpay_wallet/openapi.wallet.yml.tpl
+            src/idpay/apim/api/idpay_qrcode_payment/io/openapi.qrcode_payment_io.yml.tpl
+            src/idpay/apim/api/idpay_payment_io/openapi.payment_io.yml.tpl
+            merge-config.json
+
+      - name: Check if relevant files were modified
+        id: should_merge
+        run: |
+          if [ "${{ steps.file_changes.outputs.any_changed }}" = "true" ]; then
+            echo "merge_needed=true" >> $GITHUB_ENV
+          else
+            echo "merge_needed=false" >> $GITHUB_ENV
+          fi
+
+      - name: Skip merge if no relevant files changed
+        if: env.merge_needed == 'false'
+        run: |
+          echo "⏩ Nessun file rilevante modificato nella PR. Merge saltato."
+          exit 0
+
+      - name: Merge OpenAPI files
+        run: openapi-merge-cli --config merge-config.json
+
+      - name: Commit and push merged OpenAPI file to PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add src/idpay/apim/api/idpay_appio_full/openapi.appio.full.merged.yml
+
+          if git diff --cached --quiet; then
+            echo "✅ Nessuna modifica nel file mergiato. Nessun commit necessario."
+          else
+            git commit -m "🤖 Merge OpenAPI specs via GitHub Action in PR"
+            git push origin HEAD
+          fi
