@@ -122,6 +122,24 @@ module "idpay_itn_register_portal_api" {
         selc_base_url                  = var.selc_base_url,
         selfcare_api_key_reference     = azurerm_api_management_named_value.selfcare_api_key.display_name
       })
-    }
+    },
+    {
+      operation_id = "updateProductStatusApproved"
+      xml_content = templatefile("./apim/api/idpay_asset_register/patch-products-update-status-approved.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "updateProductStatusSupervisioned"
+      xml_content = templatefile("./apim/api/idpay_asset_register/patch-products-update-status-supervisioned.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "updateProductStatusRejected"
+      xml_content = templatefile("./apim/api/idpay_asset_register/patch-products-update-status-rejected.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
   ]
 }
