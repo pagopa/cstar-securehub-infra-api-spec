@@ -59,8 +59,8 @@ jobs:
             echo "🔎 Validating $file"
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-            # Run Spectral and display full results
-            spectral lint -r node_modules/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs "$file"
+            # Usa il ruleset personalizzato .spectral.yaml
+            spectral lint -r .spectral.yaml "$file"
             if [ $? -ne 0 ]; then
               failed=1
             else

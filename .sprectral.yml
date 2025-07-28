@@ -1,0 +1,41 @@
+extends:
+  - "spectral:oas"
+  - "spectral:asyncapi"
+  - "https://unpkg.com/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs"
+
+rules:
+  reusable-responses:
+    description: "Reusable responses should be defined in 'components/responses' and referenced."
+    message: "Response is defined inline. Move it to '#/components/responses' and use a $ref."
+    given: "$.paths[][].responses[?(!@property.match(/^(1|2|3|4|5)XX$/) && @.description)]"
+    severity: warn
+    then:
+      field: "$ref"
+      function: truthy
+
+  reusable-parameters:
+    description: "Reusable parameters should be defined in 'components/parameters' and referenced."
+    message: "Parameter is defined inline. Move it to '#/components/parameters' and use a $ref."
+    given: "$.paths..parameters[?(@.in && @.name)]"
+    severity: warn
+    then:
+      field: "$ref"
+      function: truthy
+
+  reusable-request-bodies:
+    description: "Request bodies should be defined in 'components/requestBodies' and referenced."
+    message: "Request body is defined inline. Move it to '#/components/requestBodies' and use a $ref."
+    given: "$.paths[][].requestBody[?(@.content)]"
+    severity: warn
+    then:
+      field: "$ref"
+      function: truthy
+
+  reusable-headers:
+    description: "Reusable headers should be defined in 'components/headers' and referenced."
+    message: "Header is defined inline. Move it to '#/components/headers' and use a $ref."
+    given: "$.paths..headers[?(@.schema || @.description)]"
+    severity: warn
+    then:
+      field: "$ref"
+      function: truthy
