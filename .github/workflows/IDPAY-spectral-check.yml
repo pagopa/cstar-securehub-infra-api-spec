@@ -59,13 +59,11 @@ jobs:
             echo "🔎 Validating $file"
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-            # Usa il ruleset personalizzato .spectral.yaml
-            spectral lint -r .spectral.yaml "$file"
-            if [ $? -ne 0 ]; then
+            # Run Spectral and catch crashes
+            spectral lint -r .spectral.yaml --verbose "$file" || {
+              echo "❌ Spectral crashed while validating $file"
               failed=1
-            else
-              echo "✅ $file: Passed validation."
-            fi
+            }
           done
 
           if [ $failed -eq 1 ]; then
