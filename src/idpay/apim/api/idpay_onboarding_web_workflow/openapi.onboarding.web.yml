@@ -467,6 +467,7 @@ components:
       required:
         - initiativeId
         - confirmedTos
+        - pdndAccept
         - selfDeclarationList
         - userMail
         - userMailConfirmation
@@ -480,6 +481,10 @@ components:
           type: boolean
           description: >-
             "ENG: Indicates whether the user has correctly accepted the Terms and Conditions of the initiative - IT: Indica se l'utente ha correttamente accettato i Termini e Condizioni dell'iniziativa"
+        pdndAccept:
+          type: boolean
+          description: >-
+            "ENG: Indicates whether the user has correctly accepted the PDND Criteria of the initiative - IT: Indica se l'utente ha correttamente accettato i PDND Criteria dell'iniziativa"
         selfDeclarationList:
           type: array
           items:
@@ -502,6 +507,7 @@ components:
       oneOf:
         - $ref: "#/components/schemas/SelfConsentBoolDTO"
         - $ref: "#/components/schemas/SelfConsentMultiDTO"
+        - $ref: "#/components/schemas/SelfConsentMultiTypeDTO"
         - $ref: "#/components/schemas/SelfConsentTextDTO"
     OnboardingStatusDTO:
       title: OnboardingStatusDTO
@@ -545,7 +551,7 @@ components:
         _type:
           type: string
           enum:
-            - BOOLEAN
+            - boolean
           description: "ENG: Self-consent boolean type - IT: Auto consenso di tipo boolean"
         code:
           type: string
@@ -572,6 +578,29 @@ components:
           description: "ENG: Self-consent code - IT: Codice dell'auto consenso"
           pattern: "^[ -~]{0,10}$"
           maxLength: 10
+        value:
+          type: string
+          example: "01, 02, 03"
+          description: "ENG: Indicates self-consent values - IT: Indica i valori per gli auto consensi"
+          pattern: "^[ -~]{0,10}$"
+          maxLength: 10
+    SelfConsentMultiTypeDTO:
+      type: object
+      required:
+        - _type
+        - code
+        - value
+      properties:
+        _type:
+          type: string
+          enum:
+            - multi_consent
+          description: "ENG: ISEE Self-consent value type - IT: Auto consenso di tipo multipli ISEE"
+        code:
+          type: string
+          enum:
+            - isee
+          description: "ENG: Self-consent code - IT: Tipologia di multiconsenso"
         value:
           type: string
           example: "01, 02, 03"
@@ -765,6 +794,7 @@ components:
       anyOf:
         - $ref: '#/components/schemas/SelfCriteriaBoolDTO'
         - $ref: '#/components/schemas/SelfCriteriaMultiDTO'
+        - $ref: '#/components/schemas/SelfCriteriaMultiTypeDTO'
         - $ref: '#/components/schemas/SelfCriteriaTextDTO'
     SelfCriteriaBoolDTO:
       type: object
@@ -775,7 +805,7 @@ components:
             ENG: Self-declaration boolean type - IT: Autodichiarazione di tipo
             boolean
           enum:
-            - BOOLEAN
+            - boolean
         description:
           type: string
           example: "descrizione"
@@ -812,7 +842,7 @@ components:
             ENG: Self-declaration value type - IT: Autodichiarazione di tipo
             multipli
           enum:
-            - MULTI
+            - multi
         description:
           type: string
           example: "descrizione"
@@ -863,6 +893,46 @@ components:
             del record di autodichiarazione
           maxLength: 255
           pattern: "^[ -~]{0,255}$"
+    SelfCriteriaMultiTypeDTO:
+      title: SelfCriteriaMultiDTO
+      type: object
+      properties:
+        _type:
+          type: string
+          description: >-
+            ENG: Self-declaration value type - IT: Autodichiarazione di tipo
+            multipli
+          enum:
+            - multi_consent
+        description:
+          type: string
+          example: "descrizione"
+          description: >-
+            ENG: Self-declaration description - IT: Descrizione
+            dell'autodichiarazione
+          maxLength: 255
+          pattern: '^[ -~]{0,255}$'
+        subDescription:
+          type: string
+          example: "sotto descrizione"
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
+            dell'autodichiarazione
+          maxLength: 255
+          pattern: '^[ -~]{0,255}$'
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/RowDataDTO'
+          description: >-
+            ENG: Indicates self-declaration values - IT: Indica i valori per
+            l'autodichiarazione
+          maxItems: 10
+        code:
+          type: string
+          description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
+          enum:
+            - isee
     SelfCriteriaTextDTO:
       title: SelfCriteriaTextDTO
       type: object
@@ -873,7 +943,7 @@ components:
             ENG: Self-declaration value type free text - IT: Autodichiarazione
             di tipo testo libero
           enum:
-            - TEXT
+            - text
         description:
           type: string
           example: "descrizione"
