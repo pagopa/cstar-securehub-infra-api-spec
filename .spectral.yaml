@@ -7,7 +7,7 @@ rules:
   reusable-responses:
     description: "Reusable responses should be defined in 'components/responses' and referenced."
     message: "Response is defined inline. Move it to '#/components/responses' and use a $ref."
-    given: "$.paths[][].responses[?(!@property.match(/^(1|2|3|4|5)XX$/) && @.description)]"
+    given: "$.paths[*][*].responses[?(!@property.match(/^(1|2|3|4|5)XX$/) && @.description)]"
     severity: warn
     then:
       field: "$ref"
@@ -25,7 +25,7 @@ rules:
   reusable-request-bodies:
     description: "Request bodies should be defined in 'components/requestBodies' and referenced."
     message: "Request body is defined inline. Move it to '#/components/requestBodies' and use a $ref."
-    given: "$.paths[][].requestBody[?(@.content)]"
+    given: "$.paths[*][*].requestBody[?(@.content)]"
     severity: warn
     then:
       field: "$ref"
