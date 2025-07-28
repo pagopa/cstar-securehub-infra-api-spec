@@ -1,7 +1,7 @@
 prefix         = "cstar"
 env_short      = "p"
 env            = "prod"
-domain         = "idpay"
+domain         = "mcshared"
 location_short = "itn"
 
 
