@@ -59,9 +59,8 @@ jobs:
             echo "🔎 Validating $file"
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-            # Run Spectral and catch crashes
             spectral lint -r .spectral.yaml --verbose "$file" || {
-              echo "❌ Spectral crashed while validating $file"
+              echo "❌ Spectral validation failed for $file"
               failed=1
             }
           done
