@@ -1,55 +1,112 @@
 openapi: 3.0.1
 info:
-  title: IDPAY ITN Onboarding Workflow WEB API
-  description: IDPAY ITN Onboarding Workflow WEB
+  title: IDPAY ITN Onboarding Workflow IO API
+  description: IDPAY ITN Onboarding Workflow IO
   version: "1.0"
   contact:
     name: PagoPA S.p.A.
     email: cstar@pagopa.it
 servers:
   - description: Development Test
-    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/onboarding/web
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/onboarding
     x-internal: true
   - description: User Acceptance Test
-    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/onboarding/web
+    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/onboarding
     x-internal: true
 paths:
-  /{initiativeId}/detail:
+  /service/{serviceId}:
     get:
       tags:
-        - onboardingWeb
-      summary: "ENG: Returns the detail of an active initiative - IT: Ritorna i dettagli di un'iniziativa attiva"
-      description: "Returns the detail of an active initiative"
-      operationId: webInitiativeDetail
+        - onboarding
+      summary: "ENG: Retrieves the initiative ID starting from the corresponding service ID - IT: Ritrova l'identificativo dell'iniziativa a partire dall'idetificativo del service"
+      description: "Retrieves the initiative ID starting from the corresponding service ID"
+      operationId: getInitiativeData
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
-        - name: Accept-Language
-          in: header
-          description: "ENG: Language - IT: Lingua"
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          in: path
-          description: The initiative ID
-          required: true
-          schema:
-            type: string
-            description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: "#/components/parameters/ServiceId"
+        - $ref: "#/components/parameters/AcceptLanguage"
       responses:
-        '200':
-          description: Ok
+        "200":
+          $ref: "#/components/responses/InitiativeDataResponse"
+        "400":
+          $ref: "#/components/responses/InitiativeBadRequestResponse"
+        "401":
+          $ref: "#/components/responses/InitiativeUnauthorizedResponse"
+        "404":
+          $ref: "#/components/responses/InitiativeNotFoundResponse"
+        "429":
+          $ref: "#/components/responses/InitiativeTooManyRequestsResponse"
+        "500":
+          $ref: "#/components/responses/InitiativeInternalServerErrorResponse"
+  /:
+    put:
+      tags:
+        - onboarding
+      summary: "ENG: Acceptance of Terms & Conditions - IT: Accettazione dei Termini e condizioni"
+      description: "Acceptance of Terms & Conditions"
+      operationId: onboardingCitizen
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionHeader"
+        - $ref: "#/components/parameters/AcceptLanguage"
+      requestBody:
+        description: "ENG: Id of the initiative IT: Identificativo dell'iniziativa"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OnboardingPutDTO"
+      responses:
+        "204":
+          $ref: "#/components/responses/OnboardingAcceptedResponse"
+        "400":
+          $ref: "#/components/responses/OnboardingBadRequestResponse"
+        "401":
+          $ref: "#/components/responses/OnboardingUnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/OnboardingForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/OnboardingNotFoundResponse"
+        "429":
+          $ref: "#/components/responses/OnboardingTooManyRequestsResponse"
+        "500":
+          $ref: "#/components/responses/OnboardingInternalServerErrorResponse"
+  /initiative:
+    put:
+      tags:
+        - onboarding
+      summary: "ENG: Checks the initiative prerequisites - IT: Verifica i prerequisiti dell'iniziativa"
+      description: "Checks the initiative prerequisites"
+      operationId: checkPrerequisites
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionHeader"
+        - $ref: "#/components/parameters/AcceptLanguage"
+      requestBody:
+        description: "ENG: Id of the initiative - IT: Identificatico dell'iniziativa"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OnboardingPutDTO"
+      responses:
+        "200":
+          description: Check successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InitiativeDTO'
+                $ref: "#/components/schemas/RequiredCriteriaDTO"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "202":
+          description: Accepted - Request Taken Over
+          content:
+            application/json: {}
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -90,15 +147,15 @@ paths:
               $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
               $ref: "#/components/headers/Retry-After"
-        '404':
-          description: The requested inititative was not found
+        "403":
+          description: This onboarding is forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
-                code: "ONBOARDING_INITIATIVE_NOT_FOUND"
-                message: "Initiative not found"
+                code: "ONBOARDING_BUDGET_EXHAUSTED"
+                message: "Budget exhausted for initiative XXXXX"
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -108,12 +165,30 @@ paths:
               $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
               $ref: "#/components/headers/Retry-After"
-        '429':
-          description: Too many Request
+        "404":
+          description: The requested resource was not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
+              example:
+                code: "ONBOARDING_INITIATIVE_NOT_FOUND"
+                message: "Cannot find initiative XXXXX"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "429":
+          description: Too many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_TOO_MANY_REQUESTS"
                 message: "Too many requests"
@@ -126,15 +201,15 @@ paths:
               $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
               $ref: "#/components/headers/Retry-After"
-        '500':
+        "500":
           description: Server ERROR
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OnboardingErrorDTO'
+                $ref: "#/components/schemas/OnboardingErrorDTO"
               example:
                 code: "ONBOARDING_GENERIC_ERROR"
-                message: "Application error"
+                message: "An error occurred in the microservice admissibility"
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -144,35 +219,25 @@ paths:
               $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
               $ref: "#/components/headers/Retry-After"
-  /:
+  /consent:
     put:
       tags:
-        - onboardingWeb
-      summary: "ENG: Saving mail and self-declarations - IT: Salvataggio della mail e delle autodichiarazioni"
-      description: "Saving mail and self-declarations"
-      operationId: webSaveOnboarding
+        - onboarding
+      summary: "ENG: Saves the consensus of both PDND and self-declaration - IT: Salva i consensi di PDND e le autodichiarazioni"
+      description: "Saves the consensus of both PDND and self-declaration"
+      operationId: consentOnboarding
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
-        - name: Accept-Language
-          in: header
-          description: "ENG: Language - IT: Lingua"
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
+        - $ref: "#/components/parameters/AcceptLanguage"
       requestBody:
         description: >-
           ENG: Unique identifier of the subscribed initiative, flag for PDND
-          acceptation and the list of accepted self-declared criteria - IT: Identificativo univoco dell'iniziativa sottoscritta, elenco dei criteri autodichiarati accettati,
+          acceptation and the list of accepted self-declared criteria - IT: Identificativo univoco dell'iniziativa sottoscritta, flag per l'accettazione PDND e l'elenco dei criteri autodichiarati accettati
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/OnboardingWebDTO"
+              $ref: "#/components/schemas/ConsentPutDTO"
       responses:
         "202":
           description: Accepted - Request Taken Over
@@ -290,34 +355,17 @@ paths:
               $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
               $ref: "#/components/headers/Retry-After"
-  /{initiativeId}/status:
+  "/{initiativeId}/status":
     get:
       tags:
-        - onboardingWeb
+        - onboarding
       summary: "ENG: Returns the actual onboarding status along with the date on which that status changed and, if present, the date upon which the onboarding successfully went through - IT: Ritorna lo stato attuale dell'adesione insieme alla data in cui quello stato è cambiato e, se presente, la data in cui l'adesione è avvenuta con successo"
       description: "Returns the actual onboarding status along with the date on which that status changed and, if present, the date upon which the onboarding successfully went through"
-      operationId: webOnboardingStatus
+      operationId: onboardingStatus
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
-        - name: Accept-Language
-          in: header
-          description: "ENG: Language - IT: Lingua"
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          in: path
-          description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: "#/components/parameters/AcceptLanguage"
+        - $ref: "#/components/parameters/InitiativeId"
       responses:
         "200":
           description: Check successful
@@ -419,6 +467,101 @@ paths:
               $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
               $ref: "#/components/headers/Retry-After"
+  "/user/initiative/status":
+    get:
+      tags:
+        - onboarding
+      summary: >-
+        ENG: Returns all initiatives in Waiting List or In Evaluation status that the user is onboarded to or has requested
+        - IT: Ritorna tutte le iniziative in stato Lista Attesa o In Valutazione a cui l'utente è onboardato o che ha fatto richiesta
+      description: "Returns all initiatives in Waiting List or In Evaluation status that the user is onboarded to or has requested"
+      operationId: onboardingInitiativeUserStatus
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionHeader"
+        - $ref: "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: Check successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListUsersOnboardingStatusDTO"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OnboardingErrorDTO"
+              example:
+                code: ONBOARDING_INVALID_REQUEST
+                message: Something went wrong handling the request
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "401":
+          description: Authentication failed
+          content:
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "429":
+          description: Too many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OnboardingErrorDTO"
+              example:
+                code: ONBOARDING_TOO_MANY_REQUESTS
+                message: Too many requests
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+        "500":
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OnboardingErrorDTO"
+              example:
+                code: ONBOARDING_GENERIC_ERROR
+                message: An error occurred in the microservice admissibility
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            RateLimit-Limit:
+              $ref: "#/components/headers/RateLimit-Limit"
+            RateLimit-Reset:
+              $ref: "#/components/headers/RateLimit-Reset"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
 components:
   parameters:
     ApiVersionHeader:
@@ -431,6 +574,253 @@ components:
         enum: [v1]
         example: v1
         default: v1
+    ServiceId:
+      name: serviceId
+      in: path
+      description: "ENG: The service ID - IT: Identificativo del service"
+      required: true
+      schema:
+        type: string
+        maxLength: 50
+        pattern: "$ ^[a-zA-Z0-9]+$"
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      description: "ENG: Language - IT: Lingua"
+      required: true
+      schema:
+        type: string
+        pattern: "^[ -~]{2,5}$"
+        minLength: 2
+        maxLength: 5
+        example: it-IT
+        default: it-IT
+    InitiativeId:
+      name: initiativeId
+      in: path
+      description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
+      required: true
+      schema:
+        type: string
+        maxLength: 24
+        pattern: "$ ^[a-zA-Z0-9]+$"
+  responses:
+    InitiativeDataResponse:
+      description: Get successful
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeDataDTO"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    InitiativeBadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeErrorDTO"
+          example:
+            code: "INITIATIVE_INVALID_REQUEST"
+            message: "Something went wrong handling the request"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    InitiativeUnauthorizedResponse:
+      description: Authentication failed
+      content:
+        application/json: {}
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    InitiativeNotFoundResponse:
+      description: The requested initiative was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeErrorDTO"
+          example:
+            code: "INITIATIVE_NOT_FOUND"
+            message: "Initiative not found"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    InitiativeTooManyRequestsResponse:
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeErrorDTO"
+          example:
+            code: "INITIATIVE_TOO_MANY_REQUESTS"
+            message: "Too many requests"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    InitiativeInternalServerErrorResponse:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeErrorDTO"
+          example:
+            code: "INITIATIVE_GENERIC_ERROR"
+            message: "Application error"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingAcceptedResponse:
+      description: Acceptance successful
+      content:
+        application/json: {}
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingBadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OnboardingErrorDTO"
+          example:
+            code: "ONBOARDING_INVALID_REQUEST"
+            message: "Something went wrong handling the request"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingUnauthorizedResponse:
+      description: Authentication failed
+      content:
+        application/json: {}
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingForbiddenResponse:
+      description: This onboarding is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OnboardingErrorDTO"
+          example:
+            code: "ONBOARDING_BUDGET_EXHAUSTED"
+            message: "Budget exhausted for initiative XXXXX"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingNotFoundResponse:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OnboardingErrorDTO"
+          example:
+            code: "ONBOARDING_INITIATIVE_NOT_FOUND"
+            message: "Cannot find initiative XXXXX"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingTooManyRequestsResponse:
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OnboardingErrorDTO"
+          example:
+            code: "ONBOARDING_TOO_MANY_REQUESTS"
+            message: "Too many requests"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingInternalServerErrorResponse:
+      description: Server ERROR
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OnboardingErrorDTO"
+          example:
+            code: "ONBOARDING_GENERIC_ERROR"
+            message: "An error occurred in the microservice admissibility"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
   headers:
     Access-Control-Allow-Origin:
       description: Indicates whether the response can be shared with requesting code from the given origin
@@ -461,54 +851,91 @@ components:
         minimum: 1
         maximum: 240
   schemas:
-    OnboardingWebDTO:
-      title: OnboardingWebDTO
+    ConsentPutDTO:
+      title: ConsentPutDTO
       type: object
       required:
         - initiativeId
-        - confirmedTos
         - pdndAccept
         - selfDeclarationList
-        - userMail
-        - userMailConfirmation
       properties:
         initiativeId:
           type: string
           description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
           maxLength: 24
           pattern: "$ ^[a-zA-Z0-9]+$"
-        confirmedTos:
-          type: boolean
-          description: >-
-            "ENG: Indicates whether the user has correctly accepted the Terms and Conditions of the initiative - IT: Indica se l'utente ha correttamente accettato i Termini e Condizioni dell'iniziativa"
         pdndAccept:
           type: boolean
-          description: >-
-            "ENG: Indicates whether the user has correctly accepted the PDND Criteria of the initiative - IT: Indica se l'utente ha correttamente accettato i PDND Criteria dell'iniziativa"
+          description: "ENG: Flag for PDND acceptation - IT: Flag per l'accettazione PDND"
         selfDeclarationList:
           type: array
           items:
             $ref: "#/components/schemas/SelfConsentDTO"
           description: "ENG: The list of accepted self-declared criteria - IT: Lista dei criteri autodichiarati"
           maxItems: 10
-        userMail:
-          type: string
-          description: "ENG: Contact email provided by the user during web onboarding - IT: Mail di contatto fornita dall'utente in fase di onboarding web"
-          maxLength: 24
-          example: "utente@email.it"
-          pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
-        userMailConfirmation:
-          type: string
-          description: "ENG: Confirm email provided by the user during web onboarding - IT: Mail di conferma fornita dall'utente in fase di onboarding web"
-          maxLength: 24
-          example: "utente@email.it"
-          pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
     SelfConsentDTO:
       oneOf:
         - $ref: "#/components/schemas/SelfConsentBoolDTO"
         - $ref: "#/components/schemas/SelfConsentMultiDTO"
-        - $ref: "#/components/schemas/SelfConsentMultiTypeDTO"
         - $ref: "#/components/schemas/SelfConsentTextDTO"
+    ListUsersOnboardingStatusDTO:
+      title: ListUsersOnboardingStatusDTO
+      type: array
+      items:
+        $ref: "#/components/schemas/UserOnboardingStatusDTO"
+      description: >-
+        ENG: List of initiatives in Waiting List or In Evaluation status, to which the user is onboarded
+        - IT: Lista delle iniziative in stato Lista d''attesa o In Valutazione, a cui l'utente è onboardato
+      maxItems: 10
+    OnboardingPutDTO:
+      title: OnboardingPutDTO
+      type: object
+      required:
+        - initiativeId
+      properties:
+        initiativeId:
+          type: string
+          description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
+          maxLength: 24
+          pattern: "$ ^[a-zA-Z0-9]+$"
+    UserOnboardingStatusDTO:
+      title: UserOnboardingStatusDTO
+      type: object
+      required:
+        - initiativeName
+        - serviceId
+        - initiativeId
+        - status
+        - statusDate
+      properties:
+        initiativeName:
+          type: string
+          description: "ENG: Name of the initiative - IT: Nome dell'iniziativa"
+          pattern: "^[ -~]{1,255}$"
+          example: "Bonus Elettrodomestici"
+          maxLength: 255
+        serviceId:
+          type: string
+          description: "ENG: The service ID - IT: Identificativo del service"
+          maxLength: 50
+          pattern: "$ ^[a-zA-Z0-9]+$"
+        initiativeId:
+          type: string
+          description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
+          maxLength: 24
+          pattern: "$ ^[a-zA-Z0-9]+$"
+        status:
+          enum:
+            - ON_WAITING_LIST
+            - ON_EVALUATION
+          type: string
+          description: "ENG: Actual status of the citizen onboarding for an initiative - IT: Stato attuale del cittadino rispetto ad un'iniziativa"
+        statusDate:
+          type: string
+          format: date-time
+          minLength: 19
+          maxLength: 19
+          description: "ENG: Date on which the status changed to the current one - IT: Data in cui lo stato è cambiato allo stato attuale"
     OnboardingStatusDTO:
       title: OnboardingStatusDTO
       type: object
@@ -541,6 +968,224 @@ components:
           minLength: 19
           maxLength: 19
           description: "ENG: Date on which the onboarding successfully went through - IT: Data in cui l'adesione è avvenuta con successo"
+    RequiredCriteriaDTO:
+      type: object
+      required:
+        - pdndCriteria
+        - selfDeclarationList
+      properties:
+        pdndCriteria:
+          type: array
+          items:
+            $ref: "#/components/schemas/PDNDCriteriaDTO"
+          description: "ENG: The list of checks made on the PDND platform - IT: Lista dei controlli effettutati dalla piattaforma PDND"
+          maxItems: 5
+        selfDeclarationList:
+          type: array
+          items:
+            $ref: "#/components/schemas/SelfDeclarationDTO"
+          description: "ENG: The list of required self-declared criteria - IT: Lista dei criteri richiesti da autodichiarare"
+          maxItems: 10
+    SelfDeclarationDTO:
+      oneOf:
+        - $ref: "#/components/schemas/SelfDeclarationBoolDTO"
+        - $ref: "#/components/schemas/SelfDeclarationMultiDTO"
+        - $ref: "#/components/schemas/SelfDeclarationTextDTO"
+    PDNDCriteriaDTO:
+      type: object
+      required:
+        - code
+        - description
+        - value
+        - authority
+      properties:
+        code:
+          type: string
+          enum:
+            - ISEE
+            - BIRTHDATE
+            - RESIDENCE
+            - FAMILY_UNIT
+          description: "ENG: A code that identifies the type of criteria - IT: Codice che identifica il tipo di criterio"
+        description:
+          type: string
+          description: "ENG: Description of the criteria - IT: Descrizione del criterio"
+          maxLength: 255
+          example: "descrizione del criterio"
+          pattern: "^[ -~]{0,255}$"
+        value:
+          type: string
+          description: >-
+            "ENG: The expected value for the criteria. It is used in conjunction with
+            the operator to define a range or an equality over that criteria. - IT: Valore atteso dal criterio. E' usato insieme al campo operator per definire un insieme di valori o un'uguaglianza con un valore"
+          maxLength: 255
+          example: "valore del criterio"
+          pattern: "^[ -~]{0,255}$"
+        value2:
+          type: string
+          description: >-
+            "ENG: In situations where the operator expects two values (e.g BETWEEN)
+            this field is populated - IT: Popolato quando il campo operator si aspetta due valori (e.g BETWEEN)"
+          maxLength: 255
+          example: "BETWEEN"
+          pattern: "^[ -~]{0,255}$"
+        operator:
+          type: string
+          description: "ENG: Represents the relation between the criteria and the value field - IT: Rappresenta la relazione tra il criterio ed il campo value"
+          enum:
+            - EQ
+            - NOT_EQ
+            - LT
+            - LE
+            - GT
+            - GE
+            - BTW_CLOSED
+            - BTW_OPEN
+        authority:
+          type: string
+          description: "ENG: Authority to request PDND criteria value - IT: Autorità a cui richiedere il valore dei criteri PDND"
+          enum:
+            - INPS
+            - AGID
+    SelfDeclarationBoolDTO:
+      type: object
+      required:
+        - _type
+        - code
+        - description
+        - value
+      properties:
+        _type:
+          type: string
+          description: "ENG: Self-declaration boolean type - IT: Autodichiarazione di tipo boolean"
+          enum:
+            - boolean
+        code:
+          type: string
+          description: "ENG: Self-declaration code - IT: Codice dell'autodichiarazione"
+          maxLength: 10
+          pattern: "^[ -~]{1,10}$"
+        description:
+          type: string
+          example: "descrizione"
+          description: "ENG: Self-declaration description - IT: Descrizione dell'autodichiarazione"
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
+        subDescription:
+          type: string
+          example: "sotto descrizione"
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
+            dell'autodichiarazione
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
+        value:
+          type: boolean
+          description: "ENG: Indicates whether the self-declaration is accepted or not - IT: Indica se l'autodichiarazione è accettata o no"
+    SelfDeclarationMultiDTO:
+      type: object
+      required:
+        - _type
+        - code
+        - description
+        - value
+      properties:
+        _type:
+          type: string
+          description: "ENG: Self-declaration value type - IT: Autodichiarazione di tipo multipli"
+          enum:
+            - multi
+        code:
+          type: string
+          description: "ENG: Self-declaration code - IT: Codice dell'autodichiarazione"
+          maxLength: 10
+          pattern: "^[ -~]{1,10}$"
+        description:
+          type: string
+          example: "descrizione"
+          description: "ENG: Self-declaration description - IT: Descrizione dell'autodichiarazione"
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
+        subDescription:
+          type: string
+          example: "sotto descrizione"
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
+            dell'autodichiarazione
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
+        value:
+          type: array
+          items:
+            $ref: "#/components/schemas/RowDataDTO"
+          description: >-
+            ENG: Indicates self-declaration values - IT: Indica i valori per
+            l'autodichiarazione
+          maxItems: 10
+    RowDataDTO:
+      type: object
+      required:
+        - description
+      properties:
+        description:
+          type: string
+          example: "descrizione"
+          description: >-
+            ENG: Self-declaration description - IT: Descrizione
+            del record di autodichiarazione
+          pattern: "^[ -~]{0,250}$"
+          maxLength: 250
+        subDescription:
+          type: string
+          example: "sotto descrizione"
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
+            del record di autodichiarazione
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
+    SelfDeclarationTextDTO:
+      type: object
+      required:
+        - _type
+        - code
+        - description
+        - value
+      properties:
+        _type:
+          type: string
+          description: >-
+            ENG: Self-declaration value type free text - IT: Autodichiarazione di tipo
+            testo libero
+          enum:
+            - text
+        code:
+          type: string
+          description: "ENG: Self-declaration code - IT: Codice dell'autodichiarazione"
+          maxLength: 10
+          pattern: "^[ -~]{1,10}$"
+        description:
+          type: string
+          example: "descrizione"
+          description: >-
+            ENG: Self-declaration description - IT: Descrizione
+            dell'autodichiarazione
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
+        subDescription:
+          type: string
+          example: "sotto descrizione"
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione
+            dell'autodichiarazione
+          maxLength: 255
+          pattern: "^[ -~]{0,255}$"
+        value:
+          type: string
+          description: >-
+            ENG: Indicates self-declaration values - IT: Indica i valori per
+            l'autodichiarazione
+          pattern: "^[ -~]{0,250}$"
+          maxLength: 250
     SelfConsentBoolDTO:
       type: object
       required:
@@ -580,30 +1225,7 @@ components:
           maxLength: 10
         value:
           type: string
-          example: "01, 02, 03"
-          description: "ENG: Indicates self-consent values - IT: Indica i valori per gli auto consensi"
-          pattern: "^[ -~]{0,10}$"
-          maxLength: 10
-    SelfConsentMultiTypeDTO:
-      type: object
-      required:
-        - _type
-        - code
-        - value
-      properties:
-        _type:
-          type: string
-          enum:
-            - multi_consent
-          description: "ENG: ISEE Self-consent value type - IT: Auto consenso di tipo multipli ISEE"
-        code:
-          type: string
-          enum:
-            - isee
-          description: "ENG: Self-consent code - IT: Tipologia di multiconsenso"
-        value:
-          type: string
-          example: "01, 02, 03"
+          example: "0, 1"
           description: "ENG: Indicates self-consent values - IT: Indica i valori per gli auto consensi"
           pattern: "^[ -~]{0,10}$"
           maxLength: 10
@@ -629,9 +1251,95 @@ components:
           description: >-
             ENG: Indicates self-consent values - IT: Indica i valori per gli
             auto consensi
-          example: "01, 02"
           pattern: "^[ -~]{0,255}$"
           maxLength: 255
+    InitiativeDataDTO:
+      type: object
+      required:
+        - initiativeId
+        - initiativeName
+        - description
+        - organizationId
+        - organizationName
+        - tcLink
+        - privacyLink
+      properties:
+        initiativeId:
+          type: string
+          description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
+          maxLength: 24
+          pattern: "$ ^[a-zA-Z0-9]+$"
+        initiativeName:
+          type: string
+          description: "ENG: Initiative's name - IT: Nome dell'iniziativa"
+          pattern: "^[ -~]{1,255}$"
+          example: "Bonus Elettrodomestici"
+          maxLength: 255
+        description:
+          type: string
+          example: "Descrizione dell'iniziativa"
+          description: "ENG: Initiative's description - IT: Descrizione dell'iniziativa"
+          pattern: "^[ -~]{1,255}$"
+          maxLength: 255
+        organizationId:
+          type: string
+          description: "ENG: Id of the organization that created the initiative - IT: Identificativo dell'organizzazione che ha creato l'iniziativa"
+          pattern: "^[ -~]{1,50}$"
+          maxLength: 50
+        organizationName:
+          type: string
+          description: "ENG: Name of the organization that created the initiative - IT: Nome dell'organizzazione che ha creato l'iniziativa"
+          pattern: "^[ -~]{1,50}$"
+          maxLength: 50
+        tcLink:
+          type: string
+          description: "ENG: URL that redirects to the terms and conditions - IT: URL che porta ai termini e condizioni"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          maxLength: 255
+        privacyLink:
+          type: string
+          description: "ENG: URL that redirects to the privacy policy - IT: URL che reindirizza all'informativa della privacy"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          maxLength: 255
+        logoURL:
+          type: string
+          description: "ENG: URL for the initiative's logo image - IT: URL del logo dell'iniziativa"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          maxLength: 255
+        thumbnailUrl:
+          type: string
+          description: "ENG: ToS Initiative Image URL - IT: URL dell'immagine dell'iniziativa per i ToS"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          maxLength: 255
+    InitiativeErrorDTO:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+            - INITIATIVE_INVALID_LOCALE_FORMAT
+            - INITIATIVE_INVALID_REQUEST
+            - INITIATIVE_NOT_FOUND
+            - INITIATIVE_TOO_MANY_REQUESTS
+            - INITIATIVE_GENERIC_ERROR
+          description: >-
+            "ENG: Error code:
+             INITIATIVE_INVALID_LOCALE_FORMAT: Initiative not found due to invalid locale format,
+             INITIATIVE_INVALID_REQUEST: Something went wrong handling the request,
+             INITIATIVE_NOT_FOUND: Initiative not found,
+             INITIATIVE_TOO_MANY_REQUESTS: Too many requests,
+             INITIATIVE_GENERIC_ERROR: Application error,
+             - IT: Codice di errore:
+             INITIATIVE_INVALID_LOCALE_FORMAT: Iniziativa non trovata a causa di format locale non valido,
+             INITIATIVE_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+             INITIATIVE_NOT_FOUND: Iniziativa non trovata,
+             INITIATIVE_TOO_MANY_REQUESTS: Troppe richieste,
+             INITIATIVE_GENERIC_ERROR: Errore generico"
+        message:
+          type: string
+          description: "ENG: Error message - IT: Messaggio di errore"
+          maxLength: 2500
+          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
     OnboardingErrorDTO:
       type: object
       required:
@@ -710,310 +1418,6 @@ components:
           description: "ENG: Error message- IT: Messaggio di errore"
           maxLength: 2500
           pattern: '^[a-zA-Z0-9 _@\-.!?]+'
-    InitiativeDTO:
-      type: object
-      properties:
-        general:
-          $ref: '#/components/schemas/InitiativeGeneralDTO'
-        beneficiaryRule:
-          $ref: '#/components/schemas/InitiativeBeneficiaryRuleDTO'
-    InitiativeGeneralDTO:
-      type: object
-      properties:
-        budget:
-          type: number
-          example: 10
-        beneficiaryType:
-          enum:
-            - PF
-            - PG
-            - NF
-          type: string
-        familyUnitComposition:
-          enum:
-            - INPS
-            - ANPR
-          type: string
-        beneficiaryKnown:
-          type: boolean
-        beneficiaryBudget:
-          type: number
-          example: 10
-        startDate:
-          type: string
-          description: Start date
-          format: date
-          example: '2022-01-30'
-          minLength: 10
-          maxLength: 10
-        endDate:
-          type: string
-          description: Start date
-          format: date
-          example: '2022-01-30'
-          minLength: 10
-          maxLength: 10
-        rankingStartDate:
-          type: string
-          description: Start date
-          format: date
-          example: '2022-01-30'
-          minLength: 10
-          maxLength: 10
-        rankingEndDate:
-          type: string
-          description: Start date
-          format: date
-          example: '2022-01-30'
-          minLength: 10
-          maxLength: 10
-        rankingEnabled:
-          type: boolean
-        termAndCondition:
-          type: string
-          example: "termAndCondition"
-          description: >-
-            ENG: Term and Condition - IT: Termini e Condizioni
-          pattern: "^.*$"
-          maxLength: 4000
-    InitiativeBeneficiaryRuleDTO:
-      type: object
-      properties:
-        selfDeclarationCriteria:
-          type: array
-          maxItems: 10
-          items:
-            $ref: '#/components/schemas/AnyOfInitiativeBeneficiaryRuleDTOSelfDeclarationCriteriaItems'
-        automatedCriteria:
-          type: array
-          maxItems: 10
-          items:
-            $ref: '#/components/schemas/AutomatedCriteriaDTO'
-    AnyOfInitiativeBeneficiaryRuleDTOSelfDeclarationCriteriaItems:
-      type: object
-      anyOf:
-        - $ref: '#/components/schemas/SelfCriteriaBoolDTO'
-        - $ref: '#/components/schemas/SelfCriteriaMultiDTO'
-        - $ref: '#/components/schemas/SelfCriteriaMultiTypeDTO'
-        - $ref: '#/components/schemas/SelfCriteriaTextDTO'
-    SelfCriteriaBoolDTO:
-      type: object
-      properties:
-        _type:
-          type: string
-          description: >-
-            ENG: Self-declaration boolean type - IT: Autodichiarazione di tipo
-            boolean
-          enum:
-            - boolean
-        description:
-          type: string
-          example: "descrizione"
-          description: >-
-            ENG: Self-declaration description - IT: Descrizione
-            dell'autodichiarazione
-          maxLength: 255
-          pattern: '^[ -~]{0,255}$'
-        subDescription:
-          type: string
-          example: "sotto descrizione"
-          description: >-
-            ENG: Self-declaration sub-description - IT: Sotto descrizione
-            dell'autodichiarazione
-          maxLength: 255
-          pattern: '^[ -~]{0,255}$'
-        value:
-          type: boolean
-          description: >-
-            ENG: Indicates whether the self-declaration is accepted or not - IT:
-            Indica se l'autodichiarazione è accettata o no
-        code:
-          type: string
-          description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
-          maxLength: 10
-          pattern: '^[ -~]{1,10}$'
-    SelfCriteriaMultiDTO:
-      title: SelfCriteriaMultiDTO
-      type: object
-      properties:
-        _type:
-          type: string
-          description: >-
-            ENG: Self-declaration value type - IT: Autodichiarazione di tipo
-            multipli
-          enum:
-            - multi
-        description:
-          type: string
-          example: "descrizione"
-          description: >-
-            ENG: Self-declaration description - IT: Descrizione
-            dell'autodichiarazione
-          maxLength: 255
-          pattern: '^[ -~]{0,255}$'
-        subDescription:
-          type: string
-          example: "sotto descrizione"
-          description: >-
-            ENG: Self-declaration sub-description - IT: Sotto descrizione
-            dell'autodichiarazione
-          maxLength: 255
-          pattern: '^[ -~]{0,255}$'
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/RowDataDTO'
-          description: >-
-            ENG: Indicates self-declaration values - IT: Indica i valori per
-            l'autodichiarazione
-          maxItems: 10
-        code:
-          type: string
-          description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
-          maxLength: 10
-          pattern: '^[ -~]{1,10}$'
-    RowDataDTO:
-      type: object
-      required:
-        - description
-      properties:
-        description:
-          type: string
-          example: "descrizione"
-          description: >-
-            ENG: Self-declaration description - IT: Descrizione
-            del record di autodichiarazione
-          pattern: "^[ -~]{0,250}$"
-          maxLength: 250
-        subDescription:
-          type: string
-          example: "sotto descrizione"
-          description: >-
-            ENG: Self-declaration sub-description - IT: Sotto descrizione
-            del record di autodichiarazione
-          maxLength: 255
-          pattern: "^[ -~]{0,255}$"
-    SelfCriteriaMultiTypeDTO:
-      title: SelfCriteriaMultiDTO
-      type: object
-      properties:
-        _type:
-          type: string
-          description: >-
-            ENG: Self-declaration value type - IT: Autodichiarazione di tipo
-            multipli
-          enum:
-            - multi_consent
-        description:
-          type: string
-          example: "descrizione"
-          description: >-
-            ENG: Self-declaration description - IT: Descrizione
-            dell'autodichiarazione
-          maxLength: 255
-          pattern: '^[ -~]{0,255}$'
-        subDescription:
-          type: string
-          example: "sotto descrizione"
-          description: >-
-            ENG: Self-declaration sub-description - IT: Sotto descrizione
-            dell'autodichiarazione
-          maxLength: 255
-          pattern: '^[ -~]{0,255}$'
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/RowDataDTO'
-          description: >-
-            ENG: Indicates self-declaration values - IT: Indica i valori per
-            l'autodichiarazione
-          maxItems: 10
-        code:
-          type: string
-          description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
-          enum:
-            - isee
-    SelfCriteriaTextDTO:
-      title: SelfCriteriaTextDTO
-      type: object
-      properties:
-        _type:
-          type: string
-          description: >-
-            ENG: Self-declaration value type free text - IT: Autodichiarazione
-            di tipo testo libero
-          enum:
-            - text
-        description:
-          type: string
-          example: "descrizione"
-          description: >-
-            ENG: Self-declaration description - IT: Descrizione
-            dell'autodichiarazione
-          maxLength: 255
-          pattern: '^[ -~]{0,255}$'
-        subDescription:
-          type: string
-          example: "sotto descrizione"
-          description: >-
-            ENG: Self-declaration sub-description - IT: Sotto descrizione
-            dell'autodichiarazione
-          maxLength: 255
-          pattern: '^[ -~]{0,255}$'
-        value:
-          type: string
-          example: "0, 1"
-          description: >-
-            ENG: Indicates self-declaration values - IT: Indica i valori per
-            l'autodichiarazione
-          pattern: '^[ -~]{0,250}$'
-          maxLength: 250
-        code:
-          type: string
-          description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
-          maxLength: 10
-          pattern: '^[ -~]{1,10}$'
-    AutomatedCriteriaDTO:
-      type: object
-      properties:
-        authority:
-          type: string
-          description: 'ENG: The information agency - IT: L''ente che ti da l''informazione'
-          maxLength: 10
-          pattern: '^[ -~]{1,10}$'
-          example: "authority"
-        code:
-          type: string
-          enum:
-            - ISEE
-            - RESIDENCE
-            - BIRTHDAY
-            - FAMILY_UNIT
-          description: 'ENG: Criteria code - IT: Codice del criterio'
-        field:
-          type: string
-          description: 'ENG:  - IT: '
-          pattern: '^[ -~]{0,250}$'
-          maxLength: 250
-          example: "field"
-        operator:
-          type: string
-          description: 'ENG:  - IT: '
-          pattern: '^[ -~]{0,250}$'
-          maxLength: 250
-          example: "operator"
-        value:
-          type: string
-          description: 'ENG:  - IT: '
-          pattern: '^[ -~]{0,250}$'
-          maxLength: 250
-          example: "value"
-        value2:
-          type: string
-          description: 'ENG:  - IT: '
-          pattern: '^[ -~]{0,250}$'
-          maxLength: 250
-          example: "value2"
   securitySchemes:
     bearerAuth:
       type: http
@@ -1021,5 +1425,5 @@ components:
 security:
   - bearerAuth: []
 tags:
-  - name: onboardingWeb
+  - name: onboarding
     description: ""
