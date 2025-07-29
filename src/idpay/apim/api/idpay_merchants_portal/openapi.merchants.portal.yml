@@ -177,6 +177,71 @@ paths:
               example:
                 code: POINT_OF_SALE_GENERIC_ERROR
                 message: An error occurred during file reading
+  '/{merchantId}/point-of-sales/{pointOfSaleId}':
+    get:
+      tags:
+        - point-of-sales
+      summary: Retrieve a point of sale
+      description: 'Return a points of sale for the specified merchant.'
+      operationId: getPointOfSale
+      parameters:
+        - name: merchantId
+          in: path
+          description: The merchant ID
+          required: true
+          schema:
+            type: string
+        - name: pointOfSaleId
+          in: path
+          description: The point of sale ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with a paginated list of points of sale
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointOfSaleDetailDTO'
+        '400':
+          description: Bad request - Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointOfSaleErrorDTO'
+              example:
+                code: POINT_OF_SALE_BAD_REQUEST
+                message: Something went wrong handling request
+        '401':
+          description: Unauthorized - Authentication Failed
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointOfSaleErrorDTO'
+              example:
+                code: POINT_OF_SALE_NOT_FOUND
+                message: Point of sale with id 123 not found.
+        '429':
+          description: Too many Request - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointOfSaleErrorDTO'
+              example:
+                code: POINT_OF_SALE_TOO_MANY_REQUESTS
+                message: Too many requests
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointOfSaleErrorDTO'
+              example:
+                code: POINT_OF_SALE_GENERIC_ERROR
+                message: An error occurred during file reading
   /initiatives:
     get:
       tags:
@@ -1300,6 +1365,13 @@ components:
           type: integer
           format: int32
           description: 'ENG: The total number of the pages <br> IT: Il numero totale delle pagine'
+    PointOfSaleDetailDTO:
+      type: object
+      properties:
+        pointsOfSale:
+          $ref: '#/components/schemas/PointOfSaleDTO'
+        merchantDetail:
+          $ref: '#/components/schemas/MerchantDetailDTO'
     PointOfSaleErrorDTO:
       type: object
       required:
