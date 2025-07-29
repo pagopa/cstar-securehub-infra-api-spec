@@ -185,8 +185,42 @@ paths:
           $ref: "#/components/responses/OnboardingTooManyRequestsResponse"
         "500":
           $ref: "#/components/responses/OnboardingInternalServerErrorResponse"
+
 components:
+
+  headers:
+
+    Access-Control-Allow-Origin:
+      description: Indicates whether the response can be shared with requesting code from the given origin
+      schema:
+        type: string
+        pattern: "^[ -~]{1,2048}$"
+        minLength: 1
+        maxLength: 2048
+    RateLimit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
+    RateLimit-Reset:
+      description: The number of seconds left in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 60
+    Retry-After:
+      description: The number of seconds to wait before allowing a follow-up request
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
+
   parameters:
+
     ApiVersionHeader:
       name: X-Api-Version
       in: header
@@ -227,7 +261,9 @@ components:
         type: string
         maxLength: 24
         pattern: "$ ^[a-zA-Z0-9]+$"
+
   responses:
+
     InitiativeDataResponse:
       description: Get successful
       content:
@@ -502,36 +538,9 @@ components:
           $ref: "#/components/headers/RateLimit-Reset"
         Retry-After:
           $ref: "#/components/headers/Retry-After"
-  headers:
-    Access-Control-Allow-Origin:
-      description: Indicates whether the response can be shared with requesting code from the given origin
-      schema:
-        type: string
-        pattern: "^[ -~]{1,2048}$"
-        minLength: 1
-        maxLength: 2048
-    RateLimit-Limit:
-      description: The number of allowed requests in the current period
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 240
-    RateLimit-Reset:
-      description: The number of seconds left in the current period
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 60
-    Retry-After:
-      description: The number of seconds to wait before allowing a follow-up request
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 240
+
   schemas:
+
     ConsentPutDTO:
       title: ConsentPutDTO
       type: object
@@ -1099,7 +1108,9 @@ components:
           description: "ENG: Error message- IT: Messaggio di errore"
           maxLength: 2500
           pattern: '^[a-zA-Z0-9 _@\-.!?]+'
+
   securitySchemes:
+
     bearerAuth:
       type: http
       scheme: bearer

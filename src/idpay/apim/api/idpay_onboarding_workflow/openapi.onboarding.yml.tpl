@@ -23,127 +23,21 @@ paths:
       operationId: getInitiativeData
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
-        - name: serviceId
-          in: path
-          description: "ENG: The service ID - IT: Identificativo del service"
-          required: true
-          schema:
-            type: string
-            maxLength: 50
-            pattern: "$ ^[a-zA-Z0-9]+$"
-        - name: Accept-Language
-          in: header
-          description: "ENG: Language - IT: Lingua"
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
+        - $ref: "#/components/parameters/ServiceId"
+        - $ref: "#/components/parameters/AcceptLanguage"
       responses:
         "200":
-          description: Get successful
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InitiativeDataDTO"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/InitiativeDataResponse"
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InitiativeErrorDTO"
-              example:
-                code: "INITIATIVE_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/InitiativeBadRequestResponse"
         "401":
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/InitiativeUnauthorizedResponse"
         "404":
-          description: The requested initiative was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InitiativeErrorDTO"
-              example:
-                code: "INITIATIVE_NOT_FOUND"
-                message: "Initiative not found"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/InitiativeNotFoundResponse"
         "429":
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InitiativeErrorDTO"
-              example:
-                code: "INITIATIVE_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/InitiativeTooManyRequestsResponse"
         "500":
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InitiativeErrorDTO"
-              example:
-                code: "INITIATIVE_GENERIC_ERROR"
-                message: "Application error"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
-
+          $ref: "#/components/responses/InitiativeInternalServerErrorResponse"
   /:
     put:
       tags:
@@ -153,17 +47,7 @@ paths:
       operationId: onboardingCitizen
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
-        - name: Accept-Language
-          in: header
-          description: "ENG: Language - IT: Lingua"
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
+        - $ref: "#/components/parameters/AcceptLanguage"
       requestBody:
         description: "ENG: Id of the initiative IT: Identificativo dell'iniziativa"
         required: true
@@ -173,121 +57,19 @@ paths:
               $ref: "#/components/schemas/OnboardingPutDTO"
       responses:
         "204":
-          description: Acceptance successful
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingCitizenResponse"
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingBadRequestResponse"
         "401":
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingUnauthorizedResponse"
         "403":
-          description: This onboarding is forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_BUDGET_EXHAUSTED"
-                message: "Budget exhausted for initiative XXXXX"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingForbiddenResponse"
         "404":
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_INITIATIVE_NOT_FOUND"
-                message: "Cannot find initiative XXXXX"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingNotFoundResponse"
         "429":
-          description: Too many Requests
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingTooManyRequestsResponse"
         "500":
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_GENERIC_ERROR"
-                message: "An error occurred in the microservice admissibility"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingInternalServerErrorResponse"
   /initiative:
     put:
       tags:
@@ -297,17 +79,7 @@ paths:
       operationId: checkPrerequisites
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
-        - name: Accept-Language
-          in: header
-          description: "ENG: Language - IT: Lingua"
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
+        - $ref: "#/components/parameters/AcceptLanguage"
       requestBody:
         description: "ENG: Id of the initiative - IT: Identificatico dell'iniziativa"
         required: true
@@ -317,136 +89,21 @@ paths:
               $ref: "#/components/schemas/OnboardingPutDTO"
       responses:
         "200":
-          description: Check successful
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RequiredCriteriaDTO"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/CheckPrerequisitesResponse"
         "202":
-          description: Accepted - Request Taken Over
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/AcceptedResponseTakenOver"
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingBadRequestResponse"
         "401":
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingUnauthorizedResponse"
         "403":
-          description: This onboarding is forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_BUDGET_EXHAUSTED"
-                message: "Budget exhausted for initiative XXXXX"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingForbiddenResponse"
         "404":
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_INITIATIVE_NOT_FOUND"
-                message: "Cannot find initiative XXXXX"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingNotFoundResponse"
         "429":
-          description: Too many Requests
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingTooManyRequestsResponse"
         "500":
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_GENERIC_ERROR"
-                message: "An error occurred in the microservice admissibility"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingInternalServerErrorResponse"
   /consent:
     put:
       tags:
@@ -456,17 +113,7 @@ paths:
       operationId: consentOnboarding
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
-        - name: Accept-Language
-          in: header
-          description: "ENG: Language - IT: Lingua"
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
+        - $ref: "#/components/parameters/AcceptLanguage"
       requestBody:
         description: >-
           ENG: Unique identifier of the subscribed initiative, flag for PDND
@@ -478,121 +125,19 @@ paths:
               $ref: "#/components/schemas/ConsentPutDTO"
       responses:
         "202":
-          description: Accepted - Request Taken Over
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/AcceptedResponseTakenOver"
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingBadRequestResponse"
         "401":
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingUnauthorizedResponse"
         "403":
-          description: This onboarding is forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_BUDGET_EXHAUSTED"
-                message: "Budget exhausted for initiative XXXXX"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingForbiddenResponse"
         "404":
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_INITIATIVE_NOT_FOUND"
-                message: "Cannot find initiative XXXXX"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingNotFoundResponse"
         "429":
-          description: Too many Requests
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingTooManyRequestsResponse"
         "500":
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_GENERIC_ERROR"
-                message: "An error occurred in the microservice admissibility"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingInternalServerErrorResponse"
   "/{initiativeId}/status":
     get:
       tags:
@@ -602,126 +147,21 @@ paths:
       operationId: onboardingStatus
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
-        - name: Accept-Language
-          in: header
-          description: "ENG: Language - IT: Lingua"
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          in: path
-          description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: "#/components/parameters/AcceptLanguage"
+        - $ref: "#/components/parameters/InitiativeId"
       responses:
         "200":
-          description: Check successful
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingStatusDTO"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingStatusResponse"
         "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingBadRequestResponse"
         "401":
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingUnauthorizedResponse"
         "404":
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_USER_NOT_ONBOARDED"
-                message: "The current user is not onboarded on initiative XXXXX"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingNotFoundResponse"
         "429":
-          description: Too many Requests
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingTooManyRequestsResponse"
         "500":
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: "ONBOARDING_GENERIC_ERROR"
-                message: "An error occurred in the microservice admissibility"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingInternalServerErrorResponse"
   "/user/initiative/status":
     get:
       tags:
@@ -733,113 +173,23 @@ paths:
       operationId: onboardingInitiativeUserStatus
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
-        - name: Accept-Language
-          in: header
-          description: "ENG: Language - IT: Lingua"
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
+        - $ref: "#/components/parameters/AcceptLanguage"
       responses:
         "200":
-          description: Check successful
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ListUsersOnboardingStatusDTO"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingInitiativeUserStatusResponse"
         "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: ONBOARDING_INVALID_REQUEST
-                message: Something went wrong handling the request
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingBadRequestResponse"
         "401":
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingUnauthorizedResponse"
         "429":
-          description: Too many Requests
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: ONBOARDING_TOO_MANY_REQUESTS
-                message: Too many requests
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingTooManyRequestsResponse"
         "500":
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OnboardingErrorDTO"
-              example:
-                code: ONBOARDING_GENERIC_ERROR
-                message: An error occurred in the microservice admissibility
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/OnboardingInternalServerErrorResponse"
+
 components:
-  parameters:
-    ApiVersionHeader:
-      name: X-Api-Version
-      in: header
-      description: "ENG: Api Version - IT: Versione dell Api"
-      required: true
-      schema:
-        type: string
-        enum: [v1]
-        example: v1
-        default: v1
+
   headers:
+
     Access-Control-Allow-Origin:
       description: Indicates whether the response can be shared with requesting code from the given origin
       schema:
@@ -868,7 +218,329 @@ components:
         format: int32
         minimum: 1
         maximum: 240
+
+  parameters:
+
+    ApiVersionHeader:
+      name: X-Api-Version
+      in: header
+      description: "ENG: Api Version - IT: Versione dell Api"
+      required: true
+      schema:
+        type: string
+        enum: [v1]
+        example: v1
+        default: v1
+    ServiceId:
+      name: serviceId
+      in: path
+      description: "ENG: The service ID - IT: Identificativo del service"
+      required: true
+      schema:
+        type: string
+        maxLength: 50
+        pattern: "$ ^[a-zA-Z0-9]+$"
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      description: "ENG: Language - IT: Lingua"
+      required: true
+      schema:
+        type: string
+        pattern: "^[ -~]{2,5}$"
+        minLength: 2
+        maxLength: 5
+        example: it-IT
+        default: it-IT
+    InitiativeId:
+      name: initiativeId
+      in: path
+      description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
+      required: true
+      schema:
+        type: string
+        maxLength: 24
+        pattern: "$ ^[a-zA-Z0-9]+$"
+
+  responses:
+
+    InitiativeDataResponse:
+      description: Get successful
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeDataDTO"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    InitiativeBadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeErrorDTO"
+          example:
+            code: "INITIATIVE_INVALID_REQUEST"
+            message: "Something went wrong handling the request"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    InitiativeUnauthorizedResponse:
+      description: Authentication failed
+      content:
+        application/json: {}
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    InitiativeNotFoundResponse:
+      description: The requested initiative was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeErrorDTO"
+          example:
+            code: "INITIATIVE_NOT_FOUND"
+            message: "Initiative not found"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    InitiativeTooManyRequestsResponse:
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeErrorDTO"
+          example:
+            code: "INITIATIVE_TOO_MANY_REQUESTS"
+            message: "Too many requests"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    InitiativeInternalServerErrorResponse:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeErrorDTO"
+          example:
+            code: "INITIATIVE_GENERIC_ERROR"
+            message: "Application error"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingCitizenResponse:
+      description: Acceptance successful
+      content:
+        application/json: {}
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingBadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OnboardingErrorDTO"
+          example:
+            code: "ONBOARDING_INVALID_REQUEST"
+            message: "Something went wrong handling the request"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingUnauthorizedResponse:
+      description: Authentication failed
+      content:
+        application/json: {}
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingForbiddenResponse:
+      description: This onboarding is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OnboardingErrorDTO"
+          example:
+            code: "ONBOARDING_BUDGET_EXHAUSTED"
+            message: "Budget exhausted for initiative XXXXX"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingNotFoundResponse:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OnboardingErrorDTO"
+          example:
+            code: "ONBOARDING_INITIATIVE_NOT_FOUND"
+            message: "Cannot find initiative XXXXX"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingTooManyRequestsResponse:
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OnboardingErrorDTO"
+          example:
+            code: "ONBOARDING_TOO_MANY_REQUESTS"
+            message: "Too many requests"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingInternalServerErrorResponse:
+      description: Server ERROR
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OnboardingErrorDTO"
+          example:
+            code: "ONBOARDING_GENERIC_ERROR"
+            message: "An error occurred in the microservice admissibility"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    CheckPrerequisitesResponse:
+      description: Check successful
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RequiredCriteriaDTO"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    AcceptedResponseTakenOver:
+      description: Accepted - Request Taken Over
+      content:
+        application/json: {}
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingStatusResponse:
+      description: Check successful
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OnboardingStatusDTO"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+    OnboardingInitiativeUserStatusResponse:
+      description: Check successful
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ListUsersOnboardingStatusDTO"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+
   schemas:
+
     ConsentPutDTO:
       title: ConsentPutDTO
       type: object
@@ -1436,7 +1108,9 @@ components:
           description: "ENG: Error message- IT: Messaggio di errore"
           maxLength: 2500
           pattern: '^[a-zA-Z0-9 _@\-.!?]+'
+
   securitySchemes:
+
     bearerAuth:
       type: http
       scheme: bearer
