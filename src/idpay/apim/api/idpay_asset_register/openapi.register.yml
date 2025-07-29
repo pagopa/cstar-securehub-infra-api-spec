@@ -300,8 +300,9 @@ paths:
         - $ref: '#/components/parameters/category_query'
         - $ref: '#/components/parameters/eprelCode_query'
         - $ref: '#/components/parameters/gtinCode_query'
-        - $ref: '#/components/parameters/productCode_query'
         - $ref: '#/components/parameters/productFileId_query'
+        - $ref: '#/components/parameters/productName_query'
+        - $ref: '#/components/parameters/status_query'
         - $ref: '#/components/parameters/x_organization_selected_header'
       responses:
         '200':
@@ -1706,7 +1707,6 @@ components:
         minLength: 24
         maxLength: 24
         pattern: ^[a-fA-F0-9]{24}$
-      description: 'ENG: ID of the upload<br> IT: ID del caricamento'
     x_organization_selected_header:
       name: x-organization-selected
       in: header
@@ -1748,14 +1748,6 @@ components:
         type: string
         maxLength: 14
         pattern: ^[a-zA-Z0-9]{1,14}$
-    productCode_query:
-      name: productCode
-      in: query
-      required: false
-      schema:
-        type: string
-        maxLength: 100
-        pattern: ^[a-zA-Z0-9 ]{0,100}$
     productFileId_query:
       name: productFileId
       in: query
@@ -1765,6 +1757,24 @@ components:
         minLength: 24
         maxLength: 24
         pattern: ^[a-fA-F0-9]{24}$
+    status_query:
+      name: status
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - APPROVED
+          - REJECTED
+          - SUPERVISIONED
+    productName_query:
+      name: productName
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 255
+        pattern: .*
     institutionId_path:
       name: institutionId
       in: path
@@ -1773,6 +1783,5 @@ components:
         type: string
         maxLength: 36
         pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$
-      description: 'ENG: ID of the producer IT: ID del produttore'
 security:
   - Bearer: []
