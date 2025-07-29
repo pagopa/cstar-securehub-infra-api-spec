@@ -35,6 +35,11 @@ rate_limit_portal_product           = 2500
 rate_limit_merchants_portal_product = 2500
 
 
+#
+# Register Token Exchange
+#
+invitalia_fc      = "05678721001"
+selfcare_base_url = "https://api.selfcare.pagopa.it/external/v2"
 
 #
 # PDV
@@ -73,8 +78,8 @@ pm_backend_url = "https://api.platform.pagopa.it"
 # FLAGS
 #
 enable_flags = {
-  mock_io_api     = true
-  mocked_merchant = true
+  mock_io_api     = false
+  mocked_merchant = false
 }
 
 #
