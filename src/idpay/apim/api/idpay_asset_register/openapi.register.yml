@@ -816,7 +816,7 @@ components:
           maxLength: 255
           pattern: .*
     InstitutionsResponse:
-      title: InstitutionResponse
+      title: InstitutionsResponse
       type: object
       properties:
         institutions:
@@ -841,7 +841,7 @@ components:
                 format: date
           maxItems: 1000
     BatchList:
-      title: InstitutionResponse
+      title: BatchList
       type: object
       properties:
         batches:
