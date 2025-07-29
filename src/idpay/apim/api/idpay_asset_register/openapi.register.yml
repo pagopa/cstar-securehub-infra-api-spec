@@ -910,20 +910,6 @@ components:
           type: string
           maxLength: 255
           pattern: .*
-    Headers429:
-        Access-Control-Allow-Origin:
-          $ref: '#/components/headers/Access-Control-Allow-Origin'
-        Retry-After:
-          $ref: '#/components/headers/Retry-After'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Reset:
-          $ref: '#/components/headers/X-RateLimit-Reset'
-    Headers500:
-        Access-Control-Allow-Origin:
-          $ref: '#/components/headers/Access-Control-Allow-Origin'
   securitySchemes:
     Bearer:
       type: apiKey
