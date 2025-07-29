@@ -1855,11 +1855,11 @@ components:
           maxLength: 255
         status:
           type: string
-          description: 'ENG: The status of the product <br> IT: Lo statos del prodotto'
+          description: 'ENG: The status of the product <br> IT: Lo stato del prodotto'
           enum:
             - APPROVED
             - REJECTED
-            - SUPERVISION
+            - SUPERVISIONED
         model:
           type: string
           description: 'ENG: The mode of the product <br> IT: il modello del prodotto'
