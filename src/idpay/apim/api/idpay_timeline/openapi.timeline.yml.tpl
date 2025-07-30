@@ -14,6 +14,7 @@ servers:
     url: https://api-io.uat.cstar.pagopa.it/idpay-itn/timeline
     x-internal: true
 paths:
+
   '/{initiativeId}':
     get:
       tags:
@@ -25,149 +26,25 @@ paths:
       operationId: getTimeline
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          in: header
-          description: "ENG: Language - IT: Lingua"
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          in: path
-          description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
-        - name: operationType
-          in: query
-          description: "ENG: Operation type filter - IT: Filtro tipologia dell'operazione"
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
-        - name: page
-          in: query
-          description: "ENG: The number of the page - IT: Numero della pagina"
-          schema:
-            type: integer
-            format: int32
-            minimum: 1
-            maximum: 240
-        - name: size
-          in: query
-          description: "ENG: Number of items, default 3 - max 10 - IT: Numero di elementi, default 3 - max 10"
-          schema:
-            type: integer
-            format: int32
-            minimum: 3
-            maximum: 10
+        - $ref: '#/components/parameters/AcceptLanguage'
+        - $ref: '#/components/parameters/InitiativeId'
+        - $ref: '#/components/parameters/OperationType'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
       responses:
         '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TimelineDTO'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: '#/components/responses/TimelineDataResponse'
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TimelineErrorDTO'
-              example:
-                code: "TIMELINE_INVALID_REQUEST"
-                message: "Something went wrong handling request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/TimelineBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/TimelineUnauthorizedResponse"
         '404':
-          description: The requested ID was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TimelineErrorDTO'
-              example:
-                code: "TIMELINE_USER_NOT_FOUND"
-                message: "Timeline for the current user not found"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/TimelineNotFoundResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TimelineErrorDTO'
-              example:
-                code: "TIMELINE_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/TimelineTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TimelineErrorDTO'
-              example:
-                code: "TIMELINE_GENERIC_ERROR"
-                message: "Application error"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/TimelineInternalServerErrorResponse"
+
   '/{initiativeId}/{operationId}':
     get:
       tags:
@@ -177,136 +54,60 @@ paths:
       operationId: getTimelineDetail
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          description: "ENG: Language - IT: Lingua"
-          in: header
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
-          in: path
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
-        - name: operationId
-          description: "ENG: The operation ID - IT: Identificativo dell'operazione"
-          in: path
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: '#/components/parameters/AcceptLanguage'
+        - $ref: '#/components/parameters/InitiativeId'
+        - $ref: '#/components/parameters/OperationId'
       responses:
         '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OperationDTO'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: '#/components/responses/TimelineDetalilDataResponse'
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TimelineErrorDTO'
-              example:
-                code: "TIMELINE_INVALID_REQUEST"
-                message: "Something went wrong handling request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/TimelineBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/TimelineUnauthorizedResponse"
         '404':
-          description: The requested ID was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TimelineErrorDTO'
-              example:
-                code: "TIMELINE_DETAIL_NOT_FOUND"
-                message: "Detail of Timeline not found"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/TimelineNotFoundResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TimelineErrorDTO'
-              example:
-                code: "TIMELINE_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/TimelineTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TimelineErrorDTO'
-              example:
-                code: "TIMELINE_GENERIC_ERROR"
-                message: "Application error"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/TimelineInternalServerErrorResponse"
 components:
+
+  headers:
+
+    Access-Control-Allow-Origin:
+      description: Indicates whether the response can be shared with requesting code from the given origin
+      schema:
+        type: string
+        pattern: "^[ -~]{1,2048}$"
+        minLength: 1
+        maxLength: 2048
+
+    RateLimit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
+
+    RateLimit-Reset:
+      description: The number of seconds left in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 60
+
+    Retry-After:
+      description: The number of seconds to wait before allowing a follow-up request
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
+
   parameters:
+
     ApiVersionHeader:
       name: X-Api-Version
       in: header
@@ -317,36 +118,147 @@ components:
         enum: [v1]
         example: v1
         default: v1
-  headers:
-    Access-Control-Allow-Origin:
-      description: Indicates whether the response can be shared with requesting code from the given origin
+
+    OperationType:
+      name: operationType
+      in: query
+      description: "ENG: Operation type filter - IT: Filtro tipologia dell'operazione"
       schema:
         type: string
-        pattern: "^[ -~]{1,2048}$"
-        minLength: 1
-        maxLength: 2048
-    RateLimit-Limit:
-      description: The number of allowed requests in the current period
+        maxLength: 24
+        pattern: "$ ^[a-zA-Z0-9]+$"
+
+    Page:
+      name: page
+      in: query
+      description: "ENG: The number of the page - IT: Numero della pagina"
       schema:
         type: integer
         format: int32
         minimum: 1
         maximum: 240
-    RateLimit-Reset:
-      description: The number of seconds left in the current period
+
+    Size:
+      name: size
+      in: query
+      description: "ENG: Number of items, default 3 - max 10 - IT: Numero di elementi, default 3 - max 10"
       schema:
         type: integer
         format: int32
-        minimum: 1
-        maximum: 60
-    Retry-After:
-      description: The number of seconds to wait before allowing a follow-up request
+        minimum: 3
+        maximum: 10
+
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      description: "ENG: Language - IT: Lingua"
+      required: true
       schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 240
+        type: string
+        pattern: "^[ -~]{2,5}$"
+        minLength: 2
+        maxLength: 5
+        example: it-IT
+        default: it-IT
+
+    InitiativeId:
+      name: initiativeId
+      in: path
+      description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
+      required: true
+      schema:
+        type: string
+        maxLength: 24
+        pattern: "$ ^[a-zA-Z0-9]+$"
+
+    OperationId:
+      name: operationId
+      description: "ENG: The operation ID - IT: Identificativo dell'operazione"
+      in: path
+      required: true
+      schema:
+        type: string
+        maxLength: 24
+        pattern: "$ ^[a-zA-Z0-9]+$"
+
+  responses:
+
+    TimelineDataResponse:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TimelineDTO'
+      headers: &StandardHeaders
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+
+    TimelineDetalilDataResponse:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OperationDTO'
+      headers: *StandardHeaders
+
+    TimelineBadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TimelineErrorDTO'
+          example:
+            code: "TIMELINE_INVALID_REQUEST"
+            message: "Something went wrong handling request"
+      headers: *StandardHeaders
+
+    TimelineUnauthorizedResponse:
+      description: Authentication failed
+      content:
+        application/json: {}
+      headers: *StandardHeaders
+
+    TimelineNotFoundResponse:
+      description: The requested ID was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TimelineErrorDTO'
+          example:
+            code: "TIMELINE_USER_NOT_FOUND"
+            message: "Timeline for the current user not found"
+      headers: *StandardHeaders
+
+    TimelineTooManyRequestsResponse:
+      description: Too many Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TimelineErrorDTO'
+          example:
+            code: "TIMELINE_TOO_MANY_REQUESTS"
+            message: "Too many requests"
+      headers: *StandardHeaders
+
+    TimelineInternalServerErrorResponse:
+      description: Server ERROR
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TimelineErrorDTO'
+          example:
+            code: "TIMELINE_GENERIC_ERROR"
+            message: "Application error"
+      headers: *StandardHeaders
+
   schemas:
+
     OperationDTO:
       oneOf:
         - $ref: '#/components/schemas/TransactionDetailDTO'
@@ -357,6 +269,7 @@ components:
         - $ref: '#/components/schemas/SuspendOperationDTO'
         - $ref: '#/components/schemas/ReadmittedOperationDTO'
         - $ref: '#/components/schemas/UnsubscribeOperationDTO'
+
     TimelineDTO:
       type: object
       required:
@@ -404,6 +317,7 @@ components:
           minimum: 1
           maximum: 200
           description: "ENG: Number of total pages - IT: Numero totali di pagine"
+
     OperationListDTO:
       description: Complex type for items in the operation list
       oneOf:
@@ -416,6 +330,7 @@ components:
         - $ref: '#/components/schemas/SuspendOperationDTO'
         - $ref: '#/components/schemas/ReadmittedOperationDTO'
         - $ref: '#/components/schemas/UnsubscribeOperationDTO'
+
     RejectedInstrumentOperationDTO:
       type: object
       required:
@@ -483,6 +398,7 @@ components:
             - IDPAYCODE
           example: "CARD"
           description: "ENG: Instrument type - IT: Tipologia di strumento"
+
     TransactionDetailDTO:
       type: object
       required:
@@ -586,6 +502,7 @@ components:
           type: string
           maxLength: 250
           pattern: "$ ^[a-zA-Z0-9]+$"
+
     InstrumentOperationDTO:
       type: object
       required:
@@ -644,6 +561,7 @@ components:
           enum:
             - CARD
             - IDPAYCODE
+
     IbanOperationDTO:
       type: object
       required:
@@ -684,6 +602,7 @@ components:
             - BARCODE
           example: "BARCODE"
           description: "ENG: Channel from which the operation takes place - IT: Canale da cui avviene l'operazione"
+
     OnboardingOperationDTO:
       type: object
       required:
@@ -707,6 +626,7 @@ components:
           minLength: 19
           maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
+
     RefundOperationDTO:
       type: object
       required:
@@ -744,6 +664,7 @@ components:
           minimum: 1
           maximum: 999999999999999
           description: "ENG: Refund amount - IT: Importo da rimborsare"
+
     TransactionOperationDTO:
       type: object
       required:
@@ -837,6 +758,7 @@ components:
           type: string
           maxLength: 250
           pattern: "$ ^[a-zA-Z0-9]+$"
+
     SuspendOperationDTO:
       type: object
       required:
@@ -861,6 +783,7 @@ components:
           minLength: 19
           maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
+
     RefundDetailDTO:
       type: object
       required:
@@ -944,6 +867,7 @@ components:
           maxLength: 11
           pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Code that identifies a bank transaction/credit transfer - IT: Codice che identifica una transazione bancaria/bonifico"
+
     ReadmittedOperationDTO:
       type: object
       required:
@@ -968,6 +892,7 @@ components:
           minLength: 19
           maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
+
     TimelineErrorDTO:
       type: object
       required:
@@ -1002,6 +927,7 @@ components:
           maxLength: 2500
           pattern: '^[a-zA-Z0-9 _@\-.!?]+'
           description: "ENG: Error message - IT: Messaggio di errore"
+
     UnsubscribeOperationDTO:
       type: object
       required:
@@ -1026,6 +952,7 @@ components:
           minLength: 19
           maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
+
   securitySchemes:
     bearerAuth:
       type: http

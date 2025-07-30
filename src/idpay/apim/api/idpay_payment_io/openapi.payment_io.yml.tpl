@@ -13,7 +13,9 @@ servers:
   - description: User Acceptance Test
     url: https://api-io.uat.cstar.pagopa.it/idpay-itn/payment
     x-internal: true
+
 paths:
+
   /bar-code:
     post:
       tags:
@@ -34,125 +36,59 @@ paths:
               initiativeId: "InitiativeId"
       responses:
         '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionBarCodeResponse'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: '#/components/responses/TransactionCreatedResponse'
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
-              example:
-                code: PAYMENT_INVALID_REQUEST
-                message: "Required initiativeId is not present"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
-        "401":
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentBadRequestResponse"
+        '401':
+          $ref: "#/components/responses/PaymentUnauthorizedResponse"
         '403':
-          description: User not onboarded
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
-              example:
-                code: PAYMENT_USER_NOT_ONBOARDED
-                message: "User not onboarded"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentForbiddenResponse"
         '404':
-          description: Transaction not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
-              example:
-                code: PAYMENT_NOT_FOUND_OR_EXPIRED
-                message: "Cannot find transaction with trxCode trxCode"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentNotFoundResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
-              example:
-                code: PAYMENT_TOO_MANY_REQUESTS
-                message: 'Too many requests'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentTooManyRequestsResponse"
         '500':
-          description: Generic error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
-              example:
-                code: PAYMENT_GENERIC_ERROR
-                message: 'application error connection microservice error'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentInternalServerErrorResponse"
+
 components:
+
+  headers:
+
+
+    Access-Control-Allow-Origin:
+      description: Indicates whether the response can be shared with requesting code from the given origin
+      schema:
+        type: string
+        pattern: "^[ -~]{1,2048}$"
+        minLength: 1
+        maxLength: 2048
+
+    RateLimit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
+
+    RateLimit-Reset:
+      description: The number of seconds left in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 60
+
+    Retry-After:
+      description: The number of seconds to wait before allowing a follow-up request
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
+
   parameters:
+
     ApiVersionHeader:
       name: X-Api-Version
       in: header
@@ -163,36 +99,88 @@ components:
         enum: [v1]
         example: v1
         default: v1
-  headers:
-    Access-Control-Allow-Origin:
-      description: Indicates whether the response can be shared with requesting code from the given origin
-      schema:
-        type: string
-        pattern: "^[ -~]{1,2048}$"
-        minLength: 1
-        maxLength: 2048
-    RateLimit-Limit:
-      description: The number of allowed requests in the current period
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 240
-    RateLimit-Reset:
-      description: The number of seconds left in the current period
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 60
-    Retry-After:
-      description: The number of seconds to wait before allowing a follow-up request
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 240
+
+  responses:
+
+    TransactionCreatedResponse:
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionBarCodeResponse'
+      headers: &StandardHeaders
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+
+    PaymentBadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionErrorDTO'
+          example:
+            code: PAYMENT_INVALID_REQUEST
+            message: "Required initiativeId is not present"
+      headers: *StandardHeaders
+
+    PaymentUnauthorizedResponse:
+      description: Authentication failed
+      content:
+        application/json: {}
+      headers: *StandardHeaders
+
+    PaymentForbiddenResponse:
+      description: User not onboarded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionErrorDTO'
+          example:
+            code: PAYMENT_USER_NOT_ONBOARDED
+            message: "User not onboarded"
+      headers: *StandardHeaders
+
+    PaymentNotFoundResponse:
+      description: Transaction not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionErrorDTO'
+          example:
+            code: PAYMENT_NOT_FOUND_OR_EXPIRED
+            message: "Cannot find transaction with trxCode trxCode"
+      headers: *StandardHeaders
+
+    PaymentTooManyRequestsResponse:
+      description: Too many Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionErrorDTO'
+          example:
+            code: PAYMENT_TOO_MANY_REQUESTS
+            message: "Too many requests"
+      headers: *StandardHeaders
+
+    PaymentInternalServerErrorResponse:
+      description: Generic error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionErrorDTO'
+          example:
+            code: PAYMENT_GENERIC_ERROR
+            message: "application error connection microservice error"
+      headers: *StandardHeaders
+
   schemas:
+
     TransactionErrorDTO:
       type: object
       required:
@@ -288,6 +276,7 @@ components:
           maxLength: 2500
           pattern: '^[a-zA-Z0-9 _@\-.!?]+'
           description: 'ENG: Error message- IT: Messaggio di errore'
+
     TransactionBarCodeRequest:
       type: object
       required:
@@ -298,6 +287,7 @@ components:
           maxLength: 24
           pattern: "^[a-zA-Z0-9]+$"
           description: 'ENG: Initiative ID - IT: Identificativo dell''iniziativa'
+
     TransactionBarCodeResponse:
       type: object
       required:
@@ -353,6 +343,7 @@ components:
           description: >-
             ENG: Status of the payment [CREATED: Created] - IT: Stato del pagamento [CREATED:
             Creato]
+
   securitySchemes:
     Bearer:
       type: apiKey
