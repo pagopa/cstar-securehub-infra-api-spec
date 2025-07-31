@@ -507,7 +507,7 @@ components:
       oneOf:
         - $ref: "#/components/schemas/SelfConsentBoolDTO"
         - $ref: "#/components/schemas/SelfConsentMultiDTO"
-        - $ref: "#/components/schemas/SelfConsentMultiTypeDTO"
+        - $ref: "#/components/schemas/SelfConsentBooleanTypeDTO"
         - $ref: "#/components/schemas/SelfConsentTextDTO"
     OnboardingStatusDTO:
       title: OnboardingStatusDTO
@@ -584,29 +584,26 @@ components:
           description: "ENG: Indicates self-consent values - IT: Indica i valori per gli auto consensi"
           pattern: "^[ -~]{0,10}$"
           maxLength: 10
-    SelfConsentMultiTypeDTO:
+    SelfConsentBooleanTypeDTO:
       type: object
       required:
         - _type
         - code
-        - value
+        - accepted
       properties:
         _type:
           type: string
           enum:
-            - multi_consent
-          description: "ENG: ISEE Self-consent value type - IT: Auto consenso di tipo multipli ISEE"
+            - boolean
+          description: "ENG: Self-consent boolean type - IT: Auto consenso di tipo boolean"
         code:
           type: string
           enum:
             - isee
           description: "ENG: Self-consent code - IT: Tipologia di multiconsenso"
-        value:
-          type: string
-          example: "01, 02, 03"
-          description: "ENG: Indicates self-consent values - IT: Indica i valori per gli auto consensi"
-          pattern: "^[ -~]{0,10}$"
-          maxLength: 10
+        accepted:
+          type: boolean
+          description: "ENG: Indicates whether the self-consent is accepted or not - IT: Indica se l'auto consenso è accettato o no"
     SelfConsentTextDTO:
       type: object
       required:
@@ -713,69 +710,54 @@ components:
     InitiativeDTO:
       type: object
       properties:
-        general:
-          $ref: '#/components/schemas/InitiativeGeneralDTO'
+        additionalInfo:
+          $ref: '#/components/schemas/InitiativeAdditionalDTO'
         beneficiaryRule:
           $ref: '#/components/schemas/InitiativeBeneficiaryRuleDTO'
-    InitiativeGeneralDTO:
+    InitiativeAdditionalDTO:
       type: object
       properties:
-        budget:
-          type: number
-          example: 10
-        beneficiaryType:
-          enum:
-            - PF
-            - PG
-            - NF
-          type: string
-        familyUnitComposition:
-          enum:
-            - INPS
-            - ANPR
-          type: string
-        beneficiaryKnown:
+        serviceIO:
           type: boolean
-        beneficiaryBudget:
-          type: number
-          example: 10
-        startDate:
+        serviceId:
           type: string
-          description: Start date
-          format: date
-          example: '2022-01-30'
-          minLength: 10
-          maxLength: 10
-        endDate:
+        serviceName:
           type: string
-          description: Start date
-          format: date
-          example: '2022-01-30'
-          minLength: 10
-          maxLength: 10
-        rankingStartDate:
+        serviceScope:
+          enum:
+            - LOCAL
+            - NATIONAL
           type: string
-          description: Start date
-          format: date
-          example: '2022-01-30'
-          minLength: 10
-          maxLength: 10
-        rankingEndDate:
+        description:
           type: string
-          description: Start date
-          format: date
-          example: '2022-01-30'
-          minLength: 10
-          maxLength: 10
-        rankingEnabled:
-          type: boolean
-        termAndCondition:
+        privacyLink:
           type: string
-          example: "termAndCondition"
-          description: >-
-            ENG: Term and Condition - IT: Termini e Condizioni
-          pattern: "^.*$"
-          maxLength: 4000
+        tcLink:
+          type: string
+        channels:
+          $ref: '#/components/schemas/ChannelArrayDTO'
+        logoFileName:
+          type: string
+        logoURL:
+          type: string
+        logoUploadDate:
+          type: string
+          format: date-time
+    ChannelArrayDTO:
+      type: array
+      items:
+        $ref: '#/components/schemas/ChannelDTO'
+    ChannelDTO:
+      type: object
+      properties:
+        type:
+          enum:
+            - web
+            - email
+            - mobile
+          type: string
+        contact:
+          type: string
     InitiativeBeneficiaryRuleDTO:
       type: object
       properties:
@@ -794,7 +776,7 @@ components:
       anyOf:
         - $ref: '#/components/schemas/SelfCriteriaBoolDTO'
         - $ref: '#/components/schemas/SelfCriteriaMultiDTO'
-        - $ref: '#/components/schemas/SelfCriteriaMultiTypeDTO'
+        - $ref: '#/components/schemas/SelfCriteriaBooleanTypeDTO'
         - $ref: '#/components/schemas/SelfCriteriaTextDTO'
     SelfCriteriaBoolDTO:
       type: object
@@ -833,7 +815,6 @@ components:
           maxLength: 10
           pattern: '^[ -~]{1,10}$'
     SelfCriteriaMultiDTO:
-      title: SelfCriteriaMultiDTO
       type: object
       properties:
         _type:
@@ -893,17 +874,16 @@ components:
             del record di autodichiarazione
           maxLength: 255
           pattern: "^[ -~]{0,255}$"
-    SelfCriteriaMultiTypeDTO:
-      title: SelfCriteriaMultiDTO
+    SelfCriteriaBooleanTypeDTO:
       type: object
       properties:
         _type:
           type: string
           description: >-
-            ENG: Self-declaration value type - IT: Autodichiarazione di tipo
-            multipli
+            ENG: Self-declaration boolean type - IT: Autodichiarazione di tipo
+            boolean Type
           enum:
-            - multi_consent
+            - boolean_type
         description:
           type: string
           example: "descrizione"
@@ -921,13 +901,10 @@ components:
           maxLength: 255
           pattern: '^[ -~]{0,255}$'
         value:
-          type: array
-          items:
-            $ref: '#/components/schemas/RowDataDTO'
+          type: boolean
           description: >-
-            ENG: Indicates self-declaration values - IT: Indica i valori per
-            l'autodichiarazione
-          maxItems: 10
+            ENG: Indicates whether the self-declaration is accepted or not - IT:
+            Indica se l'autodichiarazione è accettata o no
         code:
           type: string
           description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
