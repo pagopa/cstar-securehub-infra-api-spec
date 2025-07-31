@@ -13,7 +13,9 @@ servers:
   - description: User Acceptance Test
     url: https://api-io.uat.cstar.pagopa.it/idpay-itn/wallet
     x-internal: true
+
 paths:
+
   /:
     get:
       tags:
@@ -23,100 +25,19 @@ paths:
       operationId: getWallet
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          description: "ENG: Language - IT: Lingua"
-          in: header
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
+        - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletDTO'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+         $ref: '#/components/responses/WalletDataResponse'
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_GENERIC_ERROR"
-                message: "Application error"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInternalServerErrorResponse"
+
   '/{initiativeId}/detail':
     get:
       tags:
@@ -126,126 +47,22 @@ paths:
       operationId: getInitiativeBeneficiaryDetail
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: initiativeId
-          in: path
-          description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
-        - name: Accept-Language
-          description: "ENG: Language - IT: Lingua"
-          in: header
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
+        - $ref: '#/components/parameters/AcceptLanguage'
+        - $ref: '#/components/parameters/InitiativeId'
       responses:
         '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InitiativeDetailDTO'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/InitiativeDetailResponse"
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '404':
-          description: The requested inititative was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InitiativeErrorDTO'
-              example:
-                code: "INITIATIVE_NOT_FOUND"
-                message: "Initiative not found"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/InitiativeNotFoundResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InitiativeErrorDTO'
-              example:
-                  code: "INITIATIVE_TOO_MANY_REQUESTS"
-                  message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/InitiativeTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InitiativeErrorDTO'
-              example:
-                code: "INITIATIVE_GENERIC_ERROR"
-                message: "Application error"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/InitiativeInternalServerErrorResponse"
+
   '/{initiativeId}':
     get:
       tags:
@@ -255,126 +72,22 @@ paths:
       operationId: getWalletDetail
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          description: "ENG: Language - IT: Lingua"
-          in: header
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          in: path
-          description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: '#/components/parameters/AcceptLanguage'
+        - $ref: '#/components/parameters/InitiativeId'
       responses:
         '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InitiativeDTO'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletDetailResponse"
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '404':
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_USER_NOT_ONBOARDED"
-                message: "User not onboarded on this initiative"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUserNotFoundResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_GENERIC_ERROR"
-                message: "Application error"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInternalServerErrorResponse"
+
   /{initiativeId}/iban:
     put:
       tags:
@@ -384,25 +97,8 @@ paths:
       operationId: enrollIban
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          description: "ENG: Language - IT: Lingua"
-          in: header
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          in: path
-          description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: '#/components/parameters/AcceptLanguage'
+        - $ref: '#/components/parameters/InitiativeId'
       requestBody:
         description: "ENG: Unique identifier of the subscribed initiative, IBAN of the citizen - IT: Identificativo dell'iniziativa sottoscritta, IBAN del cittadino"
         content:
@@ -411,104 +107,18 @@ paths:
               $ref: '#/components/schemas/IbanPutDTO'
       responses:
         '200':
-          description: Enrollment OK
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/EnrollmentIbanResponse"
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_ENROLL_IBAN_NOT_ALLOWED_FOR_DISCOUNT_INITIATIVE"
-                message: "It is not possible enroll
-            an iban for a discount type initiative"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletIbanForbiddenResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_GENERIC_ERROR"
-                message: "Application error"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInternalServerErrorResponse"
+
   /{initiativeId}/instruments/by-wallet/{idWallet}:
     put:
       tags:
@@ -518,150 +128,25 @@ paths:
       operationId: enrollInstrument
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          description: "ENG: Language - IT: Lingua"
-          in: header
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          in: path
-          description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
-        - name: idWallet
-          in: path
-          description: "ENG: A unique id that identifies a payment method - IT: Identificativo univoco del metodo di pagamento"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: '#/components/parameters/AcceptLanguage'
+        - $ref: '#/components/parameters/InitiativeId'
+        - $ref: '#/components/parameters/WalletId'
       responses:
         '200':
-          description: Enrollment OK
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/EnrollmentInstrumentResponse"
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INSTRUMENT_ALREADY_ASSOCIATED"
-                message: "Payment Instrument is already associated to another user"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInstrumentForbiddenResponse"
         '404':
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INSTRUMENT_NOT_FOUND"
-                message: "The selected payment instrument has not been found for the current user"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInstrumentNotFoundResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_GENERIC_ERROR"
-                message: "An error occurred in the microservice payment instrument"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInternalServerErrorResponse"
+
   /{initiativeId}/instruments:
     get:
       tags:
@@ -671,108 +156,20 @@ paths:
       operationId: getInstrumentList
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          in: header
-          description: "ENG: Language - IT: Lingua"
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          in: path
-          description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: '#/components/parameters/AcceptLanguage'
+        - $ref: '#/components/parameters/InitiativeId'
       responses:
         '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InstrumentListDTO'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/InstrumentListResponse"
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
-              example:
-                code: "PAYMENT_INSTRUMENT_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentInstrumentTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
-              example:
-                code: "PAYMENT_INSTRUMENT_GENERIC_ERROR"
-                message: "Something gone wrong while send RTD instrument notify"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentInstrumentInternalServerErrorResponse"
+
   /{initiativeId}/instruments/{instrumentId}:
     delete:
       tags:
@@ -782,33 +179,9 @@ paths:
       operationId: deleteInstrument
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          description: "ENG: Language - IT: Lingua"
-          in: header
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          in: path
-          description: "ENG: The initiative ID - IT: Identificatico dell'iniziativa"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
-        - name: instrumentId
-          in: path
-          description: "ENG: A unique id, internally detached, which identifies a payment method - IT: Identificativo univoco, che identifica il metodo di pagamento"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: '#/components/parameters/AcceptLanguage'
+        - $ref: '#/components/parameters/InitiativeId'
+        - $ref: '#/components/parameters/InstrumentId'
       responses:
         '200':
           description: Delete OK
@@ -824,23 +197,7 @@ paths:
             Retry-After:
               $ref: "#/components/headers/Retry-After"
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
           description: Authentication failed
           content:
@@ -936,25 +293,8 @@ paths:
       operationId: unsubscribe
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          description: "ENG: Language - IT: Lingua"
-          in: header
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          in: path
-          description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: '#/components/parameters/AcceptLanguage'
+        - $ref: '#/components/parameters/InitiativeId'
       responses:
         '204':
           description: Unsubscribe OK
@@ -1064,25 +404,8 @@ paths:
       operationId: getWalletStatus
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          description: "ENG: Language - IT: Lingua"
-          in: header
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          in: path
-          description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: '#/components/parameters/AcceptLanguage'
+        - $ref: '#/components/parameters/InitiativeId'
       responses:
         '200':
           description: Check successful
@@ -1196,25 +519,8 @@ paths:
       operationId: getInitiativesWithInstrument
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          description: "ENG: Language - IT: Lingua"
-          in: header
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: idWallet
-          in: path
-          description: "ENG: The ID Wallet - IT: Identificativo wallet"
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: '#/components/parameters/AcceptLanguage'
+        - $ref: '#/components/parameters/WalletId'
       responses:
         '200':
           description: Ok
@@ -1409,6 +715,7 @@ paths:
               $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
               $ref: "#/components/headers/Retry-After"
+
   '/code/generate':
     post:
       tags:
@@ -1544,6 +851,7 @@ paths:
               $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
               $ref: "#/components/headers/Retry-After"
+
   '/{initiativeId}/code/instruments':
     put:
       tags:
@@ -1553,25 +861,8 @@ paths:
       operationId: enrollInstrumentCode
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          description: 'ENG: Language - IT: Lingua'
-          in: header
-          schema:
-            type: string
-            pattern: "^[ -~]{2,5}$"
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: initiativeId
-          in: path
-          description: 'ENG: The initiative ID - IT: Identificativo dell''iniziativa'
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+        - $ref: "#/components/parameters/AcceptLanguage"
+        - $ref: "#/components/parameters/InitiativeId"
       responses:
         '200':
           description: Enrollment OK
@@ -1587,92 +878,54 @@ paths:
             Retry-After:
               $ref: "#/components/headers/Retry-After"
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '404':
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INSTRUMENT_IDPAYCODE_NOT_FOUND"
-                message: "idpayCode is not found for the current user"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletIdpayInstrumentNotFoundResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_GENERIC_ERROR"
-                message: "An error occurred in the microservice payment instrument"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInternalServerErrorResponse"
+
 components:
+
+  headers:
+
+    Access-Control-Allow-Origin:
+      description: Indicates whether the response can be shared with requesting code from the given origin
+      schema:
+        type: string
+        pattern: "^[ -~]{1,2048}$"
+        minLength: 1
+        maxLength: 2048
+
+    RateLimit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
+
+    RateLimit-Reset:
+      description: The number of seconds left in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 60
+
+    Retry-After:
+      description: The number of seconds to wait before allowing a follow-up request
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 240
+
   parameters:
+
     ApiVersionHeader:
       name: X-Api-Version
       in: header
@@ -1683,41 +936,265 @@ components:
         enum: [v1]
         example: v1
         default: v1
-  headers:
-    Access-Control-Allow-Origin:
-      description: Indicates whether the response can be shared with requesting code from the given origin
+
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      description: "ENG: Language - IT: Lingua"
+      required: true
       schema:
         type: string
-        pattern: "^[ -~]{1,2048}$"
-        minLength: 1
-        maxLength: 2048
-    RateLimit-Limit:
-      description: The number of allowed requests in the current period
+        pattern: "^[ -~]{2,5}$"
+        minLength: 2
+        maxLength: 5
+        example: it-IT
+        default: it-IT
+
+    InitiativeId:
+      name: initiativeId
+      in: path
+      description: "ENG: The initiative ID - IT: Identificativo dell'iniziativa"
+      required: true
       schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 240
-    RateLimit-Reset:
-      description: The number of seconds left in the current period
+        type: string
+        maxLength: 24
+        pattern: "$ ^[a-zA-Z0-9]+$"
+
+    WalletId:
+      name: idWallet
+      in: path
+      description: "ENG: A unique id that identifies a payment method - IT: Identificativo univoco del metodo di pagamento"
+      required: true
       schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 60
-    Retry-After:
-      description: The number of seconds to wait before allowing a follow-up request
+        type: string
+        maxLength: 24
+        pattern: "$ ^[a-zA-Z0-9]+$"
+
+    InstrumentId:
+      name: instrumentId
+      in: path
+      description: "ENG: A unique id, internally detached, which identifies a payment method - IT: Identificativo univoco, che identifica il metodo di pagamento"
+      required: true
       schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 240
+        type: string
+        maxLength: 24
+        pattern: "$ ^[a-zA-Z0-9]+$"
+
+  responses:
+
+    WalletDataResponse:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletDTO'
+      headers: &StandardHeaders
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+
+    InitiativeDetailResponse:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InitiativeDetailDTO'
+      headers: *StandardHeaders
+
+    WalletDetailResponse:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InitiativeDTO'
+      headers: *StandardHeaders
+
+    EnrollmentIbanResponse:
+      description: Enrollment OK
+      content:
+        application/json: {}
+      headers: *StandardHeaders
+
+    EnrollmentInstrumentResponse:
+      description: Enrollment OK
+      content:
+        application/json: {}
+      headers: *StandardHeaders
+
+    InstrumentListResponse:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InstrumentListDTO'
+      headers: *StandardHeaders
+
+
+
+    #ErrorResponse
+
+    WalletBadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletErrorDTO'
+          example:
+            code: "WALLET_INVALID_REQUEST"
+            message: "Something went wrong handling the request"
+      headers: *StandardHeaders
+
+    WalletUnauthorizedResponse:
+      description: Authentication failed
+      content:
+        application/json: {}
+      headers: *StandardHeaders
+
+    WalletIbanForbiddenResponse:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletErrorDTO'
+          example:
+            code: "WALLET_ENROLL_IBAN_NOT_ALLOWED_FOR_DISCOUNT_INITIATIVE"
+            message: "It is not possible enroll an iban for a discount type initiative"
+      headers: *StandardHeaders
+
+    WalletInstrumentForbiddenResponse:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletErrorDTO'
+          example:
+            code: "WALLET_INSTRUMENT_ALREADY_ASSOCIATED"
+            message: "Payment Instrument is already associated to another user"
+      headers: *StandardHeaders
+
+    WalletIdpayInstrumentNotFoundResponse:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletErrorDTO'
+          example:
+            code: "WALLET_INSTRUMENT_IDPAYCODE_NOT_FOUND"
+            message: "idpayCode is not found for the current user"
+      headers: *StandardHeaders
+
+    WalletInstrumentNotFoundResponse:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletErrorDTO'
+          example:
+            code: "WALLET_INSTRUMENT_NOT_FOUND"
+            message: "The selected payment instrument has not been found for the current user"
+      headers: *StandardHeaders
+
+    InitiativeNotFoundResponse:
+      description: The requested initiative was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeErrorDTO"
+          example:
+            code: "INITIATIVE_NOT_FOUND"
+            message: "Initiative not found"
+      headers: *StandardHeaders
+
+    WalletUserNotFoundResponse:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletErrorDTO'
+          example:
+            code: "WALLET_USER_NOT_ONBOARDED"
+            message: "User not onboarded on this initiative"
+      headers: *StandardHeaders
+
+    WalletTooManyRequestsResponse:
+      description: Too many Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletErrorDTO'
+          example:
+            code: "WALLET_TOO_MANY_REQUESTS"
+            message: "Too many requests"
+      headers: *StandardHeaders
+
+    InitiativeTooManyRequestsResponse:
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeErrorDTO"
+          example:
+            code: "INITIATIVE_TOO_MANY_REQUESTS"
+            message: "Too many requests"
+      headers: *StandardHeaders
+
+    PaymentInstrumentTooManyRequestsResponse:
+      description: Too many Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
+          example:
+            code: PAYMENT_INSTRUMENT_TOO_MANY_REQUESTS
+            message: "Too many requests"
+      headers: *StandardHeaders
+
+    WalletInternalServerErrorResponse:
+      description: Server ERROR
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletErrorDTO'
+          example:
+            code: "WALLET_GENERIC_ERROR"
+            message: "An error occurred in the microservice payment instrument"
+      headers: *StandardHeaders
+
+    InitiativeInternalServerErrorResponse:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InitiativeErrorDTO"
+          example:
+            code: "INITIATIVE_GENERIC_ERROR"
+            message: "Application error"
+      headers: *StandardHeaders
+
+    PaymentInstrumentInternalServerErrorResponse:
+      description: Too many Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
+          example:
+            code: PAYMENT_INSTRUMENT_GENERIC_ERROR
+            message: "Something gone wrong while send RTD instrument notify"
+      headers: *StandardHeaders
+
   schemas:
+
     CheckEnrollmentDTO:
       type: object
       properties:
         isIdPayCodeEnabled:
           type: boolean
+
     GenerateCodeReqDTO:
       title: GenerateCodeDTO
       type: object
@@ -1729,6 +1206,7 @@ components:
             Identificativo univoco dell'iniziativa sottoscritta
           maxLength: 24
           pattern: "$ ^[a-zA-Z0-9]+$"
+
     GenerateCodeRespDTO:
       type: object
       properties:
@@ -1737,6 +1215,7 @@ components:
           description: 'ENG: Numeric code - IT: codice numerico'
           maxLength: 10
           pattern: "$ ^[a-zA-Z0-9]+$"
+
     IbanPutDTO:
       title: IbanPutDTO
       type: object
@@ -1755,6 +1234,7 @@ components:
           description: "ENG: Further information about the iban - IT: Ulteriori informazioni sull'iban"
           pattern: "^[a-zA-Z0-9_]+$"
           maxLength: 255
+
     WalletStatusDTO:
       title: WalletStatusDTO
       type: object
@@ -1779,6 +1259,7 @@ components:
             - EXPIRING
           type: string
           description: "ENG: Actual status of the voucher - IT: Stato attuale del voucher"
+
     WalletDTO:
       type: object
       required:
@@ -1790,6 +1271,7 @@ components:
           items:
             $ref: '#/components/schemas/InitiativeDTO'
           description: "ENG: The list of active initiatives of a citizen - IT: Lista delle iniziative attive di un cittadino"
+
     InstrumentListDTO:
       type: object
       required:
@@ -1803,6 +1285,7 @@ components:
           description: >-
             "ENG: The list of payment instruments associated to the initiative by the
             citizen - IT: Lista degli strumenti di pagamenti di un cittadino associati ad una iniziativa"
+
     InstrumentDTO:
       title: InstrumentDTO
       type: object
@@ -1863,6 +1346,7 @@ components:
           minLength: 19
           maxLength: 19
           description: "ENG: Activation date of the instrument - IT: Data di attivazione dello strumento"
+
     InitiativeDTO:
       type: object
       required:
@@ -1992,6 +1476,7 @@ components:
           description: 'ENG: The service ID - IT: Identificativo del service'
           maxLength: 24
           pattern: "$ ^[a-zA-Z0-9]+$"
+
     InitiativesWithInstrumentDTO:
       type: object
       required:
@@ -2023,6 +1508,7 @@ components:
           items:
             $ref: '#/components/schemas/InitiativesStatusDTO'
           description: "ENG: The list of the initiatives status related to a payment instrument - IT: Lista degli stati delle iniziative associate ad un instrumento di pagamento"
+
     InitiativesStatusDTO:
       type: object
       required:
@@ -2054,6 +1540,7 @@ components:
             - PENDING_ENROLLMENT_REQUEST
             - PENDING_DEACTIVATION_REQUEST
           description: "ENG: Status of the initiative [ACTIVE: Active, INACTIVE: Inactive, PENDING_ENROLLMENT_REQUEST: Richiesta di adesione in attesa, PENDING_DEACTIVATION_REQUEST: Pending deactivation request] - IT: Stato dell'iniziativa [ACTIVE: Iniziativa attiva, INACTIVE: Iniziativa inactive, PENDING_ENROLLMENT_REQUEST: Pending enrollment request, PENDING_DEACTIVATION_REQUEST: Richiesta di disattivazione in attesa]"
+
     InitiativeDetailDTO:
       type: object
       properties:
@@ -2138,6 +1625,7 @@ components:
           description: "ENG: The service ID - IT: Identificativo del service"
           maxLength: 50
           pattern: "$ ^[a-zA-Z0-9]+$"
+
     InitiativeRefundRuleDTO:
       type: object
       properties:
@@ -2145,6 +1633,7 @@ components:
           $ref: '#/components/schemas/AccumulatedAmountDTO'
         timeParameter:
           $ref: '#/components/schemas/TimeParameterDTO'
+
     AccumulatedAmountDTO:
       required:
         - accumulatedType
@@ -2159,6 +1648,7 @@ components:
         refundThreshold:
           type: number
           description: "ENG: Refund threshold - IT: Soglia di rimborso"
+
     TimeParameterDTO:
       required:
         - timeType
@@ -2173,6 +1663,7 @@ components:
             - MONTHLY
             - QUARTERLY
           description: "ENG: Time type [CLOSED: At the end of the initiative, DAILY: Daily, WEEKLY: Weekly, MONTHLY: Monthly, QUARTERLY: Quarterly] - IT: Tipologia di tesmpistiche di rimborso [CLOSED: Alla chiusura dell'iniziativa, DAILY: Giornaliero, WEEKLY: Settimanale, MONTHLY: Mensile, QUARTERLY: Trimestrale]"
+
     RewardValueDTO:
       required:
         - rewardValueType
@@ -2188,6 +1679,7 @@ components:
         rewardValue:
           type: number
           description: "ENG: Reward value - IT: Valore di reward"
+
     WalletErrorDTO:
       type: object
       required:
@@ -2262,6 +1754,7 @@ components:
           description: 'ENG: Error message- IT: Messaggio di errore'
           maxLength: 2500
           pattern: '^[a-zA-Z0-9 _@\-.!?]+'
+
     InitiativeErrorDTO:
       type: object
       properties:
@@ -2291,6 +1784,7 @@ components:
           description: "ENG: Error message - IT: Messaggio di errore"
           maxLength: 2500
           pattern: '^[a-zA-Z0-9 _@\-.!?]+'
+
     PaymentInstrumentErrorDTO:
       type: object
       required:
@@ -2350,6 +1844,7 @@ components:
           description: 'ENG: Error message- IT: Messaggio di errore'
           maxLength: 250
           pattern: '^[a-zA-Z0-9 _@\-.!?]+'
+
   securitySchemes:
     bearerAuth:
       type: http
