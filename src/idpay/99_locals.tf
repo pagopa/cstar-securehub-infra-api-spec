@@ -50,7 +50,7 @@ locals {
         "https://${local.idpay-portal-hostname}",
         "https://${local.idpay-register-hostname}",
       ],
-      var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001"] : []
+      var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001", "https://localhost:5173", "http://localhost:5173"] : []
     )
   }
 
