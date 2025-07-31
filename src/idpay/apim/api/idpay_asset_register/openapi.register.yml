@@ -233,11 +233,7 @@ paths:
       tags:
         - products
       summary: Mark products as in supervision
-      description: 'ENG: Set the status of a list of products to IN_VALIDATION.
-
-        IT: Imposta lo stato di una lista di prodotti su IN_VALIDATION.
-
-        '
+      description: 'ENG: Set the status of a list of products to IN_VALIDATION. IT: Imposta lo stato di una lista di prodotti su IN_VALIDATION.        '
       operationId: updateProductStatusSupervisioned
       parameters:
         - $ref: '#/components/parameters/x_organization_selected_header'
