@@ -1556,7 +1556,7 @@ components:
       type: object
       required:
         - trxCode
-        - trxId
+        - id
         - effectiveAmountCents
         - trxExpirationSeconds
         - status
@@ -1564,7 +1564,7 @@ components:
         trxCode:
           type: string
           description: "ENG: Transaction code - IT: Il codice della transazione"
-        trxId:
+        id:
           type: string
           description: "ENG: Transaction ID - IT: L'ID della transazione"
         fiscalCode:
