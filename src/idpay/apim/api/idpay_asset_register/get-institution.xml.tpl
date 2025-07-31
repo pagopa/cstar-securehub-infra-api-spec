@@ -8,6 +8,28 @@
     <inbound>
         <base />
         <choose>
+            <when condition="@{
+                var institutionId = context.Request.MatchedParameters.GetValueOrDefault("institutionId", "");
+                var regex = new System.Text.RegularExpressions.Regex(
+                    "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                );
+                return string.IsNullOrEmpty(institutionId) || !regex.IsMatch(institutionId);
+            }">
+                <return-response>
+                    <set-status code="400" reason="Bad Request" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@{
+                        return new JObject {
+                            ["code"] = "BAD_REQUEST",
+                            ["message"] = "Missing or invalid 'institutionId'. Must be a valid UUID v4.",
+                        }.ToString();
+                    }</set-body>
+                </return-response>
+            </when>
+        </choose>
+        <choose>
             <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia")">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
