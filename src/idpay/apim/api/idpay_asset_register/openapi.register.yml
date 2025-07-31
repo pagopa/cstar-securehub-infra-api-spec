@@ -882,6 +882,7 @@ components:
             - KO
         errorKey:
           type: string
+          nullable: true
           enum:
             - product.update.error
     ProductFileDTO:
