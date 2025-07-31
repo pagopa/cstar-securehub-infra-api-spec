@@ -93,7 +93,7 @@ module "idpay_itn_initiative_portal" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayportalwelfarebackeninitiative/idpay/initiative"
 
   content_format = "openapi"
-  content_value  = file("./apim/api/idpay_initiative/ative.yml")
+  content_value  = file("./apim/api/idpay_initiative/openapi.initiative.yml")
 
   xml_content = file("./apim/api/base_policy.xml")
 
