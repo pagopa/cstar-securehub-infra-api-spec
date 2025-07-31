@@ -594,7 +594,7 @@ components:
         _type:
           type: string
           enum:
-            - boolean
+            - boolean_type
           description: "ENG: Self-consent boolean type - IT: Auto consenso di tipo boolean"
         code:
           type: string
