@@ -184,105 +184,19 @@ paths:
         - $ref: '#/components/parameters/InstrumentId'
       responses:
         '200':
-          description: Delete OK
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/DeleteInstrumentResponse"
         '400':
           $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INSTRUMENT_DELETE_NOT_ALLOWED"
-                message: "It's not possible to delete an instrument of AppIO payment types"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInstrumentDeleteForbiddenResponse"
         '404':
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INSTRUMENT_NOT_FOUND"
-                message: "The selected payment instrument has not been found for the current user"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInstrumentNotFoundResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_GENERIC_ERROR"
-                message: "An error occurred in the microservice payment instrument"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInternalServerErrorResponse"
 
   /{initiativeId}/unsubscribe:
     delete:
@@ -297,103 +211,17 @@ paths:
         - $ref: '#/components/parameters/InitiativeId'
       responses:
         '204':
-          description: Unsubscribe OK
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/UnsubscribeResponse"
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '404':
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_USER_NOT_ONBOARDED"
-                message: "User not onboarded on this initiative"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUserNotFoundResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_GENERIC_ERROR"
-                message: "An error occurred in the microservice onboarding"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInternalServerErrorResponse"
 
   '/{initiativeId}/status':
     get:
@@ -408,107 +236,17 @@ paths:
         - $ref: '#/components/parameters/InitiativeId'
       responses:
         '200':
-          description: Check successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletStatusDTO'
-              example:
-                status: NOT_REFUNDABLE_ONLY_IBAN
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletStatusResponse"
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '404':
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_USER_NOT_ONBOARDED"
-                message: "User not onboarded on this initiative"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUserNotFoundResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                  code: "WALLET_GENERIC_ERROR"
-                  message: "Application error"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInternalServerErrorResponse"
 
   '/instrument/{idWallet}/initiatives':
     get:
@@ -523,105 +261,17 @@ paths:
         - $ref: '#/components/parameters/WalletId'
       responses:
         '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InitiativesWithInstrumentDTO'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/InitiativeStatusResponse"
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '404':
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INSTRUMENT_NOT_FOUND"
-                message: "The selected payment instrument has not been found for the current user"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInstrumentNotFoundResponse"
         '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_GENERIC_ERROR"
-                message: "An error occurred in the microservice payment instrument"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletInternalServerErrorResponse"
 
   '/code/status':
     get:
@@ -634,87 +284,15 @@ paths:
         - $ref: '#/components/parameters/ApiVersionHeader'
       responses:
         '200':
-          description: Check successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CheckEnrollmentDTO'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/IdPayCodeStatusResponse"
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: "WALLET_INVALID_REQUEST"
-                message: "Something went wrong handling the request"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '429':
-          description: Too many requests
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
-              example:
-                code: "PAYMENT_INSTRUMENT_TOO_MANY_REQUESTS"
-                message: "Too many requests"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentInstrumentTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
-              example:
-                code: "PAYMENT_INSTRUMENT_GENERIC_ERROR"
-                message: "An error occurred in the microservice payment instrument"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentInstrumentInternalServerErrorResponse"
 
   '/code/generate':
     post:
@@ -734,123 +312,19 @@ paths:
               $ref: '#/components/schemas/GenerateCodeReqDTO'
       responses:
         '200':
-          description: Check successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenerateCodeRespDTO'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/GenerateCodeResponse"
         '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
-              example:
-                code: "PAYMENT_INSTRUMENT_PIN_LENGTH_NOT_VALID"
-                message: "Pin length is not valid"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentInstrumentPinBadRequestResponse"
         '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/WalletUnauthorizedResponse"
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
-              example:
-                code: "PAYMENT_INSTRUMENT_ENROLL_NOT_ALLOWED_FOR_REFUND_INITIATIVE"
-                message: "It is not possible to enroll a idpayCode for a refund type initiative"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentInstrumentEnrollForbiddenResponse"
         '404':
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
-              example:
-                code: "PAYMENT_INSTRUMENT_USER_NOT_ONBOARDED"
-                message: "The current user is not onboarded on initiative"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentInstrumentUserNotFoundResponse"
         '429':
-          description: Too many requests
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
-              example:
-                code: "PAYMENT_INSTRUMENT_TOO_MANY_REQUESTS"
-                message: "Too many requests on the ms  Payment Instrument"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentInstrumentTooManyRequestsResponse"
         '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
-              example:
-                code: "PAYMENT_INSTRUMENT_GENERIC_ERROR"
-                message: "An error occurred in the microservice wallet"
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/PaymentInstrumentInternalServerErrorResponse"
 
   '/{initiativeId}/code/instruments':
     put:
@@ -865,18 +339,7 @@ paths:
         - $ref: "#/components/parameters/InitiativeId"
       responses:
         '200':
-          description: Enrollment OK
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
-            RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
-            RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
-            Retry-After:
-              $ref: "#/components/headers/Retry-After"
+          $ref: "#/components/responses/EnrollmentInstrumentCodeResponse"
         '400':
           $ref: "#/components/responses/WalletBadRequestResponse"
         '401':
@@ -1034,7 +497,57 @@ components:
             $ref: '#/components/schemas/InstrumentListDTO'
       headers: *StandardHeaders
 
+    DeleteInstrumentResponse:
+      description: Delete OK
+      content:
+        application/json: {}
+      headers: *StandardHeaders
 
+    UnsubscribeResponse:
+      description: Unsubscribe OK
+      content:
+        application/json: {}
+      headers: *StandardHeaders
+
+    WalletStatusResponse:
+      description: Check successful
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletStatusDTO'
+          example:
+            status: NOT_REFUNDABLE_ONLY_IBAN
+      headers: *StandardHeaders
+
+    InitiativeStatusResponse:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InitiativesWithInstrumentDTO'
+      headers: *StandardHeaders
+
+    IdPayCodeStatusResponse:
+      description: Check successful
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CheckEnrollmentDTO'
+      headers: *StandardHeaders
+
+    EnrollmentInstrumentCodeResponse:
+      description: Enrollment OK
+      content:
+        application/json: {}
+      headers: *StandardHeaders
+
+    GenerateCodeResponse:
+      description: Check successful
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenerateCodeRespDTO'
+      headers: *StandardHeaders
 
     #ErrorResponse
 
@@ -1047,6 +560,17 @@ components:
           example:
             code: "WALLET_INVALID_REQUEST"
             message: "Something went wrong handling the request"
+      headers: *StandardHeaders
+
+    PaymentInstrumentPinBadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
+          example:
+            code: "PAYMENT_INSTRUMENT_PIN_LENGTH_NOT_VALID"
+            message: "Pin length is not valid"
       headers: *StandardHeaders
 
     WalletUnauthorizedResponse:
@@ -1077,6 +601,28 @@ components:
             message: "Payment Instrument is already associated to another user"
       headers: *StandardHeaders
 
+    PaymentInstrumentEnrollForbiddenResponse:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
+          example:
+            code: "PAYMENT_INSTRUMENT_ENROLL_NOT_ALLOWED_FOR_REFUND_INITIATIVE"
+            message: "It is not possible to enroll a idpayCode for a refund type initiative"
+      headers: *StandardHeaders
+
+    WalletInstrumentDeleteForbiddenResponse:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletErrorDTO'
+          example:
+            code: "WALLET_INSTRUMENT_DELETE_NOT_ALLOWED"
+            message: "It's not possible to delete an instrument of AppIO payment types"
+      headers: *StandardHeaders
+
     WalletIdpayInstrumentNotFoundResponse:
       description: The requested resource was not found
       content:
@@ -1097,6 +643,17 @@ components:
           example:
             code: "WALLET_INSTRUMENT_NOT_FOUND"
             message: "The selected payment instrument has not been found for the current user"
+      headers: *StandardHeaders
+
+    PaymentInstrumentUserNotFoundResponse:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentInstrumentErrorDTO'
+          example:
+            code: "PAYMENT_INSTRUMENT_USER_NOT_ONBOARDED"
+            message: "The current user is not onboarded on initiative"
       headers: *StandardHeaders
 
     InitiativeNotFoundResponse:
