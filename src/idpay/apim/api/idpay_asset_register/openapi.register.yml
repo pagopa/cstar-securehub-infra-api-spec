@@ -767,6 +767,10 @@ components:
           description: 'ENG: The name of the product  <br> IT: Nome del prodotto'
           maxLength: 255
           pattern: .*
+        motivation:
+          type: string
+          maxLength: 255
+          pattern: .*
     InstitutionResponse:
       title: InstitutionResponse
       type: object
