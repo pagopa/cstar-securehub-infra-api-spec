@@ -1,10 +1,10 @@
 openapi: 3.0.3
 
 info:
-  title: RTP Activation API.
+  title: RTP Payees  API.
   version: 1.0.0
   description: |
-    API to handle Payees which use PagoPA as RTP Service Provider.
+    API for querying the registry of **Payees** (creditors) who are enabled to use PagoPA as their Request-to-Pay (RTP) Service Provider.
   contact:
     name: PagoPA S.p.A.
     email: rtp@pagopa.it
@@ -21,23 +21,16 @@ servers:
     x-internal: false
 
 tags:
-  - name: create
-    description: Create operation.
   - name: read
-    description: Read operation.
-  - name: update
-    description: Update operation.
-  - name: delete
-    description: Delete operation.
+    description: Operations to read from the registry, such as retrieving the list of Payees.
 
 paths:
   /payees:
     get:
       operationId: getPayees
-      summary: Returns Payees.
+      summary: Retrieves a paginated list of Payees from the registry.
       description: |
-        The operation returns all Payees which use PagoPA as RTP Service
-        Provider.
+        Queries the registry and returns a paginated list of all Payees (creditors) activated on the PagoPA RTP platform. Use the `page` and `size` query parameters to navigate through the directory.
       tags: [read]
       security:
         - oAuth2: [read_rtp_payees]
@@ -48,28 +41,28 @@ paths:
         - $ref: '#/components/parameters/PageSize'
       responses:
         "200":
-          #description: Ok.
+          # description: OK. The request was successful, and a page of Payees from the registry is returned.
           $ref: '#/components/responses/PageOfPayees'
         "400":
-          #description: Bad request.
+          # description: Bad Request. The request was malformed, for example due to invalid pagination parameters.
           $ref: '#/components/responses/Error'
         "401":
-          #description: Access token is missing or invalid.
+          # description: Unauthorized. The access token is missing, expired, or invalid.
           $ref: '#/components/responses/Error'
         "403":
-          #description: Forbidden.
+          # description: Forbidden. The client is authenticated but does not have the required permissions to access this resource.
           $ref: '#/components/responses/Error'
         "406":
-          #description: Not acceptable. Did you require application/json?
+          # description: Not Acceptable. The server cannot produce a response matching the `Accept` header. Ensure you accept `application/json`.
           $ref: '#/components/responses/Error'
         "429":
-          #description: Too many request.
+          # description: Too Many Requests. The client has exceeded the rate limit.
           $ref: '#/components/responses/Error'
         "500":
-          #description: Server error.
+          # description: Internal Server Error. An unexpected error occurred on the server.
           $ref: '#/components/responses/Error'
         default:
-          #description: Unexpected error.
+          # description: Unexpected Error. An error occurred that is not covered by other status codes.
           $ref: '#/components/responses/Error'
 
 components:
@@ -82,8 +75,7 @@ components:
     # --------------------------------------------------------------------------
     AccessControlAllowOrigin:
       description: |
-        Indicates whether the response can be shared with requesting code from
-        the given origin.
+        The `Access-Control-Allow-Origin` response header indicates whether the response can be shared with requesting code from the given origin.
       type: string
       pattern: "^[ -~]{1,2048}$"
       minLength: 1
@@ -93,14 +85,14 @@ components:
     # Basic types for rate limit handling.
     # --------------------------------------------------------------------------
     RateLimitLimit:
-      description: The number of allowed requests in the current period.
+      description: The maximum number of requests that the consumer is permitted to make in a time window.
       type: integer
       format: int32
       minimum: 1
       maximum: 240
 
     RateLimitReset:
-      description: The number of seconds left in the current period.
+      description: The number of seconds remaining until the rate limit window resets.
       type: integer
       format: int32
       minimum: 1
@@ -108,7 +100,7 @@ components:
 
     RetryAfter:
       description: |
-        The number of seconds to wait before allowing a follow-up request.
+        The number of seconds to wait before making a new request, typically sent with 429 (Too Many Requests) responses.
       type: integer
       format: int32
       minimum: 1
@@ -118,7 +110,7 @@ components:
     # Basic types for paging.
     # --------------------------------------------------------------------------
     PageNumber:
-      description: Number of the page.
+      description: The page number to retrieve (0-indexed).
       type: integer
       format: int32
       minimum: 0
@@ -126,7 +118,7 @@ components:
       example: 1
 
     PageSize:
-      description: Size of the page.
+      description: The number of registry entries to include per page.
       type: integer
       format: int32
       minimum: 1
@@ -134,7 +126,7 @@ components:
       example: 20
 
     TotalElements:
-      description: Total elements.
+      description: The total number of elements available across all pages in the registry.
       type: integer
       format: int64
       minimum: 0
@@ -142,7 +134,7 @@ components:
       example: 20
 
     TotalPages:
-      description: Total pages.
+      description: The total number of pages available based on the current page size.
       type: integer
       format: int64
       minimum: 0
@@ -153,7 +145,7 @@ components:
     # Basic types for error handling.
     # --------------------------------------------------------------------------
     ErrorCode:
-      description: Error code.
+      description: A unique, machine-readable code identifying the specific error.
       type: string
       pattern: "^[A-F0-9]{9}$"
       minLength: 9
@@ -161,7 +153,7 @@ components:
       example: "01000000F"
 
     ErrorDescription:
-      description: Error description.
+      description: A human-readable description of the error.
       type: string
       pattern: "^[ -~]{0,256}$"
       minLength: 0
@@ -169,7 +161,7 @@ components:
       example: "Wrong party identifier"
 
     StatusCode:
-      description: HTTP status code.
+      description: The HTTP status code associated with the error.
       type: integer
       format: int32
       minimum: 0
@@ -180,7 +172,7 @@ components:
     # Basic types for technical stuff.
     # --------------------------------------------------------------------------
     RequestId:
-      description: Identifier of the request.
+      description: A unique identifier for tracking a single request across system boundaries, essential for logging and debugging.
       type: string
       format: uuid
       pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
@@ -189,7 +181,7 @@ components:
       example: "bd615b4a-066d-443e-8dd2-a28a39931fef"
 
     Version:
-      description: Version of the required API.
+      description: The version of the API being requested.
       type: string
       pattern: "^[ -~]{1,64}$"
       minLength: 1
@@ -200,7 +192,7 @@ components:
     # Domain specific basic types.
     # --------------------------------------------------------------------------
     Name:
-      description: Name of Payee.
+      description: The official registered name of the Payee.
       type: string
       pattern: "^[ -~]{1,64}$"
       minLength: 1
@@ -208,7 +200,7 @@ components:
       example: "Roma Capitale"
 
     PayeeId:
-      description: ID of the Payee (fiscal code or VAT).
+      description: The unique identifier of the Payee in the registry. This is the Italian 11-digit VAT number (*Partita IVA*) or 16-digit fiscal code (*Codice Fiscale*).
       type: string
       pattern: "\\d{11}|\\d{16}"
       minLength: 11
@@ -219,7 +211,7 @@ components:
     # Complex types for paging.
     # --------------------------------------------------------------------------
     PageMetadata:
-      description: Metadata of a page of data.
+      description: Contains metadata for navigating the paginated registry query results.
       type: object
       additionalProperties: false
       properties:
@@ -246,7 +238,7 @@ components:
     # Complex type for error handling.
     # --------------------------------------------------------------------------
     Error:
-      description: Error details.
+      description: A single, detailed error object.
       type: object
       additionalProperties: false
       properties:
@@ -263,15 +255,14 @@ components:
 
     Errors:
       description: |
-        Error details.
-        The format depends on the component which returns it.
+        A generic error response container. The structure of the error can vary depending on where it originates (e.g., Application, API Gateway, or underlying Framework).
       oneOf:
         - $ref: '#/components/schemas/Type1Error'
         - $ref: '#/components/schemas/Type2Error'
         - $ref: '#/components/schemas/Type3Error'
 
     Type1Error:
-      description: List of errors returned by the application.
+      description: An error originating from the business logic of the application. Contains a list of specific errors.
       type: object
       additionalProperties: false
       properties:
@@ -289,7 +280,7 @@ components:
             description: "Wrong party identifier"
 
     Type2Error:
-      description: Error details returned by the APIM.
+      description: An error originating from the API Management (APIM) layer.
       type: object
       additionalProperties: false
       properties:
@@ -305,7 +296,7 @@ components:
         message: "Invalid JWT."
 
     Type3Error:
-      description: Error details returned by the framework.
+      description: A generic error originating from the underlying web framework.
       type: object
       additionalProperties: false
       properties:
@@ -327,7 +318,7 @@ components:
         error:
           $ref: '#/components/schemas/ErrorDescription'
         requestId:
-          description: ID of the request.
+          description: The ID of the request that caused the error.
           type: string
           pattern: "^[ -~]{1,128}$"
           minLength: 1
@@ -349,7 +340,7 @@ components:
     # Domain specific complex types.
     # ------------------------------------------------------
     Payee:
-      description: Payee data.
+      description: Represents a single Payee entry in the registry.
       type: object
       additionalProperties: false
       properties:
@@ -365,7 +356,7 @@ components:
         name: "Roma Capitale"
 
     Payees:
-      description: List of Payees.
+      description: A list of Payee entries from the registry.
       type: array
       minItems: 0
       maxItems: 128
@@ -378,7 +369,7 @@ components:
           name: "Comune di Bari"
 
     PageOfPayees:
-      description: Page of Payees.
+      description: A single page from the registry results, containing a list of Payees and pagination metadata.
       type: object
       additionalProperties: false
       properties:
@@ -408,7 +399,7 @@ components:
     PageNumber:
       name: page
       in: query
-      description: Number of the requested page of data.
+      description: The page number of the registry results to retrieve (0-indexed).
       required: true
       schema:
         $ref: '#/components/schemas/PageNumber'
@@ -416,7 +407,7 @@ components:
     PageSize:
       name: size
       in: query
-      description: Size of the requested page of data.
+      description: The number of registry entries to return per page.
       required: true
       schema:
         $ref: '#/components/schemas/PageSize'
@@ -424,7 +415,7 @@ components:
     RequestId:
       name: RequestId
       in: header
-      description: Identifier of the request.
+      description: Unique identifier for the API request, used for tracing and correlation.
       required: true
       schema:
         $ref: '#/components/schemas/RequestId'
@@ -432,7 +423,7 @@ components:
     Version:
       name: Version
       in: header
-      description: Version of the required API.
+      description: Specifies the version of the API the client wishes to use.
       required: true
       schema:
         $ref: '#/components/schemas/Version'
@@ -442,12 +433,11 @@ components:
   # ============================================================================
   responses:
     Error:
-      description: Response returned when an error occured.
+      description: A generic error response returned by the API.
       headers:
         Access-Control-Allow-Origin:
           description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
+            Indicates whether the response can be shared with requesting code from the given origin.
           required: false
           schema:
             $ref: '#/components/schemas/AccessControlAllowOrigin'
@@ -508,12 +498,11 @@ components:
   securitySchemes:
     oAuth2:
       description: |
-        A bearer token in the format of a JWS and conforms to the specifications
-        included in RFC8725.
+        Authentication is handled via OAuth2 Client Credentials flow. Clients must obtain a Bearer token (JWT), which conforms to RFC8725, and include it in the `Authorization` header of their requests.
       type: oauth2
       flows:
         clientCredentials:
           tokenUrl: /token
           refreshUrl: /token
           scopes:
-            read_rtp_payees: Read RTP activation.
+            read_rtp_payees: Grants permission to read the RTP Payees registry.

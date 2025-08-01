@@ -1,4 +1,14 @@
 openapi: 3.0.3
+
+# --- Functional API Information ---
+# This specification describes an API provided by our service.
+#
+# Our clients (external systems) call this endpoint to asynchronously communicate
+# the final outcome (e.g., accepted or rejected by the Payer) of a SEPA Request-To-Pay (RTP)
+# transaction that was previously initiated.
+#
+# This endpoint therefore serves as the receiving point for the asynchronous response
+# within the RTP workflow.
 info:
   title: pagoPa RTP - OpenAPI 3.x
   description: The API is designed for creating and sending payment requests through
@@ -24,6 +34,7 @@ tags:
 
 paths:
   /send:
+    # This operation allows a client system to send us a SEPA RTP callback response.
     post:
       summary: 'Forwarding of a SEPA Request-To-Pay Response to the Payee''s SRTP Service Provider'
       description: |
@@ -33,6 +44,8 @@ paths:
         Sections 2.2, 2.3, 2.5 & 2.6 in SRTP Implementation guidelines 3.0
       operationId: sendCallback
       tags: [callback]
+      # --- Client's Request Body ---
+      # Describes the payload that a client must send when calling this endpoint.
       requestBody:
         description: ISO20022 based SEPA Request-To-Pay Response
         content:
@@ -40,14 +53,16 @@ paths:
             schema:
               $ref: '#/components/schemas/AsynchronousSepaRequestToPayResponseResource'
         required: true
+      # --- Our Server's Responses ---
+      # Defines the possible HTTP responses our server will return to the calling client.
       responses:
         "200":
-          description: The callback server accepts the callback
+          description: OK - Our server has received and accepted the client's notification.
         "403":
-          description: The caller is not authorized to perform the operation
+          description: Forbidden - The client is not authorized to call this endpoint.
           $ref: '#/components/responses/Unauthorized'
         "400":
-          description: Bad Request
+          description: Bad Request - The request sent by the client is invalid.
           $ref: '#/components/responses/BadRequest'
 
 components:
@@ -208,11 +223,16 @@ components:
               $ref: '#/components/schemas/GenericHalLink'
           required:
           - initialSepaRequestToPayUri
+
+    # --- Main Request Data Model ---
+    # This is the main data container that we expect to receive
+    # in the body of a POST request to the /send endpoint.
     AsynchronousSepaRequestToPayResponseResource:
       type: object
       properties:
         resourceId:
           $ref: '#/components/schemas/ResourceId'
+        # Contains the actual SEPA response message sent by the client.
         AsynchronousSepaRequestToPayResponse:
           $ref: '#/components/schemas/AsynchronousSepaRequestToPayResponse'
         _links:
@@ -349,6 +369,8 @@ components:
           $ref: '#/components/schemas/CreditorPaymentActivationRequestStatusReportV07_EPC259-22_V3.0_DS05'
       required:
       - CdtrPmtActvtnReqStsRpt
+    # Represents a NEGATIVE response from a Payer (DS-08N).
+    # When a client sends us this message, it means the payment was REJECTED.
     Document_EPC259-22_V3.0_DS08N:
       type: object
       properties:
@@ -356,6 +378,8 @@ components:
           $ref: '#/components/schemas/CreditorPaymentActivationRequestStatusReportV07_EPC259-22_V3.0_DS08N'
       required:
       - CdtrPmtActvtnReqStsRpt
+    # Represents a POSITIVE response from a Payer (DS-08P).
+    # When a client sends us this message, it means the payment was ACCEPTED.
     Document_EPC259-22_V3.0_DS08P:
       type: object
       properties:
@@ -3510,6 +3534,7 @@ components:
       name: Idempotency-key
       in: header
       description: |
+        MANDATORY header for clients calling our POST operations.
         Idempotency key header to be used with every POST operation.
 
         The API client for one given payload has to generate a UUID (RFC4122) et set the header value with this UUID.
