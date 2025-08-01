@@ -93,6 +93,7 @@ paths:
           $ref: "#/components/responses/PaymentTooManyRequestsResponse"
         '500':
           $ref: "#/components/responses/PaymentInternalServerErrorResponse"
+
 components:
 
   headers:
@@ -160,7 +161,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AuthPaymentResponseDTO'
-      headers: &StandardHeaders
+      headers:
         Access-Control-Allow-Origin:
           $ref: "#/components/headers/Access-Control-Allow-Origin"
         RateLimit-Limit:
@@ -176,11 +177,27 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AuthPaymentResponseDTO'
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     DeletePaymentResponse:
       description: Cancel Ok
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentBadRequestResponse:
       description: Bad request
@@ -191,7 +208,15 @@ components:
           example:
             code: PAYMENT_INVALID_REQUEST
             message: "Required trxCode is not present"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentAuthErrorResponse:
       description: Token not validated correctly
@@ -202,7 +227,15 @@ components:
           example:
             code: PAYMENT_AUTH_ERROR
             message: "Invalid token"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentForbiddenUnsubscribedResponse:
       description: Forbidden
@@ -213,7 +246,15 @@ components:
           example:
             code: PAYMENT_USER_UNSUBSCRIBED
             message: "The user has unsubscribed from initiative"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentNotFoundResponse:
       description: Transaction does not exist or is expired
@@ -224,7 +265,15 @@ components:
           example:
             code: PAYMENT_NOT_FOUND_OR_EXPIRED
             message: "transaction not found or expired"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentTooManyRequestsResponse:
       description: Too many Request
@@ -235,7 +284,15 @@ components:
           example:
             code: PAYMENT_TOO_MANY_REQUESTS
             message: "Too many requests"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentInternalServerErrorResponse:
       description: Generic error
@@ -246,7 +303,15 @@ components:
           example:
             code: PAYMENT_GENERIC_ERROR
             message: "application error connection microservice error"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
   schemas:
 

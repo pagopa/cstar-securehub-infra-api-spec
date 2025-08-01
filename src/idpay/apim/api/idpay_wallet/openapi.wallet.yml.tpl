@@ -451,7 +451,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/WalletDTO'
-      headers: &StandardHeaders
+      headers:
         Access-Control-Allow-Origin:
           $ref: "#/components/headers/Access-Control-Allow-Origin"
         RateLimit-Limit:
@@ -467,7 +467,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/InitiativeDetailDTO'
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     WalletDetailResponse:
       description: Ok
@@ -475,19 +483,43 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/InitiativeDTO'
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     EnrollmentIbanResponse:
       description: Enrollment OK
       content:
         application/json: {}
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     EnrollmentInstrumentResponse:
       description: Enrollment OK
       content:
         application/json: {}
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     InstrumentListResponse:
       description: Ok
@@ -495,19 +527,43 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/InstrumentListDTO'
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     DeleteInstrumentResponse:
       description: Delete OK
       content:
         application/json: {}
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     UnsubscribeResponse:
       description: Unsubscribe OK
       content:
         application/json: {}
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     WalletStatusResponse:
       description: Check successful
@@ -517,7 +573,15 @@ components:
             $ref: '#/components/schemas/WalletStatusDTO'
           example:
             status: NOT_REFUNDABLE_ONLY_IBAN
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     InitiativeStatusResponse:
       description: Ok
@@ -525,7 +589,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/InitiativesWithInstrumentDTO'
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     IdPayCodeStatusResponse:
       description: Check successful
@@ -533,13 +605,29 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CheckEnrollmentDTO'
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     EnrollmentInstrumentCodeResponse:
       description: Enrollment OK
       content:
         application/json: {}
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     GenerateCodeResponse:
       description: Check successful
@@ -547,7 +635,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/GenerateCodeRespDTO'
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     #ErrorResponse
 
@@ -560,7 +656,15 @@ components:
           example:
             code: "WALLET_INVALID_REQUEST"
             message: "Something went wrong handling the request"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentInstrumentPinBadRequestResponse:
       description: Bad request
@@ -571,13 +675,29 @@ components:
           example:
             code: "PAYMENT_INSTRUMENT_PIN_LENGTH_NOT_VALID"
             message: "Pin length is not valid"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     WalletUnauthorizedResponse:
       description: Authentication failed
       content:
         application/json: {}
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     WalletIbanForbiddenResponse:
       description: Forbidden
@@ -588,7 +708,15 @@ components:
           example:
             code: "WALLET_ENROLL_IBAN_NOT_ALLOWED_FOR_DISCOUNT_INITIATIVE"
             message: "It is not possible enroll an iban for a discount type initiative"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     WalletInstrumentForbiddenResponse:
       description: Forbidden
@@ -599,7 +727,15 @@ components:
           example:
             code: "WALLET_INSTRUMENT_ALREADY_ASSOCIATED"
             message: "Payment Instrument is already associated to another user"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentInstrumentEnrollForbiddenResponse:
       description: Forbidden
@@ -610,7 +746,15 @@ components:
           example:
             code: "PAYMENT_INSTRUMENT_ENROLL_NOT_ALLOWED_FOR_REFUND_INITIATIVE"
             message: "It is not possible to enroll a idpayCode for a refund type initiative"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     WalletInstrumentDeleteForbiddenResponse:
       description: Forbidden
@@ -621,7 +765,15 @@ components:
           example:
             code: "WALLET_INSTRUMENT_DELETE_NOT_ALLOWED"
             message: "It's not possible to delete an instrument of AppIO payment types"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     WalletIdpayInstrumentNotFoundResponse:
       description: The requested resource was not found
@@ -632,7 +784,15 @@ components:
           example:
             code: "WALLET_INSTRUMENT_IDPAYCODE_NOT_FOUND"
             message: "idpayCode is not found for the current user"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     WalletInstrumentNotFoundResponse:
       description: The requested resource was not found
@@ -643,7 +803,15 @@ components:
           example:
             code: "WALLET_INSTRUMENT_NOT_FOUND"
             message: "The selected payment instrument has not been found for the current user"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentInstrumentUserNotFoundResponse:
       description: The requested resource was not found
@@ -654,7 +822,15 @@ components:
           example:
             code: "PAYMENT_INSTRUMENT_USER_NOT_ONBOARDED"
             message: "The current user is not onboarded on initiative"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     InitiativeNotFoundResponse:
       description: The requested initiative was not found
@@ -665,7 +841,15 @@ components:
           example:
             code: "INITIATIVE_NOT_FOUND"
             message: "Initiative not found"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     WalletUserNotFoundResponse:
       description: The requested resource was not found
@@ -676,7 +860,15 @@ components:
           example:
             code: "WALLET_USER_NOT_ONBOARDED"
             message: "User not onboarded on this initiative"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     WalletTooManyRequestsResponse:
       description: Too many Request
@@ -687,7 +879,15 @@ components:
           example:
             code: "WALLET_TOO_MANY_REQUESTS"
             message: "Too many requests"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     InitiativeTooManyRequestsResponse:
       description: Too many requests
@@ -698,7 +898,15 @@ components:
           example:
             code: "INITIATIVE_TOO_MANY_REQUESTS"
             message: "Too many requests"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentInstrumentTooManyRequestsResponse:
       description: Too many Request
@@ -709,7 +917,15 @@ components:
           example:
             code: PAYMENT_INSTRUMENT_TOO_MANY_REQUESTS
             message: "Too many requests"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     WalletInternalServerErrorResponse:
       description: Server ERROR
@@ -720,7 +936,15 @@ components:
           example:
             code: "WALLET_GENERIC_ERROR"
             message: "An error occurred in the microservice payment instrument"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     InitiativeInternalServerErrorResponse:
       description: Server error
@@ -731,7 +955,15 @@ components:
           example:
             code: "INITIATIVE_GENERIC_ERROR"
             message: "Application error"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentInstrumentInternalServerErrorResponse:
       description: Too many Request
@@ -742,7 +974,15 @@ components:
           example:
             code: PAYMENT_INSTRUMENT_GENERIC_ERROR
             message: "Something gone wrong while send RTD instrument notify"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
   schemas:
 

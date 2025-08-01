@@ -189,14 +189,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TimelineDTO'
-      headers: &StandardHeaders
-        Access-Control-Allow-Origin:
+      headers:
+        AccessControlAllowOrigin:
           $ref: "#/components/headers/Access-Control-Allow-Origin"
-        RateLimit-Limit:
+        RateLimitLimit:
           $ref: "#/components/headers/RateLimit-Limit"
-        RateLimit-Reset:
+        RateLimitReset:
           $ref: "#/components/headers/RateLimit-Reset"
-        Retry-After:
+        RetryAfter:
           $ref: "#/components/headers/Retry-After"
 
     TimelineDetalilDataResponse:
@@ -205,7 +205,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OperationDTO'
-      headers: *StandardHeaders
+      headers:
+        AccessControlAllowOrigin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimitLimit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimitReset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        RetryAfter:
+          $ref: "#/components/headers/Retry-After"
 
     TimelineBadRequestResponse:
       description: Bad request
@@ -216,13 +224,29 @@ components:
           example:
             code: "TIMELINE_INVALID_REQUEST"
             message: "Something went wrong handling request"
-      headers: *StandardHeaders
+      headers:
+        AccessControlAllowOrigin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimitLimit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimitReset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        RetryAfter:
+          $ref: "#/components/headers/Retry-After"
 
     TimelineUnauthorizedResponse:
       description: Authentication failed
       content:
         application/json: {}
-      headers: *StandardHeaders
+      headers:
+        AccessControlAllowOrigin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimitLimit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimitReset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        RetryAfter:
+          $ref: "#/components/headers/Retry-After"
 
     TimelineNotFoundResponse:
       description: The requested ID was not found
@@ -233,7 +257,15 @@ components:
           example:
             code: "TIMELINE_USER_NOT_FOUND"
             message: "Timeline for the current user not found"
-      headers: *StandardHeaders
+      headers:
+        AccessControlAllowOrigin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimitLimit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimitReset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        RetryAfter:
+          $ref: "#/components/headers/Retry-After"
 
     TimelineTooManyRequestsResponse:
       description: Too many Request
@@ -244,7 +276,15 @@ components:
           example:
             code: "TIMELINE_TOO_MANY_REQUESTS"
             message: "Too many requests"
-      headers: *StandardHeaders
+      headers:
+        AccessControlAllowOrigin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimitLimit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimitReset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        RetryAfter:
+          $ref: "#/components/headers/Retry-After"
 
     TimelineInternalServerErrorResponse:
       description: Server ERROR
@@ -255,7 +295,15 @@ components:
           example:
             code: "TIMELINE_GENERIC_ERROR"
             message: "Application error"
-      headers: *StandardHeaders
+      headers:
+        AccessControlAllowOrigin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimitLimit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimitReset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        RetryAfter:
+          $ref: "#/components/headers/Retry-After"
 
   schemas:
 

@@ -54,7 +54,6 @@ components:
 
   headers:
 
-
     Access-Control-Allow-Origin:
       description: Indicates whether the response can be shared with requesting code from the given origin
       schema:
@@ -108,7 +107,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TransactionBarCodeResponse'
-      headers: &StandardHeaders
+      headers:
         Access-Control-Allow-Origin:
           $ref: "#/components/headers/Access-Control-Allow-Origin"
         RateLimit-Limit:
@@ -126,14 +125,30 @@ components:
             $ref: '#/components/schemas/TransactionErrorDTO'
           example:
             code: PAYMENT_INVALID_REQUEST
-            message: "Required initiativeId is not present"
-      headers: *StandardHeaders
+            message: "Required trxCode is not present"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentUnauthorizedResponse:
       description: Authentication failed
       content:
         application/json: {}
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentForbiddenResponse:
       description: User not onboarded
@@ -144,18 +159,34 @@ components:
           example:
             code: PAYMENT_USER_NOT_ONBOARDED
             message: "User not onboarded"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentNotFoundResponse:
-      description: Transaction not found
+      description: Transaction does not exist or is expired
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/TransactionErrorDTO'
           example:
             code: PAYMENT_NOT_FOUND_OR_EXPIRED
-            message: "Cannot find transaction with trxCode trxCode"
-      headers: *StandardHeaders
+            message: "transaction not found or expired"
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentTooManyRequestsResponse:
       description: Too many Request
@@ -166,7 +197,15 @@ components:
           example:
             code: PAYMENT_TOO_MANY_REQUESTS
             message: "Too many requests"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     PaymentInternalServerErrorResponse:
       description: Generic error
@@ -177,7 +216,15 @@ components:
           example:
             code: PAYMENT_GENERIC_ERROR
             message: "application error connection microservice error"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
   schemas:
 
@@ -214,6 +261,7 @@ components:
             - PAYMENT_MERCHANT_NOT_ONBOARDED
             - PAYMENT_INVALID_REQUEST
             - PAYMENT_TRANSACTION_VERSION_PENDING
+            - PAYMENT_AUTH_ERROR
           description: >-
             "ENG: Error code: PAYMENT_NOT_FOUND_OR_EXPIRED: transaction not
             found or expired, PAYMENT_TRANSACTION_EXPIRED: transaction expired,

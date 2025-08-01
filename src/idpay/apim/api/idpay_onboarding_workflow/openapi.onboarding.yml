@@ -203,6 +203,7 @@ components:
         pattern: "^[ -~]{1,2048}$"
         minLength: 1
         maxLength: 2048
+
     RateLimit-Limit:
       description: The number of allowed requests in the current period
       schema:
@@ -210,6 +211,7 @@ components:
         format: int32
         minimum: 1
         maximum: 240
+
     RateLimit-Reset:
       description: The number of seconds left in the current period
       schema:
@@ -217,6 +219,7 @@ components:
         format: int32
         minimum: 1
         maximum: 60
+
     Retry-After:
       description: The number of seconds to wait before allowing a follow-up request
       schema:
@@ -279,7 +282,7 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/InitiativeDataDTO"
-      headers: &StandardHeaders
+      headers:
         Access-Control-Allow-Origin:
           $ref: "#/components/headers/Access-Control-Allow-Origin"
         RateLimit-Limit:
@@ -298,13 +301,29 @@ components:
           example:
             code: "INITIATIVE_INVALID_REQUEST"
             message: "Something went wrong handling the request"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     InitiativeUnauthorizedResponse:
       description: Authentication failed
       content:
         application/json: {}
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     InitiativeNotFoundResponse:
       description: The requested initiative was not found
@@ -315,7 +334,15 @@ components:
           example:
             code: "INITIATIVE_NOT_FOUND"
             message: "Initiative not found"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     InitiativeTooManyRequestsResponse:
       description: Too many requests
@@ -326,7 +353,15 @@ components:
           example:
             code: "INITIATIVE_TOO_MANY_REQUESTS"
             message: "Too many requests"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     InitiativeInternalServerErrorResponse:
       description: Server error
@@ -337,13 +372,29 @@ components:
           example:
             code: "INITIATIVE_GENERIC_ERROR"
             message: "Application error"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     OnboardingCitizenResponse:
       description: Acceptance successful
       content:
         application/json: {}
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     OnboardingBadRequestResponse:
       description: Bad request
@@ -354,13 +405,29 @@ components:
           example:
             code: "ONBOARDING_INVALID_REQUEST"
             message: "Something went wrong handling the request"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     OnboardingUnauthorizedResponse:
       description: Authentication failed
       content:
         application/json: {}
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     OnboardingForbiddenResponse:
       description: This onboarding is forbidden
@@ -371,7 +438,15 @@ components:
           example:
             code: "ONBOARDING_BUDGET_EXHAUSTED"
             message: "Budget exhausted for initiative XXXXX"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     OnboardingNotFoundResponse:
       description: The requested resource was not found
@@ -382,7 +457,15 @@ components:
           example:
             code: "ONBOARDING_INITIATIVE_NOT_FOUND"
             message: "Cannot find initiative XXXXX"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     OnboardingTooManyRequestsResponse:
       description: Too many requests
@@ -393,7 +476,15 @@ components:
           example:
             code: "ONBOARDING_TOO_MANY_REQUESTS"
             message: "Too many requests"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     OnboardingInternalServerErrorResponse:
       description: Server ERROR
@@ -404,7 +495,15 @@ components:
           example:
             code: "ONBOARDING_GENERIC_ERROR"
             message: "An error occurred in the microservice admissibility"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     CheckPrerequisitesResponse:
       description: Check successful
@@ -412,13 +511,29 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/RequiredCriteriaDTO"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     AcceptedResponseTakenOver:
       description: Accepted - Request Taken Over
       content:
         application/json: {}
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     OnboardingStatusResponse:
       description: Check successful
@@ -426,7 +541,15 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/OnboardingStatusDTO"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     OnboardingInitiativeUserStatusResponse:
       description: Check successful
@@ -434,7 +557,15 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ListUsersOnboardingStatusDTO"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
   schemas:
 

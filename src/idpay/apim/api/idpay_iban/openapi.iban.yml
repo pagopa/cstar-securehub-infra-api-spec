@@ -143,7 +143,7 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/IbanDTO"
-      headers: &StandardHeaders
+      headers:
         Access-Control-Allow-Origin:
           $ref: "#/components/headers/Access-Control-Allow-Origin"
         RateLimit-Limit:
@@ -162,12 +162,28 @@ components:
           example:
             code: "IBAN_INVALID_REQUEST"
             message: "Invalid request"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     IbanUnauthorizedResponse:
       description: Authentication failed
       content: {}
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     IbanNotFoundResponse:
       description: The requested ID was not found
@@ -178,7 +194,15 @@ components:
           example:
             code: "IBAN_NOT_FOUND"
             message: "Iban not found"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     IbanTooManyRequestsResponse:
       description: Too many requests
@@ -189,7 +213,15 @@ components:
           example:
             code: "IBAN_TOO_MANY_REQUESTS"
             message: "Too many requests"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     IbanInternalServerErrorResponse:
       description: Server ERROR
@@ -200,7 +232,15 @@ components:
           example:
             code: "IBAN_GENERIC_ERROR"
             message: "Application error"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
     IbanListDataResponse:
       description: Ok
@@ -208,7 +248,15 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/IbanListDTO"
-      headers: *StandardHeaders
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: "#/components/headers/Access-Control-Allow-Origin"
+        RateLimit-Limit:
+          $ref: "#/components/headers/RateLimit-Limit"
+        RateLimit-Reset:
+          $ref: "#/components/headers/RateLimit-Reset"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
 
   schemas:
 
