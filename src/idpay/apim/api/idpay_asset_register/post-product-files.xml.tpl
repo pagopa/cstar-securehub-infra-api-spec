@@ -26,6 +26,25 @@
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
         <rewrite-uri template="@("/idpay/register/product-files")" />
     </inbound>
+    <outbound>
+        <base />
+        <choose>
+            <when condition="@(context.Response.StatusCode == 413)">
+                <return-response>
+                    <set-status code="200" reason="OK" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@{
+                        return new JObject(
+                                new JProperty("status", "KO"),
+                                new JProperty("errorKey", "product.invalid.file.maxsize"),
+                            ).ToString();
+                    }</set-body>
+                </return-response>
+            </when>
+        </choose>
+    </outbound>
     <backend>
         <base />
     </backend>
