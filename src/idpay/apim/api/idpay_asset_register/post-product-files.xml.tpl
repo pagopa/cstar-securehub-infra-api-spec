@@ -26,6 +26,9 @@
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
         <rewrite-uri template="@("/idpay/register/product-files")" />
     </inbound>
+    <backend>
+        <base />
+    </backend>
     <outbound>
         <base />
         <choose>
@@ -38,18 +41,12 @@
                     <set-body>@{
                         return new JObject(
                                 new JProperty("status", "KO"),
-                                new JProperty("errorKey", "product.invalid.file.maxsize"),
+                                new JProperty("errorKey", "product.invalid.file.maxsize")
                             ).ToString();
                     }</set-body>
                 </return-response>
             </when>
         </choose>
-    </outbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound>
-        <base />
     </outbound>
     <on-error>
         <base />
