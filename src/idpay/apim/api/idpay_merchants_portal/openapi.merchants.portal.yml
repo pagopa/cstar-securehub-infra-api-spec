@@ -177,12 +177,12 @@ paths:
               example:
                 code: POINT_OF_SALE_GENERIC_ERROR
                 message: An error occurred during file reading
-  /point-of-sales/{pointOfSaleId}:
+  /{merchantId}/point-of-sales/{pointOfSaleId}:
     get:
       tags:
         - point-of-sales
       summary: Retrieve a point of sale
-      description: "Return a points of sale."
+      description: "Return a points of sale for the specified merchant."
       operationId: getPointOfSale
       parameters:
         - name: merchantId
