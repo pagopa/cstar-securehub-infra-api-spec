@@ -4,6 +4,10 @@ info:
   title: RTP Activation API.
   version: 1.0.0
   description: |
+    # This API is used by Payer Service Providers (PSPs, banks, etc.) to manage RTP 'activations'.
+    # An activation is a record that links an end-user (Payer) to their chosen Service Provider,
+    # enabling them to receive Request-To-Pay messages. This is a foundational, B2B setup API
+    # that must be used before any RTPs can be sent to a Payer.
     API to handle RTP activations initiated by the Payer's RTP Service Provider.
 
     Error codes follow the format ZZXXKYYYT where:
@@ -39,20 +43,14 @@ tags:
 
 paths:
   /activations:
+      # This is the primary operation to register a Payer for the RTP service.
     post:
       operationId: activate
       summary: RTP activation initiated by the Payer's RTP Service Provider.
       description: |
-        The operation is used by Payer's RTP Service Provider to enable the
-        Payee's RTP Service Provider to send RTP messages to the Payer's RTP
-        Service Provider.
-
-        When the operation is used by not-admin subject, the system verifies
-        that the Payer's RTP Service Provider ID matches the subject claim of
-        the access token. `403 Forbidden` is returned on mismatch.
-
-        `409 Conflict` is returned if an activation with the same Payer's ID
-        already exists.
+        A Payer's Service Provider calls this to register one of their users (Payers) for the RTP service.
+        This operation creates a record that links the Payer's fiscal code to the Service Provider's ID,
+        officially enabling them to receive payment requests.
       tags: [create]
       security:
         - oAuth2: [admin_rtp_activations, write_rtp_activations]
@@ -63,11 +61,10 @@ paths:
         $ref: '#/components/requestBodies/CreateOrUpdateActivation'
       responses:
         "201":
-          #description: Created.
+          # Success. The activation record was created. The `Location` header points to the new resource.
           $ref: '#/components/responses/CreateActivation'
         "400":
-          #description: |
-          #  Bad request.
+          # The request was malformed (e.g., invalid fiscal code format).
 
           #  Possible error codes:
           #  - 01021000E: Invalid request format
@@ -78,9 +75,7 @@ paths:
           #  - 01021009E: Required header missing
           $ref: '#/components/responses/Error'
         "401":
-          #description: Wrong credentials.
-          #description: |
-          #  Wrong credentials.
+          # Authentication failed (e.g., invalid or expired token).
 
           #  Possible error codes:
           #  - 01011000E: Missing authentication token
@@ -89,8 +84,8 @@ paths:
           #  - 01011003E: Invalid signature
           $ref: '#/components/responses/Error'
         "403":
-          #description: |
-          #  Forbidden.
+          # Authorization failed. The caller has insufficient permissions or the Service Provider ID in the
+          # request does not match the identity in the authentication token.
 
           #  Possible error codes:
           #  - 01011004E: Insufficient permissions
@@ -98,39 +93,35 @@ paths:
           #  - 01011006F: Mismatch between Payer's RTP Service Provider ID and token subject
           $ref: '#/components/responses/Error'
         "406":
-          #description: |
-          #  Not acceptable. Did you require application/json?
+          # The 'Accept' header is not supported.
 
           #  Possible error codes:
           #  - 01021010E: Unsupported accept header
           $ref: '#/components/responses/Error'
         "409":
-          #description: |
-          #  Conflict.
+          # A conflict occurred. An activation for this Payer already exists. The `Location` header
+          # in the response points to the existing, conflicting resource.
 
           #  Possible error codes:
           #  - 01031000E: Activation with the same Payer ID already exists
           #  - 01031001E: Duplicate activation request
           $ref: '#/components/responses/ConflictError'
         "415":
-          #description: |
-          #  Unsupported media type. Did you provide application/json?
+          # The request 'Content-Type' is not supported.
 
           #  Possible error codes:
           #  - 01021011E: Unsupported content type
           #  - 01021012E: Invalid content encoding
           $ref: '#/components/responses/Error'
         "429":
-          #description: |
-          #  Too many requests.
+          # The client has sent too many requests.
 
           #  Possible error codes:
           #  - 01051000E: Rate limit exceeded
           #  - 01051001E: Quota exceeded
           $ref: '#/components/responses/Error'
         "500":
-          #description: |
-          #  Server error.
+          # An unexpected internal server error occurred.
 
           #  Possible error codes:
           #  - 01091000F: Internal server error
@@ -142,13 +133,11 @@ paths:
 
     get:
       operationId: getActivations
-      summary: Returns RTP activations.
+      summary: Returns a paginated list of RTP activations.
       description: |
-        The operation returns all the RTP activations stored by the system.
-
-        When the operation is used by not-admin subject, the system returns
-        the RTP activations which have the Payer's RTP Service Provider ID that
-        matches the subject claim of the access token.
+        Retrieves a collection of activation records. The response is paginated.
+        Note on permissions: Admin users can see all activations. A non-admin Service Provider
+        will only see the activations they manage.
       tags: [read]
       security:
         - oAuth2: [admin_rtp_activations, read_rtp_activations]
@@ -220,12 +209,9 @@ paths:
       operationId: getActivation
       summary: Returns a RTP activation.
       description: |
-        The operation finds a RTP activation by its ID.
-
-        When the operation is used by not-admin subject, the system returns
-        the RTP activation only if its Payer's RTP Service Provider ID matches
-        the subject claim of the access token, otherwise `404 Not Found` is
-        returned.
+        Finds and returns a single RTP activation record.
+        Note on permissions: A non-admin Service Provider can only retrieve activations they manage.
+        An attempt to access another SP's activation will result in a 404 Not Found.
       tags: [read]
       security:
         - oAuth2: [admin_rtp_activations, read_rtp_activations]
@@ -395,7 +381,8 @@ paths:
       operationId: deleteActivation
       summary: Deletes a RTP activation.
       description: |
-        The operation deletes a RTP activation searching it by its ID.
+        Removes an activation record, which disables the Payer from receiving any new RTP requests.
+        A Service Provider can only delete activations that they manage.
 
         When the operation is used by not-admin subject, the system returns
         `404 Not Found` if the Payer's RTP Service Provider ID of the activation
@@ -471,7 +458,7 @@ paths:
 
     patch:
       operationId: takeoverActivation
-      summary: Takes over a RTP activation.
+      summary: Allows a new Service Provider to take over an RTP activation.
       description: |
         The operation updates the Payer's RTP Service Provider ID of a RTP
         activation searching it by its ID.
@@ -560,7 +547,8 @@ paths:
       operationId: findActivationByPayerId
       summary: Finds a RTP activation by Payer ID.
       description: |
-        The operation finds RTP activation by Payer ID.
+        A convenience method to look up an activation record using the Payer's unique identifier (fiscal code)
+        instead of the activation's UUID.
 
         When the operation is used by not-admin subject, the system returns
         the RTP activation with the Payer's RTP Service Provider ID that
@@ -1344,6 +1332,8 @@ components:
   # Security schemes.
   # ============================================================================
   securitySchemes:
+    # This API uses the OAuth2 Client Credentials flow for server-to-server authentication.
+    # Clients must obtain a bearer token with the appropriate scopes to access the endpoints.
     oAuth2:
       description: |
         A bearer token in the format of a JWS and conforms to the specifications
@@ -1354,6 +1344,6 @@ components:
           tokenUrl: /token
           refreshUrl: /token
           scopes:
-            admin_rtp_activations: Admin RPT activation.
-            write_rtp_activations: Create, update or delete RTP activation.
-            read_rtp_activations: Read RTP activation.
+            admin_rtp_activations: Grants full administrative access to all activations.
+            write_rtp_activations: Grants permission to create, update, or delete activations.
+            read_rtp_activations: Grants permission to read activation data.
