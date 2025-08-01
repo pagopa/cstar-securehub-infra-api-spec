@@ -3,11 +3,11 @@ openapi: 3.0.3
 # --- Functional API Information ---
 # This specification describes an API provided by our service.
 #
-# Our clients (external systems) call this endpoint to asynchronously communicate 
-# the final outcome (e.g., accepted or rejected by the Payer) of a SEPA Request-To-Pay (RTP) 
+# Our clients (external systems) call this endpoint to asynchronously communicate
+# the final outcome (e.g., accepted or rejected by the Payer) of a SEPA Request-To-Pay (RTP)
 # transaction that was previously initiated.
 #
-# This endpoint therefore serves as the receiving point for the asynchronous response 
+# This endpoint therefore serves as the receiving point for the asynchronous response
 # within the RTP workflow.
 info:
   title: pagoPa RTP - OpenAPI 3.x
