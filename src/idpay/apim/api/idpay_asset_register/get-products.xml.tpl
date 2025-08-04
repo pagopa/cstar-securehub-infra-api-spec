@@ -23,6 +23,16 @@
                 </return-response>
             </when>
         </choose>
+        <choose>
+            <when condition="@(context.Variables.GetValueOrDefault('organizationRole', '') == 'operatore' && !string.IsNullOrEmpty(context.Request.QueryString.GetValueOrDefault('organizationId', '')) && context.Request.Headers.GetValueOrDefault('x-organization-id', '') != context.Request.QueryString.GetValueOrDefault('organizationId', ''))">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+        </choose>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
         <rewrite-uri template="@("/idpay/register/products")" />
     </inbound>
