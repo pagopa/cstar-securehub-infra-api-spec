@@ -1735,8 +1735,6 @@ components:
         idpayCode:
           type: string
           description: 'ENG: Numeric code - IT: codice numerico'
-          maxLength: 10
-          pattern: "$ ^[a-zA-Z0-9]+$"
     IbanPutDTO:
       title: IbanPutDTO
       type: object
@@ -1813,37 +1811,24 @@ components:
         idWallet:
           type: string
           description: "ENG: Wallet's id provided by the Payment manager - IT: Identificativo del portafoglio fornito dal gestore di pagamenti"
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
         instrumentId:
           type: string
           description: "ENG: Payment instrument id - IT: Identificativo dello strumento di pagamento"
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
         maskedPan:
           type: string
           description: "ENG: Masked Pan - IT: Masked Pan"
-          maxLength: 19
           example: "1234 **** **** 5678"
-          pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
         channel:
           type: string
           description: "ENG: Channel - IT: Canale di richiesta"
-          maxLength: 10
-          pattern: "^[ -~]{0,10}$"
         brandLogo:
           type: string
           example: "https://cstarpayment/logo.png"
           description: "ENG: Card's brand logo URL - IT: URL del logo del marchio della carta"
-          minLength: 1
-          maxLength: 2048
-          pattern: "^[ -~]{1,2048}$"
         brand:
           type: string
           example: "https://cstarpayment/cardBrand"
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
-          maxLength: 2048
-          pattern: '^https://[a-zA-Z0-9./_-]+$'
         status:
           enum:
             - ACTIVE
@@ -1860,8 +1845,6 @@ components:
         activationDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Activation date of the instrument - IT: Data di attivazione dello strumento"
     InitiativeDTO:
       type: object
@@ -1874,19 +1857,13 @@ components:
         familyId:
           type: string
           description: "ENG: Id of the family unit - IT: Identificativo del nucleo familiare"
-          maxLength: 36
-          pattern: "^[ -~]{36}$"
         initiativeId:
           type: string
           description: "ENG: Id initiative - IT: Identificativo dell'iniziativa"
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
         initiativeName:
           type: string
           description: "ENG: Name of the initiative - IT: Nome dell'iniziativa"
-          pattern: "^[ -~]{1,255}$"
           example: "Bonus Elettrodomestici"
-          maxLength: 255
         status:
           enum:
             - NOT_REFUNDABLE_ONLY_IBAN
@@ -1909,56 +1886,37 @@ components:
           type: string
           format: date
           description: "ENG: End date for the time window in which it is possible to use the initiative's rewards - IT: Data che indica la fine del periodo di fruizione dell'iniziativa"
-          minLength: 10
-          maxLength: 10
         voucherStartDate:
           type: string
           format: date
           description: "ENG: START date for the time window in which it is possible to use the voucher's rewards - IT: Data che indica l'inizio del periodo di fruizione del voucher"
-          minLength: 10
-          maxLength: 10
         voucherEndDate:
           type: string
           format: date
           description: "ENG: End date for the time window in which it is possible to use the voucher's rewards - IT: Data che indica la fine del periodo di fruizione del voucher"
-          minLength: 10
-          maxLength: 10
         amountCents:
           type: integer
           format: int64
           description: "ENG: Initiative total amount - IT: Importo totale dell'iniziativa"
-          minimum: 0
-          maximum: 999999999
         accruedCents:
           type: integer
           format: int64
           description: "ENG: Initiative accrued amount IT: Importo accumulato dell'iniziativa"
-          minimum: 0
-          maximum: 1000
         refundedCents:
           type: integer
           format: int64
           description: "ENG: Refunded amount of the initiative - IT: Importo rimborsato dell'iniziativa"
-          minimum: 0
-          maximum: 1000
         lastCounterUpdate:
           type: string
           format: date-time
           description: "ENG: Date of the last update of the counters - IT: Data dell'ultimo aggiornamento dei contatori"
-          minLength: 19
-          maxLength: 19
         iban:
           type: string
           description: "ENG: IBAN - IT: IBAN"
-          pattern: "^IT[0-9]{2}[A-Z]{1}[0-9]{5}[0-9]{5}[A-Z0-9]{12}$"
-          minLength: 27
-          maxLength: 27
         nInstr:
           type: integer
           format: int32
           description: "ENG: Number of instruments - IT: Numero di strumenti"
-          minimum: 0
-          maximum: 20
         initiativeRewardType:
           enum:
             - DISCOUNT
@@ -1969,29 +1927,19 @@ components:
         logoURL:
           type: string
           description: "ENG: Url of the logo - IT: Url del logo"
-          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
-          maxLength: 255
         organizationName:
           type: string
           description: "ENG: Organization name - IT: Nome dell'organizzazione"
-          pattern: "^[ -~]{1,50}$"
-          maxLength: 50
         nTrx:
           type: integer
           format: int64
           description: "ENG:Number of transaction - IT: Numero di transazione"
-          minimum: 0
-          maximum: 20
         webViewUrl:
           type: string
           description: 'ENG: webViewUrl - IT: Url della webView'
-          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
-          maxLength: 255
         serviceId:
           type: string
           description: 'ENG: The service ID - IT: Identificativo del service'
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
     InitiativesWithInstrumentDTO:
       type: object
       required:
@@ -2003,20 +1951,14 @@ components:
         idWallet:
           type: string
           description: "ENG: Id of the wallet - IT: Identificativo del portafoglio"
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
         maskedPan:
           type: string
           description: "ENG: Masked Pan - IT: Masked Pan"
-          maxLength: 19
           example: "1234 **** **** 5678"
-          pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
         brand:
           type: string
           example: "https://cstarpayment/cardBrand"
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
-          maxLength: 2048
-          pattern: '^https://[a-zA-Z0-9./_-]+$'
         initiativeList:
           type: array
           maxItems: 100
@@ -2033,19 +1975,13 @@ components:
         initiativeId:
           type: string
           description: "ENG: Initiative ID - IT: Identificativo dell'iniziativa"
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
         initiativeName:
           type: string
           description: "ENG: Name of the initiative - IT: Nome dell'iniziativa"
-          pattern: "^[ -~]{1,255}$"
           example: "Bonus Elettrodomestici"
-          maxLength: 255
         idInstrument:
           type: string
           description: "ENG: Instrument ID - IT: Identificativo dello strumento"
-          pattern: "^[ -~]{0,50}$"
-          maxLength: 50
         status:
           type: string
           enum:
@@ -2060,9 +1996,7 @@ components:
         initiativeName:
           type: string
           description: "ENG: Name of the initiative - IT: Nome dell'iniziativa"
-          pattern: "^[ -~]{1,255}$"
           example: "Bonus Elettrodomestici"
-          maxLength: 255
         status:
           type: string
           description: "ENG: Status of the initiative - IT: Stato dell'iniziativa"
@@ -2077,36 +2011,24 @@ components:
         description:
           type: string
           description: "ENG: Description of the initiative - IT: Descrizione dell'iniziativa"
-          maxLength: 255
-          pattern: "^[ -~]{0,255}$"
         ruleDescription:
           type: string
           description: "ENG: Description of the rules - IT: Descrizione delle regole"
-          maxLength: 255
-          pattern: "^[ -~]{0,255}$"
         onboardingStartDate:
           type: string
           format: date
-          minLength: 10
-          maxLength: 10
           description: "ENG: Start date for the initiative's onboarding time window - IT: Data di inizio della finestra temporale in cui si può aderire all'iniziativa"
         onboardingEndDate:
           type: string
           format: date
-          minLength: 10
-          maxLength: 10
           description: "ENG: End date for the initiative's onboarding time window - IT: Data di fine della finestra temporale in cui si può aderire all'iniziativa"
         fruitionStartDate:
           type: string
           format: date
-          minLength: 10
-          maxLength: 10
           description: "ENG: Start date of the time window in which it is possible to use the initiative's rewards - IT: Data di inizio della finestra temporale in cui si usufruire dei premi dell'iniziativa"
         fruitionEndDate:
           type: string
           format: date
-          minLength: 10
-          maxLength: 10
           description: "ENG: End date of the time window in which it is possible to use the initiative's rewards - IT: Data di fine della finestra temporale in cui si usufruire dei premi dell'iniziativa"
         rewardRule:
           $ref: '#/components/schemas/RewardValueDTO'
@@ -2115,29 +2037,19 @@ components:
         privacyLink:
           type: string
           description: "ENG: URL that redirects to the privacy policy - IT: URL che reindirizza all informativa della privacy"
-          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
-          maxLength: 255
         tcLink:
           type: string
           description: "ENG: URL that redirects to the terms and conditions - IT: URL che porta ai termini e condizioni"
-          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
-          maxLength: 255
         logoURL:
           type: string
           description: "ENG: Url of the logo - IT: Url del logo"
-          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
-          maxLength: 255
         updateDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Update date - IT: Data di aggiornamento dell'iniziativa"
         serviceId:
           type: string
           description: "ENG: The service ID - IT: Identificativo del service"
-          maxLength: 50
-          pattern: "$ ^[a-zA-Z0-9]+$"
     InitiativeRefundRuleDTO:
       type: object
       properties:
@@ -2260,8 +2172,6 @@ components:
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
-          maxLength: 2500
-          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
     InitiativeErrorDTO:
       type: object
       properties:
@@ -2289,8 +2199,6 @@ components:
         message:
           type: string
           description: "ENG: Error message - IT: Messaggio di errore"
-          maxLength: 2500
-          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
     PaymentInstrumentErrorDTO:
       type: object
       required:
@@ -2348,8 +2256,6 @@ components:
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
-          maxLength: 250
-          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
   securitySchemes:
     bearerAuth:
       type: http

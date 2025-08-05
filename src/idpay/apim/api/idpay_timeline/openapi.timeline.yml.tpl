@@ -371,8 +371,6 @@ components:
           type: string
           description: "ENG: Date of the last update - IT: Data dell'ultimo aggiornamento"
           format: date-time
-          minLength: 19
-          maxLength: 19
         operationList:
           type: array
           minItems: 1
@@ -426,8 +424,6 @@ components:
       properties:
         operationId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Id of operation - IT: Identificativo dell'operazione"
         operationType:
           enum:
@@ -441,31 +437,20 @@ components:
         operationDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         brandLogo:
           type: string
           format: uri
-          pattern: "^[ -~]{1,2048}$"
-          minLength: 1
-          maxLength: 2048
           description: "ENG: Card's brand logo URL - IT: URL del logo del marchio della carta"
         brand:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
         instrumentId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Id instrument - IT: Identificativo dello strumento"
         maskedPan:
           type: string
-          maxLength: 19
           example: "1234-****-****-5678"
-          pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
           description: "ENG: masked PAN - IT: masked PAN"
         channel:
           type: string
@@ -494,8 +479,6 @@ components:
       properties:
         operationId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Id of the operation - IT: Identificativo dell'operazione"
         operationType:
           enum:
@@ -506,49 +489,31 @@ components:
           description: "ENG: Operation type - IT: Tipologia di operazione"
         eventId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
         brandLogo:
           type: string
           format: uri
-          pattern: "^[ -~]{1,2048}$"
-          minLength: 1
-          maxLength: 2048
           description: "ENG: Card's brand logo URL - IT: URL del logo del marchio della carta"
         brand:
           type: string
-          maxLength: 50
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
         maskedPan:
           type: string
           example: "1234-****-****-5678"
-          maxLength: 19
-          pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
           description: "ENG: Masked Pan - IT: Masked Pan"
         amountCents:
           type: integer
           format: int64
-          minimum: 1
-          maximum: 999999999999999
           description: "ENG: Transaction amount - IT: Importo della transazione"
         accruedCents:
           type: integer
           format: int64
-          minimum: 1
-          maximum: 999999999999999
           description: "ENG: Transaction accrued - IT: Importo accumulato"
         operationDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         circuitType:
           type: string
-          minLength: 2
-          maxLength: 2
-          pattern: '^\d{2}$'
           example: "00"
           description: >-
               ENG: Circuit type - IT: Tipologia del circuito
@@ -557,13 +522,9 @@ components:
               09->Satispay, 10->PrivateCircuit
         idTrxIssuer:
           type: string
-          maxLength: 64
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Transaction issuer ID - IT: Identificativo della transazione rispetto all'issuer"
         idTrxAcquirer:
           type: string
-          maxLength: 64
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Transaction acquirer ID- IT: Identificativo della transazione rispetto all'acquirer"
         status:
           type: string
@@ -584,8 +545,6 @@ components:
           description: "ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione"
         businessName:
           type: string
-          maxLength: 250
-          pattern: "$ ^[a-zA-Z0-9]+$"
     InstrumentOperationDTO:
       type: object
       required:
@@ -597,8 +556,6 @@ components:
       properties:
         operationId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Operation ID - IT: Identificativo dell'operazione"
         operationType:
           enum:
@@ -609,26 +566,17 @@ components:
         operationDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         brandLogo:
           type: string
           format: uri
-          pattern: "^[ -~]{1,2048}$"
-          minLength: 1
-          maxLength: 2048
           description: "ENG: Card's brand logo URL - IT: URL del logo del marchio della carta"
         brand:
           type: string
-          maxLength: 50
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
         maskedPan:
           type: string
-          maxLength: 19
           example: "1234-****-****-5678"
-          pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
           description: "ENG: Masked Pan - IT: Masked Pan"
         channel:
           type: string
@@ -655,8 +603,6 @@ components:
       properties:
         operationId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Operation ID - IT: Identificativo dell'operazione"
         operationType:
           enum:
@@ -666,14 +612,9 @@ components:
         operationDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         iban:
           type: string
-          minLength: 27
-          maxLength: 27
-          pattern: "^IT[0-9]{2}[A-Z0-9]{23}$"
           description: "ENG: IBAN of the citizen - IT: IBAN del cittadino"
         channel:
           type: string
@@ -693,8 +634,6 @@ components:
       properties:
         operationId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Operation ID - IT: Identificativo dell'operazione"
         operationType:
           enum:
@@ -704,8 +643,6 @@ components:
         operationDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
     RefundOperationDTO:
       type: object
@@ -718,13 +655,9 @@ components:
       properties:
         operationId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Operation ID - IT: Identificativo dell'operazione"
         eventId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Event ID - IT: Identificativo dell'evento"
         operationType:
           enum:
@@ -735,14 +668,10 @@ components:
         operationDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         amountCents:
           type: integer
           format: int64
-          minimum: 1
-          maximum: 999999999999999
           description: "ENG: Refund amount - IT: Importo da rimborsare"
     TransactionOperationDTO:
       type: object
@@ -755,8 +684,6 @@ components:
       properties:
         operationId:
           type: string
-          maxLength: 24
-          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
           description: "ENG: Id of the operation - IT: Identificativo dell'operazione"
         operationType:
           enum:
@@ -766,50 +693,32 @@ components:
           description: "ENG: Operation type - IT: Tipologia dell'operazione"
         eventId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Event ID - IT: Identificativo dell'evento"
         operationDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         brandLogo:
           type: string
           format: uri
-          pattern: "^[ -~]{1,2048}$"
-          minLength: 1
-          maxLength: 2048
           description: "ENG: Card's brand logo URL - IT: URL del logo del marchio della carta"
         brand:
           type: string
-          maxLength: 50
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Card's brand as mastercard, visa, ecc. - IT: Marchio della carta come mastercard, visa, ecc..."
         maskedPan:
           type: string
-          maxLength: 19
           example: "1234-****-****-5678"
-          pattern: '^(\d{4}[- ]?)([*Xx]{4}[- ]?){2}(\d{4})$'
           description: "ENG: Masked PAN - IT: Masked PAN"
         amountCents:
           type: integer
           format: int64
-          minimum: 1
-          maximum: 999999999999999
           description: "ENG: Transaction amount - IT: Importo della transazione"
         accruedCents:
           type: integer
           format: int64
-          minimum: 1
-          maximum: 999999999999999
           description: "ENG: Accrued amount - IT: Importo accumulato"
         circuitType:
           type: string
-          minLength: 2
-          maxLength: 2
-          pattern: '^\d{2}$'
           example: "00"
           description: >-
              ENG: Circuit type - IT: Tipologia di circuito
@@ -835,8 +744,6 @@ components:
           description: "ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione"
         businessName:
           type: string
-          maxLength: 250
-          pattern: "$ ^[a-zA-Z0-9]+$"
     SuspendOperationDTO:
       type: object
       required:
@@ -846,8 +753,6 @@ components:
       properties:
         operationId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Operation ID - IT: Identificativo dell'operazione"
         operationType:
           enum:
@@ -858,8 +763,6 @@ components:
         operationDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
     RefundDetailDTO:
       type: object
@@ -872,8 +775,6 @@ components:
       properties:
         operationId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Operation ID - IT: Identificativo dell'operazione"
         operationType:
           enum:
@@ -884,65 +785,43 @@ components:
           description: "ENG: Operation type [PAID_REFUND: Paid refund, REJECTED_REFUND: Rejected refund] - IT: Tipologia dell'operazione [PAID_REFUND: Rimborso pagato, REJECTED_REFUND: Rimborso rifiutato]"
         eventId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Event ID - IT: Identificativo dell'evento"
         iban:
           type: string
-          minLength: 27
-          maxLength: 27
-          pattern: "^IT[0-9]{2}[A-Z0-9]{23}$"
           description: "ENG: IBAN - IT: IBAN"
         operationDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
         amountCents:
           type: integer
           format: int64
-          minimum: 1
-          maximum: 999999999999999
           description: "ENG: Refund amount - IT: Importo da rimborsare"
         status:
           type: string
-          maxLength: 250
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Refund status - IT: Stato del rimborso"
         refundType:
           type: string
-          maxLength: 250
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Refund type - IT: Tipologia di rimborso"
         startDate:
           type: string
           format: date
-          minLength: 10
-          maxLength: 10
           description: "ENG: Start date - IT: Data di inizio"
         endDate:
           type: string
           format: date
-          minLength: 10
-          maxLength: 10
           description: "ENG: End date - IT Data di fine"
         transferDate:
           type: string
           format: date
-          minLength: 10
-          maxLength: 10
+
           description: "ENG: Transfer date - IT: Data della trasferenza"
         userNotificationDate:
           type: string
           format: date
-          minLength: 10
-          maxLength: 10
           description: "ENG: User notification date - IT: Data di notificazione all'utente"
         cro:
           type: string
-          maxLength: 11
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Code that identifies a bank transaction/credit transfer - IT: Codice che identifica una transazione bancaria/bonifico"
     ReadmittedOperationDTO:
       type: object
@@ -953,8 +832,6 @@ components:
       properties:
         operationId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Id of the operation - IT: Identificativo dell'operazione"
         operationType:
           enum:
@@ -965,8 +842,6 @@ components:
         operationDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
     TimelineErrorDTO:
       type: object
@@ -999,8 +874,6 @@ components:
           example: "TIMELINE_DETAIL_NOT_FOUND"
         message:
           type: string
-          maxLength: 2500
-          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
           description: "ENG: Error message - IT: Messaggio di errore"
     UnsubscribeOperationDTO:
       type: object
@@ -1011,8 +884,6 @@ components:
       properties:
         operationId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Id of the operation - IT: Identificativo dell'operazione"
         operationType:
           enum:
@@ -1023,8 +894,6 @@ components:
         operationDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Operation date - IT: Data dell'operazione"
   securitySchemes:
     bearerAuth:
