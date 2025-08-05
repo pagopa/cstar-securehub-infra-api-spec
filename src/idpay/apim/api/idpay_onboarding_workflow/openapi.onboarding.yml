@@ -709,7 +709,7 @@ components:
         $ref: "#/components/schemas/UserOnboardingStatusDTO"
       description: >-
         ENG: List of initiatives in Waiting List or In Evaluation status, to which the user is onboarded
-        - IT: Lista delle iniziative in stato Lista d''attesa o In Valutazione, a cui l'utente è onboardato
+        - IT: Lista delle iniziative in stato Lista d'attesa o In Valutazione, a cui l'utente è onboardato
       maxItems: 10
     UserOnboardingStatusDTO:
       title: UserOnboardingStatusDTO

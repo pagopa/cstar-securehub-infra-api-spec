@@ -18,8 +18,8 @@ paths:
     post:
       tags:
         - payment
-      summary: 'ENG: Create a transaction ID - IT: Creazione della Transazione'
-      description: 'Create a transaction'
+      summary: "ENG: Create a transaction ID - IT: Creazione della Transazione"
+      description: "Create a transaction"
       operationId: createBarCodeTransaction
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
@@ -31,7 +31,7 @@ paths:
             schema:
               $ref: '#/components/schemas/TransactionBarCodeRequest'
             example:
-              initiativeId: 'InitiativeId'
+              initiativeId: "InitiativeId"
       responses:
         '201':
           description: Created
@@ -41,13 +41,13 @@ paths:
                 $ref: '#/components/schemas/TransactionBarCodeResponse'
           headers:
             Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
             RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
+              $ref: "#/components/headers/RateLimit-Limit"
             RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
+              $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
-              $ref: '#/components/headers/Retry-After'
+              $ref: "#/components/headers/Retry-After"
         '400':
           description: Bad request
           content:
@@ -56,29 +56,29 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_INVALID_REQUEST
-                message: 'Required initiativeId is not present'
+                message: "Required initiativeId is not present"
           headers:
             Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
             RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
+              $ref: "#/components/headers/RateLimit-Limit"
             RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
+              $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
-              $ref: '#/components/headers/Retry-After'
-        '401':
+              $ref: "#/components/headers/Retry-After"
+        "401":
           description: Authentication failed
           content:
             application/json: {}
           headers:
             Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
             RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
+              $ref: "#/components/headers/RateLimit-Limit"
             RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
+              $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
-              $ref: '#/components/headers/Retry-After'
+              $ref: "#/components/headers/Retry-After"
         '403':
           description: User not onboarded
           content:
@@ -87,16 +87,16 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_USER_NOT_ONBOARDED
-                message: 'User not onboarded'
+                message: "User not onboarded"
           headers:
             Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
             RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
+              $ref: "#/components/headers/RateLimit-Limit"
             RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
+              $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
-              $ref: '#/components/headers/Retry-After'
+              $ref: "#/components/headers/Retry-After"
         '404':
           description: Transaction not found
           content:
@@ -105,16 +105,16 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_NOT_FOUND_OR_EXPIRED
-                message: 'Cannot find transaction with trxCode trxCode'
+                message: "Cannot find transaction with trxCode trxCode"
           headers:
             Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
             RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
+              $ref: "#/components/headers/RateLimit-Limit"
             RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
+              $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
-              $ref: '#/components/headers/Retry-After'
+              $ref: "#/components/headers/Retry-After"
         '429':
           description: Too many Request
           content:
@@ -126,13 +126,13 @@ paths:
                 message: 'Too many requests'
           headers:
             Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
             RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
+              $ref: "#/components/headers/RateLimit-Limit"
             RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
+              $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
-              $ref: '#/components/headers/Retry-After'
+              $ref: "#/components/headers/Retry-After"
         '500':
           description: Generic error
           content:
@@ -144,13 +144,13 @@ paths:
                 message: 'application error connection microservice error'
           headers:
             Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
             RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
+              $ref: "#/components/headers/RateLimit-Limit"
             RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
+              $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
-              $ref: '#/components/headers/Retry-After'
+              $ref: "#/components/headers/Retry-After"
 components:
   parameters:
     ApiVersionHeader:
@@ -168,7 +168,7 @@ components:
       description: Indicates whether the response can be shared with requesting code from the given origin
       schema:
         type: string
-        pattern: '^[ -~]{1,2048}$'
+        pattern: "^[ -~]{1,2048}$"
         minLength: 1
         maxLength: 2048
     RateLimit-Limit:
@@ -227,7 +227,7 @@ components:
             - PAYMENT_INVALID_REQUEST
             - PAYMENT_TRANSACTION_VERSION_PENDING
           description: >-
-            'ENG: Error code: PAYMENT_NOT_FOUND_OR_EXPIRED: transaction not
+            "ENG: Error code: PAYMENT_NOT_FOUND_OR_EXPIRED: transaction not
             found or expired, PAYMENT_TRANSACTION_EXPIRED: transaction expired,
             PAYMENT_INITIATIVE_NOT_FOUND: initiative not found,
             PAYMENT_INITIATIVE_INVALID_DATE: initiative invalid date,
@@ -282,7 +282,7 @@ components:
             PAYMENT_MERCHANT_NOT_ONBOARDED: il merchant non è onboardato,
             PAYMENT_INVALID_REQUEST: errore di validazione della richiesta,
             PAYMENT_TRANSACTION_VERSION_PENDING: La versione del
-            contatore è attualmente bloccata'
+            contatore è attualmente bloccata"
         message:
           type: string
           maxLength: 2500
@@ -296,7 +296,7 @@ components:
         initiativeId:
           type: string
           maxLength: 24
-          pattern: '^[a-zA-Z0-9]+$'
+          pattern: "^[a-zA-Z0-9]+$"
           description: 'ENG: Initiative ID - IT: Identificativo dell''iniziativa'
     TransactionBarCodeResponse:
       type: object
@@ -313,23 +313,23 @@ components:
         id:
           type: string
           maxLength: 24
-          pattern: '$ ^[a-zA-Z0-9]+$'
+          pattern: "$ ^[a-zA-Z0-9]+$"
           description: 'ENG: Id of the payment - IT: Identificativo del pagamento'
         trxCode:
           type: string
-          pattern: '^[ -~]{1,255}$'
+          pattern: "^[ -~]{1,255}$"
           maxLength: 255
           description: 'ENG: Transaction code - IT: Codice della transazione'
         initiativeId:
           type: string
           maxLength: 24
-          pattern: '^[a-zA-Z0-9]+$'
+          pattern: "^[a-zA-Z0-9]+$"
           description: 'ENG: Id of the initiative - IT: Identificativo dell''iniziativa'
         initiativeName:
           type: string
-          pattern: '^[ -~]{1,255}$'
+          pattern: "^[ -~]{1,255}$"
           maxLength: 255
-          example: 'Bonus Elettrodomestici'
+          example: "Bonus Elettrodomestici"
           description: 'ENG: Name of the initiative - IT: Nome dell''iniziativa'
         trxDate:
           type: string
@@ -339,7 +339,7 @@ components:
           description: 'ENG: Transaction date - IT: Data della transazione'
         trxExpirationSeconds:
           type: number
-          description: 'ENG: Expiration time of the transaction, in seconds - IT: Scadenza della transazione, in secondi'
+          description: "ENG: Expiration time of the transaction, in seconds - IT: Scadenza della transazione, in secondi"
         residualBudgetCents:
           type: integer
           format: int64
