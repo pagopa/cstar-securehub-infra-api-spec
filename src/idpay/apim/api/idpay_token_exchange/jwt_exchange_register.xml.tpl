@@ -80,11 +80,23 @@
                     JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
                     var org_id = organization["id"];
                     var org_name = organization["name"];
-                    var org_party_role = organization.Value<JArray>("roles").First().Value<string>("partyRole");
-                    var org_role = organization.Value<JArray>("roles").First().Value<string>("role");
-                    if (organization["fiscal_code"].ToString() == "${invitalia_fc}") {
-                        org_role = "invitalia";
-                    } else {
+                    var org_party_role = organization.Value<JArray>("roles")?.FirstOrDefault()?.Value<string>("partyRole");
+                    string org_role;
+                    var fiscalCode = organization["fiscal_code"]?.ToString();
+                    if (fiscalCode == "${invitalia_fc}")
+                    {
+                        var roles = organization["roles"] as JArray;
+                        if (roles != null && roles.Any(r => r["role"]?.ToString() == "approver"))
+                        {
+                            org_role = "invitalia_admin";
+                        }
+                        else
+                        {
+                            org_role = "invitalia";
+                        }
+                    }
+                    else
+                    {
                         org_role = "operatore";
                     }
                     var response = (IResponse)context.Variables["institutionResponse"];
