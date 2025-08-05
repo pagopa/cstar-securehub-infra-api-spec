@@ -916,7 +916,7 @@ components:
             - INITIATIVE_TOO_MANY_REQUESTS
             - INITIATIVE_GENERIC_ERROR
           description: >-
-            "ENG: Error code:
+            'ENG: Error code:
              INITIATIVE_INVALID_LOCALE_FORMAT: Initiative not found due to invalid locale format,
              INITIATIVE_INVALID_REQUEST: Something went wrong handling the request,
              INITIATIVE_NOT_FOUND: Initiative not found,
@@ -927,7 +927,7 @@ components:
              INITIATIVE_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
              INITIATIVE_NOT_FOUND: Iniziativa non trovata,
              INITIATIVE_TOO_MANY_REQUESTS: Troppe richieste,
-             INITIATIVE_GENERIC_ERROR: Errore generico"
+             INITIATIVE_GENERIC_ERROR: Errore generico'
         message:
           type: string
           description: "ENG: Error message - IT: Messaggio di errore"
@@ -961,7 +961,7 @@ components:
             - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
             - ONBOARDING_WAITING_LIST
           description: >-
-            "ENG: Error code:
+            'ENG: Error code:
             ONBOARDING_USER_UNSUBSCRIBED: The user has unsubscribed from initiative,
             ONBOARDING_PAGE_SIZE_NOT_ALLOWED: Page size not allowed,
             ONBOARDING_PDND_CONSENT_DENIED: The PDND consent was denied by the user for the initiative,
@@ -1003,7 +1003,7 @@ components:
             ONBOARDING_GENERIC_ERROR: Errore applicativo,
             ONBOARDING_USER_NOT_ONBOARDED: Utente non onboardato all'iniziativa,
             ONBOARDING_INITIATIVE_NOT_FOUND: Iniziativa non trovata,
-            ONBOARDING_TOO_MANY_REQUESTS: Troppe richieste"
+            ONBOARDING_TOO_MANY_REQUESTS: Troppe richieste'
         message:
           type: string
           description: "ENG: Error message- IT: Messaggio di errore"
@@ -1024,11 +1024,11 @@ components:
         confirmedTos:
           type: boolean
           description: >-
-            "ENG: Indicates whether the user has correctly accepted the Terms and Conditions of the initiative - IT: Indica se l'utente ha correttamente accettato i Termini e Condizioni dell'iniziativa"
+            'ENG: Indicates whether the user has correctly accepted the Terms and Conditions of the initiative - IT: Indica se l'utente ha correttamente accettato i Termini e Condizioni dell'iniziativa'
         pdndAccept:
           type: boolean
           description: >-
-            "ENG: Indicates whether the user has correctly accepted the PDND Criteria of the initiative - IT: Indica se l'utente ha correttamente accettato i PDND Criteria dell'iniziativa"
+            'ENG: Indicates whether the user has correctly accepted the PDND Criteria of the initiative - IT: Indica se l'utente ha correttamente accettato i PDND Criteria dell'iniziativa'
         selfDeclarationList:
           type: array
           items:
@@ -1040,13 +1040,13 @@ components:
           description: "ENG: Contact email provided by the user during web onboarding - IT: Mail di contatto fornita dall'utente in fase di onboarding web"
           maxLength: 24
           example: "utente@email.it"
-          pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
         userMailConfirmation:
           type: string
           description: "ENG: Confirm email provided by the user during web onboarding - IT: Mail di conferma fornita dall'utente in fase di onboarding web"
           maxLength: 24
           example: "utente@email.it"
-          pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
     InitiativeDTO:
       type: object
       properties:

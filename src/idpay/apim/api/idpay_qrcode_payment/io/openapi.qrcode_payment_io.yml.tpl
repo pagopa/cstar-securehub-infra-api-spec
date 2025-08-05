@@ -18,19 +18,19 @@ paths:
     put:
       tags:
         - payment
-      summary: "ENG: Pre Authorize payment - IT: Preautorizzazione pagamento"
-      description: "Pre Authorize payment"
+      summary: 'ENG: Pre Authorize payment - IT: Preautorizzazione pagamento'
+      description: 'Pre Authorize payment'
       operationId: putPreAuthPayment
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
         - name: trxCode
           in: path
-          description: "ENG: The transaction's code - IT: Codice della transazione"
+          description: 'ENG: The transaction''s code - IT: Codice della transazione'
           required: true
           schema:
             type: string
             maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+            pattern: '$ ^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Ok
@@ -40,13 +40,13 @@ paths:
                 $ref: '#/components/schemas/AuthPaymentResponseDTO'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '400':
           description: Bad request
           content:
@@ -58,13 +58,13 @@ paths:
                 message: 'Required trxCode is not present'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '401':
           description: Token not validated correctly
           content:
@@ -76,13 +76,13 @@ paths:
                 message: 'Invalid token'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '403':
           description: Forbidden
           content:
@@ -94,13 +94,13 @@ paths:
                 message: 'The user has unsubscribed from initiative'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '404':
           description: Transaction does not exist or is expired
           content:
@@ -112,13 +112,13 @@ paths:
                 message: 'transaction not found or expired'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '429':
           description: Too many Request
           content:
@@ -130,13 +130,13 @@ paths:
                 message: 'Too many requests'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '500':
           description: Generic error
           content:
@@ -148,30 +148,30 @@ paths:
                 message: 'application error connection microservice error'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
   /{trxCode}/authorize:
     put:
       tags:
         - payment
-      summary: "ENG: Authorize payment - IT: Autorizzazione pagamento"
-      description: "Authorize payment"
+      summary: 'ENG: Authorize payment - IT: Autorizzazione pagamento'
+      description: 'Authorize payment'
       operationId: putAuthPayment
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
         - name: trxCode
           in: path
-          description: "ENG: The transaction's code - IT: Codice della transazione"
+          description: 'ENG: The transaction''s code - IT: Codice della transazione'
           required: true
           schema:
             type: string
             maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+            pattern: '$ ^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Ok
@@ -181,13 +181,13 @@ paths:
                 $ref: '#/components/schemas/AuthPaymentResponseDTO'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '400':
           description: Bad request
           content:
@@ -199,13 +199,13 @@ paths:
                 message: 'Required trxCode is not present'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '401':
           description: Token not validated correctly
           content:
@@ -217,13 +217,13 @@ paths:
                 message: 'Invalid token'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '403':
           description: Forbidden
           content:
@@ -235,13 +235,13 @@ paths:
                 message: 'transaction already assigned'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '404':
           description: Transaction does not exist or is expired
           content:
@@ -253,13 +253,13 @@ paths:
                 message: 'transaction not found or expired'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '429':
           description: Too many Request
           content:
@@ -271,13 +271,13 @@ paths:
                 message: 'Too many requests'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '500':
           description: Generic error
           content:
@@ -289,42 +289,42 @@ paths:
                 message: 'application error connection microservice error'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
   /{trxCode}:
     delete:
       tags:
         - payment
-      summary: "ENG: Cancel payment - IT: Cancellazione pagamento"
-      description: "Cancel payment"
+      summary: 'ENG: Cancel payment - IT: Cancellazione pagamento'
+      description: 'Cancel payment'
       operationId: deletePayment
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
         - name: trxCode
           in: path
-          description: "ENG: The transaction's code - IT: Codice della transazione"
+          description: 'ENG: The transaction''s code - IT: Codice della transazione'
           required: true
           schema:
             type: string
             maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+            pattern: '$ ^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Cancel Ok
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '400':
           description: Bad request
           content:
@@ -336,13 +336,13 @@ paths:
                 message: 'unrelate transaction not allowed due to status'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '401':
           description: Token not validated correctly
           content:
@@ -354,13 +354,13 @@ paths:
                 message: 'Invalid token'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '403':
           description: Forbidden
           content:
@@ -372,13 +372,13 @@ paths:
                 message: 'transaction already assigned'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '404':
           description: Transaction does not exist or is expired
           content:
@@ -390,13 +390,13 @@ paths:
                 message: 'transaction not found or expired'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '429':
           description: Too many Request
           content:
@@ -408,13 +408,13 @@ paths:
                 message: 'Too many requests'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '500':
           description: Generic error
           content:
@@ -426,13 +426,13 @@ paths:
                 message: 'application error connection microservice error'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
 components:
   parameters:
     ApiVersionHeader:
@@ -450,7 +450,7 @@ components:
       description: Indicates whether the response can be shared with requesting code from the given origin
       schema:
         type: string
-        pattern: "^[ -~]{1,2048}$"
+        pattern: '^[ -~]{1,2048}$'
         minLength: 1
         maxLength: 2048
     RateLimit-Limit:
@@ -488,34 +488,34 @@ components:
           type: string
           maxLength: 64
           pattern: '^[a-zA-Z0-9_-]+$'
-          description: "ENG: Id of the payment - IT: Identificativo del pagamento"
+          description: 'ENG: Id of the payment - IT: Identificativo del pagamento'
         trxCode:
           type: string
           maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
-          description: "ENG: Transaction code - IT: Codice della transazione"
+          pattern: '$ ^[a-zA-Z0-9]+$'
+          description: 'ENG: Transaction code - IT: Codice della transazione'
         trxDate:
           type: string
           format: date-time
           minLength: 19
           maxLength: 19
-          description: "ENG: Transaction date - IT: Data della transazione"
+          description: 'ENG: Transaction date - IT: Data della transazione'
         initiativeId:
           type: string
           maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
-          description: "ENG: Id of the initiative - IT: Identificativo dell'iniziativa"
+          pattern: '$ ^[a-zA-Z0-9]+$'
+          description: 'ENG: Id of the initiative - IT: Identificativo dell''iniziativa'
         initiativeName:
           type: string
-          pattern: "^[ -~]{1,255}$"
+          pattern: '^[ -~]{1,255}$'
           maxLength: 255
-          description: "ENG: Name of the initiative - IT: Nome della iniziativa"
-          example: "Bonus Elettrodomestici"
+          description: 'ENG: Name of the initiative - IT: Nome della iniziativa'
+          example: 'Bonus Elettrodomestici'
         businessName:
           type: string
-          pattern: "^[ -~]{1,255}$"
+          pattern: '^[ -~]{1,255}$'
           maxLength: 255
-          description: "ENG: Business name - IT: Nome dell'esercente"
+          description: 'ENG: Business name - IT: Nome dell''esercente'
         status:
           type: string
           enum:
@@ -523,25 +523,25 @@ components:
           - IDENTIFIED
           - AUTHORIZATION_REQUESTED
           - AUTHORIZED
-          description: "ENG: Status of the payment [CREATED: Created, IDENTIFIED: User related, AUTHORIZATION_REQUESTED: Authorization Requested, AUTHORIZED: authorized] - IT: Stato del pagamento [CREATED: Creato, IDENTIFIED: Utente associato, AUTHORIZATION_REQUESTED: autorizzazione richiesta, AUTHORIZED: autorizzato]"
+          description: 'ENG: Status of the payment [CREATED: Created, IDENTIFIED: User related, AUTHORIZATION_REQUESTED: Authorization Requested, AUTHORIZED: authorized] - IT: Stato del pagamento [CREATED: Creato, IDENTIFIED: Utente associato, AUTHORIZATION_REQUESTED: autorizzazione richiesta, AUTHORIZED: autorizzato]'
         rewardCents:
           type: integer
           format: int64
           minimum: 0
           maximum: 1000000000
-          description: "ENG: Reward - IT: Premio generato"
+          description: 'ENG: Reward - IT: Premio generato'
         amountCents:
           type: integer
           format: int64
           minimum: 0
           maximum: 1000000000
-          description: "ENG: Amount cents - IT: Importo in centessimi"
+          description: 'ENG: Amount cents - IT: Importo in centessimi'
         residualBudgetCents:
           type: integer
           format: int64
           minimum: 0
           maximum: 1000000000
-          description: "ENG: Residual budget - IT: Budget residuo"
+          description: 'ENG: Residual budget - IT: Budget residuo'
     TransactionErrorDTO:
       type: object
       required:
@@ -577,7 +577,7 @@ components:
             - PAYMENT_TRANSACTION_VERSION_PENDING
             - PAYMENT_AUTH_ERROR
           description: >-
-            "ENG: Error code: PAYMENT_NOT_FOUND_OR_EXPIRED: transaction not
+            'ENG: Error code: PAYMENT_NOT_FOUND_OR_EXPIRED: transaction not
             found or expired, PAYMENT_TRANSACTION_EXPIRED: transaction expired,
             PAYMENT_INITIATIVE_NOT_FOUND: initiative not found,
             PAYMENT_INITIATIVE_INVALID_DATE: initiative invalid date,
@@ -632,12 +632,12 @@ components:
             PAYMENT_MERCHANT_NOT_ONBOARDED: il merchant non è onboardato,
             PAYMENT_INVALID_REQUEST: errore di validazione della richiesta,
             PAYMENT_TRANSACTION_VERSION_PENDING: La versione del contatore è
-            attualmente bloccata"
+            attualmente bloccata'
         message:
           type: string
           maxLength: 2500
           pattern: '^[a-zA-Z0-9 _@\-.!?]+'
-          description: "ENG: Error message- IT: Messaggio di errore"
+          description: 'ENG: Error message- IT: Messaggio di errore'
   securitySchemes:
     Bearer:
       type: apiKey
