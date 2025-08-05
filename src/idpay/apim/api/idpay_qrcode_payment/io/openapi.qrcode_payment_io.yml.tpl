@@ -577,7 +577,7 @@ components:
             - PAYMENT_TRANSACTION_VERSION_PENDING
             - PAYMENT_AUTH_ERROR
           description: >-
-            "ENG: Error code: PAYMENT_NOT_FOUND_OR_EXPIRED: transaction not
+            'ENG: Error code: PAYMENT_NOT_FOUND_OR_EXPIRED: transaction not
             found or expired, PAYMENT_TRANSACTION_EXPIRED: transaction expired,
             PAYMENT_INITIATIVE_NOT_FOUND: initiative not found,
             PAYMENT_INITIATIVE_INVALID_DATE: initiative invalid date,
@@ -632,7 +632,7 @@ components:
             PAYMENT_MERCHANT_NOT_ONBOARDED: il merchant non è onboardato,
             PAYMENT_INVALID_REQUEST: errore di validazione della richiesta,
             PAYMENT_TRANSACTION_VERSION_PENDING: La versione del contatore è
-            attualmente bloccata"
+            attualmente bloccata'
         message:
           type: string
           maxLength: 2500
