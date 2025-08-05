@@ -269,7 +269,7 @@ paths:
         - onboarding
       summary: >-
         ENG: Retrieves the initiative ID starting from the corresponding service
-        ID - IT: Ritrova l'identificativo dell''iniziativa a partire
+        ID - IT: Ritrova l'identificativo dell'iniziativa a partire
         dall'idetificativo del service
       description: Retrieves the initiative ID starting from the corresponding service ID
       operationId: getInitiativeData
@@ -401,7 +401,7 @@ paths:
         - onboarding
       summary: >-
         ENG: Returns the detail of an active initiative - IT: Ritorna i dettagli
-        di un''iniziativa attiva
+        di un'iniziativa attiva
       description: Returns the detail of an active initiative
       operationId: webInitiativeDetail
       parameters:
@@ -425,7 +425,7 @@ paths:
             type: string
             description: >-
               ENG: Unique identifier of the subscribed initiative - IT:
-              Identificativo univoco dell''iniziativa sottoscritta
+              Identificativo univoco dell'iniziativa sottoscritta
             maxLength: 24
             pattern: "$ ^[a-zA-Z0-9]+$"
       responses:
@@ -555,7 +555,7 @@ paths:
         description: >-
           ENG: Unique identifier of the subscribed initiative, flag for PDND
           acceptation and the list of accepted self-declared criteria - IT:
-          Identificativo univoco dell''iniziativa sottoscritta, elenco dei
+          Identificativo univoco dell'iniziativa sottoscritta, elenco dei
           criteri autodichiarati accettati,
         required: true
         content:
@@ -1335,7 +1335,7 @@ paths:
         - wallet
       summary: >-
         ENG: Returns the detail of an initiative - IT: Ritorna i dettagli
-        dell''iniziativa
+        dell'iniziativa
       description: Returns the detail of an initiative
       operationId: getInitiativeBeneficiaryDetail
       parameters:
@@ -1597,7 +1597,7 @@ paths:
         - wallet
       summary: >-
         ENG: Association of an IBAN to an initiative - IT: Associa un IBAN ad
-        un''iniziativa
+        un'iniziativa
       description: Association of an IBAN to an initiative
       operationId: enrollIban
       parameters:
@@ -1624,7 +1624,7 @@ paths:
       requestBody:
         description: >-
           ENG: Unique identifier of the subscribed initiative, IBAN of the
-          citizen - IT: Identificativo dell''iniziativa sottoscritta, IBAN del
+          citizen - IT: Identificativo dell'iniziativa sottoscritta, IBAN del
           cittadino
         content:
           application/json:
@@ -1737,7 +1737,7 @@ paths:
         - wallet
       summary: >-
         ENG: Association of a payment instrument to an initiative - IT: Associa
-        uno strumento di pagamento ad un''iniziativa
+        uno strumento di pagamento ad un'iniziativa
       description: Association of a payment instrument to an initiative
       operationId: enrollInstrument
       parameters:
@@ -1897,7 +1897,7 @@ paths:
       summary: >-
         ENG: Returns the list of payment instruments associated to the
         initiative by the citizen - IT: Ritorna la lista di istrumenti di
-        pagamenti associati ad un''iniziativa del cittadino
+        pagamenti associati ad un'iniziativa del cittadino
       description: >-
         Returns the list of payment instruments associated to the initiative by
         the citizen
@@ -2012,7 +2012,7 @@ paths:
         - wallet
       summary: >-
         ENG: Delete a payment instrument from an initiative - IT: Cancella uno
-        strumento di pagamento di un''iniziativa
+        strumento di pagamento di un'iniziativa
       description: Delete a payment instrument from an initiative
       operationId: deleteInstrument
       parameters:
@@ -2662,7 +2662,7 @@ paths:
         - wallet
       summary: >-
         ENG: Generate idpay code, if initativeId is not present new code will be
-        generated,- IT: Generato il codice per idpay, se l''initiativeId non è
+        generated,- IT: Generato il codice per idpay, se l'initiativeId non è
         presente verrà generato un nuovo codice
       description: >-
         Generate idpay code, if initativeId is not present new code will be
@@ -3569,7 +3569,7 @@ components:
       description: >-
         ENG: List of initiatives in Waiting List or In Evaluation status, to
         which the user is onboarded - IT: Lista delle iniziative in stato Lista
-        d''attesa o In Valutazione, a cui l'utente è onboardato
+        d'attesa o In Valutazione, a cui l'utente è onboardato
       maxItems: 10
     UserOnboardingStatusDTO:
       title: UserOnboardingStatusDTO
@@ -3592,7 +3592,7 @@ components:
           type: string
           description: >-
             ENG: Unique identifier of the subscribed initiative - IT:
-            Identificativo univoco dell''iniziativa sottoscritta
+            Identificativo univoco dell'iniziativa sottoscritta
         status:
           enum:
             - ON_WAITING_LIST
@@ -3600,7 +3600,7 @@ components:
           type: string
           description: >-
             ENG: Actual status of the citizen onboarding for an initiative - IT:
-            Stato attuale del cittadino rispetto ad un''iniziativa
+            Stato attuale del cittadino rispetto ad un'iniziativa
         statusDate:
           type: string
           format: date-time
@@ -3628,7 +3628,7 @@ components:
           type: string
           description: >-
             ENG: Actual status of the citizen onboarding for an initiative - IT:
-            Stato attuale del cittadino rispetto ad un''iniziativa
+            Stato attuale del cittadino rispetto ad un'iniziativa
         statusDate:
           type: string
           format: date-time
@@ -3766,18 +3766,18 @@ components:
           example: Bonus Elettrodomestici
         description:
           type: string
-          example: Descrizione dell''iniziativa
+          example: Descrizione dell'iniziativa
           description: "ENG: Initiative's description - IT: Descrizione dell'iniziativa"
         organizationId:
           type: string
           description: >-
             ENG: Id of the organization that created the initiative - IT:
-            Identificativo dell''organizzazione che ha creato l''iniziativa
+            Identificativo dell'organizzazione che ha creato l'iniziativa
         organizationName:
           type: string
           description: >-
             ENG: Name of the organization that created the initiative - IT: Nome
-            dell''organizzazione che ha creato l''iniziativa
+            dell'organizzazione che ha creato l'iniziativa
         tcLink:
           type: string
           description: >-
@@ -3791,13 +3791,13 @@ components:
         logoURL:
           type: string
           description: >-
-            ENG: URL for the initiative''s logo image - IT: URL del logo
-            dell''iniziativa
+            ENG: URL for the initiative's logo image - IT: URL del logo
+            dell'iniziativa
         thumbnailUrl:
           type: string
           description: >-
             ENG: ToS Initiative Image URL - IT: URL dell'immagine
-            dell''iniziativa per i ToS
+            dell'iniziativa per i ToS
     InitiativeErrorDTO:
       type: object
       properties:
@@ -3881,29 +3881,29 @@ components:
             initiative, ONBOARDING_INITIATIVE_NOT_FOUND: Cannot find initiative,
             ONBOARDING_TOO_MANY_REQUESTS: Too many requests - IT: Codice di
             errore: ONBOARDING_USER_UNSUBSCRIBED: L'utente si è disiscritto
-            dall''iniziativa, ONBOARDING_PAGE_SIZE_NOT_ALLOWED: Dimensione pagina
+            dall'iniziativa, ONBOARDING_PAGE_SIZE_NOT_ALLOWED: Dimensione pagina
             non permessa, ONBOARDING_PDND_CONSENT_DENIED: Il consenso PDND per
-            l''iniziativa è stato negato dall''utente,
+            l'iniziativa è stato negato dall'utente,
             ONBOARDING_SELF_DECLARATION_NOT_VALID: I criteri di
-            autodichiarazione non sono validi per l''iniziativa o quelli inseriti
-            dall''utente non corrispondono con quelli richiesti dall''iniziativa,
+            autodichiarazione non sono validi per l'iniziativa o quelli inseriti
+            dall'utente non corrispondono con quelli richiesti dall'iniziativa,
             ONBOARDING_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS: Non è possibile
-            sospendere l'utente dall''iniziativa,
+            sospendere l'utente dall'iniziativa,
             ONBOARDING_READMISSION_NOT_ALLOWED_FOR_USER_STATUS: Non è possibile
-            riammettere l'utente all''iniziativa, ONBOARDING_INVALID_REQUEST:
+            riammettere l'utente all'iniziativa, ONBOARDING_INVALID_REQUEST:
             Qualcosa è andato storto durante l'invio della richiesta,
             ONBOARDING_USER_NOT_IN_WHITELIST: L'utente corrente non ha il
-            permesso di partecipare all''iniziativa,
-            ONBOARDING_INITIATIVE_NOT_STARTED: l''iniziativa non è ancora
-            partita, ONBOARDING_INITIATIVE_ENDED: l''iniziativa è terminata,
-            ONBOARDING_BUDGET_EXHAUSTED: Il budget dell''iniziativa è esaurito,
-            ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED: l''iniziativa non è
+            permesso di partecipare all'iniziativa,
+            ONBOARDING_INITIATIVE_NOT_STARTED: l'iniziativa non è ancora
+            partita, ONBOARDING_INITIATIVE_ENDED: l'iniziativa è terminata,
+            ONBOARDING_BUDGET_EXHAUSTED: Il budget dell'iniziativa è esaurito,
+            ONBOARDING_INITIATIVE_STATUS_NOT_PUBLISHED: l'iniziativa non è
             attiva, ONBOARDING_TECHNICAL_ERROR: Si è verificato un errore
             tecnico durante il processo di adesione,
             ONBOARDING_UNSATISFIED_REQUIREMENTS: L'utente non soddisfa i
-            requisiti che sono stati richiesti per l''iniziativa,
+            requisiti che sono stati richiesti per l'iniziativa,
             ONBOARDING_GENERIC_ERROR: Errore applicativo,
-            ONBOARDING_USER_NOT_ONBOARDED: Utente non onboardato all''iniziativa,
+            ONBOARDING_USER_NOT_ONBOARDED: Utente non onboardato all'iniziativa,
             ONBOARDING_INITIATIVE_NOT_FOUND: Iniziativa non trovata,
             ONBOARDING_TOO_MANY_REQUESTS: Troppe richieste'
         message:
@@ -3922,7 +3922,7 @@ components:
           type: string
           description: >-
             ENG: Unique identifier of the subscribed initiative - IT:
-            Identificativo univoco dell''iniziativa sottoscritta
+            Identificativo univoco dell'iniziativa sottoscritta
           maxLength: 24
           pattern: "$ ^[a-zA-Z0-9]+$"
         confirmedTos:
@@ -3930,13 +3930,13 @@ components:
           description: >-
             'ENG: Indicates whether the user has correctly accepted the Terms
             and Conditions of the initiative - IT: Indica se l'utente ha
-            correttamente accettato i Termini e Condizioni dell''iniziativa'
+            correttamente accettato i Termini e Condizioni dell'iniziativa'
         pdndAccept:
           type: boolean
           description: >-
             'ENG: Indicates whether the user has correctly accepted the PDND
             Criteria of the initiative - IT: Indica se l'utente ha correttamente
-            accettato i PDND Criteria dell''iniziativa'
+            accettato i PDND Criteria dell'iniziativa'
         selfDeclarationList:
           type: array
           items:
@@ -3949,7 +3949,7 @@ components:
           type: string
           description: >-
             ENG: Contact email provided by the user during web onboarding - IT:
-            Mail di contatto fornita dall''utente in fase di onboarding web
+            Mail di contatto fornita dall'utente in fase di onboarding web
           maxLength: 24
           example: utente@email.it
           pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
@@ -3957,7 +3957,7 @@ components:
           type: string
           description: >-
             ENG: Confirm email provided by the user during web onboarding - IT:
-            Mail di conferma fornita dall''utente in fase di onboarding web
+            Mail di conferma fornita dall'utente in fase di onboarding web
           maxLength: 24
           example: utente@email.it
           pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
@@ -4052,13 +4052,13 @@ components:
           example: descrizione
           description: >-
             ENG: Self-declaration description - IT: Descrizione
-            dell''autodichiarazione
+            dell'autodichiarazione
         subDescription:
           type: string
           example: sotto descrizione
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
-            dell''autodichiarazione
+            dell'autodichiarazione
         value:
           type: boolean
           description: >-
@@ -4083,13 +4083,13 @@ components:
           example: descrizione
           description: >-
             ENG: Self-declaration description - IT: Descrizione
-            dell''autodichiarazione
+            dell'autodichiarazione
         subDescription:
           type: string
           example: sotto descrizione
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
-            dell''autodichiarazione
+            dell'autodichiarazione
         value:
           type: array
           items:
@@ -4117,13 +4117,13 @@ components:
           example: descrizione
           description: >-
             ENG: Self-declaration description - IT: Descrizione
-            dell''autodichiarazione
+            dell'autodichiarazione
         subDescription:
           type: string
           example: sotto descrizione
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
-            dell''autodichiarazione
+            dell'autodichiarazione
         value:
           type: array
           items:
@@ -4153,13 +4153,13 @@ components:
           example: descrizione
           description: >-
             ENG: Self-declaration description - IT: Descrizione
-            dell''autodichiarazione
+            dell'autodichiarazione
         subDescription:
           type: string
           example: sotto descrizione
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
-            dell''autodichiarazione
+            dell'autodichiarazione
         value:
           type: string
           example: "0, 1"
@@ -4327,7 +4327,7 @@ components:
           example: BARCODE
           description: >-
             ENG: Channel from which the operation takes place - IT: Canale da
-            cui avviene l''operazione
+            cui avviene l'operazione
         instrumentType:
           type: string
           enum:
@@ -4473,7 +4473,7 @@ components:
           example: BARCODE
           description: >-
             ENG: Channel from which the operation takes place - IT: Canale da
-            cui avviene l''operazione
+            cui avviene l'operazione
         instrumentType:
           type: string
           enum:
@@ -4513,7 +4513,7 @@ components:
           example: BARCODE
           description: >-
             ENG: Channel from which the operation takes place - IT: Canale da
-            cui avviene l''operazione
+            cui avviene l'operazione
     OnboardingOperationDTO:
       type: object
       required:
@@ -4555,7 +4555,7 @@ components:
           type: string
           description: >-
             ENG: Operation type [PAID_REFUND: Paid refund, REJECTED_REFUND:
-            Rejected refund] - IT: Tipologia dell''operazione [PAID_REFUND:
+            Rejected refund] - IT: Tipologia dell'operazione [PAID_REFUND:
             Rimborso pagato, REJECTED_REFUND: Rimborso rifiutato]
         operationDate:
           type: string
@@ -4659,7 +4659,7 @@ components:
           type: string
           description: >-
             ENG: Operation type [SUSPENDED: Suspended] - IT: Tipologia
-            dell''operazione [SUSPENDED: sospeso]
+            dell'operazione [SUSPENDED: sospeso]
         operationDate:
           type: string
           format: date-time
@@ -4684,7 +4684,7 @@ components:
           example: REJECTED_REFUND
           description: >-
             ENG: Operation type [PAID_REFUND: Paid refund, REJECTED_REFUND:
-            Rejected refund] - IT: Tipologia dell''operazione [PAID_REFUND:
+            Rejected refund] - IT: Tipologia dell'operazione [PAID_REFUND:
             Rimborso pagato, REJECTED_REFUND: Rimborso rifiutato]
         eventId:
           type: string
@@ -4813,7 +4813,7 @@ components:
           type: string
           description: >-
             ENG: Unique identifier of the subscribed initiative - IT:
-            Identificativo univoco dell''iniziativa sottoscritta
+            Identificativo univoco dell'iniziativa sottoscritta
           maxLength: 24
           pattern: "$ ^[a-zA-Z0-9]+$"
     GenerateCodeRespDTO:
@@ -4859,7 +4859,7 @@ components:
           type: string
           description: >-
             ENG: Actual status of the citizen wallet for an initiative - IT:
-            Stato attuale del portafoglio di un cittadino per un''iniziativa
+            Stato attuale del portafoglio di un cittadino per un'iniziativa
         voucherStatus:
           enum:
             - USED
@@ -4991,14 +4991,14 @@ components:
           format: date
           description: >-
             ENG: End date for the time window in which it is possible to use the
-            initiative''s rewards - IT: Data che indica la fine del periodo di
-            fruizione dell''iniziativa
+            initiative's rewards - IT: Data che indica la fine del periodo di
+            fruizione dell'iniziativa
         voucherStartDate:
           type: string
           format: date
           description: >-
             ENG: START date for the time window in which it is possible to use
-            the voucher's rewards - IT: Data che indica l''inizio del periodo di
+            the voucher's rewards - IT: Data che indica l'inizio del periodo di
             fruizione del voucher
         voucherEndDate:
           type: string
@@ -5016,18 +5016,18 @@ components:
           format: int64
           description: >-
             ENG: Initiative accrued amount IT: Importo accumulato
-            dell''iniziativa
+            dell'iniziativa
         refundedCents:
           type: integer
           format: int64
           description: >-
             ENG: Refunded amount of the initiative - IT: Importo rimborsato
-            dell''iniziativa
+            dell'iniziativa
         lastCounterUpdate:
           type: string
           format: date-time
           description: >-
-            ENG: Date of the last update of the counters - IT: Data dell''ultimo
+            ENG: Date of the last update of the counters - IT: Data dell'ultimo
             aggiornamento dei contatori
         iban:
           type: string
@@ -5044,7 +5044,7 @@ components:
           type: string
           description: >-
             ENG: Reward type of the initiative - IT: Tipologia di premio
-            dell''iniziativa
+            dell'iniziativa
         logoURL:
           type: string
           description: "ENG: Url of the logo - IT: Url del logo"
@@ -5119,7 +5119,7 @@ components:
             ENG: Status of the initiative [ACTIVE: Active, INACTIVE: Inactive,
             PENDING_ENROLLMENT_REQUEST: Richiesta di adesione in attesa,
             PENDING_DEACTIVATION_REQUEST: Pending deactivation request] - IT:
-            Stato dell''iniziativa [ACTIVE: Iniziativa attiva, INACTIVE:
+            Stato dell'iniziativa [ACTIVE: Iniziativa attiva, INACTIVE:
             Iniziativa inactive, PENDING_ENROLLMENT_REQUEST: Pending enrollment
             request, PENDING_DEACTIVATION_REQUEST: Richiesta di disattivazione
             in attesa]
@@ -5151,30 +5151,30 @@ components:
           type: string
           format: date
           description: >-
-            ENG: Start date for the initiative''s onboarding time window - IT:
+            ENG: Start date for the initiative's onboarding time window - IT:
             Data di inizio della finestra temporale in cui si può aderire
-            all''iniziativa
+            all'iniziativa
         onboardingEndDate:
           type: string
           format: date
           description: >-
-            ENG: End date for the initiative''s onboarding time window - IT: Data
+            ENG: End date for the initiative's onboarding time window - IT: Data
             di fine della finestra temporale in cui si può aderire
-            all''iniziativa
+            all'iniziativa
         fruitionStartDate:
           type: string
           format: date
           description: >-
             ENG: Start date of the time window in which it is possible to use
-            the initiative''s rewards - IT: Data di inizio della finestra
-            temporale in cui si usufruire dei premi dell''iniziativa
+            the initiative's rewards - IT: Data di inizio della finestra
+            temporale in cui si usufruire dei premi dell'iniziativa
         fruitionEndDate:
           type: string
           format: date
           description: >-
             ENG: End date of the time window in which it is possible to use the
-            initiative''s rewards - IT: Data di fine della finestra temporale in
-            cui si usufruire dei premi dell''iniziativa
+            initiative's rewards - IT: Data di fine della finestra temporale in
+            cui si usufruire dei premi dell'iniziativa
         rewardRule:
           $ref: "#/components/schemas/RewardValueDTO"
         refundRule:
@@ -5241,7 +5241,7 @@ components:
             ENG: Time type [CLOSED: At the end of the initiative, DAILY: Daily,
             WEEKLY: Weekly, MONTHLY: Monthly, QUARTERLY: Quarterly] - IT:
             Tipologia di tesmpistiche di rimborso [CLOSED: Alla chiusura
-            dell''iniziativa, DAILY: Giornaliero, WEEKLY: Settimanale, MONTHLY:
+            dell'iniziativa, DAILY: Giornaliero, WEEKLY: Settimanale, MONTHLY:
             Mensile, QUARTERLY: Trimestrale]
     RewardValueDTO:
       required:
@@ -5311,16 +5311,16 @@ components:
             WALLET_GENERIC_ERROR: Application error, WALLET_INVALID_REQUEST:
             Something went wrong handling the request, WALLET_TOO_MANY_REQUESTS:
             Too many requests on the ms - IT: Codice di errore:
-            WALLET_USER_UNSUBSCRIBED: L'utente si è disiscritto dall''iniziativa,
+            WALLET_USER_UNSUBSCRIBED: L'utente si è disiscritto dall'iniziativa,
             WALLET_ENROLL_INSTRUMENT_NOT_ALLOWED_FOR_DISCOUNT_INITIATIVE: Non è
-            possibile associare uno strumento di pagamento per un''iniziativa di
+            possibile associare uno strumento di pagamento per un'iniziativa di
             tipo a sconto,
             WALLET_ENROLL_IBAN_NOT_ALLOWED_FOR_DISCOUNT_INITIATIVE: Non è
-            possibile associare un iban per un''iniziativa di tipo a sconto,
+            possibile associare un iban per un'iniziativa di tipo a sconto,
             WALLET_ENROLL_INSTRUMENT_NOT_ALLOWED_FOR_REFUND_INITIATIVE: Non è
             possibile associare un IDPayCode per una iniziativa di tipo a
-            rimborso, WALLET_INITIATIVE_ENDED: l''operazione non è consentita
-            perché l''iniziativa è scaduta, WALLET_USER_NOT_ONBOARDED: Utente non
+            rimborso, WALLET_INITIATIVE_ENDED: l'operazione non è consentita
+            perché l'iniziativa è scaduta, WALLET_USER_NOT_ONBOARDED: Utente non
             onboardato all'inziativa, WALLET_IBAN_NOT_ITALIAN: L'Iban non è
             italiano, WALLET_INSTRUMENT_ALREADY_ASSOCIATED: Lo strumento di
             pagamento è già associato ad un altro utente,
@@ -5328,9 +5328,9 @@ components:
             strumento di tipo AppIO, WALLET_INSTRUMENT_IDPAYCODE_NOT_FOUND:
             L'idpayCode non è stato trovato per l'utente corrente,
             WALLET_SUSPENSION_NOT_ALLOWED_FOR_USER_STATUS: Non è possibile
-            sospendere l'utente dall''iniziativa,
+            sospendere l'utente dall'iniziativa,
             WALLET_READMISSION_NOT_ALLOWED_FOR_USER_STATUS: Non è possibile
-            riammettere l'utente all''iniziativa, WALLET_INSTRUMENT_NOT_FOUND: Lo
+            riammettere l'utente all'iniziativa, WALLET_INSTRUMENT_NOT_FOUND: Lo
             strumento di pagamento selezionato non è stato trovato per l'utente
             corrente, WALLET_GENERIC_ERROR: Errore generico,
             WALLET_INVALID_REQUEST: Qualcosa è andato storto durante l'invio
@@ -5395,16 +5395,16 @@ components:
             PAYMENT_INSTRUMENT_DECRYPTION_ERROR: Qualcosa è andato storto
             durante l'estrazione del datablock dal pinblock,
             PAYMENT_INSTRUMENT_ENROLL_NOT_ALLOWED_FOR_REFUND_INITIATIVE: Non è
-            possibile enrollare un idpayCode per un''iniziativa di tipo a
-            rimborso, PAYMENT_INSTRUMENT_INITIATIVE_ENDED: l''operazione non è
-            consentita perché l''iniziativa è scaduta,
+            possibile enrollare un idpayCode per un'iniziativa di tipo a
+            rimborso, PAYMENT_INSTRUMENT_INITIATIVE_ENDED: l'operazione non è
+            consentita perché l'iniziativa è scaduta,
             PAYMENT_INSTRUMENT_USER_UNSUBSCRIBED: L'utente si è disiscritto
-            dall''iniziativa, PAYMENT_INSTRUMENT_NOT_FOUND:  Lo strumento di
+            dall'iniziativa, PAYMENT_INSTRUMENT_NOT_FOUND:  Lo strumento di
             pagamento selezionato non è stato trovato per l'utente corrente,
             PAYMENT_INSTRUMENT_IDPAYCODE_NOT_FOUND: L'idpayCode non è stato
             trovato per l'utente corrente,
             PAYMENT_INSTRUMENT_USER_NOT_ONBOARDED: L'utente corrente non è
-            onboardato all''iniziativa, PAYMENT_INSTRUMENT_TOO_MANY_REQUESTS:
+            onboardato all'iniziativa, PAYMENT_INSTRUMENT_TOO_MANY_REQUESTS:
             Troppe richieste, PAYMENT_INSTRUMENT_GENERIC_ERROR: Errore generico'
         message:
           type: string
@@ -5481,9 +5481,9 @@ components:
             errore generico, transazione rigettata, PAYMENT_TOO_MANY_REQUESTS:
             troppe richieste, riprovare, PAYMENT_GENERIC_ERROR: errore generico
             (errore nella connessione ad un microservizio),
-            PAYMENT_USER_SUSPENDED: l'utente è stato sospeso dall''iniziativa,
-            PAYMENT_USER_NOT_ONBOARDED: utente non onboardato all''iniziativa,
-            PAYMENT_USER_UNSUBSCRIBED: utente disiscritto dall''iniziativa,
+            PAYMENT_USER_SUSPENDED: l'utente è stato sospeso dall'iniziativa,
+            PAYMENT_USER_NOT_ONBOARDED: utente non onboardato all'iniziativa,
+            PAYMENT_USER_UNSUBSCRIBED: utente disiscritto dall'iniziativa,
             PAYMENT_ALREADY_ASSIGNED:  transazione già assegnata,
             PAYMENT_NOT_ALLOWED_FOR_TRX_STATUS: transazione non consentita a
             causa dello stato della transazione,
@@ -5716,9 +5716,9 @@ components:
             errore generico, transazione rigettata, PAYMENT_TOO_MANY_REQUESTS:
             troppe richieste, riprovare, PAYMENT_GENERIC_ERROR: errore generico
             (errore nella connessione ad un microservizio),
-            PAYMENT_USER_SUSPENDED: l'utente è stato sospeso dall''iniziativa,
-            PAYMENT_USER_NOT_ONBOARDED: utente non onboardato all''iniziativa,
-            PAYMENT_USER_UNSUBSCRIBED: utente disiscritto dall''iniziativa,
+            PAYMENT_USER_SUSPENDED: l'utente è stato sospeso dall'iniziativa,
+            PAYMENT_USER_NOT_ONBOARDED: utente non onboardato all'iniziativa,
+            PAYMENT_USER_UNSUBSCRIBED: utente disiscritto dall'iniziativa,
             PAYMENT_ALREADY_ASSIGNED:  transazione già assegnata,
             PAYMENT_NOT_ALLOWED_FOR_TRX_STATUS: transazione non consentita a
             causa dello stato della transazione,
