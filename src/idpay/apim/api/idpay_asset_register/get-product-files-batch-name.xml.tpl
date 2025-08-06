@@ -23,9 +23,6 @@
                 </return-response>
             </when>
         </choose>
-        <set-header name="x-organization-role" exists-action="override">
-            <value>context.Variables.GetValueOrDefault("organizationRole", "")</value>
-        </set-header>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
         <rewrite-uri template="@("/idpay/register/product-files/batch-list")" />
     </inbound>

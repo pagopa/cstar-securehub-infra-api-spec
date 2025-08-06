@@ -23,9 +23,6 @@
                 </return-response>
             </when>
         </choose>
-        <set-header name="x-organization-role" exists-action="override">
-            <value>context.Variables.GetValueOrDefault("organizationRole", "")</value>
-        </set-header>
         <set-variable name="requestBody" value="@((JObject)context.Request.Body.As<JObject>())" />
         <set-variable name="modifiedBody" value="@{
             var body = context.Variables["requestBody"] as JObject;
