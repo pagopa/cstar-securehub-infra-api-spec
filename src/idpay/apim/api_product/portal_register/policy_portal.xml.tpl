@@ -68,7 +68,7 @@
         <set-header name="x-user-email" exists-action="override">
             <value>@((String)context.Variables["organizationEmail"])</value>
         </set-header>
-        <set-header name="x-organization-name" exists-action="override">
+        <set-header name="x-organization-role" exists-action="override">
             <value>@((String)context.Variables["organizationRole"])</value>
         </set-header>
     </inbound>
