@@ -8,7 +8,7 @@ extends:
 overrides:
   - files:
       - "**/openapi.appio.full*.yml"
-      - "**/openapi.iban.yml"
+      - "**/openapi.iban.yml*"
       - "**/openapi.onboarding.yml*"
       - "**/openapi.timeline.yml*"
       - "**/openapi.wallet.yml*"
