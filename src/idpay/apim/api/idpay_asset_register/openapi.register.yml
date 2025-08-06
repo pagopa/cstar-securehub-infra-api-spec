@@ -770,8 +770,12 @@ components:
           description: 'ENG: The status of the product <br> IT: Lo stato del prodotto'
           enum:
             - APPROVED
+            - WAIT_APPROVED
             - REJECTED
+            - WAIT_REJECTED
             - SUPERVISIONED
+            - SUSPENDED
+            - UPLOADED
         model:
           type: string
           description: 'ENG: The mode of the product <br> IT: il modello del prodotto'
@@ -2076,8 +2080,12 @@ components:
         type: string
         enum:
           - APPROVED
+          - WAIT_APPROVED
           - REJECTED
+          - WAIT_REJECTED
           - SUPERVISIONED
+          - SUSPENDED
+          - UPLOADED
     productName_query:
       name: productName
       in: query
