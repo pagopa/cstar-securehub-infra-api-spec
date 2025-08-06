@@ -171,7 +171,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  /iban/:
+  /iban:
     get:
       tags:
         - iban
@@ -541,7 +541,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  /onboarding/:
+  /onboarding:
     put:
       tags:
         - onboarding
@@ -1236,7 +1236,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  /wallet/:
+  /wallet:
     get:
       tags:
         - wallet
@@ -3964,7 +3964,7 @@ components:
             Mail di contatto fornita dall'utente in fase di onboarding web
           maxLength: 24
           example: utente@email.it
-          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         userMailConfirmation:
           type: string
           description: >-
@@ -3972,7 +3972,7 @@ components:
             Mail di conferma fornita dall'utente in fase di onboarding web
           maxLength: 24
           example: utente@email.it
-          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     InitiativeDTO:
       type: object
       properties:

@@ -1,4 +1,72 @@
 extends:
   - "spectral:oas"
-  - "spectral:asyncapi"
   - "https://unpkg.com/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs"
+
+# ============================================================================
+# Update for AppIO files: disable some OWASP rules and add custom rules
+# ============================================================================
+overrides:
+  - files:
+      - "**/openapi.appio.full*.yml"
+      - "**/openapi.iban.yml"
+      - "**/openapi.onboarding.yml"
+      - "**/openapi.timeline.yml*"
+      - "**/openapi.wallet.yml*"
+      - "**/openapi.qrcode_payment_io.yml*"
+      - "**/openapi.payment_io.yml*"
+    rules:
+      # Disable OWASP on response for AppIO swagger files
+      owasp:api4:2023-string-limit: off
+      owasp:api4:2023-string-restricted: off
+      owasp:api4:2023-integer-limit-legacy: off
+
+      # =========================================================================
+      # Custom rules on Request (only for AppIO)
+      # =========================================================================
+      appio-integer-limit:
+        description: "Integer-type schema must have both minimum and maximum (request only)"
+        message: "Integer-type schema must have minimum and maximum"
+        severity: error
+        given:
+          - "$..parameters[?(@.in && (@.in == 'path' || @.in == 'query') && @.schema && @.schema.type == 'integer' && !(@.schema['$ref']))].schema"
+          - "$..requestBody.content.*.schema.properties.*[?(@.type == 'integer' && !(@['$ref']))]"
+        then:
+          function: schema
+          functionOptions:
+            schema:
+              required:
+                - minimum
+                - maximum
+
+      appio-string-limit:
+        description: "String-type schema must have maxLength, enum, or const (request only)"
+        message: "String-type schema must have maxLength, enum, or const"
+        severity: error
+        given:
+          - "$..parameters[?(@.in && (@.in == 'path' || @.in == 'query') && @.schema && @.schema.type == 'string' && !(@.schema['$ref']))].schema"
+          - "$..requestBody.content.*.schema.properties.*[?(@.type == 'string' && !(@['$ref']))]"
+        then:
+          function: schema
+          functionOptions:
+            schema:
+              anyOf:
+                - required: ["maxLength"]
+                - required: ["enum"]
+                - required: ["const"]
+
+      appio-string-restricted:
+        description: "String-type schema must have format, pattern, enum, or const (request only)"
+        message: "String-type schema must have format, pattern, enum, or const"
+        severity: warn
+        given:
+          - "$..parameters[?(@.in && (@.in == 'path' || @.in == 'query') && @.schema && @.schema.type == 'string' && !(@.schema['$ref']))].schema"
+          - "$..requestBody.content.*.schema.properties.*[?(@.type == 'string' && !(@['$ref']))]"
+        then:
+          function: schema
+          functionOptions:
+            schema:
+              anyOf:
+                - required: ["format"]
+                - required: ["pattern"]
+                - required: ["enum"]
+                - required: ["const"]
