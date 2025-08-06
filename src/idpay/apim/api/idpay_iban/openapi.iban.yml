@@ -299,9 +299,6 @@ components:
         iban:
           type: string
           description: "ENG: IBAN of the citizen - IT: IBAN del cittadino"
-          pattern: "^IT[0-9]{2}[A-Z]{1}[0-9]{5}[0-9]{5}[A-Z0-9]{12}$"
-          minLength: 27
-          maxLength: 27
         checkIbanStatus:
           type: string
           description: "ENG: Status of checkIban - IT: Stato del checkIban"
@@ -309,18 +306,12 @@ components:
         holderBank:
           type: string
           description: "ENG: Holder Bank name - IT: Nome della banca"
-          pattern: "^[a-zA-Z0-9_]+$"
-          maxLength: 100
         description:
           type: string
           description: "ENG: General description associated with the iban - IT: Descrizione generale associata alll'IBAN"
-          pattern: "^[a-zA-Z0-9_]+$"
-          maxLength: 255
         channel:
           type: string
           description: "ENG: Channel from which the IBAN has been inserted - IT: Canale da cui l'IBAN è stato inserito"
-          pattern: "^[a-zA-Z0-9_]+$"
-          maxLength: 50
     IbanListDTO:
       type: object
       required:
@@ -347,19 +338,17 @@ components:
             - IBAN_TOO_MANY_REQUESTS
             - IBAN_GENERIC_ERROR
           description: >-
-            "ENG: Error code: IBAN_NOT_FOUND: Iban not found,
+            'ENG: Error code: IBAN_NOT_FOUND: Iban not found,
              IBAN_INVALID_REQUEST: Something went wrong handling request,
              IBAN_TOO_MANY_REQUESTS: Too many requests,
              IBAN_GENERIC_ERROR: Application Error - IT: Codice di errore:
              IBAN_NOT_FOUND: Iban non trovato,
              IBAN_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
              IBAN_TOO_MANY_REQUESTS: Troppe richieste,
-             IBAN_GENERIC_ERROR: Errore generico"
+             IBAN_GENERIC_ERROR: Errore generico'
         message:
           type: string
           description: "ENG: Error message - IT: Messaggio di errore"
-          maxLength: 2500
-          pattern: '^[a-zA-Z0-9 _@\-.!?]+'
   securitySchemes:
     bearerAuth:
       type: http
