@@ -9,7 +9,7 @@ overrides:
   - files:
       - "**/openapi.appio.full*.yml"
       - "**/openapi.iban.yml"
-      - "**/openapi.onboarding.yml"
+      - "**/openapi.onboarding.yml*"
       - "**/openapi.timeline.yml*"
       - "**/openapi.wallet.yml*"
       - "**/openapi.qrcode_payment_io.yml*"
