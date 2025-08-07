@@ -5443,35 +5443,23 @@ components:
       properties:
         id:
           type: string
-          maxLength: 64
-          pattern: '^[a-zA-Z0-9_-]+$'
           description: 'ENG: Id of the payment - IT: Identificativo del pagamento'
         trxCode:
           type: string
-          maxLength: 24
-          pattern: '$ ^[a-zA-Z0-9]+$'
           description: 'ENG: Transaction code - IT: Codice della transazione'
         trxDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: 'ENG: Transaction date - IT: Data della transazione'
         initiativeId:
           type: string
-          maxLength: 24
-          pattern: '$ ^[a-zA-Z0-9]+$'
           description: 'ENG: Id of the initiative - IT: Identificativo dell''iniziativa'
         initiativeName:
           type: string
-          pattern: '^[ -~]{1,255}$'
-          maxLength: 255
           description: 'ENG: Name of the initiative - IT: Nome della iniziativa'
           example: Bonus Elettrodomestici
         businessName:
           type: string
-          pattern: '^[ -~]{1,255}$'
-          maxLength: 255
           description: 'ENG: Business name - IT: Nome dell''esercente'
         status:
           type: string
@@ -5489,20 +5477,14 @@ components:
         rewardCents:
           type: integer
           format: int64
-          minimum: 0
-          maximum: 1000000000
           description: 'ENG: Reward - IT: Premio generato'
         amountCents:
           type: integer
           format: int64
-          minimum: 0
-          maximum: 1000000000
           description: 'ENG: Amount cents - IT: Importo in centessimi'
         residualBudgetCents:
           type: integer
           format: int64
-          minimum: 0
-          maximum: 1000000000
           description: 'ENG: Residual budget - IT: Budget residuo'
     TransactionErrorDTO:
       type: object
