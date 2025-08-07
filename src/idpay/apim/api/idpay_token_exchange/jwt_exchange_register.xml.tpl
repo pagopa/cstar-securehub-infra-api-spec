@@ -86,13 +86,15 @@
                     if (fiscalCode == "${invitalia_fc}")
                     {
                         var roles = organization["roles"] as JArray;
-                        if (roles != null && roles.Any(r => r["role"]?.ToString() == "approver"))
+                        if (roles != null && roles.Any(r => r["role"]?.ToString() == "operator2"))
                         {
                             org_role = "invitalia_admin";
+                            org_party_role = "Admin Invitalia"
                         }
                         else
                         {
                             org_role = "invitalia";
+                            org_party_role = "Operatore Invitalia"
                         }
                     }
                     else
