@@ -133,7 +133,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -273,7 +273,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Ok
@@ -402,7 +402,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       requestBody:
         description: 'ENG: Unique identifier of the subscribed initiative, IBAN of the citizen - IT: Identificativo dell''iniziativa sottoscritta, IBAN del cittadino'
         content:
@@ -536,7 +536,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
         - name: idWallet
           in: path
           description: 'ENG: A unique id that identifies a payment method - IT: Identificativo univoco del metodo di pagamento'
@@ -544,7 +544,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Enrollment OK
@@ -689,7 +689,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Ok
@@ -800,7 +800,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
         - name: instrumentId
           in: path
           description: 'ENG: A unique id, internally detached, which identifies a payment method - IT: Identificativo univoco, che identifica il metodo di pagamento'
@@ -808,7 +808,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Delete OK
@@ -954,7 +954,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '204':
           description: Unsubscribe OK
@@ -1082,7 +1082,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Check successful
@@ -1214,7 +1214,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Ok
@@ -1571,7 +1571,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Enrollment OK
@@ -1728,7 +1728,7 @@ components:
             ENG: Unique identifier of the subscribed initiative - IT:
             Identificativo univoco dell'iniziativa sottoscritta
           maxLength: 24
-          pattern: '$ ^[a-zA-Z0-9]+$'
+          pattern: '^[a-zA-Z0-9]+$'
     GenerateCodeRespDTO:
       type: object
       properties:
