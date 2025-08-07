@@ -43,14 +43,14 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
         - name: operationType
           in: query
           description: 'ENG: Operation type filter - IT: Filtro tipologia dell''operazione'
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
         - name: page
           in: query
           description: 'ENG: The number of the page - IT: Numero della pagina'
@@ -195,7 +195,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
         - name: operationId
           description: 'ENG: The operation ID - IT: Identificativo dell''operazione'
           in: path
@@ -203,7 +203,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Ok

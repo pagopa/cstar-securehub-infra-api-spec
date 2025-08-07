@@ -446,7 +446,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InitiativeDTO'
+                $ref: '#/components/schemas/OnboardingInitiativeDTO'
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -970,14 +970,14 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
         - name: operationType
           in: query
           description: 'ENG: Operation type filter - IT: Filtro tipologia dell''operazione'
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
         - name: page
           in: query
           description: 'ENG: The number of the page - IT: Numero della pagina'
@@ -1126,7 +1126,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
         - name: operationId
           description: 'ENG: The operation ID - IT: Identificativo dell''operazione'
           in: path
@@ -1134,7 +1134,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Ok
@@ -1359,7 +1359,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
         - name: Accept-Language
           description: 'ENG: Language - IT: Lingua'
           in: header
@@ -1501,14 +1501,14 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InitiativeDTO1'
+                $ref: '#/components/schemas/InitiativeDTO'
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -1632,7 +1632,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       requestBody:
         description: >-
           ENG: Unique identifier of the subscribed initiative, IBAN of the
@@ -1772,7 +1772,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
         - name: idWallet
           in: path
           description: >-
@@ -1782,7 +1782,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Enrollment OK
@@ -1934,7 +1934,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Ok
@@ -2047,7 +2047,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
         - name: instrumentId
           in: path
           description: >-
@@ -2058,7 +2058,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Delete OK
@@ -2207,7 +2207,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '204':
           description: Unsubscribe OK
@@ -2336,7 +2336,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Check successful
@@ -2470,7 +2470,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Ok
@@ -2839,7 +2839,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: '$ ^[a-zA-Z0-9]+$'
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Enrollment OK
@@ -3973,7 +3973,7 @@ components:
           maxLength: 24
           example: utente@email.it
           pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    InitiativeDTO:
+    OnboardingInitiativeDTO:
       type: object
       properties:
         general:
@@ -4202,8 +4202,19 @@ components:
           example: field
         operator:
           type: string
-          description: 'ENG:  - IT: '
-          example: operator
+          description: >-
+            ENG: Represents the relation between the criteria and the value
+            field - IT: Rappresenta la relazione tra il criterio ed il campo
+            value
+          enum:
+            - EQ
+            - NOT_EQ
+            - LT
+            - LE
+            - GT
+            - GE
+            - BTW_CLOSED
+            - BTW_OPEN
         value:
           type: string
           description: 'ENG:  - IT: '
@@ -4827,7 +4838,7 @@ components:
             ENG: Unique identifier of the subscribed initiative - IT:
             Identificativo univoco dell'iniziativa sottoscritta
           maxLength: 24
-          pattern: '$ ^[a-zA-Z0-9]+$'
+          pattern: '^[a-zA-Z0-9]+$'
     GenerateCodeRespDTO:
       type: object
       properties:
@@ -4889,7 +4900,7 @@ components:
           type: array
           maxItems: 100
           items:
-            $ref: '#/components/schemas/InitiativeDTO1'
+            $ref: '#/components/schemas/InitiativeDTO'
           description: >-
             ENG: The list of active initiatives of a citizen - IT: Lista delle
             iniziative attive di un cittadino
@@ -4962,7 +4973,7 @@ components:
           description: >-
             ENG: Activation date of the instrument - IT: Data di attivazione
             dello strumento
-    InitiativeDTO1:
+    InitiativeDTO:
       type: object
       required:
         - initiativeId
@@ -5432,35 +5443,23 @@ components:
       properties:
         id:
           type: string
-          maxLength: 64
-          pattern: '^[a-zA-Z0-9_-]+$'
           description: 'ENG: Id of the payment - IT: Identificativo del pagamento'
         trxCode:
           type: string
-          maxLength: 24
-          pattern: '$ ^[a-zA-Z0-9]+$'
           description: 'ENG: Transaction code - IT: Codice della transazione'
         trxDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: 'ENG: Transaction date - IT: Data della transazione'
         initiativeId:
           type: string
-          maxLength: 24
-          pattern: '$ ^[a-zA-Z0-9]+$'
           description: 'ENG: Id of the initiative - IT: Identificativo dell''iniziativa'
         initiativeName:
           type: string
-          pattern: '^[ -~]{1,255}$'
-          maxLength: 255
           description: 'ENG: Name of the initiative - IT: Nome della iniziativa'
           example: Bonus Elettrodomestici
         businessName:
           type: string
-          pattern: '^[ -~]{1,255}$'
-          maxLength: 255
           description: 'ENG: Business name - IT: Nome dell''esercente'
         status:
           type: string
@@ -5478,20 +5477,14 @@ components:
         rewardCents:
           type: integer
           format: int64
-          minimum: 0
-          maximum: 1000000000
           description: 'ENG: Reward - IT: Premio generato'
         amountCents:
           type: integer
           format: int64
-          minimum: 0
-          maximum: 1000000000
           description: 'ENG: Amount cents - IT: Importo in centessimi'
         residualBudgetCents:
           type: integer
           format: int64
-          minimum: 0
-          maximum: 1000000000
           description: 'ENG: Residual budget - IT: Budget residuo'
     TransactionErrorDTO:
       type: object

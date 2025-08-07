@@ -178,7 +178,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InitiativeDTO"
+                $ref: "#/components/schemas/OnboardingInitiativeDTO"
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -1047,7 +1047,7 @@ components:
           maxLength: 24
           example: "utente@email.it"
           pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    InitiativeDTO:
+    OnboardingInitiativeDTO:
       type: object
       properties:
         general:
@@ -1276,8 +1276,16 @@ components:
           example: "field"
         operator:
           type: string
-          description: "ENG:  - IT: "
-          example: "operator"
+          description: "ENG: Represents the relation between the criteria and the value field - IT: Rappresenta la relazione tra il criterio ed il campo value"
+          enum:
+            - EQ
+            - NOT_EQ
+            - LT
+            - LE
+            - GT
+            - GE
+            - BTW_CLOSED
+            - BTW_OPEN
         value:
           type: string
           description: "ENG:  - IT: "
