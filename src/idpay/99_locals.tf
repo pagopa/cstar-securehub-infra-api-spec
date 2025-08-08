@@ -50,7 +50,17 @@ locals {
         "https://${local.idpay-portal-hostname}",
         "https://${local.idpay-register-hostname}",
       ],
-      var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001"] : []
+      var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001", "https://localhost:5173", "http://localhost:5173"] : []
+    )
+  }
+
+  #
+  # ORIGINS (used for CORS on User and Merchant OP Portals)
+  #
+  origins_bonus_elettrodomestici = {
+    base = concat(
+      local.bonus_el_env_dns_public_zones,
+      var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001", "https://localhost:5173", "http://localhost:5173"] : []
     )
   }
 
@@ -106,5 +116,21 @@ locals {
   # initiative_storage_fqdn                  = "${module.idpay_initiative_storage.name}.blob.core.windows.net"
   # reward_storage_fqdn                      = "${module.idpay_refund_storage.name}.blob.core.windows.net"
   #
+
+  # 🔎 DNS - Bonus Elettrodomestici
+  bonus_el_dns_public_zones = [
+    "bonuselettrodomestici.it",
+    "bonuselettrodomestici.com",
+    "bonuselettrodomestici.info",
+    "bonuselettrodomestici.io",
+    "bonuselettrodomestici.net",
+    "bonuselettrodomestici.eu",
+    "bonuselettrodomestici.pagopa.it"
+  ]
+
+  bonus_el_env_dns_public_zones = [
+    for i in local.bonus_el_dns_public_zones :
+    var.env_short != "p" ? "https://${var.env}.${i}" : "https://${i}"
+  ]
 
 }
