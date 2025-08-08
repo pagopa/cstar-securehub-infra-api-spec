@@ -486,35 +486,23 @@ components:
       properties:
         id:
           type: string
-          maxLength: 64
-          pattern: '^[a-zA-Z0-9_-]+$'
           description: "ENG: Id of the payment - IT: Identificativo del pagamento"
         trxCode:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Transaction code - IT: Codice della transazione"
         trxDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: "ENG: Transaction date - IT: Data della transazione"
         initiativeId:
           type: string
-          maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
           description: "ENG: Id of the initiative - IT: Identificativo dell'iniziativa"
         initiativeName:
           type: string
-          pattern: "^[ -~]{1,255}$"
-          maxLength: 255
           description: "ENG: Name of the initiative - IT: Nome della iniziativa"
           example: "Bonus Elettrodomestici"
         businessName:
           type: string
-          pattern: "^[ -~]{1,255}$"
-          maxLength: 255
           description: "ENG: Business name - IT: Nome dell'esercente"
         status:
           type: string
@@ -527,20 +515,14 @@ components:
         rewardCents:
           type: integer
           format: int64
-          minimum: 0
-          maximum: 1000000000
           description: "ENG: Reward - IT: Premio generato"
         amountCents:
           type: integer
           format: int64
-          minimum: 0
-          maximum: 1000000000
           description: "ENG: Amount cents - IT: Importo in centessimi"
         residualBudgetCents:
           type: integer
           format: int64
-          minimum: 0
-          maximum: 1000000000
           description: "ENG: Residual budget - IT: Budget residuo"
     TransactionErrorDTO:
       type: object
@@ -577,7 +559,7 @@ components:
             - PAYMENT_TRANSACTION_VERSION_PENDING
             - PAYMENT_AUTH_ERROR
           description: >-
-            "ENG: Error code: PAYMENT_NOT_FOUND_OR_EXPIRED: transaction not
+            'ENG: Error code: PAYMENT_NOT_FOUND_OR_EXPIRED: transaction not
             found or expired, PAYMENT_TRANSACTION_EXPIRED: transaction expired,
             PAYMENT_INITIATIVE_NOT_FOUND: initiative not found,
             PAYMENT_INITIATIVE_INVALID_DATE: initiative invalid date,
@@ -632,7 +614,7 @@ components:
             PAYMENT_MERCHANT_NOT_ONBOARDED: il merchant non è onboardato,
             PAYMENT_INVALID_REQUEST: errore di validazione della richiesta,
             PAYMENT_TRANSACTION_VERSION_PENDING: La versione del contatore è
-            attualmente bloccata"
+            attualmente bloccata'
         message:
           type: string
           maxLength: 2500
