@@ -40,7 +40,7 @@ module "idpay_itn_portal_merchants_op_api" {
 
   description  = "IDPAY ITN Portal Merchants OP API"
   display_name = "IDPAY ITN Portal Merchants OP API"
-  path         = "idpay-itn/merchant-op/"
+  path         = "idpay-itn/merchant-op"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaymerchant/idpay"
