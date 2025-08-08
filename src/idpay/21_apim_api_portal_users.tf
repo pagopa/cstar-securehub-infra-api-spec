@@ -20,7 +20,8 @@ module "idpay_itn_api_portal_users_product" {
   subscriptions_limit = 0
 
   policy_xml = templatefile("./apim/api_product/portal_users_api/policy_users_portal.xml.tpl", {
-    origins = local.origins.base
+    origins                     = local.origins_bonus_elettrodomestici.base
+    rate_limit_merchants_portal = var.rate_limit_merchants_portal_product
   })
 
 }
