@@ -431,4 +431,3 @@ components:
         pattern: .*
 security:
   - Bearer: []
-

@@ -61,5 +61,4 @@ module "idpay_itn_portal_merchants_op_api" {
       })
     }
   ]
-
 }
