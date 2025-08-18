@@ -30,7 +30,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+            pattern: "^[a-zA-Z0-9]+$"
       responses:
         '200':
           description: Ok
@@ -171,7 +171,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+            pattern: "^[a-zA-Z0-9]+$"
       responses:
         '200':
           description: Ok
@@ -312,7 +312,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+            pattern: "^[a-zA-Z0-9]+$"
       responses:
         '200':
           description: Cancel Ok

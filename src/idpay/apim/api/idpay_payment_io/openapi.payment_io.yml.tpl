@@ -313,7 +313,7 @@ components:
         id:
           type: string
           maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
+          pattern: "^[a-zA-Z0-9]+$"
           description: 'ENG: Id of the payment - IT: Identificativo del pagamento'
         trxCode:
           type: string
@@ -334,8 +334,6 @@ components:
         trxDate:
           type: string
           format: date-time
-          minLength: 19
-          maxLength: 19
           description: 'ENG: Transaction date - IT: Data della transazione'
         trxExpirationSeconds:
           type: number
