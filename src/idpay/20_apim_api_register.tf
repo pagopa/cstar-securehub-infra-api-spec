@@ -142,26 +142,14 @@ module "idpay_itn_register_portal_api" {
       })
     },
     {
-      operation_id = "updateProductStatusSupervisioned"
-      xml_content = templatefile("./apim/api/idpay_asset_register/post-products-update-status-supervisioned.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-      })
-    },
-    {
-      operation_id = "updateProductStatusSuspended"
-      xml_content = templatefile("./apim/api/idpay_asset_register/post-products-update-status-suspended.xml.tpl", {
+      operation_id = "updateProductStatusSupervised"
+      xml_content = templatefile("./apim/api/idpay_asset_register/post-products-update-status-supervised.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "updateProductStatusRejected"
       xml_content = templatefile("./apim/api/idpay_asset_register/post-products-update-status-rejected.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-      })
-    },
-    {
-      operation_id = "updateProductStatusWaitRejected"
-      xml_content = templatefile("./apim/api/idpay_asset_register/post-products-update-status-wait_rejected.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
