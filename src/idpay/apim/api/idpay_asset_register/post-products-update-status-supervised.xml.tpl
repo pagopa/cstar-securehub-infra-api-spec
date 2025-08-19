@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia")">
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia_admin" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia")">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
                     <set-header name="Content-Type" exists-action="override">
@@ -26,7 +26,7 @@
         <set-variable name="requestBody" value="@((JObject)context.Request.Body.As<JObject>())" />
         <set-variable name="modifiedBody" value="@{
             var body = context.Variables["requestBody"] as JObject;
-            body["status"] = "WAIT_REJECTED";
+            body["targetStatus"] = "SUPERVISED";
             return body.ToString();
         }" />
         <set-body template="none">@((string)context.Variables["modifiedBody"])</set-body>

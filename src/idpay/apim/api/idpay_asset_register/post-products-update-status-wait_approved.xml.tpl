@@ -26,7 +26,7 @@
         <set-variable name="requestBody" value="@((JObject)context.Request.Body.As<JObject>())" />
         <set-variable name="modifiedBody" value="@{
             var body = context.Variables["requestBody"] as JObject;
-            body["status"] = "WAIT_APPROVED";
+            body["targetStatus"] = "WAIT_APPROVED";
             return body.ToString();
         }" />
         <set-body template="none">@((string)context.Variables["modifiedBody"])</set-body>
