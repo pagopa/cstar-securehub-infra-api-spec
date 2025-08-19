@@ -12,7 +12,7 @@
 -->
 <policies>
     <inbound>
-    <!-- Validazione JWT con OpenID Connect -->
+            <!-- JWT validation with OpenID Connect -->
             <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
                 <openid-config url="${openid_config_url_merchant_op}" />
               <required-claims>
