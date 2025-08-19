@@ -133,4 +133,7 @@ locals {
     var.env_short != "p" ? "https://${var.env}.${i}" : "https://${i}"
   ]
 
+  # OpenId configuration for Merchant Op
+  openid_config_url_merchant_op = "${var.keycloak_url_merchant_op}/.well-known/openid-configuration"
+  merchant_op_client_id         = "frontend"
 }

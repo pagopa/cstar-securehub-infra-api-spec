@@ -20,8 +20,11 @@ module "idpay_itn_api_portal_merchants_op_product" {
   subscriptions_limit = 0
 
   policy_xml = templatefile("./apim/api_product/portal_merchants_op_api/policy_merchants_op_portal.xml.tpl", {
-    origins                     = local.origins_bonus_elettrodomestici.base
-    rate_limit_merchants_portal = var.rate_limit_merchants_portal_product
+    origins                       = local.origins_bonus_elettrodomestici.base
+    rate_limit_merchants_portal   = var.rate_limit_merchants_portal_product
+    openid_config_url_merchant_op = local.openid_config_url_merchant_op
+    merchant_op_client_id         = local.merchant_op_client_id
+    keycloak_url_merchant_op      = var.keycloak_url_merchant_op
   })
 
 }

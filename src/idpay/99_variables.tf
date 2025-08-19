@@ -346,3 +346,7 @@ variable "enable_flags" {
   description = "Feature flags"
 
 }
+variable "keycloak_url_merchant_op" {
+  type        = string
+  description = "Keycloak URL for IDPay"
+}
