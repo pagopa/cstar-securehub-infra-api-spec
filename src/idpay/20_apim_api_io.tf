@@ -79,14 +79,8 @@ module "idpay_itn_onboarding_workflow_io" {
 
   api_operation_policies = [
     {
-      operation_id = "onboardingCitizen"
+      operation_id = "webInitiativeDetail"
       xml_content = templatefile("./apim/api/idpay_onboarding_workflow/put-terms-conditions-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-      })
-    },
-    {
-      operation_id = "checkPrerequisites"
-      xml_content = templatefile("./apim/api/idpay_onboarding_workflow/put-check-prerequisites-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
@@ -97,7 +91,7 @@ module "idpay_itn_onboarding_workflow_io" {
       })
     },
     {
-      operation_id = "consentOnboarding"
+      operation_id = "saveOnboarding"
       xml_content = templatefile("./apim/api/idpay_onboarding_workflow/put-consent-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
