@@ -255,7 +255,7 @@ paths:
         - products
       summary: Mark products as in supervision
       description: 'ENG: Set the status of a list of products to SUPERVISED. IT: Imposta lo stato di una lista di prodotti su SUPERVISED.        '
-      operationId: updateProductStatusSupervisioned
+      operationId: updateProductStatusSupervised
       requestBody:
         content:
           application/json:
