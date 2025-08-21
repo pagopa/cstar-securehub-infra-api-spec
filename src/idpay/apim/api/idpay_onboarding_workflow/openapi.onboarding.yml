@@ -30,7 +30,7 @@ paths:
           schema:
             type: string
             maxLength: 50
-            pattern: "$ ^[a-zA-Z0-9]+$"
+            pattern: "^[a-zA-Z0-9]+$"
         - name: Accept-Language
           in: header
           description: "ENG: Language - IT: Lingua"
@@ -171,7 +171,7 @@ paths:
             type: string
             description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
             maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+            pattern: "^[a-zA-Z0-9]+$"
       responses:
         "200":
           description: Ok
@@ -447,7 +447,7 @@ paths:
           schema:
             type: string
             maxLength: 24
-            pattern: "$ ^[a-zA-Z0-9]+$"
+            pattern: "^[a-zA-Z0-9]+$"
       responses:
         "200":
           description: Check successful
@@ -1020,7 +1020,7 @@ components:
           type: string
           description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
           maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
+          pattern: "^[a-zA-Z0-9]+$"
         confirmedTos:
           type: boolean
           description: >-

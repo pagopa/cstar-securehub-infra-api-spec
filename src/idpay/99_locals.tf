@@ -50,7 +50,7 @@ locals {
         "https://${local.idpay-portal-hostname}",
         "https://${local.idpay-register-hostname}",
       ],
-      var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001", "https://localhost:5173", "http://localhost:5173"] : []
+      var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001"] : []
     )
   }
 
@@ -133,4 +133,7 @@ locals {
     var.env_short != "p" ? "https://${var.env}.${i}" : "https://${i}"
   ]
 
+  # OpenId configuration for Merchant Op
+  openid_config_url_merchant_op = "${var.keycloak_url_merchant_op}/.well-known/openid-configuration"
+  merchant_op_client_id         = "frontend"
 }
