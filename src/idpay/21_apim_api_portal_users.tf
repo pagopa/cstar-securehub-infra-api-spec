@@ -56,14 +56,20 @@ module "idpay_itn_users_portal_api" {
   api_operation_policies = [
 
     {
-      operation_id = "webOnboardingStatus"
-      xml_content = templatefile("./apim/api/idpay_onboarding_web_workflow/get-onboarding-status-policy.xml.tpl", {
+      operation_id = "initiativeDetail"
+      xml_content = templatefile("./apim/api/idpay_onboarding_web_workflow/get-initiative-details-web-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
-      operation_id = "webSaveOnboarding"
-      xml_content = templatefile("./apim/api/idpay_onboarding_web_workflow/put-onboarding-policy.xml.tpl", {
+      operation_id = "onboardingStatus"
+      xml_content = templatefile("./apim/api/idpay_onboarding_web_workflow/get-onboarding-status-web-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "saveOnboarding"
+      xml_content = templatefile("./apim/api/idpay_onboarding_web_workflow/put-save-onboarding-web-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }

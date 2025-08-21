@@ -149,7 +149,7 @@ paths:
         - onboarding
       summary: "ENG: Returns the detail of an active initiative - IT: Ritorna i dettagli di un'iniziativa attiva"
       description: "Returns the detail of an active initiative"
-      operationId: webInitiativeDetail
+      operationId: initiativeDetail
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
         - name: Accept-Language
@@ -1052,6 +1052,8 @@ components:
       properties:
         general:
           $ref: "#/components/schemas/InitiativeGeneralDTO"
+        additionalInfo:
+          $ref: '#/components/schemas/InitiativeAdditionalDTO'
         beneficiaryRule:
           $ref: "#/components/schemas/InitiativeBeneficiaryRuleDTO"
     InitiativeGeneralDTO:
@@ -1103,6 +1105,82 @@ components:
           example: "termAndCondition"
           description: >-
             ENG: Term and Condition - IT: Termini e Condizioni
+    InitiativeAdditionalDTO:
+      type: object
+      properties:
+        serviceIO:
+          type: boolean
+        serviceId:
+          type: string
+          description: "ENG: The service ID - IT: Identificativo del service"
+          maxLength: 50
+          pattern: "^[a-zA-Z0-9]+$"
+        serviceName:
+          type: string
+          description: "ENG: The service Name - IT: Nome del service"
+          maxLength: 50
+          pattern: "^[a-zA-Z0-9]+$"
+        serviceScope:
+          enum:
+            - LOCAL
+            - NATIONAL
+          type: string
+        description:
+          type: string
+          description: "ENG: Description of the Initiative  - IT: Descrizione dell' Iniziativa"
+          maxLength: 255
+          example: "descrizione"
+          pattern: "^[ -~]{0,255}$"
+        privacyLink:
+          type: string
+          description: "ENG: URL that redirects to the privacy policy - IT: URL che reindirizza all'informativa della privacy"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          maxLength: 255
+        tcLink:
+          type: string
+          description: "ENG: URL that redirects to the terms and conditions - IT: URL che porta ai termini e condizioni"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          maxLength: 255
+        channels:
+          $ref: '#/components/schemas/ChannelArrayDTO'
+        logoFileName:
+          type: string
+          description: "ENG: Logo file name - IT: Nome del file del logo"
+          maxLength: 255
+          example: "logoFileName"
+          pattern: "^[ -~]{0,255}$"
+        logoURL:
+          type: string
+          description: "ENG: URL for the initiative's logo image - IT: URL del logo dell'iniziativa"
+          pattern: "^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$"
+          maxLength: 255
+        logoUploadDate:
+          type: string
+          description: "ENG: Logo upload date - IT: Data di caricamento del logo"
+          format: date-time
+          minLength: 19
+          maxLength: 19
+    ChannelArrayDTO:
+      type: array
+      maxItems: 10
+      items:
+        $ref: '#/components/schemas/ChannelDTO'
+
+    ChannelDTO:
+      type: object
+      properties:
+        type:
+          enum:
+            - web
+            - email
+            - mobile
+          type: string
+        contact:
+          type: string
+          description: "ENG: Contact  - IT: Contact"
+          maxLength: 255
+          example: "contact"
+          pattern: "^[ -~]{0,255}$"
     InitiativeBeneficiaryRuleDTO:
       type: object
       properties:

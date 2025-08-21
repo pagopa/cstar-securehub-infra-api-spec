@@ -22,7 +22,7 @@ paths:
         - onboardingWeb
       summary: "ENG: Returns the detail of an active initiative - IT: Ritorna i dettagli di un'iniziativa attiva"
       description: "Returns the detail of an active initiative"
-      operationId: webInitiativeDetail
+      operationId: initiativeDetail
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
         - $ref: "#/components/parameters/AcceptLanguage"
@@ -47,7 +47,7 @@ paths:
         - onboardingWeb
       summary: "ENG: Saving mail and self-declarations - IT: Salvataggio della mail e delle autodichiarazioni"
       description: "Saving mail and self-declarations"
-      operationId: webSaveOnboarding
+      operationId: saveOnboarding
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
         - $ref: "#/components/parameters/AcceptLanguage"
@@ -82,7 +82,7 @@ paths:
         - onboardingWeb
       summary: "ENG: Returns the actual onboarding status along with the date on which that status changed and, if present, the date upon which the onboarding successfully went through - IT: Ritorna lo stato attuale dell'adesione insieme alla data in cui quello stato è cambiato e, se presente, la data in cui l'adesione è avvenuta con successo"
       description: "Returns the actual onboarding status along with the date on which that status changed and, if present, the date upon which the onboarding successfully went through"
-      operationId: webOnboardingStatus
+      operationId: onboardingStatus
       parameters:
         - $ref: "#/components/parameters/ApiVersionHeader"
         - $ref: "#/components/parameters/AcceptLanguage"
@@ -526,10 +526,62 @@ components:
     InitiativeDTO:
       type: object
       properties:
+        general:
+          $ref: "#/components/schemas/InitiativeGeneralDTO"
         additionalInfo:
           $ref: '#/components/schemas/InitiativeAdditionalDTO'
         beneficiaryRule:
           $ref: '#/components/schemas/InitiativeBeneficiaryRuleDTO'
+
+    InitiativeGeneralDTO:
+      type: object
+      properties:
+        budget:
+          type: number
+          example: 10
+        beneficiaryType:
+          enum:
+            - PF
+            - PG
+            - NF
+          type: string
+        familyUnitComposition:
+          enum:
+            - INPS
+            - ANPR
+          type: string
+        beneficiaryKnown:
+          type: boolean
+        beneficiaryBudget:
+          type: number
+          example: 10
+        startDate:
+          type: string
+          description: Start date
+          format: date
+          example: "2022-01-30"
+        endDate:
+          type: string
+          description: Start date
+          format: date
+          example: "2022-01-30"
+        rankingStartDate:
+          type: string
+          description: Start date
+          format: date
+          example: "2022-01-30"
+        rankingEndDate:
+          type: string
+          description: Start date
+          format: date
+          example: "2022-01-30"
+        rankingEnabled:
+          type: boolean
+        termAndCondition:
+          type: string
+          example: "termAndCondition"
+          description: >-
+            ENG: Term and Condition - IT: Termini e Condizioni
 
     InitiativeAdditionalDTO:
       type: object
