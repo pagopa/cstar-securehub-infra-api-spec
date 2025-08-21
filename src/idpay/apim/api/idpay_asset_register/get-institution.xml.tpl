@@ -8,6 +8,16 @@
     <inbound>
         <base />
         <choose>
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia_admin" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia")">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+        </choose>
+        <choose>
             <when condition="@{
                 var institutionId = context.Request.MatchedParameters.GetValueOrDefault("institutionId", "");
                 var regex = new System.Text.RegularExpressions.Regex(
@@ -26,16 +36,6 @@
                             ["message"] = "Missing or invalid 'institutionId'. Must be a valid UUID v4.",
                         }.ToString();
                     }</set-body>
-                </return-response>
-            </when>
-        </choose>
-        <choose>
-            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia")">
-                <return-response>
-                    <set-status code="403" reason="Forbidden" />
-                    <set-header name="Content-Type" exists-action="override">
-                        <value>application/json</value>
-                    </set-header>
                 </return-response>
             </when>
         </choose>
