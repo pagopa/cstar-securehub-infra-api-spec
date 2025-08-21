@@ -171,7 +171,7 @@ components:
       schema:
         type: string
         maxLength: 24
-        pattern: "$ ^[a-zA-Z0-9]+$"
+        pattern: "^[a-zA-Z0-9]+$"
 
   responses:
 
@@ -281,7 +281,7 @@ components:
           type: string
           description: "ENG: Unique identifier of the subscribed initiative - IT: Identificativo univoco dell'iniziativa sottoscritta"
           maxLength: 24
-          pattern: "$ ^[a-zA-Z0-9]+$"
+          pattern: "^[a-zA-Z0-9]+$"
         confirmedTos:
           type: boolean
           description: >-
@@ -313,7 +313,7 @@ components:
       oneOf:
         - $ref: "#/components/schemas/SelfConsentBoolDTO"
         - $ref: "#/components/schemas/SelfConsentMultiDTO"
-        - $ref: "#/components/schemas/SelfConsentBooleanTypeDTO"
+        - $ref: "#/components/schemas/SelfConsentMultiTypeDTO"
         - $ref: "#/components/schemas/SelfConsentTextDTO"
 
     OnboardingStatusDTO:
@@ -394,26 +394,27 @@ components:
           pattern: "^[ -~]{0,10}$"
           maxLength: 10
 
-    SelfConsentBooleanTypeDTO:
+    SelfConsentMultiTypeDTO:
       type: object
       required:
         - _type
         - code
-        - accepted
+        - value
       properties:
         _type:
           type: string
           enum:
-            - boolean_type
-          description: "ENG: Self-consent boolean type - IT: Auto consenso di tipo boolean"
+            - multi_consent
+          description: "ENG: ISEE Self-consent value type - IT: Auto consenso di tipo multipli ISEE"
         code:
           type: string
           enum:
             - isee
           description: "ENG: Self-consent code - IT: Tipologia di multiconsenso"
-        accepted:
-          type: boolean
-          description: "ENG: Indicates whether the self-consent is accepted or not - IT: Indica se l'auto consenso è accettato o no"
+        value:
+          type: string
+          example: "1, 2, 3"
+          description: "ENG: Indicates self-consent values - IT: Indica i valori per gli auto consensi"
 
     SelfConsentTextDTO:
       type: object
@@ -539,12 +540,12 @@ components:
           type: string
           description: "ENG: The service ID - IT: Identificativo del service"
           maxLength: 50
-          pattern: "$ ^[a-zA-Z0-9]+$"
+          pattern: "^[a-zA-Z0-9]+$"
         serviceName:
           type: string
           description: "ENG: The service Name - IT: Nome del service"
           maxLength: 50
-          pattern: "$ ^[a-zA-Z0-9]+$"
+          pattern: "^[a-zA-Z0-9]+$"
         serviceScope:
           enum:
             - LOCAL
