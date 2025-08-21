@@ -628,7 +628,7 @@ components:
       anyOf:
         - $ref: '#/components/schemas/SelfCriteriaBoolDTO'
         - $ref: '#/components/schemas/SelfCriteriaMultiDTO'
-        - $ref: '#/components/schemas/SelfCriteriaBooleanTypeDTO'
+        - $ref: '#/components/schemas/SelfCriteriaMultiTypeDTO'
         - $ref: '#/components/schemas/SelfCriteriaTextDTO'
 
     SelfCriteriaBoolDTO:
@@ -730,16 +730,14 @@ components:
           maxLength: 255
           pattern: "^[ -~]{0,255}$"
 
-    SelfCriteriaBooleanTypeDTO:
+    SelfCriteriaMultiTypeDTO:
       type: object
       properties:
         _type:
           type: string
-          description: >-
-            ENG: Self-declaration boolean type - IT: Autodichiarazione di tipo
-            boolean Type
+          description: "ENG: ISEE Self-consent value type - IT: Auto consenso di tipo multipli ISEE"
           enum:
-            - boolean_type
+            - multi_consent
         description:
           type: string
           example: "descrizione"
@@ -757,15 +755,18 @@ components:
           maxLength: 255
           pattern: '^[ -~]{0,255}$'
         value:
-          type: boolean
+          type: array
+          items:
+            $ref: '#/components/schemas/RowDataDTO'
           description: >-
-            ENG: Indicates whether the self-declaration is accepted or not - IT:
-            Indica se l'autodichiarazione è accettata o no
+            ENG: Indicates self-declaration values - IT: Indica i valori per
+            l'autodichiarazione
+          maxItems: 10
         code:
           type: string
-          description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
           enum:
             - isee
+          description: "ENG: Self-consent code - IT: Tipologia di multiconsenso"
 
     SelfCriteriaTextDTO:
       title: SelfCriteriaTextDTO
