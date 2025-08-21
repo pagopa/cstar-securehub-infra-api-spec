@@ -415,6 +415,8 @@ components:
           type: string
           example: "1, 2, 3"
           description: "ENG: Indicates self-consent values - IT: Indica i valori per gli auto consensi"
+          pattern: "^[ -~]{0,10}$"
+          maxLength: 2
 
     SelfConsentTextDTO:
       type: object
@@ -560,21 +562,29 @@ components:
           description: Start date
           format: date
           example: "2022-01-30"
+          minLength: 10
+          maxLength: 10
         endDate:
           type: string
           description: Start date
           format: date
           example: "2022-01-30"
+          minLength: 10
+          maxLength: 10
         rankingStartDate:
           type: string
           description: Start date
           format: date
           example: "2022-01-30"
+          minLength: 10
+          maxLength: 10
         rankingEndDate:
           type: string
           description: Start date
           format: date
           example: "2022-01-30"
+          minLength: 10
+          maxLength: 10
         rankingEnabled:
           type: boolean
         termAndCondition:
@@ -582,6 +592,8 @@ components:
           example: "termAndCondition"
           description: >-
             ENG: Term and Condition - IT: Termini e Condizioni
+          pattern: "^[a-zA-Z0-9]+$"
+          maxLength: 10000
 
     InitiativeAdditionalDTO:
       type: object
