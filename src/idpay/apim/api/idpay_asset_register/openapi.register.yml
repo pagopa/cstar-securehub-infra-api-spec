@@ -830,7 +830,7 @@ components:
                 maxLength: 255
                 format: date
               currentStatus:
-                Type: string
+                type: string
                 enum:
                   - APPROVED
                   - WAIT_APPROVED
