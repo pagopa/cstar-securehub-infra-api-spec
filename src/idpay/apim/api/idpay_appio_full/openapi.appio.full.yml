@@ -4052,18 +4052,22 @@ components:
           type: string
         description:
           type: string
-          description: 'ENG: Description of the Initiative  - IT: Descrizione dell'' Iniziativa'
+          description: "ENG: Description of the Initiative  - IT: Descrizione dell' Iniziativa"
           maxLength: 255
           example: descrizione
           pattern: '^[ -~]{0,255}$'
         privacyLink:
           type: string
-          description: 'ENG: URL that redirects to the privacy policy - IT: URL che reindirizza all''informativa della privacy'
+          description: >-
+            ENG: URL that redirects to the privacy policy - IT: URL che
+            reindirizza all informativa della privacy
           pattern: ^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         tcLink:
           type: string
-          description: 'ENG: URL that redirects to the terms and conditions - IT: URL che porta ai termini e condizioni'
+          description: >-
+            ENG: URL that redirects to the terms and conditions - IT: URL che
+            porta ai termini e condizioni
           pattern: ^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         channels:
