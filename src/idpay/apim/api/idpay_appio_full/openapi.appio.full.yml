@@ -4052,7 +4052,9 @@ components:
           type: string
         description:
           type: string
-          description: "ENG: Description of the Initiative  - IT: Descrizione dell' Iniziativa"
+          description: >-
+            ENG: Description of the Initiative  - IT: Descrizione dell'
+            Iniziativa
           maxLength: 255
           example: descrizione
           pattern: '^[ -~]{0,255}$'
@@ -4061,14 +4063,16 @@ components:
           description: >-
             ENG: URL that redirects to the privacy policy - IT: URL che
             reindirizza all informativa della privacy
-          pattern: ^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+          pattern: >-
+               ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         tcLink:
           type: string
           description: >-
             ENG: URL that redirects to the terms and conditions - IT: URL che
             porta ai termini e condizioni
-          pattern: ^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+          pattern: >-
+            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         channels:
           $ref: '#/components/schemas/ChannelArrayDTO'
@@ -4080,10 +4084,11 @@ components:
           pattern: '^[ -~]{0,255}$'
         logoURL:
           type: string
-          description:  >-
+          description: >-
             ENG: URL for the initiative's logo image - IT: URL del logo
             dell'iniziativa
-          pattern: ^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+          pattern: >-
+            ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         logoUploadDate:
           type: string
