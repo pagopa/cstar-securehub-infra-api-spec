@@ -413,7 +413,7 @@ components:
           description: "ENG: Self-consent code - IT: Tipologia di multiconsenso"
         value:
           type: string
-          example: "1, 2, 3"
+          example: "01"
           description: "ENG: Indicates self-consent values - IT: Indica i valori per gli auto consensi"
           pattern: "^[ -~]{0,10}$"
           maxLength: 2
