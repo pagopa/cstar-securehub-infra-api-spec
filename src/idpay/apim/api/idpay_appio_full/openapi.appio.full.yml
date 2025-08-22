@@ -4059,12 +4059,12 @@ components:
         privacyLink:
           type: string
           description: 'ENG: URL that redirects to the privacy policy - IT: URL che reindirizza all''informativa della privacy'
-          pattern: '^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&''()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&''()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&''()*+,;=:@%/?-]*)?$'
+          pattern: ^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         tcLink:
           type: string
           description: 'ENG: URL that redirects to the terms and conditions - IT: URL che porta ai termini e condizioni'
-          pattern: '^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&''()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&''()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&''()*+,;=:@%/?-]*)?$'
+          pattern: ^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         channels:
           $ref: '#/components/schemas/ChannelArrayDTO'
@@ -4077,7 +4077,7 @@ components:
         logoURL:
           type: string
           description: 'ENG: URL for the initiative''s logo image - IT: URL del logo dell''iniziativa'
-          pattern: '^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&''()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&''()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&''()*+,;=:@%/?-]*)?$'
+          pattern: ^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         logoUploadDate:
           type: string
