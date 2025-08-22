@@ -1112,7 +1112,7 @@ components:
           type: boolean
         serviceId:
           type: string
-          description: >-
+          description: |-
             ENG: Description of the Initiative  - IT: Descrizione dell'
               Iniziativa
           maxLength: 50
