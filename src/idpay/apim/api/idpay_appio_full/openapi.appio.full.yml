@@ -4080,7 +4080,9 @@ components:
           pattern: '^[ -~]{0,255}$'
         logoURL:
           type: string
-          description: 'ENG: URL for the initiative''s logo image - IT: URL del logo dell''iniziativa'
+          description:  >-
+            ENG: URL for the initiative's logo image - IT: URL del logo
+            dell'iniziativa
           pattern: ^(https):\\/\\/[a-zA-Z0-9.-]+(:[0-9]+)?(\\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         logoUploadDate:
