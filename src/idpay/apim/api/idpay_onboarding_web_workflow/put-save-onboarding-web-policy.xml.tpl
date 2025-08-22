@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayonboardingworkflow" />
-        <rewrite-uri template="@("idpay/onboarding/"+ (string)context.Variables["tokenPDV"])" />
+        <rewrite-uri template="@("idpay/onboarding/"+ (string)context.Variables["userId"])" /> <!-- Cambiare il pleacholder del tokenPDV in quello di Keyclock appena disponibile -->
     </inbound>
     <backend>
         <base />
