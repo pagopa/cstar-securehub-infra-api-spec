@@ -4103,7 +4103,6 @@ components:
       maxItems: 10
       items:
         $ref: '#/components/schemas/ChannelDTO'
-
     ChannelDTO:
       type: object
       properties:
