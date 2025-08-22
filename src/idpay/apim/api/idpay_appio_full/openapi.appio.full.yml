@@ -4054,7 +4054,7 @@ components:
           type: string
           description: 'ENG: Description of the Initiative  - IT: Descrizione dell'' Iniziativa'
           maxLength: 255
-          example: 'descrizione'
+          example: descrizione
           pattern: '^[ -~]{0,255}$'
         privacyLink:
           type: string
@@ -4072,7 +4072,7 @@ components:
           type: string
           description: 'ENG: Logo file name - IT: Nome del file del logo'
           maxLength: 255
-          example: 'logoFileName'
+          example: logoFileName
           pattern: '^[ -~]{0,255}$'
         logoURL:
           type: string
@@ -4104,7 +4104,7 @@ components:
           type: string
           description: 'ENG: Contact  - IT: Contact'
           maxLength: 255
-          example: 'contact'
+          example: contact
           pattern: '^[ -~]{0,255}$'
     InitiativeBeneficiaryRuleDTO:
       type: object
