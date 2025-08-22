@@ -4037,7 +4037,9 @@ components:
           type: boolean
         serviceId:
           type: string
-          description: 'ENG: The service ID - IT: Identificativo del service'
+          description: >-
+            ENG: Description of the Initiative  - IT: Descrizione dell'
+              Iniziativa
           maxLength: 50
           pattern: '^[a-zA-Z0-9]+$'
         serviceName:
@@ -4064,7 +4066,7 @@ components:
             ENG: URL that redirects to the privacy policy - IT: URL che
             reindirizza all informativa della privacy
           pattern: >-
-               ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
+              ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         tcLink:
           type: string
