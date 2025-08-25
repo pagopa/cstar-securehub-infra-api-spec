@@ -25,8 +25,8 @@
         </choose>
         <choose>
             <when condition="@(context.Variables.GetValueOrDefault("organizationRole",  "")  == "operatore"
-                    &&  !string.IsNullOrEmpty(context.Request.Url.Query.GetValueOrDefault("organizationId", ""))
-                    &&  context.Request.Headers.GetValueOrDefault("x-organization-id", "")  !=  context.Request.Url.Query.GetValueOrDefault("organizationId", ""))">
+                    &&  (string.IsNullOrEmpty(context.Request.Url.Query.GetValueOrDefault("organizationId", ""))
+                    ||  context.Request.Headers.GetValueOrDefault("x-organization-id", "")  !=  context.Request.Url.Query.GetValueOrDefault("organizationId", "")))">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
                     <set-header name="Content-Type" exists-action="override">
