@@ -5845,18 +5845,18 @@ components:
           - v1
         example: v1
         default: v1
-  ChannelHeader:
-    name: X-Channel
-    in: header
-    description: "ENG: Channel from which the service is contacted - IT: Canale dal quale si contatta il servizio"
-    required: true
-    schema:
-      type: string
-      enum:
-        - app_io
-        - web
-      example: v1
-      default: app_io
+    ChannelHeader:
+      name: X-Channel
+      in: header
+      description: "ENG: Channel from which the service is contacted - IT: Canale dal quale si contatta il servizio"
+      required: true
+      schema:
+        type: string
+        enum:
+          - app_io
+          - web
+        example: v1
+        default: app_io
   headers:
     Access-Control-Allow-Origin:
       description: >-
