@@ -5850,7 +5850,7 @@ components:
       in: header
       description: >-
         ENG: Channel from which the service is contacted - IT: Canale dal quale
-          si contatta il servizio
+        si contatta il servizio
       required: true
       schema:
         type: string

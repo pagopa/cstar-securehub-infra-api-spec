@@ -677,7 +677,7 @@ components:
         enum:
           - app_io
           - web
-        example: v1
+        example: app_io
         default: app_io
   headers:
     Access-Control-Allow-Origin:
