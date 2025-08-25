@@ -12,7 +12,19 @@
 -->
 <policies>
     <inbound>
-        <rate-limit calls="${rate_limit_merchants_portal}" renewal-period="60" />
+        <!-- JWT validation with OpenID Connect -->
+        <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+          <openid-config url="${openid_config_url_user}" />
+          <required-claims>
+            <claim name="azp">
+              <value>${user_client_id}</value>
+            </claim>
+            <claim name="iss">
+              <value>${keycloak_url_user}</value>
+            </claim>
+          </required-claims>
+        </validate-jwt>
+        <rate-limit calls="${rate_limit_users_portal}" renewal-period="60" />
         <cors allow-credentials="true">
             <allowed-origins>
               %{ for origin in origins ~}

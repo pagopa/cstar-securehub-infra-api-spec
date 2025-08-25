@@ -136,4 +136,8 @@ locals {
   # OpenId configuration for Merchant Op
   openid_config_url_merchant_op = "${var.keycloak_url_merchant_op}/.well-known/openid-configuration"
   merchant_op_client_id         = "frontend"
+
+  # OpenId configuration for User
+    openid_config_url_user = "${var.keycloak_url_user}/.well-known/openid-configuration"
+    user_client_id         = "frontend"
 }

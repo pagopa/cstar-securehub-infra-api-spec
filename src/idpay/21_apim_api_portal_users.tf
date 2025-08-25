@@ -21,7 +21,11 @@ module "idpay_itn_api_portal_users_product" {
 
   policy_xml = templatefile("./apim/api_product/portal_users_api/policy_users_portal.xml.tpl", {
     origins                     = local.origins_bonus_elettrodomestici.base
-    rate_limit_merchants_portal = var.rate_limit_merchants_portal_product
+    rate_limit_users_portal = var.rate_limit_users_portal_product
+    openid_config_url_user = local.openid_config_url_user
+    user_client_id         = local.user_client_id
+    keycloak_url_user      = var.keycloak_url_user
+
   })
 
 }
