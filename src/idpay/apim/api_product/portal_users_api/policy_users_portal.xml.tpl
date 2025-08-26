@@ -50,7 +50,7 @@
                     </required-claims>
                 </validate-jwt>
                 <!-- Extract fiscalNumber of token -->
-                <set-variable name="pii" value="@((string)((Jwt)context.Variables["jwt"]).Claims["fiscal_code"])" />
+                <set-variable name="pii" value="@((string)((Jwt)context.Variables["jwt"]).Claims["fiscalNumber"])" />
                 <choose>
                     <!-- Retrieve fiscalCode from keycloak userInfo/account -->
                     <when condition="@string.IsNullOrEmpty((string)context.Variables["pii"])">
@@ -71,7 +71,7 @@
                             <when condition="@(((IResponse)context.Variables["userinfo_resp"]).StatusCode == 200)">
                                 <set-variable name="bypassCacheStorage" value="true" />
                                 <choose>
-                                    <when condition="@((string)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true)["fiscal_code"] == null)">
+                                    <when condition="@(((JObject)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true))["attributes"]?["fiscalNumber"]?[0] == null)"">
                                         <!-- Return 401 Unauthorized with http-problem payload -->
                                         <return-response>
                                             <set-status code="401" reason="Unauthorized" />
@@ -80,7 +80,7 @@
                                             </set-header>
                                         </return-response>
                                     </when>
-                                    <when condition="@(!(Regex.IsMatch(((string)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true)["fiscal_code"]), "^([A-Za-z]{6}[0-9lmnpqrstuvLMNPQRSTUV]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9lmnpqrstuvLMNPQRSTUV]{2}[A-Za-z]{1}[0-9lmnpqrstuvLMNPQRSTUV]{3}[A-Za-z]{1})$") | Regex.IsMatch(((string)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true)["fiscal_code"]), "(^[0-9]{11})$")))">
+                                    <when condition="@(!(Regex.IsMatch((((JObject)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true))["attributes"]?["fiscalNumber"]?[0]?.ToString() ?? ""), "^([A-Za-z]{6}[0-9lmnpqrstuvLMNPQRSTUV]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9lmnpqrstuvLMNPQRSTUV]{2}[A-Za-z]{1}[0-9lmnpqrstuvLMNPQRSTUV]{3}[A-Za-z]{1})$") | Regex.IsMatch((((JObject)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true))["attributes"]?["fiscalNumber"]?[0]?.ToString() ?? ""), "(^[0-9]{11})$")))">
                                         <return-response>
                                             <set-status code="400" reason="Bad Request" />
                                             <set-header name="Content-Type" exists-action="override">
@@ -93,7 +93,7 @@
                                         </return-response>
                                     </when>
                                     <otherwise>
-                                        <set-variable name="pii" value="@((string)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>()["fiscal_code"])" />
+                                        <set-variable name="pii" value="@(((JObject)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true))["attributes"]?["fiscalNumber"]?[0]?.ToString() ?? "")" />
                                     </otherwise>
                                 </choose>
                             </when>
