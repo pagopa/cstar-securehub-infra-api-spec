@@ -26,15 +26,8 @@
           <cache-store-value key="@((string)context.Variables["merchantIdCacheKey"])" value="@((string)context.Variables["merchantId"])" duration="900" />
         </when>
         <when condition="@(((IResponse)context.Variables["responseMerchantId"]).StatusCode == 404)">
-          <return-response>
-            <set-status code="403" reason="Unauthorized" />
-            <set-body>@{
-              return new JObject(
-              new JProperty("code", "PAYMENT_MERCHANT_NOT_ONBOARDED"),
-              new JProperty("message", "The current merchant is not related with initiative")
-              ).ToString();
-              }</set-body>
-          </return-response>
+          <set-variable name="merchantId" value="MERCHANT_NOT_FOUND" />
+          <cache-store-value key="@((string)context.Variables["merchantIdCacheKey"])" value="MERCHANT_NOT_FOUND" duration="900" />
         </when>
         <otherwise>
           <return-response>
