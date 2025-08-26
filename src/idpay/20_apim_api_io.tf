@@ -79,6 +79,12 @@ module "idpay_itn_onboarding_workflow_io" {
 
   api_operation_policies = [
     {
+      operation_id = "initiativeDetail"
+      xml_content = templatefile("./apim/api/idpay_onboarding_workflow/get-initiative-details-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
       operation_id = "onboardingStatus"
       xml_content = templatefile("./apim/api/idpay_onboarding_workflow/get-onboarding-status-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname

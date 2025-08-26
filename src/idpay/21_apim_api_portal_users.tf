@@ -46,7 +46,7 @@ module "idpay_itn_users_portal_api" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayonboardingworkflow/idpay/onboarding/web"
 
   content_format = "openapi"
-  content_value  = file("./apim/api/idpay_onboarding_web_workflow/openapi.onboarding.web.yml")
+  content_value  = file("./apim/api/idpay_onboarding_workflow/openapi.onboarding.yml")
 
   xml_content = file("./apim/api/base_policy.xml")
 
@@ -57,19 +57,19 @@ module "idpay_itn_users_portal_api" {
 
     {
       operation_id = "initiativeDetail"
-      xml_content = templatefile("./apim/api/idpay_onboarding_web_workflow/get-initiative-details-web-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_onboarding_workflow/get-initiative-details-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "onboardingStatus"
-      xml_content = templatefile("./apim/api/idpay_onboarding_web_workflow/get-onboarding-status-web-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_onboarding_workflow/get-onboarding-status-web-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "saveOnboarding"
-      xml_content = templatefile("./apim/api/idpay_onboarding_web_workflow/put-save-onboarding-web-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_onboarding_workflow/put-save-onboarding-web-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
