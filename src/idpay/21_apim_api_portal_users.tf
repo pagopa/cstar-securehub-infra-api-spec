@@ -46,7 +46,9 @@ module "idpay_itn_users_portal_api" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayonboardingworkflow/idpay/onboarding/web"
 
   content_format = "openapi"
-  content_value  = file("./apim/api/idpay_onboarding_workflow/openapi.onboarding.yml")
+  content_value  = templatefile("./apim/api/idpay_onboarding_workflow/openapi.onboarding.yml", {
+    api_channel = "WEB"
+  })
 
   xml_content = file("./apim/api/base_policy.xml")
 
