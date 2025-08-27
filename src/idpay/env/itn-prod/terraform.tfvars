@@ -107,4 +107,5 @@ keycloak_url_merchant_op = "https://api-mcshared.cstar.pagopa.it/auth-itn/realms
 
 # OpenID Configuration URL for User
 keycloak_url_user = "https://api-mcshared.cstar.pagopa.it/auth-itn/realms/user"
+keycloak_timeout_sec = 5
 

@@ -54,8 +54,8 @@
                 <choose>
                     <!-- Retrieve fiscalCode from keycloak userInfo/account -->
                     <when condition="@string.IsNullOrEmpty((string)context.Variables["pii"])">
-                        <send-request mode="new" response-variable-name="userinfo_resp" timeout="${kc_timeout_sec}" ignore-error="true">
-                            <set-url>${userinfo_url}</set-url>
+                        <send-request mode="new" response-variable-name="userinfo_resp" timeout="${keycloak_timeout_sec}" ignore-error="true">
+                            <set-url>${keycloak_url_user_account}</set-url>
                             <set-method>GET</set-method>
                             <set-header name="Authorization" exists-action="override">
                                 <value>@("Bearer " + (string)context.Variables["token"])</value>
@@ -80,6 +80,7 @@
                                             </set-header>
                                         </return-response>
                                     </when>
+                                    <!-- TODO remove after test
                                     <when condition="@(!(Regex.IsMatch((((JObject)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true))["attributes"]?["fiscalNumber"]?[0]?.ToString() ?? ""), "^([A-Za-z]{6}[0-9lmnpqrstuvLMNPQRSTUV]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9lmnpqrstuvLMNPQRSTUV]{2}[A-Za-z]{1}[0-9lmnpqrstuvLMNPQRSTUV]{3}[A-Za-z]{1})$") | Regex.IsMatch((((JObject)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true))["attributes"]?["fiscalNumber"]?[0]?.ToString() ?? ""), "(^[0-9]{11})$")))">
                                         <return-response>
                                             <set-status code="400" reason="Bad Request" />
@@ -92,6 +93,7 @@
                                             }</set-body>
                                         </return-response>
                                     </when>
+                                    -->
                                     <otherwise>
                                         <set-variable name="pii" value="@(((JObject)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true))["attributes"]?["fiscalNumber"]?[0]?.ToString() ?? "")" />
                                     </otherwise>

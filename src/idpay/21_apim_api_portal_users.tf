@@ -25,7 +25,8 @@ module "idpay_itn_api_portal_users_product" {
     openid_config_url_user = local.openid_config_url_user
     user_client_id         = local.user_client_id
     keycloak_url_user      = var.keycloak_url_user
-
+    keycloak_url_user_account   = local.keycloak_url_user_account
+    keycloak_timeout_sec   = var.keycloak_timeout_sec
   })
 
 }
