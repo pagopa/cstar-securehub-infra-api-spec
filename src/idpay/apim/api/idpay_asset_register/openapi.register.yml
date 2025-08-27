@@ -974,7 +974,7 @@ components:
       type: object
       required:
         - gtinCodes
-        - status
+        - currentStatus
       properties:
         gtinCodes:
           type: array
@@ -995,7 +995,6 @@ components:
           type: string
           maxLength: 200
           pattern: .*
-
   securitySchemes:
     Bearer:
       type: apiKey
