@@ -71,7 +71,7 @@ module "idpay_itn_onboarding_workflow_io" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayonboardingworkflow/idpay/onboarding"
 
   content_format = "openapi"
-  content_value  = templatefile("./apim/api/idpay_onboarding_workflow/openapi.onboarding.yml", {
+  content_value = templatefile("./apim/api/idpay_onboarding_workflow/openapi.onboarding.yml", {
     api_channel = "IO"
   })
 
