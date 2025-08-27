@@ -71,13 +71,21 @@ module "idpay_itn_onboarding_workflow_io" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayonboardingworkflow/idpay/onboarding"
 
   content_format = "openapi"
-  content_value  = templatefile("./apim/api/idpay_onboarding_workflow/openapi.onboarding.yml.tpl", {})
+  content_value = templatefile("./apim/api/idpay_onboarding_workflow/openapi.onboarding.yml", {
+    api_channel = "IO"
+  })
 
   xml_content = file("./apim/api/base_policy.xml")
 
   product_ids = [module.idpay_itn_api_io_product.product_id]
 
   api_operation_policies = [
+    {
+      operation_id = "initiativeDetail"
+      xml_content = templatefile("./apim/api/idpay_onboarding_workflow/get-initiative-details-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
     {
       operation_id = "onboardingStatus"
       xml_content = templatefile("./apim/api/idpay_onboarding_workflow/get-onboarding-status-policy.xml.tpl", {
