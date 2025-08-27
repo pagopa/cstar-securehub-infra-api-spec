@@ -18,7 +18,7 @@
                       <set-method>GET</set-method>
                     %{ else ~}
                       <!--AppIO Produzione-->
-                      <set-url>https://api-app.io.pagopa.it/bpd/api/v1/user</set-url>
+                      <set-url>https://api-app.io.pagopa.it/api/sso/bpd/v1/user</set-url>
                       <set-method>GET</set-method>
                       <set-header name="Authorization" exists-action="override">
                           <value>@("Bearer " +(string)context.Variables["token"])</value>
@@ -30,7 +30,7 @@
                 <choose>
                     <when condition="@(context.Variables["tokenstate"] == null || ((IResponse)context.Variables["tokenstate"]).StatusCode != 200)">
                         <send-request mode="new" response-variable-name="tokenstate" timeout="${appio_timeout_sec}" ignore-error="true">
-                            <set-url>https://api-app.io.pagopa.it/bpd/api/v1/user</set-url>
+                            <set-url>https://api-app.io.pagopa.it/api/sso/bpd/v1/user</set-url>
                             <set-method>GET</set-method>
                             <set-header name="Authorization" exists-action="override">
                                 <value>@("Bearer " +(string)context.Variables["token"])</value>
