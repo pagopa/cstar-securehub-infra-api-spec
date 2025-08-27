@@ -27,7 +27,6 @@
         </when>
         <when condition="@(((IResponse)context.Variables["responseMerchantId"]).StatusCode == 404)">
           <set-variable name="merchantId" value="MERCHANT_NOT_FOUND" />
-          <cache-store-value key="@((string)context.Variables["merchantIdCacheKey"])" value="MERCHANT_NOT_FOUND" duration="900" />
         </when>
         <otherwise>
           <return-response>
