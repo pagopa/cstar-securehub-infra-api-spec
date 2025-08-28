@@ -89,12 +89,12 @@
                         if (roles != null && roles.Any(r => r["role"]?.ToString() == "operator2"))
                         {
                             org_role = "invitalia_admin";
-                            org_party_role = "Admin Invitalia"
+                            org_party_role = "Admin Invitalia";
                         }
                         else
                         {
                             org_role = "invitalia";
-                            org_party_role = "Operatore Invitalia"
+                            org_party_role = "Operatore Invitalia";
                         }
                     }
                     else
