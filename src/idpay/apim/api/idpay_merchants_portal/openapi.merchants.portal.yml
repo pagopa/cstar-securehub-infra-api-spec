@@ -1621,6 +1621,5 @@ components:
       type: apiKey
       name: Authorization
       in: header
-
 security:
   - Bearer: []
