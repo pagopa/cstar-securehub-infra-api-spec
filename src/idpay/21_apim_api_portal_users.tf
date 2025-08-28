@@ -27,7 +27,14 @@ module "idpay_itn_api_portal_users_product" {
     keycloak_url_user      = var.keycloak_url_user
     keycloak_url_user_account   = local.keycloak_url_user_account
     keycloak_timeout_sec   = var.keycloak_timeout_sec
+    env_short              = var.env_short
   })
+
+  groups = ["developers"]
+
+  depends_on = [
+    azurerm_api_management_named_value.pdv_api_key
+  ]
 
 }
 

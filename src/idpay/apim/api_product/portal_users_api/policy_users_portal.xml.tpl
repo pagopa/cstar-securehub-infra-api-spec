@@ -50,18 +50,24 @@
                     </required-claims>
                 </validate-jwt>
                 <!-- Extract fiscalNumber of token -->
-                <set-variable name="pii" value="@((string)((Jwt)context.Variables["jwt"]).Claims["fiscalNumber"])" />
+                <set-variable name="pii" value="@(((Jwt)context.Variables["jwt"]).Claims.ContainsKey("fiscalNumber")
+    ? ((Jwt)context.Variables["jwt"]).Claims["fiscalNumber"].FirstOrDefault()
+    : null)" />
                 <choose>
                     <!-- Retrieve fiscalCode from keycloak userInfo/account -->
-                    <when condition="@string.IsNullOrEmpty((string)context.Variables["pii"])">
+                    <when condition="@(string.IsNullOrEmpty((string)context.Variables["pii"]))">
                         <send-request mode="new" response-variable-name="userinfo_resp" timeout="${keycloak_timeout_sec}" ignore-error="true">
                             <set-url>${keycloak_url_user_account}</set-url>
                             <set-method>GET</set-method>
                             <set-header name="Authorization" exists-action="override">
                                 <value>@("Bearer " + (string)context.Variables["token"])</value>
                             </set-header>
+                            <set-header name="Accept" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
                         </send-request>
-                        <!-- Extract fiscalcode -->
+                        <!-- Extract fiscalNumber -->
+                        <set-variable name="pii" value="@(((Jwt)context.Variables["jwt"]).Claims.ContainsKey("fiscalNumber") ? ((Jwt)context.Variables["jwt"]).Claims["fiscalNumber"].FirstOrDefault() : null)" />
                         <choose>
                             <when condition="@((object)context.Variables["userinfo_resp"] == null)">
                                 <return-response>
@@ -71,7 +77,7 @@
                             <when condition="@(((IResponse)context.Variables["userinfo_resp"]).StatusCode == 200)">
                                 <set-variable name="bypassCacheStorage" value="true" />
                                 <choose>
-                                    <when condition="@(((JObject)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true))["attributes"]?["fiscalNumber"]?[0] == null)"">
+                                    <when condition="@(((JObject)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true))["attributes"]?["fiscalNumber"]?[0] == null)">
                                         <!-- Return 401 Unauthorized with http-problem payload -->
                                         <return-response>
                                             <set-status code="401" reason="Unauthorized" />
@@ -80,20 +86,6 @@
                                             </set-header>
                                         </return-response>
                                     </when>
-                                    <!-- TODO remove after test
-                                    <when condition="@(!(Regex.IsMatch((((JObject)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true))["attributes"]?["fiscalNumber"]?[0]?.ToString() ?? ""), "^([A-Za-z]{6}[0-9lmnpqrstuvLMNPQRSTUV]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9lmnpqrstuvLMNPQRSTUV]{2}[A-Za-z]{1}[0-9lmnpqrstuvLMNPQRSTUV]{3}[A-Za-z]{1})$") | Regex.IsMatch((((JObject)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true))["attributes"]?["fiscalNumber"]?[0]?.ToString() ?? ""), "(^[0-9]{11})$")))">
-                                        <return-response>
-                                            <set-status code="400" reason="Bad Request" />
-                                            <set-header name="Content-Type" exists-action="override">
-                                                <value>application/json</value>
-                                            </set-header>
-                                            <set-body>{
-                                                "code": "FISCAL_CODE_NOT_VALID",
-                                                "message": "Fiscal code not valid!"
-                                            }</set-body>
-                                        </return-response>
-                                    </when>
-                                    -->
                                     <otherwise>
                                         <set-variable name="pii" value="@(((JObject)((IResponse)context.Variables["userinfo_resp"]).Body.As<JObject>(preserveContent: true))["attributes"]?["fiscalNumber"]?[0]?.ToString() ?? "")" />
                                     </otherwise>
@@ -107,8 +99,25 @@
                         </choose>
                     </when>
                 </choose>
+                <!-- Validate Fiscal Number -->
+                %{ if env_short == "p" ~}
+                <choose>
+                    <when condition="@(!Regex.IsMatch((string)context.Variables["pii"], "^([A-Za-z]{6}[0-9lmnpqrstuvLMNPQRSTUV]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9lmnpqrstuvLMNPQRSTUV]{2}[A-Za-z]{1}[0-9lmnpqrstuvLMNPQRSTUV]{3}[A-Za-z]{1})$"))">
+                        <return-response>
+                            <set-status code="400" reason="Bad Request" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-body>{
+                                                "code": "FISCAL_CODE_NOT_VALID",
+                                                "message": "Fiscal code not valid!"
+                                            }</set-body>
+                        </return-response>
+                    </when>
+                </choose>
+                %{ endif ~}
                 <!-- Retrieve tokenizer user -->
-                 <include-fragment fragment-id="idpay-pdv-tokenizer" />
+                <include-fragment fragment-id="idpay-pdv-tokenizer" />
                 <choose>
                     <when condition="@(context.Variables["pdv_token"] != null)">
                         <set-variable name="tokenPDV" value="@((string)context.Variables["pdv_token"])" />
