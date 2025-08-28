@@ -33,7 +33,7 @@ rate_limit_minint_product = 1000
 
 rate_limit_portal_product           = 2500
 rate_limit_merchants_portal_product = 2500
-rate_limit_users_product = 2500
+rate_limit_users_product            = 2500
 
 
 #
@@ -106,6 +106,5 @@ selc_timeout_sec = 5
 keycloak_url_merchant_op = "https://api-mcshared.cstar.pagopa.it/auth-itn/realms/merchant-operator"
 
 # OpenID Configuration URL for User
-keycloak_url_user = "https://api-mcshared.cstar.pagopa.it/auth-itn/realms/user"
+keycloak_url_user    = "https://api-mcshared.cstar.pagopa.it/auth-itn/realms/user"
 keycloak_timeout_sec = 5
-
