@@ -3080,7 +3080,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/payment/qr-code/{trxCode}':
+  '/payment/qr-code/preview/{trxCode}':
     put:
       tags:
         - payment
