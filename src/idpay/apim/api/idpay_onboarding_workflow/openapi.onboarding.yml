@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: IDPAY ITN Onboarding Workflow IO API
-  description: IDPAY ITN Onboarding Workflow IO
+  title: "IDPAY ITN Onboarding Workflow ${api_channel} API"
+  description: "IDPAY ITN Onboarding Workflow ${api_channel} API"
   version: "1.0"
   contact:
     name: PagoPA S.p.A.

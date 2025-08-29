@@ -8,7 +8,7 @@ info:
   description: |-
     IDPAY ITN IBAN IO
 
-    IDPAY ITN Onboarding Workflow IO
+    IDPAY ITN Onboarding Workflow ${api_channel} API
 
     IDPAY ITN Timeline IO
 
