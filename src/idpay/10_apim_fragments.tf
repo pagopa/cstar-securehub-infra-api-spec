@@ -9,6 +9,17 @@ resource "azurerm_api_management_policy_fragment" "apim_merchant_id_retriever" {
   })
 }
 
+resource "azurerm_api_management_policy_fragment" "apim_merchant_id_retriever_or_add" {
+  name              = "idpay-itn-merchant-id-retriever"
+  api_management_id = data.azurerm_api_management.apim_core.id
+
+  description = "idpay-itn-merchant-id-retriever-or-add"
+  format      = "rawxml"
+  value = templatefile("./apim/api_fragment/merchant-id-retriever-or-add.xml", {
+    ingress_hostname = local.domain_aks_ingress_hostname
+  })
+}
+
 resource "azurerm_api_management_policy_fragment" "apim_pdv_tokenizer" {
   name              = "idpay-itn-pdv-tokenizer"
   api_management_id = data.azurerm_api_management.apim_core.id

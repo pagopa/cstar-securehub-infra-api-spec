@@ -47,7 +47,14 @@
             return organization["fiscal_code"].ToString();
         }" />
 
-        <include-fragment fragment-id="idpay-itn-merchant-id-retriever" />
+        <set-variable name="merchantBusinessName" value="@{
+              Jwt selcToken = (Jwt)context.Variables["outputToken"];
+
+              JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
+        return organization["name"].ToString();
+        }" />
+
+        <include-fragment fragment-id="idpay-itn-merchant-id-retriever-or-add" />
 
         <set-variable name="idpayPortalToken" value="@{
                     Jwt selcToken = (Jwt)context.Variables["outputToken"];
