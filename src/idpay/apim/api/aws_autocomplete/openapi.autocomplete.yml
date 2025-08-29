@@ -1,0 +1,114 @@
+openapi: 3.0.1
+info:
+  title: Amazon Location Service Autocomplete API
+  version: '1.0'
+  contact:
+    name: PagoPA S.p.A.
+    email: cstar@pagopa.it
+
+servers:
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant/portal
+
+tags:
+  - name: autocomplete
+    description: Operation related to address autocomplete
+
+paths:
+  /autocomplete:
+    post:
+      tags:
+        - autocomplete
+      summary: Returns suggested addresses using autocomplete
+      description: >
+        ENG: Returns suggested addresses using autocomplete
+        IT: Restituisce gli indirizzi suggeriti tramite autocomplete
+      operationId: autocomplete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - QueryText
+                - AdditionalFeatures
+              properties:
+                QueryText:
+                  type: string
+                  description: >
+                    ENG: The input address for autocomplete
+                    IT: L'indirizzo di input per l'autocomplete
+                  maxLength: 256
+                AdditionalFeatures:
+                  type: array
+                  description: >
+                    ENG: Must always be ["Core"] to receive detailed responses
+                    IT: Deve essere sempre ["Core"] per ottenere risposte dettagliate
+                  items:
+                    type: string
+                    enum: ["Core"]
+                  minItems: 1
+                  maxItems: 1
+                  default: ["Core"]
+      responses:
+        '200':
+          description: Successful response with a list of suggested addresses
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ResultItems:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        PlaceId:
+                          type: string
+                          maxLength: 64
+                        Address:
+                          type: object
+                          properties:
+                            Region:
+                              type: object
+                              properties:
+                                Name:
+                                  type: string
+                                  maxLength: 128
+                            SubRegion:
+                              type: object
+                              properties:
+                                Code:
+                                  type: string
+                                  maxLength: 64
+                            Locality:
+                              type: string
+                              maxLength: 128
+                            PostalCode:
+                              type: string
+                              maxLength: 16
+                            Street:
+                              type: string
+                              maxLength: 128
+                            AddressNumber:
+                              type: string
+                              maxLength: 16
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User is not authorized to access this resource with an explicit deny
+components:
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+
+security:
+  - Bearer: []
