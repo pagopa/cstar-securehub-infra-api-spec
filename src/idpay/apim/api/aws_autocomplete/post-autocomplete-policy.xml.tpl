@@ -13,7 +13,6 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${aws_places_endpoint}" />
         <set-header name="Referer" exists-action="override">
           <value>${merchant_portal_referer}</value>
         </set-header>
