@@ -1,5 +1,6 @@
 <fragment>
   <set-variable name="caller_sub" value="anonymous" />
+  <set-variable name="caller_identity_source" value="none" />
 
   <choose>
     <when condition="@(!string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault(&quot;Authorization&quot;, &quot;&quot;)))">
@@ -7,36 +8,61 @@
                     failed-validation-httpcode="401"
                     require-expiration-time="true"
                     require-scheme="Bearer"
-                    require-signed-tokens="true">
+                    require-signed-tokens="true"
+                    output-token-variable-name="jwt">
         <openid-config url="${mc_shared_base_url}/.well-known/openid-configuration" />
         <issuers>
           <issuer>${mc_shared_base_url}</issuer>
         </issuers>
       </validate-jwt>
 
-      <set-variable name="caller_sub" value="@(
-        (context.Principal?.Claims.FirstOrDefault(c => c.Type == &quot;sub&quot;)?.Value)
-        ?? (context.Principal?.Claims.FirstOrDefault(c => c.Type == &quot;oid&quot;)?.Value)
-        ?? (context.Principal?.Claims.FirstOrDefault(c => c.Type == &quot;client_id&quot;)?.Value)
-        ?? &quot;unknown&quot;
-      )" />
+      <choose>
+        <when condition="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;sub&quot;) != null)">
+          <set-variable name="caller_sub" value="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;sub&quot;))" />
+          <set-variable name="caller_identity_source" value="sub" />
+        </when>
+        <when condition="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;oid&quot;) != null)">
+          <set-variable name="caller_sub" value="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;oid&quot;))" />
+          <set-variable name="caller_identity_source" value="oid" />
+        </when>
+        <when condition="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;appid&quot;) != null)">
+          <set-variable name="caller_sub" value="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;appid&quot;))" />
+          <set-variable name="caller_identity_source" value="appid" />
+        </when>
+        <when condition="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;azp&quot;) != null)">
+          <set-variable name="caller_sub" value="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;azp&quot;))" />
+          <set-variable name="caller_identity_source" value="azp" />
+        </when>
+        <when condition="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;client_id&quot;) != null)">
+          <set-variable name="caller_sub" value="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;client_id&quot;))" />
+          <set-variable name="caller_identity_source" value="client_id" />
+        </when>
+        <otherwise>
+          <set-variable name="caller_sub" value="unknown" />
+          <set-variable name="caller_identity_source" value="none_found" />
+        </otherwise>
+      </choose>
     </when>
   </choose>
 
-  <set-variable name="registry_resource_effective" value="@(
-    (string)context.Variables.GetValueOrDefault(&quot;registry_resource&quot;, &quot;unknown&quot;)
-  )" />
+  <set-variable name="registry_resource_effective"
+    value="@((string)context.Variables.GetValueOrDefault(&quot;registry_resource&quot;, &quot;unknown&quot;))" />
 
-  <log-to-application-insights logger-id="${apim_logger_name}" severity="Information">
-    <message>
-      {
-        "event":"registry_access",
-        "resource":"@( (string)context.Variables.GetValueOrDefault(&quot;registry_resource_effective&quot;, &quot;unknown&quot;) )",
-        "sub":"@( (string)context.Variables.GetValueOrDefault(&quot;caller_sub&quot;, &quot;anonymous&quot;) )",
-        "requestId":"@(context.RequestId)",
-        "operationId":"@(context.Operation?.Id)",
-        "ip":"@(context.Request?.IpAddress)"
-      }
-    </message>
-  </log-to-application-insights>
+  <trace source="Registry Access" severity="information">
+    <message>@{
+        return new JObject(
+            new JProperty("event", "registry_access"),
+            new JProperty("domain", "SRTP"),
+            new JProperty("resource", (string)context.Variables.GetValueOrDefault("registry_resource_effective", "unknown")),
+            new JProperty("sub", (string)context.Variables.GetValueOrDefault("caller_sub", "anonymous")),
+            new JProperty("id_source", (string)context.Variables.GetValueOrDefault("caller_identity_source", "none")),
+            new JProperty("method", context.Request?.Method),
+            new JProperty("url", context.Request?.Url.ToString()),
+            new JProperty("requestId", context.RequestId),
+            new JProperty("operationId", context.Operation?.Id),
+            new JProperty("ip", context.Request?.IpAddress),
+            new JProperty("timestamp", DateTime.UtcNow.ToString("o"))
+        ).ToString();
+    }</message>
+  </trace>
 </fragment>
