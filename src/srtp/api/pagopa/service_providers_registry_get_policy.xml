@@ -2,6 +2,9 @@
     <inbound>
         <base />
 
+        <set-variable name="registry_resource" value="service_providers" />
+        <include-fragment fragment-id="registry-access-logger" />
+
         <send-request mode="new"
             response-variable-name="storageResponse"
             timeout="20">

@@ -1,0 +1,42 @@
+<fragment>
+  <set-variable name="caller_sub" value="anonymous" />
+
+  <choose>
+    <when condition="@(!string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault(&quot;Authorization&quot;, &quot;&quot;)))">
+      <validate-jwt header-name="Authorization"
+                    failed-validation-httpcode="401"
+                    require-expiration-time="true"
+                    require-scheme="Bearer"
+                    require-signed-tokens="true">
+        <openid-config url="${mc_shared_base_url}/.well-known/openid-configuration" />
+        <issuers>
+          <issuer>${mc_shared_base_url}</issuer>
+        </issuers>
+      </validate-jwt>
+
+      <set-variable name="caller_sub" value="@(
+        (context.Principal?.Claims.FirstOrDefault(c => c.Type == &quot;sub&quot;)?.Value)
+        ?? (context.Principal?.Claims.FirstOrDefault(c => c.Type == &quot;oid&quot;)?.Value)
+        ?? (context.Principal?.Claims.FirstOrDefault(c => c.Type == &quot;client_id&quot;)?.Value)
+        ?? &quot;unknown&quot;
+      )" />
+    </when>
+  </choose>
+
+  <set-variable name="registry_resource_effective" value="@(
+    (string)context.Variables.GetValueOrDefault(&quot;registry_resource&quot;, &quot;unknown&quot;)
+  )" />
+
+  <log-to-application-insights logger-id="${apim_logger_name}" severity="Information">
+    <message>
+      {
+        "event":"registry_access",
+        "resource":"@( (string)context.Variables.GetValueOrDefault(&quot;registry_resource_effective&quot;, &quot;unknown&quot;) )",
+        "sub":"@( (string)context.Variables.GetValueOrDefault(&quot;caller_sub&quot;, &quot;anonymous&quot;) )",
+        "requestId":"@(context.RequestId)",
+        "operationId":"@(context.Operation?.Id)",
+        "ip":"@(context.Request?.IpAddress)"
+      }
+    </message>
+  </log-to-application-insights>
+</fragment>
