@@ -10,38 +10,38 @@
   <choose>
     <!-- If API Management find it in the cache, make a request for it and store it -->
     <when condition="@(!context.Variables.ContainsKey("merchantId"))">
-    <send-request mode="new" response-variable-name="responseMerchantId" timeout="10" ignore-error="true">
-      <set-url>@("https://${ingress_hostname}/idpaymerchant/idpay/merchant/acquirer/" + ((String)context.Variables["acquirerId"]) + "/merchant-fiscalcode/" + ((String)context.Variables["merchantFiscalCode"]) + "/id")</set-url>
-      <set-method>GET</set-method>
-    </send-request>
+      <send-request mode="new" response-variable-name="responseMerchantId" timeout="10" ignore-error="true">
+        <set-url>@("https://${ingress_hostname}/idpaymerchant/idpay/merchant/acquirer/" + ((String)context.Variables["acquirerId"]) + "/merchant-fiscalcode/" + ((String)context.Variables["merchantFiscalCode"]) + "/id")</set-url>
+        <set-method>GET</set-method>
+      </send-request>
 
-    <choose>
-      <when condition="@(context.Variables["responseMerchantId"] == null)">
-      <return-response>
-        <set-status code="408" reason="Merchants Timeout" />
-      </return-response>
+      <choose>
+        <when condition="@(context.Variables["responseMerchantId"] == null)">
+          <return-response>
+            <set-status code="408" reason="Merchants Timeout" />
+          </return-response>
+        </when>
+        <when condition="@(((IResponse)context.Variables["responseMerchantId"]).StatusCode == 200)">
+          <set-variable name="merchantId" value="@((string)((IResponse)context.Variables["responseMerchantId"]).Body.As<string>())" />
+          <cache-store-value key="@((string)context.Variables["merchantIdCacheKey"])" value="@((string)context.Variables["merchantId"])" duration="900" />
+        </when>
+        <when condition="@(((IResponse)context.Variables["responseMerchantId"]).StatusCode == 404)">
+          <return-response>
+            <set-status code="403" reason="Unauthorized" />
+            <set-body>@{
+              return new JObject(
+              new JProperty("code", "PAYMENT_MERCHANT_NOT_ONBOARDED"),
+              new JProperty("message", "The current merchant is not related with initiative")
+              ).ToString();
+              }</set-body>
+          </return-response>
+        </when>
+        <otherwise>
+          <return-response>
+            <set-status code="403" reason="Forbidden" />
+          </return-response>
+        </otherwise>
+      </choose>
     </when>
-    <when condition="@(((IResponse)context.Variables["responseMerchantId"]).StatusCode == 200)">
-    <set-variable name="merchantId" value="@((string)((IResponse)context.Variables["responseMerchantId"]).Body.As<string>())" />
-    <cache-store-value key="@((string)context.Variables["merchantIdCacheKey"])" value="@((string)context.Variables["merchantId"])" duration="900" />
-  </when>
-  <when condition="@(((IResponse)context.Variables["responseMerchantId"]).StatusCode == 404)">
-  <return-response>
-    <set-status code="403" reason="Unauthorized" />
-    <set-body>@{
-      return new JObject(
-      new JProperty("code", "PAYMENT_MERCHANT_NOT_ONBOARDED"),
-      new JProperty("message", "The current merchant is not related with initiative")
-      ).ToString();
-      }</set-body>
-  </return-response>
-</when>
-<otherwise>
-<return-response>
-  <set-status code="403" reason="Forbidden" />
-</return-response>
-</otherwise>
   </choose>
-  </when>
-  </choose>
-  </fragment>
+</fragment>
