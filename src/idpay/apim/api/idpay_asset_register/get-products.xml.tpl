@@ -14,7 +14,19 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia")">
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia_admin")">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+        </choose>
+        <choose>
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole",  "")  == "operatore"
+                    &&  (string.IsNullOrEmpty(context.Request.Url.Query.GetValueOrDefault("organizationId", ""))
+                    ||  context.Request.Headers.GetValueOrDefault("x-organization-id", "")  !=  context.Request.Url.Query.GetValueOrDefault("organizationId", "")))">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
                     <set-header name="Content-Type" exists-action="override">

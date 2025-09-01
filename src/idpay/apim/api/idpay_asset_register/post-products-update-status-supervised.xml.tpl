@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia_admin")">
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia")">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
                     <set-header name="Content-Type" exists-action="override">
@@ -23,16 +23,14 @@
                 </return-response>
             </when>
         </choose>
+        <set-variable name="requestBody" value="@((JObject)context.Request.Body.As<JObject>())" />
+        <set-variable name="modifiedBody" value="@{
+            var body = context.Variables["requestBody"] as JObject;
+            body["targetStatus"] = "SUPERVISED";
+            return body.ToString();
+        }" />
+        <set-body template="none">@((string)context.Variables["modifiedBody"])</set-body>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
-        <rewrite-uri template="@("/idpay/register/product-files/batch-list")" />
+        <rewrite-uri template="@("/idpay/register/products/update-status")" />
     </inbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound>
-        <base />
-    </outbound>
-    <on-error>
-        <base />
-    </on-error>
 </policies>
