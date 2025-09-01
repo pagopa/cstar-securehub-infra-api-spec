@@ -232,7 +232,7 @@ module "idpay_itn_merchants_portal_autocomplete" {
 
   description  = "IDPAY ITN Merchants Portal Autocomplete (Amazon Location Service)"
   display_name = "IDPAY ITN Merchants Portal Autocomplete API"
-  path         = "idpay-itn/merchant/portal"
+  path         = "idpay-itn/merchant/address-search"
   protocols    = ["https"]
 
   service_url = "https://${local.aws_places_endpoint}"
@@ -250,7 +250,7 @@ module "idpay_itn_merchants_portal_autocomplete" {
       operation_id = "autocomplete"
 
       xml_content = templatefile("./apim/api/aws_autocomplete/post-autocomplete-policy.xml.tpl", {
-        aws_api_key_named_value = azurerm_api_management_named_value.aws_location_service_api_key.display_name
+        aws_api_key_named_value = azurerm_api_management_named_value.aws_location_service_api_key.name
         merchant_portal_referer = var.merchant_portal_referer
         aws_places_endpoint     = local.aws_places_endpoint
       })

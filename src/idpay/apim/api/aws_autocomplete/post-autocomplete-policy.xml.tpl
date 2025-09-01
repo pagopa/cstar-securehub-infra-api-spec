@@ -17,7 +17,7 @@
         <set-header name="Referer" exists-action="override">
           <value>${merchant_portal_referer}</value>
         </set-header>
-        <rewrite-uri template="/v2/autocomplete?key={{aws_api_key_named_value}}" />
+        <rewrite-uri template="/v2/autocomplete?key={{${aws_api_key_named_value}}}" />
     </inbound>
     <backend>
         <base />

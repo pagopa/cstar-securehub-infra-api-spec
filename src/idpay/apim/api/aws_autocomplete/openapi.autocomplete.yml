@@ -1,13 +1,14 @@
 openapi: 3.0.1
 info:
-  title: Amazon Location Service Autocomplete API
+  title: IDPAY ITN Amazon Location Service Autocomplete API
+  description: IDPAY ITN Amazon Location Service Autocomplete API
   version: '1.0'
   contact:
     name: PagoPA S.p.A.
     email: cstar@pagopa.it
 
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant/portal
+  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant/address-search
 
 tags:
   - name: autocomplete
@@ -93,6 +94,16 @@ paths:
                             AddressNumber:
                               type: string
                               maxLength: 16
+        '401':
+          description: Unauthorized - Authentication Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Authentication failed or missing token
         '403':
           description: Forbidden
           content:
