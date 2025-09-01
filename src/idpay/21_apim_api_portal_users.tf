@@ -20,9 +20,21 @@ module "idpay_itn_api_portal_users_product" {
   subscriptions_limit = 0
 
   policy_xml = templatefile("./apim/api_product/portal_users_api/policy_users_portal.xml.tpl", {
-    origins                     = local.origins_bonus_elettrodomestici.base
-    rate_limit_merchants_portal = var.rate_limit_merchants_portal_product
+    origins                   = local.origins_bonus_elettrodomestici.base
+    rate_limit_users_portal   = var.rate_limit_users_portal_product
+    openid_config_url_user    = local.openid_config_url_user
+    user_client_id            = local.user_client_id
+    keycloak_url_user         = var.keycloak_url_user
+    keycloak_url_user_account = local.keycloak_url_user_account
+    keycloak_timeout_sec      = var.keycloak_timeout_sec
+    env_short                 = var.env_short
   })
+
+  groups = ["developers"]
+
+  depends_on = [
+    azurerm_api_management_named_value.pdv_api_key
+  ]
 
 }
 
