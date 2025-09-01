@@ -212,6 +212,14 @@ locals {
         rtp_group_name     = "read_service_registry"
       })
     },
+    registry-access-logger = {
+      description = "registry-access-logger"
+      format      = "xml"
+      value = templatefile("./api_fragment/registry-access-logger.xml", {
+        mc_shared_base_url = local.mc_shared_base_url,
+        apim_logger_name   = "${local.project}-apim-logger"
+      })
+    }
   }
 
   api_operation_policy = {
