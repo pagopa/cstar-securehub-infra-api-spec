@@ -99,6 +99,15 @@ locals {
           fragment_id = "rtp-validate-blob-storage-payees-token-mcshared-v2"
         })
       }
+      api_diagnostic = {
+        name                      = "applicationinsights"
+        sampling_percentage       = 100.0
+        always_log_errors         = true
+        log_client_ip             = true
+        verbosity                 = "information"
+        http_correlation_protocol = "W3C"
+        headers_to_log            = ["RequestId"]
+      }
     }
     # RTP CALLBACK
     rtp-callback = {
