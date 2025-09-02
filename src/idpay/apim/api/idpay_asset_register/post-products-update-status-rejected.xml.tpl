@@ -23,17 +23,10 @@
                 </return-response>
             </when>
         </choose>
-        <choose>
-            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") == "invitalia")">
-                <set-header name="x-organization-id" exists-action="override">
-                    <value>@((String)context.Request.Headers["x-organization-selected"].FirstOrDefault())</value>
-                </set-header>
-            </when>
-        </choose>
         <set-variable name="requestBody" value="@((JObject)context.Request.Body.As<JObject>())" />
         <set-variable name="modifiedBody" value="@{
             var body = context.Variables["requestBody"] as JObject;
-            body["status"] = "REJECTED";
+            body["targetStatus"] = "REJECTED";
             return body.ToString();
         }" />
         <set-body template="none">@((string)context.Variables["modifiedBody"])</set-body>

@@ -318,6 +318,10 @@ variable "rate_limit_merchants_portal_product" {
   type        = number
   description = "Rate limit for merchants portal product"
 }
+variable "rate_limit_users_portal_product" {
+  type        = number
+  description = "Rate limit for user portal product"
+}
 
 #
 # IO
@@ -349,4 +353,14 @@ variable "enable_flags" {
 variable "keycloak_url_merchant_op" {
   type        = string
   description = "Keycloak URL for merchant op realm"
+}
+
+variable "keycloak_url_user" {
+  type        = string
+  description = "Keycloak URL for user realm"
+}
+
+variable "keycloak_timeout_sec" {
+  type        = number
+  description = "Keycloak timeout (sec)"
 }
