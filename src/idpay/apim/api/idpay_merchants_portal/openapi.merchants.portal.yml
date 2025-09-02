@@ -844,6 +844,11 @@ components:
         qrcodeTxtUrl:
           type: string
           description: "ENG: Url of the QR code link - IT: Url del QR code"
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
+          description: "ENG: Additional properties of the transaction - IT: Proprietà aggiuntive della transazione"
     MerchantTransactionsProcessedListDTO:
       type: object
       required:
@@ -982,6 +987,10 @@ components:
           type: string
         idTrxAcquirer:
           type: string
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
     TransactionResponse:
       type: object
       required:
@@ -1044,6 +1053,10 @@ components:
           type: string
         qrcodeTxtUrl:
           type: string
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
     AuthPaymentResponseDTO:
       type: object
       required:
@@ -1385,6 +1398,103 @@ components:
         ibanHolder:
           type: string
           description: "ENG: The holder of the IBAN <br> IT: L'intestatario dell'IBAN"
+<<<<<<< Updated upstream
+=======
+    PointOfSaleTransactionsListDTO:
+      type: object
+      required:
+        - content
+        - pageNo
+        - pageSize
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/PointOfSaleTransactionDTO"
+        pageNo:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+    PointOfSaleTransactionDTO:
+      type: object
+      required:
+        - trxCode
+        - id
+        - effectiveAmountCents
+        - trxExpirationSeconds
+        - status
+      properties:
+        trxCode:
+          type: string
+          description: "ENG: Transaction code - IT: Il codice della transazione"
+        id:
+          type: string
+          description: "ENG: Transaction ID - IT: L'ID della transazione"
+        fiscalCode:
+          type: string
+          description: "ENG: Citizen fiscal code - IT: Codice fiscale del cittadino"
+        effectiveAmountCents:
+          type: integer
+          format: int64
+          description: "ENG: Transaction amount - IT: Quantitativo della transazione"
+          example: 100
+        rewardAmountCents:
+          type: integer
+          format: int64
+          description: "ENG: Reward amount - IT: Premio generato"
+          example: 100
+        trxDate:
+          type: string
+          format: date-time
+          description: "ENG: The date of the transaction - IT: La data della transazione"
+        trxExpirationSeconds:
+          type: number
+          description: "ENG: Expiration time of the transaction, in seconds - IT: Scadenza della transazione, in secondi"
+        updateDate:
+          type: string
+          format: date-time
+          description: "ENG: The date of the transaction update - IT: La data di aggiornamento della transazione"
+        status:
+          type: string
+          enum:
+            - CREATED
+            - IDENTIFIED
+            - AUTHORIZATION_REQUESTED
+            - AUTHORIZED
+            - REJECTED
+          description: "ENG: Status of the transaction - IT: Stato della transazione"
+        splitPayment:
+          type: boolean
+          description: "ENG: TRUE, if the authorized sum is less than the requested sum or FALSE, if the authorized sum is equal to the requested sum - IT: TRUE, se la somma autorizzata è inferiore alla somma richiesta o FALSE, se la somma autorizzata è uguale alla somma richiesta."
+        residualAmountCents:
+          type: integer
+          format: int64
+          description: "ENG: Remaining amount to be paid if the authorized sum is less than the requested sum - IT: Importo restante da pagare nel caso in cui la somma autorizzata sia inferiore alla somma richiesta."
+        channel:
+          type: string
+          description: "ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione"
+        qrcodePngUrl:
+          type: string
+          description: "ENG: Url to the QR code image - IT: Url all'immagine del QR code"
+        qrcodeTxtUrl:
+          type: string
+          description: "ENG: Url of the QR code link - IT: Url del QR code"
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
+          description: "ENG: Additional properties of the transaction - IT: Proprietà aggiuntive della transazione"
+>>>>>>> Stashed changes
   securitySchemes:
     Bearer:
       type: apiKey
