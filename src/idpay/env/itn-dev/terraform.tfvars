@@ -103,3 +103,8 @@ keycloak_url_merchant_op = "https://api-mcshared.dev.cstar.pagopa.it/auth-itn/re
 # OpenID Configuration URL for User
 keycloak_url_user    = "https://api-mcshared.dev.cstar.pagopa.it/auth-itn/realms/user"
 keycloak_timeout_sec = 5
+
+#
+# Referer Merchant Portal
+#
+merchant_portal_referer = "https://welfare.dev.cstar.pagopa.it/portale-esercenti"
