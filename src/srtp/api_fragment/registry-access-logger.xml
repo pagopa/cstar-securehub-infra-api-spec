@@ -3,9 +3,10 @@
   <set-variable name="caller_identity_source" value="none" />
 
   <choose>
-    <when condition="@(!string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault(&quot;Authorization&quot;, &quot;&quot;)))">
+    <when condition='@(!string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault("Authorization","")))'>
       <validate-jwt header-name="Authorization"
                     failed-validation-httpcode="401"
+                    failed-validation-error-message="Unauthorized. Access token is missing or invalid."
                     require-expiration-time="true"
                     require-scheme="Bearer"
                     require-signed-tokens="true"
@@ -17,36 +18,36 @@
       </validate-jwt>
 
       <choose>
-        <when condition="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;sub&quot;) != null)">
-          <set-variable name="caller_sub" value="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;sub&quot;))" />
+        <when condition='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("sub") != null)'>
+          <set-variable name="caller_sub" value='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("sub"))' />
           <set-variable name="caller_identity_source" value="sub" />
         </when>
-        <when condition="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;oid&quot;) != null)">
-          <set-variable name="caller_sub" value="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;oid&quot;))" />
+        <when condition='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("oid") != null)'>
+          <set-variable name="caller_sub" value='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("oid"))' />
           <set-variable name="caller_identity_source" value="oid" />
         </when>
-        <when condition="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;appid&quot;) != null)">
-          <set-variable name="caller_sub" value="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;appid&quot;))" />
+        <when condition='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("appid") != null)'>
+          <set-variable name="caller_sub" value='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("appid"))' />
           <set-variable name="caller_identity_source" value="appid" />
         </when>
-        <when condition="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;azp&quot;) != null)">
-          <set-variable name="caller_sub" value="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;azp&quot;))" />
+        <when condition='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("azp") != null)'>
+          <set-variable name="caller_sub" value='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("azp"))' />
           <set-variable name="caller_identity_source" value="azp" />
         </when>
-        <when condition="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;client_id&quot;) != null)">
-          <set-variable name="caller_sub" value="@(((string)context.Variables.GetValueOrDefault(&quot;jwt&quot;, &quot;&quot;)).AsJwt()?.Claims.GetValueOrDefault(&quot;client_id&quot;))" />
+        <when condition='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("client_id") != null)'>
+          <set-variable name="caller_sub" value='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("client_id"))' />
           <set-variable name="caller_identity_source" value="client_id" />
         </when>
         <otherwise>
-          <set-variable name="caller_sub" value="unknown" />
-          <set-variable name="caller_identity_source" value="none_found" />
+          <set-variable name="caller_sub" value='@(((Jwt)context.Variables["jwt"]).Subject ?? "unknown")' />
+          <set-variable name="caller_identity_source" value="subject" />
         </otherwise>
       </choose>
     </when>
   </choose>
 
   <set-variable name="registry_resource_effective"
-    value="@((string)context.Variables.GetValueOrDefault(&quot;registry_resource&quot;, &quot;unknown&quot;))" />
+    value='@((string)context.Variables.GetValueOrDefault("registry_resource","unknown"))' />
 
   <trace source="Registry Access" severity="information">
     <message>@{
