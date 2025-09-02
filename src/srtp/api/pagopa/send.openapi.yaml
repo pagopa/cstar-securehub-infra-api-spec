@@ -650,9 +650,9 @@ components:
     NoticeNumber:
       description: pagoPA notice number.
       type: string
-      pattern: "\\d{18}"
-      minLength: 18
-      maxLength: 18
+      pattern: "\\d{15,21}"
+      minLength: 15
+      maxLength: 21
       example: "311111111112222222"
 
     Payee:
@@ -792,9 +792,9 @@ components:
           example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
         noticeNumber:
           type: string
-          minLength: 18
-          maxLength: 18
-          pattern: "^\\d{18}$"
+          minLength: 15
+          maxLength: 21
+          pattern: "^\\d{15,21}$"
           example: "311111111112222123"
         amount:
           type: number
