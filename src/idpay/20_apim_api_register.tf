@@ -124,22 +124,34 @@ module "idpay_itn_register_portal_api" {
       })
     },
     {
-      operation_id = "updateProductStatusApproved"
-      xml_content = templatefile("./apim/api/idpay_asset_register/patch-products-update-status-approved.xml.tpl", {
+      operation_id = "updateProductStatusRestored"
+      xml_content = templatefile("./apim/api/idpay_asset_register/post-products-update-status-restored.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
-      operation_id = "updateProductStatusSupervisioned"
-      xml_content = templatefile("./apim/api/idpay_asset_register/patch-products-update-status-supervisioned.xml.tpl", {
+      operation_id = "updateProductStatusApproved"
+      xml_content = templatefile("./apim/api/idpay_asset_register/post-products-update-status-approved.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "updateProductStatusWaitApproved"
+      xml_content = templatefile("./apim/api/idpay_asset_register/post-products-update-status-wait_approved.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "updateProductStatusSupervised"
+      xml_content = templatefile("./apim/api/idpay_asset_register/post-products-update-status-supervised.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "updateProductStatusRejected"
-      xml_content = templatefile("./apim/api/idpay_asset_register/patch-products-update-status-rejected.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_asset_register/post-products-update-status-rejected.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
-    },
+    }
   ]
 }
