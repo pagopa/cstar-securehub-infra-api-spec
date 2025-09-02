@@ -33,6 +33,7 @@ rate_limit_minint_product = 1000
 
 rate_limit_portal_product           = 2500
 rate_limit_merchants_portal_product = 2500
+rate_limit_users_portal_product     = 2500
 
 #
 # Register Token Exchange
@@ -106,3 +107,7 @@ keycloak_url_merchant_op = "https://api-mcshared.uat.cstar.pagopa.it/auth-itn/re
 # Referer Merchant Portal
 #
 merchant_portal_referer = "https://welfare.uat.cstar.pagopa.it/portale-esercenti"
+
+# OpenID Configuration URL for User
+keycloak_url_user    = "https://api-mcshared.uat.cstar.pagopa.it/auth-itn/realms/user"
+keycloak_timeout_sec = 5

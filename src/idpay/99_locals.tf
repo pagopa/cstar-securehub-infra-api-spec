@@ -71,7 +71,7 @@ locals {
   idpay-register-hostname = "registrodeibeni.${data.azurerm_dns_zone.public.name}"
   idpay-portal-hostname   = "welfare-italy.${data.azurerm_dns_zone.public.name}"
   idpay-portal-welfare    = "welfare.${data.azurerm_dns_zone.public.name}"
-  idpay-oidc-config_url   = "https://selfcare-italy.${data.azurerm_dns_zone.public.name}/selfcare/openid-configuration.json"
+  idpay-oidc-config_url   = "https://selfcare.${data.azurerm_dns_zone.public.name}/selfcare/openid-configuration.json"
   selfcare-issuer         = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
 
   # monitor_appinsights_name        = "${local.product}-appinsights"
@@ -141,4 +141,9 @@ locals {
 
   # AWS places
   aws_places_endpoint = "places.geo.eu-central-1.amazonaws.com"
+
+  # OpenId configuration for User
+  openid_config_url_user    = "${var.keycloak_url_user}/.well-known/openid-configuration"
+  user_client_id            = "frontend"
+  keycloak_url_user_account = "${var.keycloak_url_user}/account"
 }

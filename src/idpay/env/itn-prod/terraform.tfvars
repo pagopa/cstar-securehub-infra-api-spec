@@ -26,6 +26,7 @@ external_domain          = "pagopa.it"
 #
 rate_limit_assistance_product   = 1000
 rate_limit_issuer_product       = 2000
+rate_limit_users_portal_product = 2000
 rate_limit_mil_merchant_product = 2000
 rate_limit_mil_citizen_product  = 2000
 
@@ -33,6 +34,7 @@ rate_limit_minint_product = 1000
 
 rate_limit_portal_product           = 2500
 rate_limit_merchants_portal_product = 2500
+rate_limit_users_product            = 2500
 
 
 #
@@ -108,3 +110,7 @@ keycloak_url_merchant_op = "https://api-mcshared.cstar.pagopa.it/auth-itn/realms
 # Referer Merchant Portal
 #
 merchant_portal_referer = "https://welfare.cstar.pagopa.it/portale-esercenti"
+
+# OpenID Configuration URL for User
+keycloak_url_user    = "https://api-mcshared.cstar.pagopa.it/auth-itn/realms/user"
+keycloak_timeout_sec = 5
