@@ -3080,154 +3080,6 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/payment/qr-code/preview/{trxCode}':
-    put:
-      tags:
-        - payment
-      summary: 'ENG: Preview Payment - IT: Anteprima pagamento'
-      description: Preview payment
-      operationId: previewPayment
-      parameters:
-        - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: trxCode
-          in: path
-          description: 'ENG: The transaction''s code - IT: Codice della transazione'
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
-      requestBody:
-        description: 'ENG: trxCode - IT: Identificativo della transizione'
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PreviewPaymentRequestDTO'
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PreviewPaymentDTO'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
-              example:
-                code: PAYMENT_INVALID_REQUEST
-                message: Required trxCode is not present
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
-        '401':
-          description: Token not validated correctly
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
-              example:
-                code: PAYMENT_AUTH_ERROR
-                message: Invalid token
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
-              example:
-                code: PAYMENT_ALREADY_ASSIGNED
-                message: transaction already assigned
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
-        '404':
-          description: Transaction does not exist or is expired
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
-              example:
-                code: PAYMENT_NOT_FOUND_OR_EXPIRED
-                message: transaction not found or expired
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
-        '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
-              example:
-                code: PAYMENT_TOO_MANY_REQUESTS
-                message: Too many requests
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
-        '500':
-          description: Generic error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
-              example:
-                code: PAYMENT_GENERIC_ERROR
-                message: application error connection microservice error
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
   '/payment/qr-code/{trxCode}/authorize':
     put:
       tags:
@@ -3369,7 +3221,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/payment/qr-code':
+  '/payment/qr-code/{trxCode}':
     delete:
       tags:
         - payment
@@ -3631,6 +3483,154 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TransactionErrorDTO1'
+              example:
+                code: PAYMENT_GENERIC_ERROR
+                message: application error connection microservice error
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+  '/payment/qr-code/preview/{trxCode}':
+    put:
+      tags:
+        - payment
+      summary: 'ENG: Preview Payment - IT: Anteprima pagamento'
+      description: Preview payment
+      operationId: previewPayment
+      parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
+        - name: trxCode
+          in: path
+          description: 'ENG: The transaction''s code - IT: Codice della transazione'
+          required: true
+          schema:
+            type: string
+            maxLength: 24
+            pattern: '^[a-zA-Z0-9]+$'
+      requestBody:
+        description: 'ENG: trxCode - IT: Identificativo della transizione'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewPaymentRequestDTO'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviewPaymentDTO'
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
+              example:
+                code: PAYMENT_INVALID_REQUEST
+                message: Required trxCode is not present
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '401':
+          description: Token not validated correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
+              example:
+                code: PAYMENT_AUTH_ERROR
+                message: Invalid token
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
+              example:
+                code: PAYMENT_ALREADY_ASSIGNED
+                message: transaction already assigned
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '404':
+          description: Transaction does not exist or is expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
+              example:
+                code: PAYMENT_NOT_FOUND_OR_EXPIRED
+                message: transaction not found or expired
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
+              example:
+                code: PAYMENT_TOO_MANY_REQUESTS
+                message: Too many requests
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '500':
+          description: Generic error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_GENERIC_ERROR
                 message: application error connection microservice error
@@ -5670,52 +5670,6 @@ components:
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
-    PreviewPaymentRequestDTO:
-      type: object
-      properties:
-        product:
-          type: string
-          description: 'ENG: prodcut name - IT: il nome del prodotto'
-        amount:
-          type: number
-          description: 'ENG: amount - IT: importo totale della spesa'
-    PreviewPaymentDTO:
-      type: object
-      properties:
-        trxCode:
-          type: string
-          description: 'ENG: Transaction code - IT: Codice della transazione'
-        trxDate:
-          type: string
-          format: date-time
-          description: 'ENG: Transaction date - IT: Data della transazione'
-        status:
-          type: string
-          enum:
-            - CREATED
-            - IDENTIFIED
-            - AUTHORIZATION_REQUESTED
-            - AUTHORIZED
-          description: >-
-            ENG: Status of the payment [CREATED: Created, IDENTIFIED: User
-            related, AUTHORIZATION_REQUESTED: Authorization Requested,
-            AUTHORIZED: authorized] - IT: Stato del pagamento [CREATED: Creato,
-            IDENTIFIED: Utente associato, AUTHORIZATION_REQUESTED:
-            autorizzazione richiesta, AUTHORIZED: autorizzato]
-        rewardCents:
-          type: integer
-          format: int64
-          description: 'ENG: Reward - IT: Premio generato'
-        amountCents:
-          type: integer
-          format: int64
-          description: 'ENG: Amount cents - IT: Importo in centessimi'
-        userId:
-          type: string
-          description: 'ENG: user id - IT: id user'
-        product:
-          type: string
-          description: 'ENG: prodcut name - IT: il nome del prodotto'
     AuthPaymentResponseDTO:
       type: object
       required:
@@ -6026,6 +5980,52 @@ components:
           description: >-
             ENG: Status of the payment [CREATED: Created] - IT: Stato del
             pagamento [CREATED: Creato]
+    PreviewPaymentRequestDTO:
+      type: object
+      properties:
+        product:
+          type: string
+          description: 'ENG: prodcut name - IT: il nome del prodotto'
+        amount:
+          type: number
+          description: 'ENG: amount - IT: importo totale della spesa'
+    PreviewPaymentDTO:
+      type: object
+      properties:
+        trxCode:
+          type: string
+          description: 'ENG: Transaction code - IT: Codice della transazione'
+        trxDate:
+          type: string
+          format: date-time
+          description: 'ENG: Transaction date - IT: Data della transazione'
+        status:
+          type: string
+          enum:
+            - CREATED
+            - IDENTIFIED
+            - AUTHORIZATION_REQUESTED
+            - AUTHORIZED
+          description: >-
+            ENG: Status of the payment [CREATED: Created, IDENTIFIED: User
+            related, AUTHORIZATION_REQUESTED: Authorization Requested,
+            AUTHORIZED: authorized] - IT: Stato del pagamento [CREATED: Creato,
+            IDENTIFIED: Utente associato, AUTHORIZATION_REQUESTED:
+            autorizzazione richiesta, AUTHORIZED: autorizzato]
+        rewardCents:
+          type: integer
+          format: int64
+          description: 'ENG: Reward - IT: Premio generato'
+        amountCents:
+          type: integer
+          format: int64
+          description: 'ENG: Amount cents - IT: Importo in centesimi'
+        userId:
+          type: string
+          description: 'ENG: user id - IT: id user'
+        product:
+          type: string
+          description: 'ENG: prodcut name - IT: il nome del prodotto'
   parameters:
     ApiVersionHeader:
       name: X-Api-Version

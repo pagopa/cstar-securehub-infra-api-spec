@@ -16,8 +16,10 @@ servers:
 tags:
   - name: products
     description: Operations related to product listing and filtering
+  - name: payment
+    description: Operations related to payment
 paths:
-  '/payment/qr-code/preview/{trxCode}':
+  /payment/qr-code/preview/{trxCode}:
     put:
       tags:
         - payment
@@ -124,6 +126,8 @@ components:
         product:
           type: string
           description: 'ENG: prodcut name - IT: il nome del prodotto'
+          maxLength: 255
+          pattern: .*
         amount:
           type: number
           description: 'ENG: amount - IT: importo totale della spesa'
@@ -133,10 +137,13 @@ components:
         trxCode:
           type: string
           description: 'ENG: Transaction code - IT: Codice della transazione'
+          maxLength: 24
+          pattern: '^[a-zA-Z0-9]+$'
         trxDate:
           type: string
           format: date-time
           description: 'ENG: Transaction date - IT: Data della transazione'
+          maxLength: 255
         status:
           type: string
           enum:
@@ -154,16 +161,24 @@ components:
           type: integer
           format: int64
           description: 'ENG: Reward - IT: Premio generato'
+          minimum: 0
+          maximum: 1000000000
         amountCents:
           type: integer
           format: int64
-          description: 'ENG: Amount cents - IT: Importo in centessimi'
+          description: 'ENG: Amount cents - IT: Importo in centesimi'
+          minimum: 0
+          maximum: 1000000000
         userId:
           type: string
           description: 'ENG: user id - IT: id user'
+          maxLength: 255
+          pattern: .*
         product:
           type: string
           description: 'ENG: prodcut name - IT: il nome del prodotto'
+          maxLength: 255
+          pattern: .*
     ProductListDTO:
       type: object
       properties:
