@@ -99,6 +99,15 @@ locals {
           fragment_id = "rtp-validate-blob-storage-payees-token-mcshared-v2"
         })
       }
+      api_diagnostic = {
+        name                      = "applicationinsights"
+        sampling_percentage       = 100.0
+        always_log_errors         = true
+        log_client_ip             = true
+        verbosity                 = "information"
+        http_correlation_protocol = "W3C"
+        headers_to_log            = ["RequestId"]
+      }
     }
     # RTP CALLBACK
     rtp-callback = {
@@ -212,6 +221,14 @@ locals {
         rtp_group_name     = "read_service_registry"
       })
     },
+    registry-access-logger = {
+      description = "registry-access-logger"
+      format      = "xml"
+      value = templatefile("./api_fragment/registry-access-logger.xml", {
+        mc_shared_base_url = local.mc_shared_base_url,
+        apim_logger_name   = "${local.project}-apim-logger"
+      })
+    }
   }
 
   api_operation_policy = {

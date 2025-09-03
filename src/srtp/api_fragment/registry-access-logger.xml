@@ -1,0 +1,69 @@
+<fragment>
+  <set-variable name="caller_sub" value="anonymous" />
+  <set-variable name="caller_identity_source" value="none" />
+
+  <choose>
+    <when condition='@(!string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault("Authorization","")))'>
+      <validate-jwt header-name="Authorization"
+                    failed-validation-httpcode="401"
+                    failed-validation-error-message="Unauthorized. Access token is missing or invalid."
+                    require-expiration-time="true"
+                    require-scheme="Bearer"
+                    require-signed-tokens="true"
+                    output-token-variable-name="jwt">
+        <openid-config url="${mc_shared_base_url}/.well-known/openid-configuration" />
+        <issuers>
+          <issuer>${mc_shared_base_url}</issuer>
+        </issuers>
+      </validate-jwt>
+
+      <choose>
+        <when condition='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("sub") != null)'>
+          <set-variable name="caller_sub" value='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("sub"))' />
+          <set-variable name="caller_identity_source" value="sub" />
+        </when>
+        <when condition='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("oid") != null)'>
+          <set-variable name="caller_sub" value='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("oid"))' />
+          <set-variable name="caller_identity_source" value="oid" />
+        </when>
+        <when condition='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("appid") != null)'>
+          <set-variable name="caller_sub" value='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("appid"))' />
+          <set-variable name="caller_identity_source" value="appid" />
+        </when>
+        <when condition='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("azp") != null)'>
+          <set-variable name="caller_sub" value='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("azp"))' />
+          <set-variable name="caller_identity_source" value="azp" />
+        </when>
+        <when condition='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("client_id") != null)'>
+          <set-variable name="caller_sub" value='@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("client_id"))' />
+          <set-variable name="caller_identity_source" value="client_id" />
+        </when>
+        <otherwise>
+          <set-variable name="caller_sub" value='@(((Jwt)context.Variables["jwt"]).Subject ?? "unknown")' />
+          <set-variable name="caller_identity_source" value="subject" />
+        </otherwise>
+      </choose>
+    </when>
+  </choose>
+
+  <set-variable name="registry_resource_effective"
+    value='@((string)context.Variables.GetValueOrDefault("registry_resource","unknown"))' />
+
+  <trace source="Registry Access" severity="information">
+    <message>@{
+        return new JObject(
+            new JProperty("event", "registry_access"),
+            new JProperty("domain", "SRTP"),
+            new JProperty("resource", (string)context.Variables.GetValueOrDefault("registry_resource_effective", "unknown")),
+            new JProperty("sub", (string)context.Variables.GetValueOrDefault("caller_sub", "anonymous")),
+            new JProperty("id_source", (string)context.Variables.GetValueOrDefault("caller_identity_source", "none")),
+            new JProperty("method", context.Request?.Method),
+            new JProperty("url", context.Request?.Url.ToString()),
+            new JProperty("requestId", context.RequestId),
+            new JProperty("operationId", context.Operation?.Id),
+            new JProperty("ip", context.Request?.IpAddress),
+            new JProperty("timestamp", DateTime.UtcNow.ToString("o"))
+        ).ToString();
+    }</message>
+  </trace>
+</fragment>

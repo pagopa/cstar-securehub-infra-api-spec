@@ -2,6 +2,9 @@
     <inbound>
         <base />
 
+        <set-variable name="registry_resource" value="payees" />
+        <include-fragment fragment-id="registry-access-logger" />
+
         <send-request mode="new"
             response-variable-name="storageResponse"
             timeout="20">
@@ -21,7 +24,6 @@
             </set-header>
             <set-body>@(((IResponse)context.Variables["storageResponse"]).Body.As&lt;string&gt;())</set-body>
         </return-response>
-
     </inbound>
 
     <backend>
