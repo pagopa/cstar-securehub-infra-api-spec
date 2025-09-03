@@ -206,3 +206,58 @@ module "idpay_itn_merchants_portal" {
   ]
 
 }
+
+resource "azurerm_api_management_named_value" "aws_location_service_api_key" {
+
+  name                = "${var.env_short}-${local.prefix_api}-aws-location-service-api-key"
+  api_management_name = data.azurerm_api_management.apim_core.name
+  resource_group_name = data.azurerm_resource_group.apim_rg.name
+
+  display_name = "${var.env_short}-${local.prefix_api}-aws-location-service-api-key"
+  secret       = true
+
+  value_from_key_vault {
+    secret_id = data.azurerm_key_vault_secret.aws_location_service_api_key.versionless_id
+  }
+
+}
+
+## IDPAY Welfare Merchants Portal Autocomplete API ##
+module "idpay_itn_merchants_portal_autocomplete" {
+  source = "./.terraform/modules/__v4__/api_management_api"
+
+  name                = "${var.env_short}-${local.prefix_api}-idpay-merchants-portal-autocomplete"
+  api_management_name = data.azurerm_api_management.apim_core.name
+  resource_group_name = data.azurerm_resource_group.apim_rg.name
+
+  description  = "IDPAY ITN Merchants Portal Autocomplete (Amazon Location Service)"
+  display_name = "IDPAY ITN Merchants Portal Autocomplete API"
+  path         = "idpay-itn/merchant/address-search"
+  protocols    = ["https"]
+
+  service_url = "https://${local.aws_places_endpoint}"
+
+  content_format = "openapi"
+  content_value  = file("./apim/api/aws_autocomplete/openapi.autocomplete.yml")
+
+  xml_content = file("./apim/api/base_policy.xml")
+
+  product_ids           = [module.idpay_itn_api_portal_merchants_product.product_id]
+  subscription_required = false
+
+  api_operation_policies = [
+    {
+      operation_id = "autocomplete"
+
+      xml_content = templatefile("./apim/api/aws_autocomplete/post-autocomplete-policy.xml.tpl", {
+        aws_api_key_named_value = azurerm_api_management_named_value.aws_location_service_api_key.name
+        merchant_portal_referer = var.merchant_portal_referer
+        aws_places_endpoint     = local.aws_places_endpoint
+      })
+    }
+  ]
+
+  depends_on = [
+    azurerm_api_management_named_value.aws_location_service_api_key
+  ]
+}

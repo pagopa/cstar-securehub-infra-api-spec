@@ -48,3 +48,11 @@ data "azurerm_storage_account" "refund_storage" {
   name                = local.refund_storage_name
   resource_group_name = local.data_resource_group_name
 }
+
+#
+# AWS API Key
+#
+data "azurerm_key_vault_secret" "aws_location_service_api_key" {
+  name         = "aws-location-service-api-key"
+  key_vault_id = data.azurerm_key_vault.key_vault_domain.id
+}
