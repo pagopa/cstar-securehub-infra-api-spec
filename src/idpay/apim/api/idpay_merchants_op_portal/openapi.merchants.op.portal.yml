@@ -19,7 +19,7 @@ tags:
   - name: payment
     description: Operations related to payment
 paths:
-  /payment/qr-code/preview/{trxCode}:
+  /payment/bar-code/preview/{trxCode}:
     put:
       tags:
         - payment
