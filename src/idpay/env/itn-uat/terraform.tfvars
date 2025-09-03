@@ -103,6 +103,11 @@ selc_timeout_sec = 5
 # OpenID Configuration URL for Merchant op
 keycloak_url_merchant_op = "https://api-mcshared.uat.cstar.pagopa.it/auth-itn/realms/merchant-operator"
 
+#
+# Referer Merchant Portal
+#
+merchant_portal_referer = "https://welfare.uat.cstar.pagopa.it/portale-esercenti"
+
 # OpenID Configuration URL for User
 keycloak_url_user    = "https://api-mcshared.uat.cstar.pagopa.it/auth-itn/realms/user"
 keycloak_timeout_sec = 5

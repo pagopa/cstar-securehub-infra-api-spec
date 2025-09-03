@@ -355,6 +355,11 @@ variable "keycloak_url_merchant_op" {
   description = "Keycloak URL for merchant op realm"
 }
 
+variable "merchant_portal_referer" {
+  type        = string
+  description = "Allowed Referer for Merchant Portal"
+}
+
 variable "keycloak_url_user" {
   type        = string
   description = "Keycloak URL for user realm"
