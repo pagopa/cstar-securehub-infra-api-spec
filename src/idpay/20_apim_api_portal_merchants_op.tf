@@ -70,7 +70,7 @@ module "idpay_itn_portal_merchants_op_api" {
       })
     },
     {
-      operation_id = "authorizeTransaction"
+      operation_id = "authPaymentBarCode"
       xml_content = templatefile("./apim/api/idpay_merchants_op_portal/put-bar-code-authorize-merchant-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
