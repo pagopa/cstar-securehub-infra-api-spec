@@ -1019,6 +1019,11 @@ components:
         qrcodeTxtUrl:
           type: string
           description: "ENG: Url of the QR code link - IT: Url del QR code"
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
+          description: "ENG: Additional properties of the transaction - IT: Proprietà aggiuntive della transazione"
     MerchantTransactionsProcessedListDTO:
       type: object
       required:
@@ -1156,6 +1161,10 @@ components:
           type: string
         idTrxAcquirer:
           type: string
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
     TransactionResponse:
       type: object
       required:
@@ -1218,6 +1227,10 @@ components:
           type: string
         qrcodeTxtUrl:
           type: string
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
     AuthPaymentResponseDTO:
       type: object
       required:
@@ -1616,6 +1629,10 @@ components:
         qrcodeTxtUrl:
           type: string
           description: "ENG: Url of the QR code link - IT: Url del QR code"
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
   securitySchemes:
     Bearer:
       type: apiKey
