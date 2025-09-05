@@ -123,6 +123,11 @@ components:
     PreviewPaymentRequestDTO:
       type: object
       properties:
+        productName:
+          type: string
+          description: 'ENG: prodcut name - IT: il nome del prodotto'
+          maxLength: 255
+          pattern: .*
         productGtin:
           type: string
           description: 'ENG: prodcut GTIN - IT: il codice GTIN del prodotto'
