@@ -165,16 +165,22 @@ components:
             AUTHORIZED: authorized] - IT: Stato del pagamento [CREATED: Creato,
             IDENTIFIED: Utente associato, AUTHORIZATION_REQUESTED:
             autorizzazione richiesta, AUTHORIZED: autorizzato]
+        originalAmountCents:
+          type: integer
+          format: int64
+          description: 'ENG: Original amount cents - IT: Importo originale da pagare in centesimi'
+          minimum: 0
+          maximum: 1000000000
         rewardCents:
           type: integer
           format: int64
-          description: 'ENG: Reward - IT: Premio generato'
+          description: 'ENG: Reward - IT: sconto generato'
           minimum: 0
           maximum: 1000000000
-        amountCents:
+        residualAmountCents:
           type: integer
           format: int64
-          description: 'ENG: Amount cents - IT: Importo in centesimi'
+          description: 'ENG: Residual amount to pay - IT: Importo residuo da pagare dopo lo socnto'
           minimum: 0
           maximum: 1000000000
         userCf:
@@ -182,7 +188,7 @@ components:
           description: 'ENG: user fiscal code - IT: codice fiscale utente'
           maxLength: 16
           pattern: .*
-        product:
+        productName:
           type: string
           description: 'ENG: prodcut name - IT: il nome del prodotto'
           maxLength: 255
