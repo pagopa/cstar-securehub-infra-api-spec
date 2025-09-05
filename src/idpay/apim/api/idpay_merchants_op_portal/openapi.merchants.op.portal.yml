@@ -135,6 +135,7 @@ components:
           pattern: ^[a-zA-Z0-9]{1,14}$
         amountCents:
           type: integer
+          format: int64
           description: 'ENG: amount in cents - IT: importo totale della spesa in centesimi'
     PreviewPaymentDTO:
       type: object
@@ -174,11 +175,6 @@ components:
           description: 'ENG: Amount cents - IT: Importo in centesimi'
           minimum: 0
           maximum: 1000000000
-        userId:
-          type: string
-          description: 'ENG: user id - IT: id user'
-          maxLength: 255
-          pattern: .*
         userCf:
           type: string
           description: 'ENG: user fiscal code - IT: codice fiscale utente'
