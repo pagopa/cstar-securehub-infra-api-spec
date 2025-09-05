@@ -123,14 +123,19 @@ components:
     PreviewPaymentRequestDTO:
       type: object
       properties:
-        product:
+        productName:
           type: string
           description: 'ENG: prodcut name - IT: il nome del prodotto'
           maxLength: 255
           pattern: .*
-        amount:
-          type: number
-          description: 'ENG: amount - IT: importo totale della spesa'
+        productGtin:
+          type: string
+          description: 'ENG: prodcut GTIN - IT: il codice GTIN del prodotto'
+          maxLength: 14
+          pattern: ^[a-zA-Z0-9]{1,14}$
+        amountCents:
+          type: integer
+          description: 'ENG: amount in cents - IT: importo totale della spesa in centesimi'
     PreviewPaymentDTO:
       type: object
       properties:
@@ -173,6 +178,11 @@ components:
           type: string
           description: 'ENG: user id - IT: id user'
           maxLength: 255
+          pattern: .*
+        userCf:
+          type: string
+          description: 'ENG: user fiscal code - IT: codice fiscale utente'
+          maxLength: 16
           pattern: .*
         product:
           type: string
