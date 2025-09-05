@@ -123,11 +123,6 @@ components:
     PreviewPaymentRequestDTO:
       type: object
       properties:
-        productName:
-          type: string
-          description: 'ENG: prodcut name - IT: il nome del prodotto'
-          maxLength: 255
-          pattern: .*
         productGtin:
           type: string
           description: 'ENG: prodcut GTIN - IT: il codice GTIN del prodotto'
@@ -183,7 +178,7 @@ components:
           description: 'ENG: Residual amount to pay - IT: Importo residuo da pagare dopo lo socnto'
           minimum: 0
           maximum: 1000000000
-        userCf:
+        userId:
           type: string
           description: 'ENG: user fiscal code - IT: codice fiscale utente'
           maxLength: 16
