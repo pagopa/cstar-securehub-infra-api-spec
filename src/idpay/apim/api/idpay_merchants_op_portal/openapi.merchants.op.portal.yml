@@ -197,6 +197,8 @@ paths:
               $ref: '#/components/headers/X-RateLimit-Remaining'
             X-RateLimit-Reset:
               $ref: '#/components/headers/X-RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
           content:
             application/json:
               schema:
@@ -481,6 +483,7 @@ components:
         idTrxAcquirer:
           type: string
           description: "ENG: Transaction acquirer ID- IT: Identificativo della transazione rispetto all'acquirer"
+          maxLength: 100
     AuthPaymentResponseDTO:
       type: object
       required:
@@ -493,22 +496,28 @@ components:
         id:
           type: string
           description: "ENG: Id of the payment - IT: Identificativo del pagamento"
+          maxLength: 100
         trxCode:
           type: string
           description: "ENG: Transaction code - IT: Codice della transazione"
+          maxLength: 100
         trxDate:
           type: string
           format: date-time
           description: "ENG: Transaction date - IT: Data della transazione"
+          maxLength: 255
         initiativeId:
           type: string
           description: "ENG: Id of the initiative - IT: Identificativo dell'iniziativa"
+          maxLength: 100
         initiativeName:
           type: string
           description: "ENG: Name of the initiative - IT: Nome della iniziativa"
+          maxLength: 1000
         businessName:
           type: string
           description: "ENG: Business name - IT: Nome dell'esercente"
+          maxLength: 1000
         status:
           type: string
           enum:
