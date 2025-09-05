@@ -136,6 +136,8 @@ components:
         amountCents:
           type: integer
           format: int64
+          minimum: 0
+          maximum: 1000000000
           description: 'ENG: amount in cents - IT: importo totale della spesa in centesimi'
     PreviewPaymentDTO:
       type: object
