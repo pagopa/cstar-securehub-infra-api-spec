@@ -18,6 +18,8 @@ tags:
     description: Operations related to product listing and filtering
   - name: payment
     description: Operations related to payment
+  - name: transaction
+    description: Operations related to transaction
 paths:
   /payment/bar-code/preview/{trxCode}:
     put:
@@ -85,7 +87,7 @@ paths:
   /transactions/bar-code/{trxCode}/authorize:
     put:
       tags:
-        - merchant-transactions
+        - transaction
       summary: "ENG: Authorize payment - IT: Autorizzazione pagamento"
       operationId: authPaymentBarCode
       parameters:
@@ -417,6 +419,8 @@ components:
         amountCents:
           type: integer
           format: int64
+          minimum: 0
+          maximum: 1000000
           description: "ENG: Amount of transaction - IT: Importo della transazione"
         idTrxAcquirer:
           type: string
@@ -460,14 +464,20 @@ components:
         rewardCents:
           type: integer
           format: int64
+          minimum: 0
+          maximum: 1000000
           description: "ENG: Reward - IT: Premio generato"
         amountCents:
           type: integer
           format: int64
+          minimum: 0
+          maximum: 1000000
           description: "ENG: Amount cents - IT: Importo in centessimi"
         residualBudgetCents:
           type: integer
           format: int64
+          minimum: 0
+          maximum: 1000000
           description: "ENG: Residual budget - IT: Budget residuo"
         splitPayment:
           type: boolean
@@ -475,6 +485,8 @@ components:
         residualAmountCents:
           type: integer
           format: int64
+          minimum: 0
+          maximum: 1000000
           description: "ENG: Remaining amount to be paid if the authorized sum is less than the requested sum - IT: Importo restante da pagare nel caso in cui la somma autorizzata sia inferiore alla somma richiesta."
     TransactionErrorDTO:
       type: object
