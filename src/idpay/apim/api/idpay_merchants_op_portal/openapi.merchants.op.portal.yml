@@ -144,7 +144,7 @@ components:
       properties:
         trxCode:
           type: string
-          description: 'ENG: Transaction code - IT: Codice della transazione'
+          description: 'ENG: Transaction code - IT: Codice della transazione (codice sconto)'
           maxLength: 24
           pattern: '^[a-zA-Z0-9]+$'
         trxDate:
