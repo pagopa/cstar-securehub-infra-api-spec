@@ -592,6 +592,7 @@ components:
         message:
           type: string
           description: "ENG: Error message- IT: Messaggio di errore"
+          maxLength: 1000
   securitySchemes:
     Bearer:
       type: apiKey
