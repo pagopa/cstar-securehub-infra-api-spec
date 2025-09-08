@@ -327,6 +327,109 @@ paths:
               example:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
+  /initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions/processed:
+    get:
+      tags:
+        - point-of-sale-transactions
+      summary: "ENG: Returns the list of processed transactions associated to a point of sale - IT: Ritorna la lista delle transazioni processate associate ad un punto vendita"
+      description: "ENG: Returns the list of processed transactions associated to a point of sale <br> IT: Ritorna la lista delle transazioni processate associate ad un punto vendita"
+      operationId: getPointOfSaleTransactionsProcessed
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+            maxLength: 36
+            pattern: .*
+        - name: pointOfSaleId
+          in: path
+          description: The point of sale ID
+          required: true
+          schema:
+            type: string
+            maxLength: 36
+            pattern: .*
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 10000
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 1000
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - fiscalCode, desc
+              - elaborationDateTime, desc
+              - fiscalCode, asc
+              - elaborationDateTime, asc
+        - name: fiscalCode
+          in: query
+          description: Fiscal Code
+          required: false
+          schema:
+            type: string
+            maxLength: 16
+            pattern: .*
+        - name: status
+          in: query
+          description: Transaction processed status
+          required: false
+          schema:
+            type: string
+            enum:
+              - REWARDED
+              - CANCELLED
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleTransactionsProcessedListDTO"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              example:
+                code: "PAYMENT_INVALID_REQUEST"
+                message: "Something went wrong handling the request"
+        "401":
+          description: Authentication failed
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              example:
+                code: "PAYMENT_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        "500":
+          description: Generic error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              example:
+                code: "PAYMENT_GENERIC_ERROR"
+                message: "Application error"
   /initiatives:
     get:
       tags:
@@ -615,7 +718,7 @@ paths:
                 code: PAYMENT_INVALID_REQUEST
                 message: Something went wrong handling the request
         "401":
-          description: Autentication failed
+          description: Authentication failed
         "429":
           description: Too many requests
           content:
@@ -1616,6 +1719,83 @@ components:
         qrcodeTxtUrl:
           type: string
           description: "ENG: Url of the QR code link - IT: Url del QR code"
+    PointOfSaleTransactionsProcessedListDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/PointOfSaleTransactionProcessedDTO'
+          maxItems: 1000
+        pageNo:
+          type: integer
+          format: int32
+          description: 'ENG: The number of the page <br> IT: Il numero della pagina'
+          minimum: 0
+          maximum: 1000000
+        pageSize:
+          type: integer
+          format: int32
+          description: 'ENG: The element size for page <br> IT: Il numero di elementi per pagina'
+          minimum: 0
+          maximum: 1000000
+        totalElements:
+          type: integer
+          format: int32
+          description: 'ENG: The total number of the elements <br> IT: Il numero totale degli elementi'
+          minimum: 0
+          maximum: 1000000
+        totalPages:
+          type: integer
+          format: int32
+          description: 'ENG: The total number of the pages <br> IT: Il numero totale delle pagine'
+          minimum: 0
+          maximum: 1000000
+    PointOfSaleTransactionProcessedDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'ENG: Transaction ID <br> IT: ID della transazione'
+          maxLength: 64
+          pattern: .*
+        fiscalCode:
+          type: string
+          description: 'ENG: Citizen fiscal code - IT: Codice fiscale del cittadino'
+          maxLength: 16
+          pattern: .*
+        effectiveAmountCents:
+          type: integer
+          format: int64
+          description: 'ENG: Transaction amount in cents - IT: Importo della transazione in centesimi'
+          minimum: 0
+          maximum: 1000000000
+        rewardAmountCents:
+          type: integer
+          format: int64
+          description: 'ENG: Reward amount in cents - IT: Premio generato in centesimi'
+          minimum: 0
+          maximum: 1000000000
+        trxDate:
+          type: string
+          format: date-time
+          description: 'ENG: The date of the transaction - IT: La data della transazione'
+          maxLength: 255
+        updateDate:
+          type: string
+          format: date-time
+          description: 'ENG: The date of the transaction update - IT: La data di aggiornamento della transazione'
+          maxLength: 255
+        status:
+          type: string
+          description: 'ENG: The status of the transaction - IT: Lo stato della transazione'
+          enum:
+            - REWARDED
+            - CANCELLED
+        channel:
+          type: string
+          description: 'ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione'
+          maxLength: 24
   securitySchemes:
     Bearer:
       type: apiKey
