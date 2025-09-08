@@ -25,7 +25,6 @@ parameters:
       - False
       - True
 
-
 pool:
   vmImage: 'ubuntu-latest'
 
