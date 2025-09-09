@@ -121,6 +121,18 @@ components:
       maxLength: 64
       example: "ADMIN"
     Errors:
+      description: |
+        A generic error response container. The structure of the error can vary depending on where it originates (e.g., Application, API Gateway, or underlying Framework).
+      oneOf:
+      - $ref: '#/components/schemas/Error'
+      - $ref: '#/components/schemas/ApimError'
+
+
+
+    # --------------------------------------------------------------------------
+    # Basic types for error handling.
+    # --------------------------------------------------------------------------
+    Error:
       description: Body of an error response.
       type: object
       additionalProperties: false
@@ -136,11 +148,22 @@ components:
         - description
         - status
 
+    ApimError:
+      description: An error originating from the API Management (APIM) layer.
+      type: object
+      additionalProperties: false
+      properties:
+        statusCode:
+          $ref: '#/components/schemas/StatusCode'
+        message:
+          $ref: '#/components/schemas/ErrorDescription'
+      required:
+        - statusCode
+        - message
+      example:
+        statusCode: 401
+        message: "Invalid JWT."
 
-
-    # --------------------------------------------------------------------------
-    # Basic types for error handling.
-    # --------------------------------------------------------------------------
     ErrorCode:
       description: Error code.
       type: string
