@@ -104,10 +104,9 @@ components:
             IT: Deve essere sempre ["Core"] per ottenere risposte dettagliate
           items:
             type: string
-            enum: [ "Core" ]
+            enum: ["Core"]
           minItems: 1
-          maxItems: 1
-          default: [ "Core" ]
+          default: ["Core"]
     AddressAutocompleteResponseDTO:
       type: object
       properties:
