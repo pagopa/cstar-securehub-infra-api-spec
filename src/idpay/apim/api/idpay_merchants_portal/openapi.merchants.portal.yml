@@ -1338,6 +1338,10 @@ components:
         idTrxAcquirer:
           type: string
           description: "ENG: Transaction acquirer ID- IT: Identificativo della transazione rispetto all'acquirer"
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
     StatisticsErrorDTO:
       type: object
       required:
