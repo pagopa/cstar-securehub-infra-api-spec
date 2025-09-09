@@ -17,6 +17,11 @@
           <value>${merchant_portal_referer}</value>
         </set-header>
         <rewrite-uri template="/v2/autocomplete?key={{${aws_api_key_named_value}}}" />
+      <set-body>@{
+        var body = context.Request.Body.As<JObject>(preserveContent: true);
+        body["AdditionalFeatures"] = new JArray("Core");
+        return body.ToString();
+        }</set-body>
     </inbound>
     <backend>
         <base />
