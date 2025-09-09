@@ -13,15 +13,8 @@
 <policies>
     <inbound>
         <base />
-        <set-header name="Referer" exists-action="override">
-          <value>${merchant_portal_referer}</value>
-        </set-header>
-        <rewrite-uri template="/v2/autocomplete?key={{${aws_api_key_named_value}}}" />
-      <set-body>@{
-        var body = context.Request.Body.As<JObject>(preserveContent: true);
-        body["AdditionalFeatures"] = new JArray("Core");
-        return body.ToString();
-        }</set-body>
+        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaypayment" />
+        <rewrite-uri template="@("/idpay/payment/bar-code/{trxCode}/authorize")"/>
     </inbound>
     <backend>
         <base />
