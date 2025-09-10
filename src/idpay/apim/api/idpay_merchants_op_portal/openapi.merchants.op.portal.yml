@@ -612,6 +612,10 @@ components:
           type: string
           description: "ENG: Transaction acquirer ID- IT: Identificativo della transazione rispetto all'acquirer"
           maxLength: 100
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
     AuthPaymentResponseDTO:
       type: object
       required:

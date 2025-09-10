@@ -1441,6 +1441,10 @@ components:
         idTrxAcquirer:
           type: string
           description: "ENG: Transaction acquirer ID- IT: Identificativo della transazione rispetto all'acquirer"
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
     StatisticsErrorDTO:
       type: object
       required:
@@ -1566,13 +1570,6 @@ components:
           type: integer
           format: int32
           description: "ENG: The total number of the pages <br> IT: Il numero totale delle pagine"
-    PointOfSaleDetailDTO:
-      type: object
-      properties:
-        pointOfSale:
-          $ref: "#/components/schemas/PointOfSaleDTO"
-        merchantDetail:
-          $ref: "#/components/schemas/MerchantDetailDTO"
     PointOfSaleErrorDTO:
       type: object
       required:
