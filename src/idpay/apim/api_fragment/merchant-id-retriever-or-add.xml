@@ -11,8 +11,18 @@
 		<!-- If API Management find it in the cache, make a request for it and store it -->
 		<when condition="@(!context.Variables.ContainsKey("merchantId"))">
 			<send-request mode="new" response-variable-name="responseMerchantId" timeout="10" ignore-error="true">
-				<set-url>@("https://${ingress_hostname}/idpaymerchant/idpay/merchant/acquirer/" + ((String)context.Variables["acquirerId"]) + "/merchant-fiscalcode/" + ((String)context.Variables["merchantFiscalCode"]) + "/id")</set-url>
-				<set-method>GET</set-method>
+				<set-url>https://${ingress_hostname}/idpaymerchant/idpay/merchant</set-url>
+				<set-method>PUT</set-method>
+				<set-header name="Content-Type" exists-action="override">
+					<value>application/json</value>
+				</set-header>
+				<set-body>@{
+						return new JObject(
+							new JProperty("fiscalCode", ((String)context.Variables["merchantFiscalCode"])),
+							new JProperty("businessName", ((String)context.Variables["merchantBusinessName"])),
+							new JProperty("acquirerId", ((String)context.Variables["acquirerId"]))
+						).ToString();
+					}</set-body>
 			</send-request>
 			<choose>
 				<when condition="@(context.Variables["responseMerchantId"] == null)">
@@ -23,37 +33,6 @@
 				<when condition="@(((IResponse)context.Variables["responseMerchantId"]).StatusCode == 200)">
 					<set-variable name="merchantId" value="@((string)((IResponse)context.Variables["responseMerchantId"]).Body.As<string>())" />
 					<cache-store-value key="@((string)context.Variables["merchantIdCacheKey"])" value="@((string)context.Variables["merchantId"])" duration="900" />
-				</when>
-				<when condition="@(((IResponse)context.Variables["responseMerchantId"]).StatusCode == 404)">
-					<send-request mode="new" response-variable-name="createdMerchantId" timeout="10" ignore-error="true">
-						<set-url>@("https://${ingress_hostname}/idpaymerchant/idpay/merchant/add")</set-url>
-						<set-method>POST</set-method>
-						<set-header name="acquirerId" exists-action="override">
-							<value>@((String)context.Variables["acquirerId"])</value>
-						</set-header>
-						<set-header name="fiscalCode" exists-action="override">
-							<value>@((String)context.Variables["merchantFiscalCode"])</value>
-						</set-header>
-						<set-header name="businessName" exists-action="override">
-							<value>@((String)context.Variables["merchantBusinessName"])</value>
-						</set-header>
-					</send-request>
-					<choose>
-						<when condition="@(context.Variables["createdMerchantId"] == null)">
-							<return-response>
-								<set-status code="408" reason="Merchants Timeout" />
-							</return-response>
-						</when>
-						<when condition="@(((IResponse)context.Variables["createdMerchantId"]).StatusCode == 200)">
-							<set-variable name="merchantId" value="@((string)((IResponse)context.Variables["createdMerchantId"]).Body.As<string>())" />
-							<cache-store-value key="@((string)context.Variables["merchantIdCacheKey"])" value="@((string)context.Variables["merchantId"])" duration="900" />
-						</when>
-						<otherwise>
-							<return-response>
-								<set-status code="403" reason="Forbidden" />
-							</return-response>
-						</otherwise>
-					</choose>
 				</when>
 				<otherwise>
 					<return-response>
