@@ -97,6 +97,7 @@ paths:
           schema:
             type: string
             maxLength: 255
+            pattern: '^[a-zA-Z0-9]+$'
       requestBody:
         description: Request about auth bar-code trx
         content:
@@ -148,6 +149,10 @@ paths:
               $ref: '#/components/headers/X-RateLimit-Remaining'
             X-RateLimit-Reset:
               $ref: '#/components/headers/X-RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
         "403":
           description: Forbidden
           headers:
@@ -580,6 +585,9 @@ components:
           type: string
           description: 'ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione'
           maxLength: 24
+          enum:
+            - BARCODE
+            - QRCODE
     ErrorDTO:
       type: object
       required:
@@ -610,10 +618,14 @@ components:
           type: string
           description: "ENG: Transaction acquirer ID- IT: Identificativo della transazione rispetto all'acquirer"
           maxLength: 100
+          format: uuid
         additionalProperties:
           type: object
           additionalProperties:
             type: string
+            maxLength: 255
+            pattern: '.*'
+      additionalProperties: false
     AuthPaymentResponseDTO:
       type: object
       required:
@@ -627,10 +639,12 @@ components:
           type: string
           description: "ENG: Id of the payment - IT: Identificativo del pagamento"
           maxLength: 100
+          format: uuid
         trxCode:
           type: string
           description: "ENG: Transaction code - IT: Codice della transazione"
           maxLength: 100
+          pattern: '^[a-zA-Z0-9]+$'
         trxDate:
           type: string
           format: date-time
@@ -640,14 +654,17 @@ components:
           type: string
           description: "ENG: Id of the initiative - IT: Identificativo dell'iniziativa"
           maxLength: 100
+          pattern: '^[A-Za-z0-9_-]+$'
         initiativeName:
           type: string
           description: "ENG: Name of the initiative - IT: Nome della iniziativa"
           maxLength: 1000
+          pattern: '.*'
         businessName:
           type: string
           description: "ENG: Business name - IT: Nome dell'esercente"
           maxLength: 1000
+          pattern: '.*'
         status:
           type: string
           enum:
@@ -723,6 +740,7 @@ components:
           type: string
           description: "ENG: Error message- IT: Messaggio di errore"
           maxLength: 1000
+          pattern: '.*'
   securitySchemes:
     Bearer:
       type: apiKey
