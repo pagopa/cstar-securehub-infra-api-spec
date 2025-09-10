@@ -24,6 +24,13 @@
                 </claim>
               </required-claims>
             </validate-jwt>
+
+        <set-variable name="merchantId" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("merchant_id", ""))" />
+
+        <set-header name="x-merchant-id" exists-action="override">
+            <value>@((String)context.Variables["merchantId"])</value>
+        </set-header>
+
         <rate-limit calls="${rate_limit_merchants_portal}" renewal-period="60" />
         <cors allow-credentials="true">
             <allowed-origins>

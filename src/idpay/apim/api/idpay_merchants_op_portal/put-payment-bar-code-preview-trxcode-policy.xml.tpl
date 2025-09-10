@@ -13,9 +13,6 @@
 <policies>
     <inbound>
         <base />
-        <set-header name="x-merchant-id" exists-action="override">
-          <value>@(context.Principal.Claims["merchantId"])</value>
-        </set-header>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaypayment" />
         <rewrite-uri template="@("/idpay/payment/bar-code/preview/{trxCode}")" />
     </inbound>
