@@ -619,13 +619,9 @@ components:
           description: "ENG: Transaction acquirer ID- IT: Identificativo della transazione rispetto all'acquirer"
           maxLength: 100
           format: uuid
-        additionalProperties:
-          type: object
-          additionalProperties:
-            type: string
-            maxLength: 255
-            pattern: '.*'
-      additionalProperties: false
+      additionalProperties:
+        type: string
+        maxLength: 255
     AuthPaymentResponseDTO:
       type: object
       required:
