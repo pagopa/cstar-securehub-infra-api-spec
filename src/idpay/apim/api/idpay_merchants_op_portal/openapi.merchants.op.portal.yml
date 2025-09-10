@@ -16,15 +16,13 @@ servers:
 tags:
   - name: products
     description: Operations related to product listing and filtering
-  - name: payment
-    description: Operations related to payment
   - name: transaction
     description: Operations related to transaction
 paths:
-  /payment/bar-code/preview/{trxCode}:
+  /transactions/bar-code/{trxCode}/preview:
     put:
       tags:
-        - payment
+        - transaction
       summary: 'ENG: Preview Payment - IT: Anteprima pagamento'
       description: Preview payment
       operationId: previewPayment
