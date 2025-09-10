@@ -373,9 +373,7 @@ paths:
           schema:
             type: string
             enum:
-              - fiscalCode, desc
               - elaborationDateTime, desc
-              - fiscalCode, asc
               - elaborationDateTime, asc
         - name: fiscalCode
           in: query
