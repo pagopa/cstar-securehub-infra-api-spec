@@ -203,7 +203,7 @@ module "idpay_itn_merchants_portal" {
       operation_id = "getPointOfSaleTransactionsProcessed"
       xml_content = templatefile("./apim/api/idpay_merchants_portal/get-pos-transactions-processed-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-    })
+      })
     }
   ]
 
