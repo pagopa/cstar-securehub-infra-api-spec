@@ -1088,9 +1088,7 @@ components:
       schema:
         type: string
         enum:
-          - fiscalCode, desc
           - elaborationDateTime, desc
-          - fiscalCode, asc
           - elaborationDateTime, asc
     initiativeId_path:
       name: initiativeId
