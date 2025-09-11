@@ -588,6 +588,7 @@ components:
           enum:
             - BARCODE
             - QRCODE
+            - IDPAYCODE
     ErrorDTO:
       type: object
       required:
