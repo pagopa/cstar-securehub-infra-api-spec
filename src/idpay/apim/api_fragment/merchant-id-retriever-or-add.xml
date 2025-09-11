@@ -20,7 +20,10 @@
 						return new JObject(
 							new JProperty("fiscalCode", ((String)context.Variables["merchantFiscalCode"])),
 							new JProperty("businessName", ((String)context.Variables["merchantBusinessName"])),
-							new JProperty("acquirerId", ((String)context.Variables["acquirerId"]))
+							new JProperty("acquirerId", ((String)context.Variables["acquirerId"])),
+							new JProperty("acquirerId", ((String)context.Variables["iban"])),
+							new JProperty("acquirerId", ((String)context.Variables["holder"])),
+							new JProperty("acquirerId", ((String)context.Variables["activationDate"]))
 						).ToString();
 					}</set-body>
 			</send-request>

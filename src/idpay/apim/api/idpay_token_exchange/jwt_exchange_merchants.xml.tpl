@@ -42,17 +42,55 @@
         <set-variable name="acquirerId" value="PAGOPA" />
         <set-variable name="merchantFiscalCode" value="@{
             Jwt selcToken = (Jwt)context.Variables["outputToken"];
-
             JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
             return organization["fiscal_code"].ToString();
         }" />
 
         <set-variable name="merchantBusinessName" value="@{
-              Jwt selcToken = (Jwt)context.Variables["outputToken"];
-
-              JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
-        return organization["name"].ToString();
+            Jwt selcToken = (Jwt)context.Variables["outputToken"];
+            JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
+            return organization["name"].ToString();
         }" />
+
+        <set-variable name="merchantInstitutionId" value="@{
+            Jwt selcToken = (Jwt)context.Variables["outputToken"];
+            JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
+            return organization["id"].ToString();
+        }" />
+
+        <send-request mode="new" response-variable-name="institutionResponse" timeout="10" ignore-error="false">
+            <set-url>@("${selc_base_url}"+"/external/v2/onboarding/institutions/"+context.Variables["merchantInstitutionId"])</set-url>
+           <set-method>GET</set-method>
+            <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
+                <value>{{${selfcare_merchant_api_key_reference}}}</value>
+            </set-header>
+        </send-request>
+        <choose>
+            <when condition="@(((IResponse)context.Variables["institutionResponse"]).StatusCode == 200)">
+                    <set-variable name="instJson"
+                        value='@{
+                            var resp = (IResponse)context.Variables["institutionResponse"];
+                            return resp.Body.As<JObject>();
+                        }' />
+                    <set-variable name="iban"
+                        value='@(((JObject)context.Variables["instJson"])
+                                        .SelectToken("payment.iban")?.ToString())' />
+
+                        <set-variable name="holder"
+                        value='@(((JObject)context.Variables["instJson"])
+                                    .SelectToken("payment.holder")?.ToString())' />
+
+                        <set-variable name="activationDate"
+                        value='@(((JObject)context.Variables["instJson"])
+                                    .SelectToken("activatedAt")?.ToString())' />
+            </when>
+            <otherwise>
+                <!-- default/cleanup -->
+                <set-variable name="iban" value="" />
+                <set-variable name="holder" value="" />
+                <set-variable name="activationDate" value="" />
+            </otherwise>
+        </choose>
 
         <include-fragment fragment-id="idpay-itn-merchant-id-retriever-or-add" />
 
