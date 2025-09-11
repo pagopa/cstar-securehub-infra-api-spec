@@ -26,9 +26,15 @@
             </validate-jwt>
 
         <set-variable name="merchantId" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("merchant_id", ""))" />
-
         <set-header name="x-merchant-id" exists-action="override">
             <value>@((String)context.Variables["merchantId"])</value>
+        </set-header>
+        <set-variable name="pointOfSaleId" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("point_of_sale_id", ""))" />
+        <set-header name="x-point-of-sale-id" exists-action="override">
+            <value>@((String)context.Variables["pointOfSaleId"])</value>
+        </set-header>
+        <set-header name="x-acquirer-id" exists-action="override">
+            <value>PAGOPA</value>
         </set-header>
 
         <rate-limit calls="${rate_limit_merchants_portal}" renewal-period="60" />
