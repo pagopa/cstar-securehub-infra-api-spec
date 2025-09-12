@@ -13,8 +13,24 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayonboardingworkflow" />
-        <rewrite-uri template="@("idpay/onboarding/{initiativeId}/detail")" />
+        <send-request mode="new" response-variable-name="statusResponse" timeout="10" ignore-error="false">
+            <set-url>https://${ingress_load_balancer_hostname}/idpayonboardingworkflow/idpay/onboarding/{initiativeId}/status</set-url>
+            <set-method>GET</set-method>
+        </send-request>
+        <set-variable name="userStatus"
+            value="@((string)((IResponse)context.Variables["statusResponse"]).Body.As<JObject>()["status"])" />
+        <choose>
+            <when condition="@((string)context.Variables["userStatus"] == "ONBOARDING_OK")">
+                <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayonboardingworkflow" />
+                <rewrite-uri template="@("idpay/onboarding/{initiativeId}/detail")" />
+            </when>
+            <otherwise>
+                <return-response>
+                    <set-status code="200" reason="OK" />
+                    <set-body>@("{""status"": """ + (string)context.Variables["userStatus"] + @"""}")</set-body>
+                </return-response>
+            </otherwise>
+        </choose>
     </inbound>
     <backend>
         <base />
