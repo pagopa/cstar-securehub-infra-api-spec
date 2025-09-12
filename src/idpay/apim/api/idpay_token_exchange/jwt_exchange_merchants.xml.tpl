@@ -80,9 +80,16 @@
                         value='@(((JObject)context.Variables["instJson"])
                                     .SelectToken("payment.holder")?.ToString())' />
 
-                        <set-variable name="activationDate"
-                        value='@(((JObject)context.Variables["instJson"])
-                                    .SelectToken("activatedAt")?.ToString())' />
+                    <set-variable name="activationDate"
+                        value='@{
+                          var activatedAtRaw = ((JObject)context.Variables["instJson"]).SelectToken("activatedAt")?.ToString();
+                          if (!string.IsNullOrEmpty(activatedAtRaw))
+                          {
+                              return DateTime.Parse(activatedAtRaw).ToString("yyyy-MM-dd'T'HH:mm:ss");
+                          }
+                          return "";
+                        }' />
+
             </when>
             <otherwise>
                 <!-- default/cleanup -->
