@@ -1,3 +1,7 @@
 # see https://help.github.com/en/articles/about-code-owners#example-of-a-codeowners-file
 
 * @pagopa/payments-cloud-admin
+
+/src/idpay/ @pagopa/idpay-approver-team
+/src/mcshared/ @pagopa/mc-approver-team
+/src/srtp/ @pagopa/rtp-team-admin
