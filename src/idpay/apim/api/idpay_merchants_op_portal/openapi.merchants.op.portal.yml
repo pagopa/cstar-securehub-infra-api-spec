@@ -660,6 +660,7 @@ components:
           maximum: 1000000
     PointOfSaleTransactionDTO:
       type: object
+      additionalProperties: false
       properties:
         id:
           type: string
@@ -743,6 +744,8 @@ components:
           type: object
           additionalProperties:
             type: string
+            maxLength: 255
+            pattern: '.*'
     ErrorDTO:
       type: object
       required:
@@ -759,6 +762,7 @@ components:
           pattern: .*
     AuthBarCodePaymentDTO:
       type: object
+      additionalProperties: false
       required:
         - amountCents
         - idTrxAcquirer
@@ -779,6 +783,7 @@ components:
          additionalProperties:
           type: string
           maxLength: 255
+          pattern: '.*'
     AuthPaymentResponseDTO:
       type: object
       required:
