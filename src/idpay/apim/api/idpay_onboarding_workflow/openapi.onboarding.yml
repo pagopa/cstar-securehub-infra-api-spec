@@ -960,6 +960,8 @@ components:
             - ONBOARDING_TOO_MANY_REQUESTS
             - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
             - ONBOARDING_WAITING_LIST
+            - ONBOARDING_ON_EVALUATION
+            - ONBOARDING_ALREADY_ONBOARDED
           description: >-
             'ENG: Error code:
             ONBOARDING_USER_UNSUBSCRIBED: The user has unsubscribed from initiative,
