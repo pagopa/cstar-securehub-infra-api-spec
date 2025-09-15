@@ -960,8 +960,6 @@ components:
             - ONBOARDING_TOO_MANY_REQUESTS
             - ONBOARDING_FAMILY_UNIT_ALREADY_JOINED
             - ONBOARDING_WAITING_LIST
-            - ONBOARDING_ON_EVALUATION
-            - ONBOARDING_ALREADY_ONBOARDED
           description: >-
             'ENG: Error code:
             ONBOARDING_USER_UNSUBSCRIBED: The user has unsubscribed from initiative,
@@ -1055,7 +1053,7 @@ components:
         general:
           $ref: "#/components/schemas/InitiativeGeneralDTO"
         additionalInfo:
-          $ref: "#/components/schemas/InitiativeAdditionalDTO"
+          $ref: '#/components/schemas/InitiativeAdditionalDTO'
         beneficiaryRule:
           $ref: "#/components/schemas/InitiativeBeneficiaryRuleDTO"
     InitiativeGeneralDTO:
@@ -1150,7 +1148,7 @@ components:
             ^(https):\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/[a-zA-Z0-9._~!$&'()*+,;=:@%-]*)*(\?[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?(#[a-zA-Z0-9._~!$&'()*+,;=:@%/?-]*)?$
           maxLength: 255
         channels:
-          $ref: "#/components/schemas/ChannelArrayDTO"
+          $ref: '#/components/schemas/ChannelArrayDTO'
         logoFileName:
           type: string
           description: "ENG: Logo file name - IT: Nome del file del logo"
@@ -1173,7 +1171,7 @@ components:
       type: array
       maxItems: 10
       items:
-        $ref: "#/components/schemas/ChannelDTO"
+        $ref: '#/components/schemas/ChannelDTO'
     ChannelDTO:
       type: object
       properties:
