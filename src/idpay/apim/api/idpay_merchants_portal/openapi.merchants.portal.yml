@@ -1246,6 +1246,10 @@ components:
           type: string
           format: date-time
           description: "ENG: Time and date of the last status update <br> IT: La data ed ora dell'ultimo aggiornamento dello stato"
+        activationDate:
+          type: string
+          format: date-time
+          description: "ENG: Time and date of the merchant activation date <br> IT: La data ed ora di attivazione dell'esercente"
     TransactionCreationRequest:
       type: object
       required:
