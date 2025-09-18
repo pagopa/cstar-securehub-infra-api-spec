@@ -185,7 +185,7 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_INVALID_REQUEST
-                message: 'Required initiativeId is not present'
+                message: Required initiativeId is not present
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -198,7 +198,7 @@ paths:
         '401':
           description: Authentication failed
           content:
-            application/json: { }
+            application/json: {}
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -216,7 +216,7 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_USER_NOT_ONBOARDED
-                message: 'User not onboarded'
+                message: User not onboarded
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -234,7 +234,7 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_NOT_FOUND_OR_EXPIRED
-                message: 'Cannot find transaction with trxCode trxCode'
+                message: Cannot find transaction with trxCode trxCode
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -252,7 +252,7 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_TOO_MANY_REQUESTS
-                message: 'Too many requests'
+                message: Too many requests
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -270,7 +270,7 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_GENERIC_ERROR
-                message: 'application error connection microservice error'
+                message: application error connection microservice error
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
