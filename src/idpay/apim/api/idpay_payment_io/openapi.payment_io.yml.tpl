@@ -170,13 +170,13 @@ paths:
                 $ref: '#/components/schemas/TransactionBarCodeResponse'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '400':
           description: Bad request
           content:
@@ -185,29 +185,29 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_INVALID_REQUEST
-                message: "Required initiativeId is not present"
+                message: 'Required initiativeId is not present'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '401':
           description: Authentication failed
           content:
-            application/json: {}
+            application/json: { }
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '403':
           description: User not onboarded
           content:
@@ -216,16 +216,16 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_USER_NOT_ONBOARDED
-                message: "User not onboarded"
+                message: 'User not onboarded'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '404':
           description: Transaction not found
           content:
@@ -234,16 +234,16 @@ paths:
                 $ref: '#/components/schemas/TransactionErrorDTO'
               example:
                 code: PAYMENT_NOT_FOUND_OR_EXPIRED
-                message: "Cannot find transaction with trxCode trxCode"
+                message: 'Cannot find transaction with trxCode trxCode'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '429':
           description: Too many Request
           content:
@@ -255,13 +255,13 @@ paths:
                 message: 'Too many requests'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
         '500':
           description: Generic error
           content:
@@ -273,13 +273,13 @@ paths:
                 message: 'application error connection microservice error'
           headers:
             Access-Control-Allow-Origin:
-              $ref: "#/components/headers/Access-Control-Allow-Origin"
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
             RateLimit-Limit:
-              $ref: "#/components/headers/RateLimit-Limit"
+              $ref: '#/components/headers/RateLimit-Limit'
             RateLimit-Reset:
-              $ref: "#/components/headers/RateLimit-Reset"
+              $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
-              $ref: "#/components/headers/Retry-After"
+              $ref: '#/components/headers/Retry-After'
 components:
   parameters:
     ApiVersionHeader:
