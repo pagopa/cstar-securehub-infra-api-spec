@@ -52,13 +52,13 @@ module "idpay_itn_users_portal_api" {
 
   description  = "IDPAY ITN Users Portal"
   display_name = "IDPAY ITN Users Portal"
-  path         = "idpay-itn/onboarding/web"
+  path         = "idpay-itn/web"
   protocols    = ["https"]
 
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayonboardingworkflow/idpay/onboarding/web"
 
   content_format = "openapi"
-  content_value = templatefile("./apim/api/idpay_onboarding_workflow/openapi.onboarding.yml", {
+  content_value = templatefile("./apim/api/idpay_appio_full/openapi.appio.full.yml", {
     api_channel = "WEB"
   })
 
@@ -71,7 +71,7 @@ module "idpay_itn_users_portal_api" {
 
     {
       operation_id = "initiativeDetail"
-      xml_content = templatefile("./apim/api/idpay_onboarding_workflow/get-initiative-details-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_onboarding_workflow/get-initiative-details-web-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
@@ -84,6 +84,24 @@ module "idpay_itn_users_portal_api" {
     {
       operation_id = "saveOnboarding"
       xml_content = templatefile("./apim/api/idpay_onboarding_workflow/put-save-onboarding-web-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "getWalletDetail"
+      xml_content = templatefile("./apim/api/idpay_wallet/get-wallet-detail-web-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "getTimeline"
+      xml_content = templatefile("./apim/api/idpay_timeline/get-timeline-web-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "retrievectiveBarCodeTransaction"
+      xml_content = templatefile("./apim/api/idpay_payment_io/get-active-barcode-web-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
