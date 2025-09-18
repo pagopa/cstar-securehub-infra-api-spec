@@ -3528,7 +3528,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
+                $ref: '#/components/schemas/TransactionErrorDTO1'
               example:
                 code: PAYMENT_INVALID_REQUEST
                 message: Required initiativeId is not present
@@ -3559,7 +3559,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
+                $ref: '#/components/schemas/TransactionErrorDTO1'
               example:
                 code: PAYMENT_USER_NOT_ONBOARDED
                 message: User not onboarded
@@ -3577,7 +3577,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
+                $ref: '#/components/schemas/TransactionErrorDTO1'
               example:
                 code: PAYMENT_NOT_FOUND_OR_EXPIRED
                 message: Cannot find transaction with trxCode trxCode
@@ -3595,7 +3595,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
+                $ref: '#/components/schemas/TransactionErrorDTO1'
               example:
                 code: PAYMENT_TOO_MANY_REQUESTS
                 message: Too many requests
@@ -3613,7 +3613,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
+                $ref: '#/components/schemas/TransactionErrorDTO1'
               example:
                 code: PAYMENT_GENERIC_ERROR
                 message: application error connection microservice error
@@ -5984,11 +5984,11 @@ components:
       name: initiativeId
       in: path
       required: true
-      description: "ENG: Initiative ID - IT: Identificativo dell'iniziativa"
+      description: 'ENG: Initiative ID - IT: Identificativo dell'iniziativa'
       schema:
         type: string
         maxLength: 24
-        pattern: "^[a-zA-Z0-9]+$"
+        pattern: '^[a-zA-Z0-9]+$'
   headers:
     Access-Control-Allow-Origin:
       description: >-
