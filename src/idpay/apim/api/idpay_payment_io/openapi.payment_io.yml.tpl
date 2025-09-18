@@ -296,11 +296,11 @@ components:
       name: initiativeId
       in: path
       required: true
-      description: 'ENG: Initiative ID - IT: Identificativo dell'iniziativa'
+      description: 'ENG: Initiative ID - IT: Identificativo dell''iniziativa'
       schema:
         type: string
         maxLength: 24
-        pattern: ''^[a-zA-Z0-9]+$'
+        pattern: '^[a-zA-Z0-9]+$'
   headers:
     Access-Control-Allow-Origin:
       description: Indicates whether the response can be shared with requesting code from the given origin
