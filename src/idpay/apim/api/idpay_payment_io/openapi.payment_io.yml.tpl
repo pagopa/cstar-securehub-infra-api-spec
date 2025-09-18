@@ -18,7 +18,7 @@ paths:
     post:
       tags:
         - payment
-      summary: "ENG: Create a transaction ID - IT: Creazione della Transazione"
+      summary: 'ENG: Create a transaction ID - IT: Creazione della Transazione'
       description: "Create a transaction"
       operationId: createBarCodeTransaction
       parameters:
@@ -66,7 +66,7 @@ paths:
               $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
               $ref: "#/components/headers/Retry-After"
-        "401":
+        '401':
           description: Authentication failed
           content:
             application/json: {}
@@ -155,8 +155,8 @@ paths:
     get:
       tags:
         - payment
-      summary: "ENG: Retrieve the active transaction - IT: Recupera la transazione attiva"
-      description: "Retrieve a transaction"
+      summary: 'ENG: Retrieve the active transaction - IT: Recupera la transazione attiva'
+      description: 'Retrieve a transaction'
       operationId: retrievectiveBarCodeTransaction
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
@@ -195,7 +195,7 @@ paths:
               $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
               $ref: "#/components/headers/Retry-After"
-        "401":
+        '401':
           description: Authentication failed
           content:
             application/json: {}
@@ -296,11 +296,11 @@ components:
       name: initiativeId
       in: path
       required: true
-      description: "ENG: Initiative ID - IT: Identificativo dell'iniziativa"
+      description: 'ENG: Initiative ID - IT: Identificativo dell'iniziativa'
       schema:
         type: string
         maxLength: 24
-        pattern: "^[a-zA-Z0-9]+$"
+        pattern: ''^[a-zA-Z0-9]+$'
   headers:
     Access-Control-Allow-Origin:
       description: Indicates whether the response can be shared with requesting code from the given origin

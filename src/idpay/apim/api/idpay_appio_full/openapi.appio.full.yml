@@ -3499,8 +3499,8 @@ paths:
     get:
       tags:
         - payment
-      summary: "ENG: Retrieve the active transaction - IT: Recupera la transazione attiva"
-      description: "Retrieve a transaction"
+      summary: 'ENG: Retrieve the active transaction - IT: Recupera la transazione attiva'
+      description: 'Retrieve a transaction'
       operationId: retrievectiveBarCodeTransaction
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
@@ -3539,7 +3539,7 @@ paths:
               $ref: "#/components/headers/RateLimit-Reset"
             Retry-After:
               $ref: "#/components/headers/Retry-After"
-        "401":
+        '401':
           description: Authentication failed
           content:
             application/json: { }
