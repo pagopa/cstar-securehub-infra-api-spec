@@ -68,7 +68,7 @@ locals {
       description           = "Shared Multi Channel Services"
       subscription_required = false
       published             = true
-      policy  = templatefile(
+      policy = templatefile(
         "${path.module}/apim/api/mcshared/base_policy.xml",
         {
           bonus_fe_origins = join(
@@ -146,7 +146,7 @@ locals {
   origins_bonus_elettrodomestici = {
     base = concat(
       local.bonus_el_env_dns_public_zones,
-        var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001", "https://localhost:5173", "http://localhost:5173"] : []
+      var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001", "https://localhost:5173", "http://localhost:5173"] : []
     )
   }
 

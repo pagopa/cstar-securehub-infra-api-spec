@@ -22,4 +22,3 @@ resource "azurerm_api_management_product_policy" "this" {
 
   xml_content = each.value.policy
 }
-
