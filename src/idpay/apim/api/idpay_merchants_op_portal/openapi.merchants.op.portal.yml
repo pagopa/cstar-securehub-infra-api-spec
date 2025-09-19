@@ -618,6 +618,7 @@ components:
           enum:
             - REWARDED
             - CANCELLED
+            - REFUNDED
         channel:
           type: string
           description: 'ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione'
@@ -1343,6 +1344,7 @@ components:
         enum:
           - REWARDED
           - CANCELLED
+          - REFUNDED
     sort_trx_processed_query:
       name: sort
       in: query
@@ -1351,7 +1353,9 @@ components:
         type: string
         enum:
           - elaborationDateTime, desc
+          - status, desc
           - elaborationDateTime, asc
+          - status, asc
     status_trx_in_progress_query:
       name: status
       in: query
