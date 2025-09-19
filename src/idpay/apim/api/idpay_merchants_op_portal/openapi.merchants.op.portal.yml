@@ -741,7 +741,7 @@ components:
           format: uri
           maxLength: 2048
           description: "ENG: Url of the QR code link - IT: Url del QR code"
-        additionalProperties:
+        "additionalProperties":
           type: object
           additionalProperties:
             type: string
@@ -779,7 +779,7 @@ components:
           description: "ENG: Transaction acquirer ID- IT: Identificativo della transazione rispetto all'acquirer"
           maxLength: 100
           format: uuid
-        additionalProperties:
+        "additionalProperties":
          type: object
          additionalProperties:
           type: string
