@@ -104,6 +104,9 @@
         <set-header name="x-user-id" exists-action="override">
             <value>@((string)context.Variables["tokenPDV"])</value>
         </set-header>
+        <set-header name="X-Client-Channel" exists-action="override">
+            <value>IO</value>
+        </set-header>
         <base />
     </inbound>
     <backend>

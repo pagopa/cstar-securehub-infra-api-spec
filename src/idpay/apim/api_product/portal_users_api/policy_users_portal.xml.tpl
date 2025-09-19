@@ -142,6 +142,10 @@
         <set-header name="x-user-id" exists-action="override">
             <value>@((string)context.Variables["userId"])</value>
         </set-header>
+        <set-header name="X-Client-Channel" exists-action="override">
+            <value>WEB</value>
+        </set-header>
+
     </inbound>
     <backend>
         <base />
