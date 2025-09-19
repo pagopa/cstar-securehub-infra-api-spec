@@ -842,7 +842,7 @@ components:
           pattern: .*
         formalMotivation:
           type: string
-          maxLength: 255
+          maxLength: 200
           pattern: .*
     InstitutionResponse:
       title: InstitutionResponse
