@@ -618,6 +618,7 @@ components:
           enum:
             - REWARDED
             - CANCELLED
+            - REFUNDED
         channel:
           type: string
           description: 'ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione'
@@ -740,7 +741,7 @@ components:
           format: uri
           maxLength: 2048
           description: "ENG: Url of the QR code link - IT: Url del QR code"
-        additionalProperties:
+        "additionalProperties":
           type: object
           additionalProperties:
             type: string
@@ -778,7 +779,7 @@ components:
           description: "ENG: Transaction acquirer ID- IT: Identificativo della transazione rispetto all'acquirer"
           maxLength: 100
           format: uuid
-        additionalProperties:
+        "additionalProperties":
          type: object
          additionalProperties:
           type: string
@@ -1343,6 +1344,7 @@ components:
         enum:
           - REWARDED
           - CANCELLED
+          - REFUNDED
     sort_trx_processed_query:
       name: sort
       in: query
@@ -1351,7 +1353,9 @@ components:
         type: string
         enum:
           - elaborationDateTime, desc
+          - status, desc
           - elaborationDateTime, asc
+          - status, asc
     status_trx_in_progress_query:
       name: status
       in: query
