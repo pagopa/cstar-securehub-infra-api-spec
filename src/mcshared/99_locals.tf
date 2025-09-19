@@ -68,6 +68,15 @@ locals {
       description           = "Shared Multi Channel Services"
       subscription_required = false
       published             = true
+      policy  = templatefile(
+        "${path.module}/apim/api/mcshared/base_policy.xml",
+        {
+          bonus_fe_origins = join(
+            "\n",
+            formatlist("    <origin>%s</origin>", local.origins_bonus_elettrodomestici.base)
+          )
+        }
+      )
     }
   }
 
@@ -117,4 +126,28 @@ locals {
       })
     }
   }
+
+  # 🔎 DNS - Bonus Elettrodomestici
+  bonus_el_dns_public_zones = [
+    "bonuselettrodomestici.it",
+    "bonuselettrodomestici.com",
+    "bonuselettrodomestici.info",
+    "bonuselettrodomestici.io",
+    "bonuselettrodomestici.net",
+    "bonuselettrodomestici.eu",
+    "bonuselettrodomestici.pagopa.it"
+  ]
+
+  bonus_el_env_dns_public_zones = [
+    for i in local.bonus_el_dns_public_zones :
+    var.env_short != "p" ? "https://${var.env}.${i}" : "https://${i}"
+  ]
+
+  origins_bonus_elettrodomestici = {
+    base = concat(
+      local.bonus_el_env_dns_public_zones,
+        var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001", "https://localhost:5173", "http://localhost:5173"] : []
+    )
+  }
+
 }
