@@ -77,6 +77,13 @@ module "idpay_itn_mil_payment" {
 
   api_operation_policies = [
     {
+      operation_id = "capturePayment"
+
+      xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_payment/put-capture-payment-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
       operation_id = "createGenericTransaction"
 
       xml_content = templatefile("./apim/api/idpay_mil/idpay_mil_payment/post-create-transaction-policy.xml.tpl", {
