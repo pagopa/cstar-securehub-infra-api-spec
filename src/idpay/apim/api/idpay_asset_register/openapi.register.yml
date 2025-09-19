@@ -840,6 +840,10 @@ components:
           type: string
           maxLength: 50
           pattern: .*
+        formalMotivation:
+          type: string
+          maxLength: 200
+          pattern: .*
     InstitutionResponse:
       title: InstitutionResponse
       type: object
