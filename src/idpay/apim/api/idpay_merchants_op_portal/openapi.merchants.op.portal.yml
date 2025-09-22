@@ -38,7 +38,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionResponse'
+                $ref: '#/components/schemas/TransactionBarCodeResponse'
         '400':
           description: Bad request
           content:
@@ -874,11 +874,11 @@ components:
           maxLength: 100
           format: uuid
         "additionalProperties":
-         type: object
-         additionalProperties:
-          type: string
-          maxLength: 255
-          pattern: '.*'
+          type: object
+          additionalProperties:
+            type: string
+            maxLength: 255
+            pattern: '.*'
     AuthPaymentResponseDTO:
       type: object
       required:
