@@ -12,7 +12,7 @@
 -->
 <policies>
   <inbound>
-    <cors allow-credentials="true">
+    <cors allow-credentials="true" terminate-unmatched-request="false">
       <allowed-origins>
         ${bonus_fe_origins}
       </allowed-origins>
