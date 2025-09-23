@@ -41,7 +41,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_merchants_token_ex
     openid-config-url                   = local.idpay-oidc-config_url,
     selfcare-issuer                     = local.selfcare-issuer,
     jwt_cert_signing_thumbprint         = azurerm_api_management_certificate.idpay_merchants_token_exchange_cert_jwt.thumbprint,
-    idpay-portal-hostname               = local.idpay-portal-hostname,
+    idpay-portal-hostname               = local.idpay-portal-welfare,
     origins                             = local.origins.base,
     selfcare_merchant_api_key_reference = azurerm_api_management_named_value.selfcare_merchant_api_key.display_name,
     selc_base_url                       = var.selc_base_url

@@ -48,8 +48,7 @@ locals {
         "https://management.${data.azurerm_dns_zone.public.name}",
         "https://${local.apim_name}.developer.azure-api.net",
         "https://${local.idpay-portal-hostname}",
-        "https://${local.idpay-portal-welfare}",
-        "https://${local.idpay-register-hostname}",
+        "https://${local.idpay-portal-welfare}"
       ],
       var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001"] : []
     )
@@ -69,9 +68,9 @@ locals {
   # Selfcare
   #
   idpay-register-hostname = "eie.${data.azurerm_dns_zone.public.name}"
-  idpay-portal-hostname   = "welfare-italy.${data.azurerm_dns_zone.public.name}"
+  idpay-portal-hostname   = "welfare.${data.azurerm_dns_zone.public.name}"
   idpay-portal-welfare    = "welfare.${data.azurerm_dns_zone.public.name}"
-  idpay-oidc-config_url   = "https://selfcare.${data.azurerm_dns_zone.public.name}/selfcare/openid-configuration.json"
+  idpay-oidc-config_url   = "https://welfare.${data.azurerm_dns_zone.public.name}/selfcare/openid-configuration.json"
   selfcare-issuer         = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
 
   # monitor_appinsights_name        = "${local.product}-appinsights"
