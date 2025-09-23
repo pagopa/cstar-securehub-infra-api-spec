@@ -18,6 +18,8 @@ tags:
     description: Operations related to product listing and filtering
   - name: transaction
     description: Operations related to transaction
+  - name: point-of-sales
+    description: Operations on merchant points of sale
 paths:
   /transactions/bar-code/{trxCode}/preview:
     put:
@@ -282,7 +284,71 @@ paths:
           $ref: '#/components/responses/GET_transactions_in_progress_429_Response'
         '500':
           $ref: '#/components/responses/GET_transactions_in_progress_500_Response'
-
+  /{merchantId}/point-of-sales/{pointOfSaleId}:
+    get:
+      tags:
+        - point-of-sales
+      summary: Retrieve a point of sale
+      description: "Return a point of sale for the specified merchant."
+      operationId: getPointOfSale
+      parameters:
+        - name: merchantId
+          in: path
+          description: The merchant ID
+          required: true
+          schema:
+            type: string
+        - name: pointOfSaleId
+          in: path
+          description: The point of sale ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response with point of sale detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleDTO"
+        "400":
+          description: Bad request - Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleErrorDTO"
+              example:
+                code: POINT_OF_SALE_BAD_REQUEST
+                message: Something went wrong handling request
+        "401":
+          description: Unauthorized - Authentication Failed
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleErrorDTO"
+              example:
+                code: POINT_OF_SALE_NOT_FOUND
+                message: Point of sale with id 123 not found.
+        "429":
+          description: Too many Request - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleErrorDTO"
+              example:
+                code: POINT_OF_SALE_TOO_MANY_REQUESTS
+                message: Too many requests
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleErrorDTO"
+              example:
+                code: POINT_OF_SALE_GENERIC_ERROR
+                message: An error occurred during file reading
 components:
   headers:
     X-RateLimit-Limit:
