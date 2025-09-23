@@ -244,14 +244,59 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/GET_transactions_processed_200_Response'
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
         '400':
           $ref: '#/components/responses/GET_transactions_processed_400_Response'
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
         '401':
           $ref: '#/components/responses/GET_transactions_processed_401_Response'
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
         '404':
           $ref: '#/components/responses/GET_transactions_processed_404_Response'
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
         '429':
           $ref: '#/components/responses/GET_transactions_processed_429_Response'
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
         '500':
           $ref: '#/components/responses/GET_transactions_processed_500_Response'
   /initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions:
@@ -288,6 +333,7 @@ paths:
         - transaction
       summary: Point of sales delete transaction
       operationId: deleteTransaction
+      description: "ENG: Delete a transaction associated to a point of sale - IT: Elimina una transazione associata ad un punto vendita"
       parameters:
         - name: transactionId
           in: path
@@ -295,6 +341,8 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 255
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Ok
