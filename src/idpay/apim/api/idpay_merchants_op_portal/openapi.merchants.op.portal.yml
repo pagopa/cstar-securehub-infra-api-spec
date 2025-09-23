@@ -282,7 +282,7 @@ paths:
           $ref: '#/components/responses/GET_transactions_in_progress_429_Response'
         '500':
           $ref: '#/components/responses/GET_transactions_in_progress_500_Response'
-  /{transactionId}:
+  /transactions/{transactionId}:
     delete:
       tags:
         - transaction
