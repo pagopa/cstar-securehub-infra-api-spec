@@ -116,7 +116,25 @@ paths:
           description: The transaction ID
           required: true
           schema:
-            type: string
+             type: string
+                  - name: x-merchant-id
+                    in: header
+                    description: The merchant ID
+                    required: true
+                    schema:
+                      type: string
+                  - name: x-acquirer-id
+                    in: header
+                    description: The acquirer ID
+                    required: true
+                    schema:
+                      type: string
+                  - name: x-point-of-sale-id
+                    in: header
+                    description: The Point of Sale ID
+                    required: true
+                    schema:
+                      type: string
       responses:
         '200':
           description: Ok
