@@ -1817,6 +1817,11 @@ components:
           type: string
           description: 'ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione'
           maxLength: 24
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
+          description: "ENG: Additional properties of the transaction - IT: Proprietà aggiuntive della transazione"
   securitySchemes:
     Bearer:
       type: apiKey

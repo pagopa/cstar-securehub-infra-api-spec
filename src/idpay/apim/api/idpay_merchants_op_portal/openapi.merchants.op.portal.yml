@@ -749,6 +749,11 @@ components:
             - BARCODE
             - QRCODE
             - IDPAYCODE
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
+          description: "ENG: Additional properties of the transaction - IT: Proprietà aggiuntive della transazione"
     PointOfSaleTransactionsListDTO:
       type: object
       properties:
