@@ -29,11 +29,12 @@ paths:
       parameters:
         - name: trxCode
           in: path
-          description: The transaction code
+          description: 'ENG: The transaction''s code - IT: Codice della transazione'
           required: true
           schema:
             type: string
             maxLength: 24
+            pattern: '^[a-zA-Z0-9]+$'
       responses:
         '200':
           description: Ok
@@ -79,10 +80,10 @@ paths:
               $ref: '#/components/headers/X-RateLimit-Remaining'
             X-RateLimit-Reset:
               $ref: '#/components/headers/X-RateLimit-Reset'
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorDTO'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
         '404':
           description: The requested resource was not found
           headers:
