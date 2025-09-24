@@ -578,15 +578,29 @@ components:
       properties:
         id:
           type: string
+          description: 'ENG: Transaction ID <br> IT: ID della transazione'
+          maxLength: 64
+          pattern: .*
         trxCode:
           type: string
+          description: 'ENG: Transaction code - IT: Codice della transazione (codice sconto)'
+          maxLength: 24
+          pattern: '^[a-zA-Z0-9]+$'
         initiativeId:
           type: string
+          description: "ENG: Id of the initiative - IT: Identificativo dell'iniziativa"
+          maxLength: 100
+          pattern: '^[A-Za-z0-9_-]+$'
         initiativeName:
           type: string
+          description: "ENG: Name of the initiative - IT: Nome della iniziativa"
+          maxLength: 1000
+          pattern: '.*'
         trxDate:
           type: string
           format: date-time
+          description: 'ENG: Transaction date - IT: Data della transazione'
+          maxLength: 255
         status:
           type: string
           enum:
@@ -598,8 +612,12 @@ components:
             - REJECTED
         trxExpirationSeconds:
           type: number
+          description: "ENG: Expiration time of the transaction, in seconds - IT: Scadenza della transazione, in secondi"
+          minimum: 0
         residualBudgetCents:
           type: number
+          description: "ENG: The residual budget - IT: Budget residuo"
+          minimum: 0
     PreviewPaymentRequestDTO:
       type: object
       properties:
