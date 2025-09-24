@@ -505,6 +505,8 @@ paths:
               $ref: '#/components/headers/X-RateLimit-Remaining'
             X-RateLimit-Reset:
               $ref: '#/components/headers/X-RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
           content:
             application/json:
               schema:
@@ -992,6 +994,7 @@ components:
         id:
           type: string
           description: "ENG: The id for the point of sale <br> IT: Id del punto vendita"
+          maxLength: 255
         type:
           type: string
           enum:
@@ -1077,6 +1080,7 @@ components:
         message:
           type: string
           description: "ENG: Error message- IT: Messaggio di errore"
+          maxLength: 1000
     ErrorDTO:
       type: object
       required:
