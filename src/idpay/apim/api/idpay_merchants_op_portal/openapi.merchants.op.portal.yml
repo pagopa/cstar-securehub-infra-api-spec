@@ -33,6 +33,7 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 24
       responses:
         '200':
           description: Ok
@@ -78,6 +79,10 @@ paths:
               $ref: '#/components/headers/X-RateLimit-Remaining'
             X-RateLimit-Reset:
               $ref: '#/components/headers/X-RateLimit-Reset'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorDTO'
         '404':
           description: The requested resource was not found
           headers:
@@ -101,6 +106,8 @@ paths:
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
             X-RateLimit-Limit:
               $ref: '#/components/headers/X-RateLimit-Limit'
             X-RateLimit-Remaining:
