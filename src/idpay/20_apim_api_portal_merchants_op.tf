@@ -64,6 +64,12 @@ module "idpay_itn_portal_merchants_op_api" {
       })
     },
     {
+      operation_id = "capturePayment"
+      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/put-capture-payment-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
       operation_id = "previewPayment"
       xml_content = templatefile("./apim/api/idpay_merchants_op_portal/put-payment-bar-code-preview-trxcode-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
