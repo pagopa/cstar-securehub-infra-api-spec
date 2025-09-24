@@ -523,7 +523,6 @@ paths:
               example:
                 code: POINT_OF_SALE_GENERIC_ERROR
                 message: An error occurred during file reading
-
 components:
   headers:
     X-RateLimit-Limit:

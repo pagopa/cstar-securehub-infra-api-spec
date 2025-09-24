@@ -46,7 +46,7 @@ module "idpay_itn_portal_merchants_op_api" {
   path         = "idpay-itn/merchant-op"
   protocols    = ["https"]
 
-  service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaymerchant/idpay"
+  service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaymerchant/idpay/merchant/portal"
 
   content_format = "openapi"
   content_value  = file("./apim/api/idpay_merchants_op_portal/openapi.merchants.op.portal.yml")
