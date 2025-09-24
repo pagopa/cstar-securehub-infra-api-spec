@@ -362,6 +362,7 @@ paths:
         - $ref: '#/components/parameters/sort_trx_processed_query'
         - $ref: '#/components/parameters/fiscalCode_query'
         - $ref: '#/components/parameters/status_trx_processed_query'
+        - $ref: '#/components/parameters/productGtin_query'
         - $ref: '#/components/parameters/initiativeId_path'
         - $ref: '#/components/parameters/pointOfSaleId_path'
       responses:
@@ -390,6 +391,7 @@ paths:
         - $ref: '#/components/parameters/sort_trx_in_progress_query'
         - $ref: '#/components/parameters/fiscalCode_query'
         - $ref: '#/components/parameters/status_trx_in_progress_query'
+        - $ref: '#/components/parameters/productGtin_query'
         - $ref: '#/components/parameters/initiativeId_path'
         - $ref: '#/components/parameters/pointOfSaleId_path'
       responses:
@@ -993,6 +995,7 @@ components:
           maximum: 1000000
     PointOfSaleTransactionProcessedDTO:
       type: object
+      additionalProperties: false
       properties:
         id:
           type: string
@@ -1042,6 +1045,12 @@ components:
             - BARCODE
             - QRCODE
             - IDPAYCODE
+        additionalProperties:
+          type: object
+          additionalProperties:
+            type: string
+            maxLength: 255
+            pattern: '.*'
     PointOfSaleTransactionsListDTO:
       type: object
       properties:
@@ -1124,11 +1133,8 @@ components:
           type: string
           description: 'ENG: The status of the transaction - IT: Lo stato della transazione'
           enum:
-            - CREATED
-            - IDENTIFIED
-            - AUTHORIZATION_REQUESTED
             - AUTHORIZED
-            - REJECTED
+            - CAPTURED
         splitPayment:
           type: boolean
           description: "ENG: TRUE, if the authorized sum is less than the requested sum or FALSE, if the authorized sum is equal to the requested sum - IT: TRUE, se la somma autorizzata è inferiore alla somma richiesta o FALSE, se la somma autorizzata è uguale alla somma richiesta."
@@ -1156,7 +1162,7 @@ components:
           format: uri
           maxLength: 2048
           description: "ENG: Url of the QR code link - IT: Url del QR code"
-        "additionalProperties":
+        additionalProperties:
           type: object
           additionalProperties:
             type: string
@@ -1287,7 +1293,7 @@ components:
           description: "ENG: Transaction acquirer ID- IT: Identificativo della transazione rispetto all'acquirer"
           maxLength: 100
           format: uuid
-        "additionalProperties":
+        additionalProperties:
           type: object
           additionalProperties:
             type: string
@@ -1862,8 +1868,10 @@ components:
         enum:
           - elaborationDateTime, desc
           - status, desc
+          - productCategory, desc
           - elaborationDateTime, asc
           - status, asc
+          - productCategory, asc
     status_trx_in_progress_query:
       name: status
       in: query
@@ -1872,11 +1880,16 @@ components:
       schema:
         type: string
         enum:
-          - CREATED
-          - IDENTIFIED
-          - AUTHORIZATION_REQUESTED
           - AUTHORIZED
-          - REJECTED
+          - CAPTURED
+    productGtin_query:
+      name: productGtin
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 14
+        pattern: ^[a-zA-Z0-9]{1,14}$
     sort_trx_in_progress_query:
       name: sort
       in: query
@@ -1885,7 +1898,11 @@ components:
         type: string
         enum:
           - elaborationDateTime, desc
+          - status, desc
+          - productCategory, desc
           - elaborationDateTime, asc
+          - status, asc
+          - productCategory, asc
     initiativeId_path:
       name: initiativeId
       in: path
