@@ -937,6 +937,82 @@ components:
             type: string
             maxLength: 255
             pattern: '.*'
+    PointOfSaleDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "ENG: The id for the point of sale <br> IT: Id del punto vendita"
+        type:
+          type: string
+          enum:
+            - PHYSICAL
+            - ONLINE
+          description: "ENG: The type of the point of sale <br> IT: Il tipo del punto vendita"
+        franchiseName:
+          type: string
+          description: "ENG: The name of the point of sale <br> IT: Il nome del punto vendita"
+        region:
+          type: string
+          description: "ENG: The region of the point of sale <br> IT: La regione del punto vendita"
+        province:
+          type: string
+          description: "ENG: The province of the point of sale <br> IT: La provincia del punto vendita"
+        city:
+          type: string
+          description: "ENG: The city of the point of sale <br> IT: La città del punto vendita"
+        zipCode:
+          type: string
+          description: "ENG: The zip code of the point of sale <br> IT: Il CAP del punto vendita"
+        address:
+          type: string
+          description: "ENG: The address of the point of sale <br> IT: L'indirizzo completo del punto vendita"
+        streetNumber:
+          type: string
+          description: "ENG: The street number of the point of sale <br> IT: Il numero civico del punto vendita"
+        webSite:
+          type: string
+          description: "ENG: The website of the point of sale <br> IT: Il sito web del punto vendita"
+        contactEmail:
+          type: string
+          description: "ENG: The email of the contact person <br> IT: L'email del referente"
+        contactName:
+          type: string
+          description: "ENG: The name of the contact person <br> IT: Il nome del referente"
+        contactSurname:
+          type: string
+          description: "ENG: The surname of the contact person <br> IT: Il cognome del referente"
+        channelEmail:
+          type: string
+          description: "ENG: Store contact via email address <br> IT: Contatto del punto vendita tramite indirizzo email."
+        channelPhone:
+          type: string
+          description: "ENG: Store contact via phone number <br> IT: Contatto del punto vendita tramite numero di telefono"
+        channelGeolink:
+          type: string
+          description: "ENG: Store contact providing a map link or location for navigation <br> IT: Contatto del punto vendita tramite link geografico o posizione sulla mappa"
+        channelWebsite:
+          type: string
+          description: "ENG: Store contact via a web-based portal <br> IT: Contatto del punto vendita tramite portale web"
+    PointOfSaleErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - POINT_OF_SALE_NOT_FOUND
+            - POINT_OF_SALE_BAD_REQUEST
+            - POINT_OF_SALE_INVALID_REQUEST
+            - MERCHANT_NOT_ONBOARDED
+            - POINT_OF_SALE_TOO_MANY_REQUESTS
+            - POINT_OF_SALE_GENERIC_ERROR
+          description: '"ENG: Error code:<br> POINT_OF_SALES_NOT_FOUND: The sale was not found,<br> MERCHANT_NOT_ONBOARDED: The merchant is not associated to the initiative,<br> POINT_OF_SALES_TOO_MANY_REQUESTS: Too many requests,<br> POINT_OF_SALES_INVALID_REQUEST: Something went wrong handling the request,<br> POINT_OF_SALES_GENERIC_ERROR: Application error,<br> - IT: Codice di errore:<br> POINT_OF_SALES_NOT_FOUND: Lo store non è stato trovato,<br> MERCHANT_NOT_ONBOARDED: L''esercente non è associato all''iniziativa,<br> POINT_OF_SALES_TOO_MANY_REQUESTS: Troppe richieste,<br> POINT_OF_SALES_INVALID_REQUEST: Qualcosa è andato storto durante l''invio della richiesta,<br> POINT_OF_SALES_GENERIC_ERROR: Errore applicativo"'
+        message:
+          type: string
+          description: "ENG: Error message- IT: Messaggio di errore"
     ErrorDTO:
       type: object
       required:
