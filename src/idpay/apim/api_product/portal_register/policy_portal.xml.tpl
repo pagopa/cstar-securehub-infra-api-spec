@@ -12,7 +12,6 @@
 -->
 <policies>
     <inbound>
-        <rate-limit calls="${rate_limit_portal}" renewal-period="60" />
         <cors allow-credentials="true">
             <allowed-origins>
               %{ for origin in origins ~}
