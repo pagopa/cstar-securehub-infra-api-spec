@@ -3630,8 +3630,7 @@ paths:
     get:
       tags:
         - payment
-      summary: >-
-        ENG: Generate a transaction pdf - IT: Genera un pdf della transazione
+      summary: 'ENG: Generate a transaction pdf - IT: Genera un pdf della transazione'
       description: Generate transaction pdf
       operationId: getTransactionPdf
       parameters:
@@ -3660,7 +3659,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
+                $ref: '#/components/schemas/TransactionErrorDTO1'
               example:
                 code: PAYMENT_INVALID_REQUEST
                 message: Required trxCode is not present
