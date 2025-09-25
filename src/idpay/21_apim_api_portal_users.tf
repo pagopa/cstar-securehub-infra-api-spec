@@ -106,11 +106,11 @@ module "idpay_itn_users_portal_api" {
       })
     },
     {
-        operation_id = "getTransactionPdf"
-        xml_content = templatefile("./apim/api/idpay_payment_io/get-generate-pdf-barcode-web-policy.xml.tpl", {
-          ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-        })
-      }
+      operation_id = "getTransactionPdf"
+      xml_content = templatefile("./apim/api/idpay_payment_io/get-generate-pdf-barcode-web-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    }
   ]
 
 }
