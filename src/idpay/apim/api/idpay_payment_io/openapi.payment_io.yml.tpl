@@ -345,7 +345,7 @@ paths:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/TransactionErrorDTO1'
+                  $ref: '#/components/schemas/TransactionErrorDTO'
                 example:
                   code: PAYMENT_USER_NOT_ONBOARDED
                   message: User not onboarded
@@ -363,7 +363,7 @@ paths:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/TransactionErrorDTO1'
+                  $ref: '#/components/schemas/TransactionErrorDTO'
                 example:
                   code: PAYMENT_NOT_FOUND_OR_EXPIRED
                   message: Cannot find transaction with trxCode trxCode
@@ -381,7 +381,7 @@ paths:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/TransactionErrorDTO1'
+                  $ref: '#/components/schemas/TransactionErrorDTO'
                 example:
                   code: PAYMENT_TOO_MANY_REQUESTS
                   message: Too many requests
@@ -399,7 +399,7 @@ paths:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/TransactionErrorDTO1'
+                  $ref: '#/components/schemas/TransactionErrorDTO'
                 example:
                   code: PAYMENT_GENERIC_ERROR
                   message: application error connection microservice error
