@@ -1,0 +1,5 @@
+prefix         = "cstar"
+env_short      = "u"
+env            = "uat"
+domain         = "platform"
+location_short = "itn"

@@ -1,0 +1,5 @@
+prefix         = "cstar"
+env_short      = "p"
+env            = "prod"
+domain         = "platform"
+location_short = "itn"

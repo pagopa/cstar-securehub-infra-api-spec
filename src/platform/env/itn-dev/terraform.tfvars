@@ -1,0 +1,5 @@
+prefix         = "cstar"
+env_short      = "d"
+env            = "dev"
+domain         = "platform"
+location_short = "itn"
