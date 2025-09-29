@@ -1582,25 +1582,25 @@ components:
           type: integer
           format: int32
           description: 'ENG: The number of the page <br> IT: Il numero della pagina'
-          minimum: 0
+          minimum: -1000000
           maximum: 1000000
         pageSize:
           type: integer
           format: int32
           description: 'ENG: The element size for page <br> IT: Il numero di elementi per pagina'
-          minimum: 0
+          minimum: -1000000
           maximum: 1000000
         totalElements:
           type: integer
           format: int32
           description: 'ENG: The total number of the elements <br> IT: Il numero totale degli elementi'
-          minimum: 0
+          minimum: -1000000
           maximum: 1000000
         totalPages:
           type: integer
           format: int32
           description: 'ENG: The total number of the pages <br> IT: Il numero totale delle pagine'
-          minimum: 0
+          minimum: -1000000
           maximum: 1000000
     PointOfSaleTransactionProcessedDTO:
       type: object
@@ -1619,13 +1619,13 @@ components:
           type: integer
           format: int64
           description: 'ENG: Transaction amount in cents - IT: Importo della transazione in centesimi'
-          minimum: 0
+          minimum: -1000000000
           maximum: 1000000000
         rewardAmountCents:
           type: integer
           format: int64
           description: 'ENG: Reward amount in cents - IT: Premio generato in centesimi'
-          minimum: 0
+          minimum: -1000000000
           maximum: 1000000000
         trxDate:
           type: string
