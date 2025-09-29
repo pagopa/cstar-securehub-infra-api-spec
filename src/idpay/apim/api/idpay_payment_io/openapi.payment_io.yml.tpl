@@ -296,9 +296,9 @@ paths:
           '200':
             description: OK
             content:
-              application/pdf:
+              application/json:
                 schema:
-                  type: string
+                  $ref: '#/components/schemas/ReportDTO'
             headers:
               Access-Control-Allow-Origin:
                 $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -629,6 +629,12 @@ components:
           description: >-
             ENG: Status of the payment [CREATED: Created] - IT: Stato del pagamento [CREATED:
             Creato]
+    ReportDTO:
+      title: ReportDTO
+      type: object
+      properties:
+        data:
+          type: string
   securitySchemes:
     Bearer:
       type: apiKey
