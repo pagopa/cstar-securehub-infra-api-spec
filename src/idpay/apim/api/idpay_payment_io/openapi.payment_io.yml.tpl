@@ -296,10 +296,9 @@ paths:
           '200':
             description: OK
             content:
-              application/octet-stream:
+              application/pdf:
                 schema:
                   type: string
-                  format: binary
             headers:
               Access-Control-Allow-Origin:
                 $ref: '#/components/headers/Access-Control-Allow-Origin'
