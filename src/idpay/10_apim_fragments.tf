@@ -36,6 +36,22 @@ resource "azurerm_api_management_policy_fragment" "apim_pdv_tokenizer" {
   })
 }
 
+resource "azurerm_api_management_policy_fragment" "apim_datavault_tokenizer" {
+  name              = "idpay-datavault-tokenizer"
+  api_management_id = data.azurerm_api_management.apim_core.id
+
+  description = "idpay-datavault-tokenizer"
+  format      = "rawxml"
+  value = templatefile("./apim/api_fragment/pdv-tokenizer.xml", {
+    pdv_timeout_sec        = var.pdv_timeout_sec
+    pdv_tokenizer_url      = local.mcshared-datavault-url
+    pdv_retry_count        = var.pdv_retry_count
+    pdv_retry_interval     = var.pdv_retry_interval
+    pdv_retry_max_interval = var.pdv_retry_max_interval
+    pdv_retry_delta        = var.pdv_retry_delta
+  })
+}
+
 resource "azurerm_api_management_policy_fragment" "apim_validate_token_mil" {
   name              = "idpay-itn-validate-token-mil"
   api_management_id = data.azurerm_api_management.apim_core.id
