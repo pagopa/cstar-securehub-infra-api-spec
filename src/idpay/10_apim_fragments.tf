@@ -42,7 +42,7 @@ resource "azurerm_api_management_policy_fragment" "apim_datavault_tokenizer" {
 
   description = "idpay-datavault-tokenizer"
   format      = "rawxml"
-  value = templatefile("./apim/api_fragment/pdv-tokenizer.xml", {
+  value = templatefile("./apim/api_fragment/datavault-tokenizer.xml", {
     pdv_timeout_sec        = var.pdv_timeout_sec
     pdv_tokenizer_url      = local.mcshared-datavault-url
     pdv_retry_count        = var.pdv_retry_count
