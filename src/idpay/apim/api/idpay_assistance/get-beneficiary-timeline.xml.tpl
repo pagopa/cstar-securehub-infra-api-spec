@@ -16,7 +16,7 @@
         <choose>
             <when condition="@(context.Request.Headers.ContainsKey("Fiscal-Code") == true)">
                 <set-variable name="pii" value="@(context.Request.Headers.GetValueOrDefault("Fiscal-Code"))" />
-                <include-fragment fragment-id="idpay-pdv-tokenizer" />
+                <include-fragment fragment-id="idpay-datavault-tokenizer" />
                 <choose>
                     <when condition="@(context.Variables["pdv_token"] != null)">
                         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaytimeline" />
