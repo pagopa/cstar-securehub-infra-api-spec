@@ -6,7 +6,7 @@
             <when condition="@(context.Variables["fiscalCode"] != null)">
                 <!-- Use the fiscalCode from the fragment for the PDV call -->
                 <set-variable name="pii" value="@((string)context.Variables["fiscalCode"])" />
-                <include-fragment fragment-id="idpay-pdv-tokenizer" />
+                <include-fragment fragment-id="idpay-datavault-tokenizer" />
                 <choose>
                     <when condition="@(context.Variables["pdv_token"] != null)">
                         <set-variable name="tokenPDV" value="@((string)context.Variables["pdv_token"])" />

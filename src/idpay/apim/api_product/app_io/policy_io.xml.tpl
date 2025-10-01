@@ -72,7 +72,7 @@
                             </when>
                             <otherwise>
                                 <set-variable name="pii" value="@((string)((IResponse)context.Variables["tokenstate"]).Body.As<JObject>()["fiscal_code"])" />
-                                <include-fragment fragment-id="idpay-pdv-tokenizer" />
+                                <include-fragment fragment-id="idpay-datavault-tokenizer" />
                                 <choose>
                                     <when condition="@(context.Variables["pdv_token"] != null)">
                                         <set-variable name="tokenPDV" value="@((string)context.Variables["pdv_token"])" />

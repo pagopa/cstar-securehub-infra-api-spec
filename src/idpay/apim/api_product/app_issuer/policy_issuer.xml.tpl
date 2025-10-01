@@ -64,7 +64,7 @@
             <!-- If API Management doesn’t find it in the cache, make a request for it and store it -->
             <when condition="@(!context.Variables.ContainsKey("tokenPDV"))">
                 <set-variable name="pii" value="@((string)context.Variables["fiscalCode"])" />
-                <include-fragment fragment-id="idpay-pdv-tokenizer" />
+                <include-fragment fragment-id="idpay-datavault-tokenizer" />
                 <choose>
                     <when condition="@(context.Variables["pdv_token"] != null)">
                         <set-variable name="tokenPDV" value="@((string)context.Variables["pdv_token"])" />
