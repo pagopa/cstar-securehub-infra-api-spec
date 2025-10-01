@@ -144,4 +144,6 @@ locals {
   openid_config_url_user    = "${var.keycloak_url_user}/.well-known/openid-configuration"
   user_client_id            = "frontend"
   keycloak_url_user_account = "${var.keycloak_url_user}/account"
+
+  mcshared-datavault-url = "https://${local.domain_aks_ingress_hostname}/mcshareddatavault"
 }
