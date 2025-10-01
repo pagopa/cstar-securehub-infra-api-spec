@@ -20,13 +20,13 @@ resource "azurerm_api_management_policy_fragment" "apim_merchant_id_retriever_or
   })
 }
 
-resource "azurerm_api_management_policy_fragment" "apim_pdv_tokenizer" {
-  name              = "idpay-itn-pdv-tokenizer"
+resource "azurerm_api_management_policy_fragment" "apim_datavault_tokenizer" {
+  name              = "idpay-datavault-tokenizer"
   api_management_id = data.azurerm_api_management.apim_core.id
 
-  description = "idpay-pdv-tokenizer"
+  description = "idpay-datavault-tokenizer"
   format      = "rawxml"
-  value = templatefile("./apim/api_fragment/pdv-tokenizer.xml", {
+  value = templatefile("./apim/api_fragment/datavault-tokenizer.xml", {
     pdv_timeout_sec        = var.pdv_timeout_sec
     pdv_tokenizer_url      = local.mcshared-datavault-url
     pdv_retry_count        = var.pdv_retry_count

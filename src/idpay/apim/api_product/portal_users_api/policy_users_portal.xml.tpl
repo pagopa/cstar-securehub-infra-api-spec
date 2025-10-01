@@ -117,7 +117,7 @@
                 </choose>
                 %{ endif ~}
                 <!-- Retrieve tokenizer user -->
-                <include-fragment fragment-id="idpay-pdv-tokenizer" />
+                <include-fragment fragment-id="idpay-datavault-tokenizer" />
                 <choose>
                     <when condition="@(context.Variables["pdv_token"] != null)">
                         <set-variable name="tokenPDV" value="@((string)context.Variables["pdv_token"])" />
