@@ -1480,7 +1480,7 @@ components:
     ListPointOfSaleDTO:
       type: object
       properties:
-        pointsOfSale:
+        content:
           type: array
           items:
             $ref: "#/components/schemas/PointOfSaleDTO"
