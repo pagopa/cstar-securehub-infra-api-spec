@@ -113,7 +113,7 @@ module "idpay_itn_register_portal_api" {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname,
         selc_base_url                  = var.selc_base_url,
         selfcare_api_key_reference     = azurerm_api_management_named_value.selfcare_api_key.display_name
-      })F
+      })
     },
     {
       operation_id = "verifyProductList"
