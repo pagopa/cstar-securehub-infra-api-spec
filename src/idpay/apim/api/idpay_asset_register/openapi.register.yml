@@ -843,9 +843,16 @@ components:
           maxLength: 50
           pattern: .*
         formalMotivation:
-          type: string
-          maxLength: 200
-          pattern: .*
+          type: object
+          properties:
+            formalMotivation:
+              type: string
+              maxLength: 200
+              pattern: .*
+            updateDate:
+              type: string
+              maxLength: 200
+              format: date-time
     InstitutionResponse:
       title: InstitutionResponse
       type: object
@@ -983,9 +990,16 @@ components:
           maxLength: 200
           pattern: .*
         formalMotivation:
-          type: string
-          maxLength: 200
-          pattern: .*
+          type: object
+          properties:
+            formalMotivation:
+              type: string
+              maxLength: 200
+              pattern: .*
+            updateDate:
+              type: string
+              maxLength: 200
+              format: date-time
   securitySchemes:
     Bearer:
       type: apiKey
