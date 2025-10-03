@@ -649,7 +649,6 @@ components:
         dateUpload:
           type: string
           description: 'ENG: The date of upload <br> IT: La data di caricamento'
-          maxLength: 255
           format: date-time
         findedProductsNumber:
           type: number
@@ -831,7 +830,6 @@ components:
                 pattern: .*
               updateDate:
                 type: string
-                maxLength: 255
                 format: date
               currentStatus:
                 $ref: '#/components/schemas/ProductStatus'
