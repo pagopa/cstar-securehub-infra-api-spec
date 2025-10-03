@@ -728,7 +728,6 @@ components:
           format: date-time
           description: 'ENG: Timestamps of insert (after EPREL checks) <br> IT: Data
             caricamento prodotto (dopo la verifica EPREL)'
-          maxLength: 255
         status:
           $ref: '#/components/schemas/ProductStatus'
         model:
@@ -908,11 +907,9 @@ components:
                 pattern: .*
               createAt:
                 type: string
-                maxLength: 255
                 format: date
               updatedAt:
                 type: string
-                maxLength: 255
                 format: date
           maxItems: 1000
     BatchList:
