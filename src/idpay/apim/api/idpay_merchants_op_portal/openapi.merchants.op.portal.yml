@@ -680,8 +680,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ReversaInvoiceDTO'
       responses:
-        '200':
-          description: Ok
+        '204':
+          description: Ok - no content
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -1562,7 +1562,6 @@ components:
       properties:
         file:
           type: string
-          maxLength: 2097152
           format: binary
         fileName:
           type: string
