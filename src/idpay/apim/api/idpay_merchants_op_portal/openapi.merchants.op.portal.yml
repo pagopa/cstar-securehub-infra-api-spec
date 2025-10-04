@@ -1216,6 +1216,14 @@ components:
             type: string
             maxLength: 255
             pattern: '.*'
+        invoiceFile:
+          $ref: '#/components/schemas/InvoiceFileDTO'
+    InvoiceFileDTO:
+      type: object
+      properties:
+        filename:
+          type: string
+          description: 'ENG: The name of the invoice file <br> IT: Il nome del file della fattura'
     PointOfSaleTransactionsListDTO:
       type: object
       properties:
