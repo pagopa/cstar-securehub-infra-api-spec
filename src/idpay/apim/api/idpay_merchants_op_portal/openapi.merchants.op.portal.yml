@@ -1557,22 +1557,14 @@ components:
           description: "ENG: Error message- IT: Messaggio di errore"
           maxLength: 1000
           pattern: '.*'
-    ReversaInvoiceDTO:
+    ReversalInvoiceDTO:
       type: object
       required:
         - file
-        - fileName
-        - type
       properties:
         file:
           type: string
           format: binary
-        fileName:
-          type: string
-          maxLength: 255
-        type:
-          type: string
-          enum: [pdf, xml]
   securitySchemes:
     Bearer:
       type: apiKey
