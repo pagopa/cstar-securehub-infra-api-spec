@@ -1559,6 +1559,10 @@ components:
           pattern: '.*'
     ReversaInvoiceDTO:
       type: object
+      required:
+        - file
+        - fileName
+        - type
       properties:
         file:
           type: string
