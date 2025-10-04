@@ -701,7 +701,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ReversaInvoiceDTO'
+              $ref: '#/components/schemas/ReversalInvoiceDTO'
       responses:
         '204':
           description: Ok - no content
