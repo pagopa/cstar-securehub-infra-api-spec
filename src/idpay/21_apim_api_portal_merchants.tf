@@ -197,6 +197,12 @@ module "idpay_itn_merchants_portal" {
       xml_content = templatefile("./apim/api/idpay_merchants_portal/get-pos-transactions-processed-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
+    },
+    {
+      operation_id = "downloadInvoiceFile"
+      xml_content = templatefile("./apim/api/idpay_merchants_portal/get-invoice-download-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
     }
   ]
 
