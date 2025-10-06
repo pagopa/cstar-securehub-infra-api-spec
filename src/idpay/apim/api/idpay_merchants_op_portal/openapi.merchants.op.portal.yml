@@ -1212,7 +1212,7 @@ components:
           type: string
           description: "ENG: The street number of the point of sale <br> IT: Il numero civico del punto vendita"
           maxLength: 255
-        webSite:
+        website:
           type: string
           description: "ENG: The website of the point of sale <br> IT: Il sito web del punto vendita"
           maxLength: 255
