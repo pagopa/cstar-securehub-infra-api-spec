@@ -65,7 +65,7 @@ paths:
           schema:
             type: integer
             format: int32
-            minimum: 3
+            minimum: 0
             maximum: 10
       responses:
         '200':
@@ -532,6 +532,8 @@ components:
             - AUTHORIZED
             - REWARDED
             - CANCELLED
+            - REFUNDED
+            - CAPTURED
           example: 'CANCELLED'
           description: 'ENG: Transaction status [AUTHORIZED: Transaction authorize, REWARDED: Transaction rewarded, CANCELLED: Transaction cancelled]  - IT: Stato della transazione [AUTHORIZED: Transazione autorizzata, REWARDED: Transazione premiata, CANCELLED: transazione cancellata]'
         channel:

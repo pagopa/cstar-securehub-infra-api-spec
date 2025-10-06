@@ -591,7 +591,7 @@ components:
         id:
           type: string
           maxLength: 24
-          pattern: "^[a-zA-Z0-9]+$"
+          pattern: "^[a-zA-Z0-9_-]+$"
           description: 'ENG: Id of the payment - IT: Identificativo del pagamento'
         trxCode:
           type: string
@@ -601,7 +601,7 @@ components:
         initiativeId:
           type: string
           maxLength: 24
-          pattern: "^[a-zA-Z0-9]+$"
+          pattern: "^[a-zA-Z0-9_-]+$"
           description: 'ENG: Id of the initiative - IT: Identificativo dell''iniziativa'
         initiativeName:
           type: string
