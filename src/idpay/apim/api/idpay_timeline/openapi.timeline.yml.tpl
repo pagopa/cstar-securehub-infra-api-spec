@@ -57,7 +57,7 @@ paths:
           schema:
             type: integer
             format: int32
-            minimum: 1
+            minimum: 0
             maximum: 240
         - name: size
           in: query
@@ -65,7 +65,7 @@ paths:
           schema:
             type: integer
             format: int32
-            minimum: 3
+            minimum: 0
             maximum: 10
       responses:
         '200':
@@ -381,25 +381,25 @@ components:
         pageNo:
           type: integer
           format: int32
-          minimum: 1
+          minimum: 0
           maximum: 200
           description: 'ENG: Number of pages - IT: Numero di pagine'
         pageSize:
           type: integer
           format: int32
-          minimum: 1
+          minimum: 0
           maximum: 50
           description: 'ENG: Number of elements in the page - IT: Numero di elementi all''interno della pagina'
         totalElements:
           type: integer
           format: int32
-          minimum: 1
+          minimum: 0
           maximum: 10
           description: 'ENG: Number of total elements - IT: Numero totali di elementi'
         totalPages:
           type: integer
           format: int32
-          minimum: 1
+          minimum: 0
           maximum: 200
           description: 'ENG: Number of total pages - IT: Numero totali di pagine'
     OperationListDTO:
@@ -532,6 +532,8 @@ components:
             - AUTHORIZED
             - REWARDED
             - CANCELLED
+            - REFUNDED
+            - CAPTURED
           example: 'CANCELLED'
           description: 'ENG: Transaction status [AUTHORIZED: Transaction authorize, REWARDED: Transaction rewarded, CANCELLED: Transaction cancelled]  - IT: Stato della transazione [AUTHORIZED: Transazione autorizzata, REWARDED: Transazione premiata, CANCELLED: transazione cancellata]'
         channel:

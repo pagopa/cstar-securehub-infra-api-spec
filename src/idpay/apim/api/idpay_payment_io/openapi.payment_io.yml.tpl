@@ -590,9 +590,10 @@ components:
       properties:
         id:
           type: string
-          maxLength: 24
-          pattern: "^[a-zA-Z0-9]+$"
+          maxLength: 100
+          pattern: '^[A-Za-z0-9_-]+$'
           description: 'ENG: Id of the payment - IT: Identificativo del pagamento'
+          example: 5baf1cab-6b5c-4bd7-a957-c9df9c2c9c3d_BARCODE_1759482361234
         trxCode:
           type: string
           pattern: "^[ -~]{1,255}$"
@@ -601,7 +602,7 @@ components:
         initiativeId:
           type: string
           maxLength: 24
-          pattern: "^[a-zA-Z0-9]+$"
+          pattern: "^[a-zA-Z0-9_-]+$"
           description: 'ENG: Id of the initiative - IT: Identificativo dell''iniziativa'
         initiativeName:
           type: string
@@ -619,7 +620,7 @@ components:
         residualBudgetCents:
           type: integer
           format: int64
-          minimum: 1
+          minimum: 0
           maximum: 999999999999999
           description: 'ENG: Residual budget in cents - IT: Budget residuo in centesimi'
         status:
