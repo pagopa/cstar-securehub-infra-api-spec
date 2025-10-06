@@ -590,7 +590,7 @@ components:
       properties:
         id:
           type: string
-          maxLength: 24
+          maxLength: 100
           pattern: '^[A-Za-z0-9_-]+$'
           description: 'ENG: Id of the payment - IT: Identificativo del pagamento'
           example: 5baf1cab-6b5c-4bd7-a957-c9df9c2c9c3d_BARCODE_1759482361234
