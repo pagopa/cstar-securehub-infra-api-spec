@@ -101,13 +101,13 @@ module "idpay_itn_portal_merchants_op_api" {
     },
     {
       operation_id = "rewardTransaction"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/put-reward-payment-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/post-reward-payment-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "reversalTransaction"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/put-reversal-payment-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/post-reversal-payment-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
