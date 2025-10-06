@@ -57,7 +57,7 @@ paths:
           schema:
             type: integer
             format: int32
-            minimum: 1
+            minimum: 0
             maximum: 240
         - name: size
           in: query
@@ -381,25 +381,25 @@ components:
         pageNo:
           type: integer
           format: int32
-          minimum: 1
+          minimum: 0
           maximum: 200
           description: 'ENG: Number of pages - IT: Numero di pagine'
         pageSize:
           type: integer
           format: int32
-          minimum: 1
+          minimum: 0
           maximum: 50
           description: 'ENG: Number of elements in the page - IT: Numero di elementi all''interno della pagina'
         totalElements:
           type: integer
           format: int32
-          minimum: 1
+          minimum: 0
           maximum: 10
           description: 'ENG: Number of total elements - IT: Numero totali di elementi'
         totalPages:
           type: integer
           format: int32
-          minimum: 1
+          minimum: 0
           maximum: 200
           description: 'ENG: Number of total pages - IT: Numero totali di pagine'
     OperationListDTO:

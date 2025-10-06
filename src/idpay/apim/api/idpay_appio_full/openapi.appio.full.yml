@@ -4786,6 +4786,8 @@ components:
             - AUTHORIZED
             - REWARDED
             - CANCELLED
+            - REFUNDED
+            - CAPTURED
           example: CANCELLED
           description: >-
             ENG: Transaction status [AUTHORIZED: Transaction authorize,
