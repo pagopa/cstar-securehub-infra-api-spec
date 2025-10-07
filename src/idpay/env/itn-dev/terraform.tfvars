@@ -108,3 +108,8 @@ keycloak_timeout_sec = 5
 # Referer Merchant Portal
 #
 merchant_portal_referer = "https://welfare.dev.cstar.pagopa.it/portale-esercenti"
+
+#
+# Allowed Institutions for bypassing the courtesy page
+#
+allowed_institutions = ["b5ae0b41-b854-414e-8295-078595ee1db4", "b5ae0b41-b854-414e-8295-078595ee1db5", "b5ae0b41-b854-414e-8295-078595ee1da1", "72c2c5f8-1c71-4614-a4b3-95e3aee71c3d", "47af2e7c-291d-4bbb-a702-59505126a94"]

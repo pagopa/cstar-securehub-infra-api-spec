@@ -369,3 +369,9 @@ variable "keycloak_timeout_sec" {
   type        = number
   description = "Keycloak timeout (sec)"
 }
+
+variable "allowed_institutions" {
+  description = "Institution IDs that can bypass the courtesy page"
+  type        = list(string)
+  default     = ["XXX", "YYY", "ZZZ"]
+}
