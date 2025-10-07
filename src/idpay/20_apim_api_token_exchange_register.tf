@@ -57,7 +57,8 @@ resource "azurerm_api_management_api_operation_policy" "idpay_register_token_exc
     origins                     = local.origins.base
     selfcare_api_key_reference  = azurerm_api_management_named_value.selfcare_api_key.display_name,
     invitalia_fc                = var.invitalia_fc,
-    selfcare_base_url           = var.selfcare_base_url
+    selfcare_base_url           = var.selfcare_base_url,
+    idpay-allowed-institutions  = join(",", var.allowed_institutions)
   })
 
 
