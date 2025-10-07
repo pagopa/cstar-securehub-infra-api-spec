@@ -683,18 +683,6 @@ paths:
             type: string
             maxLength: 255
             pattern: "^[a-zA-Z0-9]+$"
-        - name: x-merchant-id
-          in: header
-          required: true
-          schema:
-            type: string
-            maxLength: 255
-        - name: x-point-of-sale-id
-          in: header
-          required: true
-          schema:
-            type: string
-            maxLength: 255
       requestBody:
         content:
           multipart/form-data:
@@ -822,18 +810,6 @@ paths:
             type: string
             maxLength: 255
             pattern: "^[a-zA-Z0-9]+$"
-        - name: x-merchant-id
-          in: header
-          required: true
-          schema:
-            type: string
-            maxLength: 255
-        - name: x-point-of-sale-id
-          in: header
-          required: true
-          schema:
-            type: string
-            maxLength: 255
       requestBody:
         content:
           multipart/form-data:
@@ -1330,6 +1306,12 @@ components:
           type: integer
           format: int64
           description: "ENG: Reward amount in cents - IT: Premio generato in centesimi"
+          minimum: 0
+          maximum: 1000000000
+        authorizedAmountCents:
+          type: integer
+          format: int64
+          description: "ENG: Authorized amount in cents - IT: Importo autorizzato in centesimi"
           minimum: 0
           maximum: 1000000000
         trxDate:
