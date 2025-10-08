@@ -111,3 +111,8 @@ merchant_portal_referer = "https://welfare.uat.cstar.pagopa.it/portale-esercenti
 # OpenID Configuration URL for User
 keycloak_url_user    = "https://api-mcshared.uat.cstar.pagopa.it/auth-itn/realms/user"
 keycloak_timeout_sec = 5
+
+#
+# Allowed Institutions for bypassing the courtesy page
+#
+allowed_institutions = ["999e1892-08e8-4d13-bec9-54814cd31b0c", "918692a6-dc2e-4f61-a36b-a8f003202f86", "dc68faf6-ac9f-4d2d-a910-30fdf4739cc1"]
