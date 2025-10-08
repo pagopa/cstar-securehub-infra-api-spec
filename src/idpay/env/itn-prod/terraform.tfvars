@@ -61,7 +61,7 @@ aks_legacy_instance_name = "prod01"
 # IO
 #
 appio_timeout_sec     = 5
-rate_limit_io_product = 2500
+rate_limit_io_product = 300000
 webViewUrl            = "https://api-io.cstar.pagopa.it/idpay/self-expense/login"
 
 #
