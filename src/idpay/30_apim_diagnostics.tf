@@ -18,6 +18,7 @@ locals {
     module.idpay_itn_group_portal.name,
     module.idpay_itn_permission_portal.name,
     module.idpay_itn_merchant_portal.name,
+    module.idpay_itn_users_portal_api.name,
 
     # Modules Portal Merchants
     module.idpay_itn_merchants_permission_portal.name,
