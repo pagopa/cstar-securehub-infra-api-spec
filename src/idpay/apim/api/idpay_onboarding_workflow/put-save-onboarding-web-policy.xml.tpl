@@ -14,7 +14,6 @@
     <inbound>
         <base />
         <set-variable name="jwt_decoded" value="@((Jwt)context.Variables["jwt"])" />
-
         <set-variable name="givenName" value="@{
         var j = (Jwt)context.Variables["jwt_decoded"];
         string given = j.Claims.ContainsKey("given_name") ? j.Claims["given_name"].FirstOrDefault() : null;
@@ -24,7 +23,6 @@
         }
         return given;
         }" />
-
         <set-variable name="familyName" value="@{
         var j = (Jwt)context.Variables["jwt_decoded"];
         string family = j.Claims.ContainsKey("family_name") ? j.Claims["family_name"].FirstOrDefault() : null;
@@ -34,7 +32,6 @@
         }
         return family;
         }" />
-
         <choose>
             <when condition="@(
                 string.Equals(context.Request.Method, "POST",  StringComparison.OrdinalIgnoreCase) ||
