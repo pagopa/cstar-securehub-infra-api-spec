@@ -47,14 +47,14 @@
                 </claim>
             </required-claims>
         </validate-jwt>
-
-        <choose>
-            <!-- If API Management doesn’t find it in the cache, validate and make a request for it and store it -->
-            <when condition="@(!context.Variables.ContainsKey("tokenPDV"))">
                 <!-- Extract fiscalNumber of token -->
                 <set-variable name="pii" value="@(((Jwt)context.Variables["jwt"]).Claims.ContainsKey("fiscalNumber")
     ? ((Jwt)context.Variables["jwt"]).Claims["fiscalNumber"].FirstOrDefault()
     : null)" />
+        <choose>
+            <!-- If API Management doesn’t find it in the cache, validate and make a request for it and store it -->
+            <when condition="@(!context.Variables.ContainsKey("tokenPDV"))">
+
                 <choose>
                     <!-- Retrieve fiscalCode from keycloak userInfo/account -->
                     <when condition="@(string.IsNullOrEmpty((string)context.Variables["pii"]))">
