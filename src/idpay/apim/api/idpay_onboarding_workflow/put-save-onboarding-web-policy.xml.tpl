@@ -45,18 +45,15 @@
             var given  = (string)context.Variables["givenName"];
             var family = (string)context.Variables["familyName"];
 
-
-            body["name"] = given ?? string.Empty;
+            body["name"] = given  ?? string.Empty;
             body["surname"] = family ?? string.Empty;
 
             return body.ToString();
             }" />
-                <set-body>@((string)context.Variables["bodyWithNames"])</set-body>
-                <set-header name="Content-Type" exists-action="override">
-                    <value>application/json</value>
-                </set-header>
-            </when>
-        </choose>
+        <set-body>@((string)context.Variables["bodyWithNames"])</set-body>
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+        </set-header>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayonboardingworkflow" />
         <rewrite-uri template="@("idpay/onboarding/"+ (string)context.Variables["userId"])" />
     </inbound>
