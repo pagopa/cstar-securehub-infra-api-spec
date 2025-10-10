@@ -34,21 +34,23 @@
         <!-- The variable present in cache is the pii of the user obtaind with PDV  /-->
         <cache-lookup-value key="@((string)context.Variables["token"]+"-kc-idpay")" variable-name="tokenPDV" />
         <set-variable name="bypassCacheStorage" value="false" />
+
+        <!-- JWT validation with OpenID Connect -->
+        <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid." output-token-variable-name="jwt">
+            <openid-config url="${openid_config_url_user}" />
+            <required-claims>
+                <claim name="azp">
+                    <value>${user_client_id}</value>
+                </claim>
+                <claim name="iss">
+                    <value>${keycloak_url_user}</value>
+                </claim>
+            </required-claims>
+        </validate-jwt>
+
         <choose>
             <!-- If API Management doesn’t find it in the cache, validate and make a request for it and store it -->
             <when condition="@(!context.Variables.ContainsKey("tokenPDV"))">
-                <!-- JWT validation with OpenID Connect -->
-                <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid." output-token-variable-name="jwt">
-                    <openid-config url="${openid_config_url_user}" />
-                    <required-claims>
-                        <claim name="azp">
-                            <value>${user_client_id}</value>
-                        </claim>
-                        <claim name="iss">
-                            <value>${keycloak_url_user}</value>
-                        </claim>
-                    </required-claims>
-                </validate-jwt>
                 <!-- Extract fiscalNumber of token -->
                 <set-variable name="pii" value="@(((Jwt)context.Variables["jwt"]).Claims.ContainsKey("fiscalNumber")
     ? ((Jwt)context.Variables["jwt"]).Claims["fiscalNumber"].FirstOrDefault()

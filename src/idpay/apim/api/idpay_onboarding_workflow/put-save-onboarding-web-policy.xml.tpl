@@ -13,6 +13,41 @@
 <policies>
     <inbound>
         <base />
+        <!-- Extract name and surname from JWT field -->
+            <set-variable name="givenName" value="@{
+            var j = (Jwt)context.Variables["jwt"];
+            string given = j.Claims.ContainsKey("given_name") ? j.Claims["given_name"].FirstOrDefault() : null;
+            if (string.IsNullOrEmpty(given) && j.Claims.ContainsKey("name")) {
+                var parts = (j.Claims["name"].FirstOrDefault() ?? "").Split(' ');
+                if (parts.Length > 0) given = parts[0];
+            }
+            return given;
+            }" />
+            <set-variable name="familyName" value="@{
+            var j = (Jwt)context.Variables["jwt"];
+            string family = j.Claims.ContainsKey("family_name") ? j.Claims["family_name"].FirstOrDefault() : null;
+            if (string.IsNullOrEmpty(family) && j.Claims.ContainsKey("name")) {
+                var parts = (j.Claims["name"].FirstOrDefault() ?? "").Split(' ');
+                if (parts.Length > 1) family = parts[parts.Length - 1];
+            }
+            return family;
+            }" />
+
+        <set-variable name="bodyWithNames" value="@{
+            var body = context.Request.Body?.As<JObject>(preserveContent: true) ?? new JObject();
+
+            var given  = (string)context.Variables["givenName"];
+            var family = (string)context.Variables["familyName"];
+
+            body["name"] = given  ?? string.Empty;
+            body["surname"] = family ?? string.Empty;
+
+            return body.ToString();
+            }" />
+        <set-body>@((string)context.Variables["bodyWithNames"])</set-body>
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+        </set-header>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayonboardingworkflow" />
         <rewrite-uri template="@("idpay/onboarding/"+ (string)context.Variables["userId"])" />
     </inbound>
