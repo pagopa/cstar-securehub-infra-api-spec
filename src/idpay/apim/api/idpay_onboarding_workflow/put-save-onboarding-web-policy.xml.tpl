@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <set-variable name="jwt_decoded" value="@((Jwt)context.Variables["jwt"])" />
-        <!-- Estrai given_name / family_name con fallback su 'name' (split) -->
+
         <set-variable name="givenName" value="@{
         var j = (Jwt)context.Variables["jwt_decoded"];
         string given = j.Claims.ContainsKey("given_name") ? j.Claims["given_name"].FirstOrDefault() : null;
@@ -24,6 +24,7 @@
         }
         return given;
         }" />
+
         <set-variable name="familyName" value="@{
         var j = (Jwt)context.Variables["jwt_decoded"];
         string family = j.Claims.ContainsKey("family_name") ? j.Claims["family_name"].FirstOrDefault() : null;
@@ -33,27 +34,24 @@
         }
         return family;
         }" />
+
         <choose>
             <when condition="@(
-            string.Equals(context.Request.Method, "POST", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(context.Request.Method, "PUT",  StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(context.Request.Method, "PATCH",StringComparison.OrdinalIgnoreCase)
+                string.Equals(context.Request.Method, "POST",  StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(context.Request.Method, "PUT",   StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(context.Request.Method, "PATCH", StringComparison.OrdinalIgnoreCase)
             )">
                 <set-variable name="bodyWithNames" value="@{
-            var body = context.Request.Body?.As<JObject>(preserveContent: true) ?? new JObject();
-
-            var given  = (string)context.Variables["givenName"];
-            var family = (string)context.Variables["familyName"];
-
-
-            body["name"] = given ?? string.Empty;
-            body["surname"] = family ?? string.Empty;
-
-            return body.ToString();
-            }" />
+                var body = context.Request.Body?.As<JObject>(preserveContent: true) ?? new JObject();
+                var given  = (string)context.Variables["givenName"];
+                var family = (string)context.Variables["familyName"];
+                body["name"]    = given  ?? string.Empty;
+                body["surname"] = family ?? string.Empty;
+                return body.ToString();
+                }" />
                 <set-body>@((string)context.Variables["bodyWithNames"])</set-body>
                 <set-header name="Content-Type" exists-action="override">
-                    <value>application/json</value>
+                <value>application/json</value>
                 </set-header>
             </when>
         </choose>
