@@ -456,7 +456,7 @@ paths:
           #description: Unexpected error
           $ref: '#/components/responses/Error'
 
-  /activations/{otp}
+  /activations/{otp}:
     post:
       operationId: takeoverActivation
       summary: Allows a new Service Provider to take over an RTP activation.
@@ -784,7 +784,7 @@ components:
       minLength: 1
       maxLength: 2048
       example: "https://rtp.cstar.pagopa.it/activations/d0d654e6-97da-4848-b568-99fedccb642b"
-    
+
     TakeOverOtp:
       description: URL to do a takeover on a existing activation user.
       type: string
@@ -1132,6 +1132,14 @@ components:
       schema:
         $ref: '#/components/schemas/ActivationId'
 
+    Otp:
+      name: otp
+      in: path
+      description: The One-Time-Password generated for taking over an activation.
+      required: true
+      schema:
+        $ref: '#/components/schemas/TakeOverOtp'
+
     PageNumber:
       name: page
       in: query
@@ -1155,6 +1163,7 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/FiscalCode'
+
 
     RequestId:
       name: RequestId
