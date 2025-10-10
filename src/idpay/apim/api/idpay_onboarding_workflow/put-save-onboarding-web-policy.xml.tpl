@@ -13,27 +13,33 @@
 <policies>
     <inbound>
         <base />
-        <!-- Extract name and surname from JWT field -->
-            <set-variable name="givenName" value="@{
-            var j = (Jwt)context.Variables["jwt"];
-            string given = j.Claims.ContainsKey("given_name") ? j.Claims["given_name"].FirstOrDefault() : null;
-            if (string.IsNullOrEmpty(given) && j.Claims.ContainsKey("name")) {
-                var parts = (j.Claims["name"].FirstOrDefault() ?? "").Split(' ');
-                if (parts.Length > 0) given = parts[0];
-            }
-            return given;
-            }" />
-            <set-variable name="familyName" value="@{
-            var j = (Jwt)context.Variables["jwt"];
-            string family = j.Claims.ContainsKey("family_name") ? j.Claims["family_name"].FirstOrDefault() : null;
-            if (string.IsNullOrEmpty(family) && j.Claims.ContainsKey("name")) {
-                var parts = (j.Claims["name"].FirstOrDefault() ?? "").Split(' ');
-                if (parts.Length > 1) family = parts[parts.Length - 1];
-            }
-            return family;
-            }" />
-
-        <set-variable name="bodyWithNames" value="@{
+        <set-variable name="jwt_decoded" value="@((Jwt)context.Variables["jwt"])" />
+        <!-- Estrai given_name / family_name con fallback su 'name' (split) -->
+        <set-variable name="givenName" value="@{
+        var j = (Jwt)context.Variables["jwt_decoded"];
+        string given = j.Claims.ContainsKey("given_name") ? j.Claims["given_name"].FirstOrDefault() : null;
+        if (string.IsNullOrEmpty(given) && j.Claims.ContainsKey("name")) {
+            var parts = (j.Claims["name"].FirstOrDefault() ?? "").Split(' ');
+            if (parts.Length > 0) { given = parts[0]; }
+        }
+        return given;
+        }" />
+        <set-variable name="familyName" value="@{
+        var j = (Jwt)context.Variables["jwt_decoded"];
+        string family = j.Claims.ContainsKey("family_name") ? j.Claims["family_name"].FirstOrDefault() : null;
+        if (string.IsNullOrEmpty(family) && j.Claims.ContainsKey("name")) {
+            var parts = (j.Claims["name"].FirstOrDefault() ?? "").Split(' ');
+            if (parts.Length > 1) { family = parts[parts.Length-1]; }
+        }
+        return family;
+        }" />
+        <choose>
+            <when condition="@(
+            string.Equals(context.Request.Method, "POST", StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(context.Request.Method, "PUT",  StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(context.Request.Method, "PATCH",StringComparison.OrdinalIgnoreCase)
+            )">
+                <set-variable name="bodyWithNames" value="@{
             var body = context.Request.Body?.As<JObject>(preserveContent: true) ?? new JObject();
 
             var given  = (string)context.Variables["givenName"];
