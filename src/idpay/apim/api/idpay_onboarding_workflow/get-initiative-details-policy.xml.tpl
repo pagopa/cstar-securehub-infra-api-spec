@@ -55,7 +55,7 @@
                         </send-request>
                         <cache-store-value key="@((string)context.Variables["detailsCacheKey"])"
                             value="@(((IResponse)context.Variables["detailsResp"]).Body.As<string>(preserveContent:true))"
-                            duration="300" />
+                            duration="3600" />
                         <return-response response-variable-name="detailsResp" />
                     </otherwise>
                 </choose>
