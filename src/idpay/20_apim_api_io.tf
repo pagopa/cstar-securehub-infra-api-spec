@@ -104,6 +104,13 @@ module "idpay_itn_onboarding_workflow_io" {
       xml_content = templatefile("./apim/api/idpay_onboarding_workflow/get-initiative-id-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
+    },
+    {
+      operation_id = "onboardingInitiativeUserStatus"
+
+      xml_content = templatefile("./apim/api/idpay_onboarding_workflow/get-onboarding-status-pending-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
     }
   ]
 
