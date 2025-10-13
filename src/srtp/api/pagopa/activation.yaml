@@ -471,8 +471,6 @@ paths:
         - $ref: '#/components/parameters/RequestId'
         - $ref: '#/components/parameters/Version'
         - $ref: '#/components/parameters/Otp'
-      requestBody:
-        $ref: '#/components/requestBodies/TakeoverActivation'
       responses:
         "204":
           #description: No content
@@ -786,6 +784,15 @@ components:
       example: "https://rtp.cstar.pagopa.it/activations/d0d654e6-97da-4848-b568-99fedccb642b"
 
     TakeOverOtp:
+      description: Identifier of the RTP activation resource.
+      type: string
+      format: uuid
+      pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+      minLength: 36
+      maxLength: 36
+      example: "d0d654e6-97da-4848-b568-99fedccb642b"
+
+    TakeOverOtpLocation:
       description: URL to do a takeover on a existing activation user.
       type: string
       format: uri
@@ -1260,7 +1267,7 @@ components:
           description: URL of the conflicting activation resource.
           required: true
           schema:
-            $ref: '#/components/schemas/TakeOverOtp'
+            $ref: '#/components/schemas/TakeOverOtpLocation'
       content:
         application/json:
           schema:
