@@ -41,8 +41,9 @@
                                 <value>no-store</value>
                             </set-header>
                             <set-body>@{
-              return (string)context.Variables["cachedDetails"];
-            }</set-body>
+                                return (string)context.Variables["cachedDetails"];
+                                }
+                            </set-body>
                         </return-response>
                     </when>
                     <!-- MISS cache -->
@@ -52,8 +53,9 @@
               + Uri.EscapeDataString((string)context.Variables["initiativeId"]) + "/detail")</set-url>
                             <set-method>GET</set-method>
                         </send-request>
-                        <set-variable name="detailsBody" value="@(((IResponse)context.Variables["detailsResp"]).Body.As<string>())" />
-                        <cache-store-value key="@((string)context.Variables["detailsCacheKey"])" value="@((string)context.Variables["detailsBody"])" duration="300" />
+                        <cache-store-value key="@((string)context.Variables["detailsCacheKey"])"
+                            value="@(((IResponse)context.Variables["detailsResp"]).Body.As<string>(preserveContent:true))"
+                            duration="3600" />
                         <return-response response-variable-name="detailsResp" />
                     </otherwise>
                 </choose>
