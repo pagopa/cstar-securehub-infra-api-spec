@@ -508,17 +508,39 @@ components:
             - KO
         errorKey:
           type: string
-          description: 'ENG: Error Key: <ul><li>product.invalid.file.maxrow: too many
-            records</li><li>product.invalid.file.header: wrong headers</li><li>product.invalid.file.size:
-            file size exceeds limit</li><li>product.invalid.file.report: error report
-            generated</li><li>product.invalid.file.extension: file extension not valid
-            (must be csv)</li></ul><br>IT: Chiave di errore: <ul><li>product.invalid.file.maxrow:
-            numero di record non consentito</li><li>merchant.invalid.file.header:
-            headers non validi</li><li>merchant.invalid.file.size: la dimensione del
-            file supera il limite consentito<li>merchant.invalid.file.report: il file
-            caricato ha generato un report file di errori</li></li><li>product.invalid.file.vat.wrong:
-            partita IVA o CF non valido</li><li>product.invalid.file.extension: estensione
-            file non valita (deve essere un csv)</li></ul>'
+          description: 'ENG: Error Key:
+          <ul>
+            <li>product.invalid.file.maxrow: too many records</li>
+            <li>product.invalid.file.header: wrong headers</li>
+            <li>product.invalid.file.size: file size exceeds limit</li>
+            <li>product.invalid.file.report: error report generated</li>
+            <li>product.invalid.file.extension: file extension not valid (must be csv)</li>
+          </ul>
+          <br>IT: Chiave di errore:
+          <ul>
+            <li>product.invalid.file.maxrow: numero di record non consentito</li>
+            <li>merchant.invalid.file.header: headers non validi</li>
+            <li>merchant.invalid.file.size: la dimensione del file supera il limite consentito</li>
+            <li>merchant.invalid.file.report: il file caricato ha generato un report di errori</li>
+            <li>product.invalid.file.vat.wrong: partita IVA o CF non valido</li>
+            <li>product.invalid.file.extension: estensione file non valida (deve essere un csv)</li>
+          </ul>
+          <hr/>
+          <strong>ENG: Update operation error keys</strong>:
+          <ul>
+            <li>product.invalid.update.mixedStatus: different current statuses in the same request are not allowed</li>
+            <li>product.invalid.update.currentStatus: provided currentStatus does not match the actual product status</li>
+            <li>product.invalid.update.notFound: one or more provided products (e.g. GTIN codes) were not found</li>
+            <li>product.invalid.update.transitionNotAllowed: transition from current to target status is not allowed</li>
+          </ul>
+          <strong>IT: Errori per l’operazione di update</strong>:
+          <ul>
+            <li>product.invalid.update.mixedStatus: nella stessa richiesta non sono consentiti prodotti con stati correnti diversi</li>
+            <li>product.invalid.update.currentStatus: il currentStatus fornito non coincide con lo stato reale del prodotto</li>
+            <li>product.invalid.update.notFound: uno o più prodotti (es. GTIN) non sono stati trovati</li>
+            <li>product.invalid.update.transitionNotAllowed: la transizione dallo stato corrente a quello di destinazione non è consentita</li>
+          </ul>'
+
           enum:
             - product.invalid.file.extension
             - product.invalid.file.maxrow
@@ -528,6 +550,10 @@ components:
             - product.invalid.file.category
             - product.invalid.file.empty
             - product.invalid.file.already_in_progress
+            - product.invalid.update.mixedStatus
+            - product.invalid.update.currentStatus
+            - product.invalid.update.notFound
+            - product.invalid.update.transitionNotAllowed
         productFileId:
           type: string
           description: 'ENG: Id of the partlial upload <br> IT: Id del caricamento
