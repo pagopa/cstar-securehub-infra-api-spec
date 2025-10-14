@@ -472,9 +472,9 @@ paths:
         - $ref: '#/components/parameters/Version'
         - $ref: '#/components/parameters/Otp'
       responses:
-        "204":
-          #description: No content
-          $ref: '#/components/responses/NoContent'
+        "201":
+          # Success. The takeover activation was created. The `Location` header points to the new resource.
+          $ref: '#/components/responses/CreateActivation'
         "400":
           #description: |
           #  Bad request
