@@ -7,7 +7,7 @@ module "platform_influxdb_product" {
 
   product_id   = "influxdb"
   display_name = "Influxdb"
-  description  = "Prodotto Influxdb"
+  description  = "Product Influxdb"
 
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
@@ -29,16 +29,16 @@ locals {
   platform_influxdb_api = {
     display_name          = "Influxdb2 - API"
     description           = "API to influxdb v2"
-    path                  = "shared/influxdb"
+    path                  = ""
     subscription_required = false
-    service_url           = null
+    service_url           = var.env == "prod" ? "influxdb.itn.internal.cstar.pagopa.it" : "influxdb.itn.${var.env}.internal.cstar.pagopa.it"
   }
 }
 
 module "platform_influxdb_api_v2" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                = format("%s-influxdb2-api", local.project)
+  name                = "${local.project}-influxdb2-api"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
@@ -50,12 +50,12 @@ module "platform_influxdb_api_v2" {
   service_url = local.platform_influxdb_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./apim/api/influxdb/v2/_openapi.json.tpl", {
-    host = local.apim_hostname
+  content_value = templatefile("./apim/api/influxdb/_openapi.json.tpl", {
+    host = local.platform_influxdb_api.service_url
   })
 
-  xml_content = templatefile("./apim/api/influxdb/v2/_base_policy.xml", {
-    hostname = local.shared_hostname
+  xml_content = templatefile("./apim/api/influxdb/_base_policy.xml", {
+    hostname = local.platform_influxdb_api.service_url
   })
 
   product_ids           = [module.platform_influxdb_product.product_id]

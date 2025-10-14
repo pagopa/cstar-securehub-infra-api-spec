@@ -7,10 +7,10 @@
   },
   "servers": [
     {
-      "url": "http://${host}/grafanatryit"
+      "url": "http://${host}/"
     },
     {
-      "url": "https://${host}/grafanatryit"
+      "url": "https://${host}/"
     }
   ],
   "paths": {
