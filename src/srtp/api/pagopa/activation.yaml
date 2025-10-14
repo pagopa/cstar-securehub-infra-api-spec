@@ -784,7 +784,7 @@ components:
       example: "https://rtp.cstar.pagopa.it/activations/d0d654e6-97da-4848-b568-99fedccb642b"
 
     TakeOverOtp:
-      description: Identifier of the RTP activation resource.
+      description: Identifier of the One-Time Password (OTP) used for takeover operations.
       type: string
       format: uuid
       pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
