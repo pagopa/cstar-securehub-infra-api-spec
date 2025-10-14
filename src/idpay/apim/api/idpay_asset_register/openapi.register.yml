@@ -528,6 +528,10 @@ components:
             - product.invalid.file.category
             - product.invalid.file.empty
             - product.invalid.file.already_in_progress
+            - product.invalid.update.mixedStatus
+            - product.invalid.update.currentStatus
+            - product.invalid.update.notFound
+            - product.invalid.update.transitionNotAllowed
         productFileId:
           type: string
           description: 'ENG: Id of the partlial upload <br> IT: Id del caricamento
