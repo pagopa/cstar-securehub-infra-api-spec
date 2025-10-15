@@ -456,7 +456,7 @@ paths:
           #description: Unexpected error
           $ref: '#/components/responses/Error'
 
-  /activations/{otp}:
+  /activations/takeover/{otp}:
     post:
       operationId: takeoverActivation
       summary: Allows a new Service Provider to take over an RTP activation.
