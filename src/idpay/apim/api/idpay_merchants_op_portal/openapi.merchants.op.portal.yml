@@ -247,17 +247,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TransactionErrorDTO"
-            examples:
-              transactionNotFound:
-                summary: Transaction not found
-                value:
-                  code: PAYMENT_NOT_FOUND_OR_EXPIRED
-                  message: "Cannot find transaction with trxCode [%s]"
-              productNotFound:
-                summary: Product not found
-                value:
-                  code: PRODUCT_NOT_FOUND
-                  message: "The product with gtin [%s] is not found or not approved"
+              example:
+                code: PAYMENT_NOT_FOUND_OR_EXPIRED
+                message: "Cannot find transaction with trxCode [%s]"
         "429":
           description: Too many requests
           headers:
