@@ -167,15 +167,70 @@ paths:
               $ref: "#/components/schemas/PreviewPaymentRequestDTO"
       responses:
         "200":
-          $ref: "#/components/responses/PUT_preview_payment_200_Response"
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreviewPaymentDTO"
         "400":
-          $ref: "#/components/responses/PUT_preview_payment_400_Response"
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              example:
+                code: PAYMENT_AMOUNT_NOT_VALID
+                message: "Cannot preview transaction with invalid amount [%s]"
         "401":
-          $ref: "#/components/responses/PUT_preview_payment_401_Response"
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              example:
+                code: PAYMENT_NOT_ALLOWED_FOR_TRX_STATUS
+                message: "Transaction with trxCode [%s] is not allowed for this operation"
+        "404":
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              examples:
+                transactionNotFound:
+                  summary: Transaction not found
+                  value:
+                    code: PAYMENT_NOT_FOUND_OR_EXPIRED
+                    message: "Cannot find transaction with trxCode [%s]"
+                productNotFound:
+                  summary: Product not found
+                  value:
+                    code: PRODUCT_NOT_FOUND
+                    message: "The product with gtin [%s] is not found or not approved"
         "429":
-          $ref: "#/components/responses/PUT_preview_payment_429_Response"
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              example:
+                code: PAYMENT_TOO_MANY_REQUESTS
+                message: "Too many requests on the ms reward calculator"
         "500":
-          $ref: "#/components/responses/PUT_preview_payment_500_Response"
+          description: Generic error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              example:
+                code: PAYMENT_GENERIC_ERROR
+                message: "A generic error occurred"
   /products:
     get:
       tags:
