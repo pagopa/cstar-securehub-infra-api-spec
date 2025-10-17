@@ -2231,7 +2231,7 @@ components:
           schema:
             $ref: "#/components/schemas/TransactionErrorDTO"
           example:
-            code: TOO_MANY_REQUESTS
+            code: PAYMENT_TOO_MANY_REQUESTS
             message: Too many requests
     GET_download_invoice_file_500_Response:
       description: Server ERROR
@@ -2243,7 +2243,7 @@ components:
           schema:
             $ref: "#/components/schemas/TransactionErrorDTO"
           example:
-            code: GENERIC_ERROR
+            code: PAYMENT_GENERIC_ERROR
             message: An error occurred during file reading
   parameters:
     category_query:
