@@ -2196,7 +2196,7 @@ components:
           schema:
             $ref: "#/components/schemas/TransactionErrorDTO"
           example:
-            code: INVALID_REQUEST
+            code: PAYMENT_INVALID_REQUEST
             message: Something went wrong handling request
     GET_download_invoice_file_401_Response:
       description: Authentication failed
