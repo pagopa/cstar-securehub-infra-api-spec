@@ -1786,6 +1786,7 @@ components:
         invoiceUrl:
           type: string
           description: "ENG: URL to download the invoice file - IT: URL per scaricare il file della fattura"
+          maxLength: 255
       required:
         - invoiceUrl
     TransactionErrorDTO:
@@ -1838,6 +1839,7 @@ components:
         file:
           type: string
           format: binary
+          maxLength: 255
     RewardInvoiceDTO:
       type: object
       required:
@@ -1846,6 +1848,7 @@ components:
         file:
           type: string
           format: binary
+          maxLength: 255
   securitySchemes:
     Bearer:
       type: apiKey
