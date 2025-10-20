@@ -8,16 +8,13 @@ info:
 
     This call serves as a notification to inform the original owner that they no longer have control over the specified user. The client's endpoint is expected to receive this notification, process it, and return a success status code to acknowledge receipt.
   version: "1.0.0"
-  contact:
-    name: "Your Company API Support"
-    email: "apisupport@yourcompany.com"
 
 
 paths:
   /takeover:
     post:
       summary: "Notify of a User Takeover"
-      description: "This endpoint is called by our system to inform a client that a user previously under their management has been successfully transferred to a new owner."
+      description: "This endpoint is called by Activation system to inform a client that a user previously under their management has been successfully transferred to a new owner."
       operationId: "notifyUserTakeover"
       tags:
         - "Notifications"
@@ -35,7 +32,7 @@ paths:
         "204":
           description: "Success. The notification was received and acknowledged successfully. No response body is needed."
         "400":
-          description: "Bad Request. The request body sent by our system was malformed or failed validation on the client's end. This could indicate an issue with our system's request or the client's validation logic."
+          description: "Bad Request. The request body sent by Activation system was malformed or failed validation on the client's end. This could indicate an issue with Activation system's request or the client's validation logic."
           content:
             application/json:
               schema:
