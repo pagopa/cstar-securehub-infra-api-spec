@@ -4,7 +4,7 @@ info:
   description: |
     This API specification defines the endpoint that client systems must expose to receive notifications about user takeovers.
 
-    When a user is successfully transferred from one client (the original owner) to another (the new owner) within Activation system, our Activation system will make a POST request to this `/takeover` endpoint on the original owner's server.
+    When a user is successfully transferred from one client (the original owner) to another (the new owner) within Activation system, this Activation system will make a POST request to this `/takeover` endpoint on the original owner's server.
 
     This call serves as a notification to inform the original owner that they no longer have control over the specified user. The client's endpoint is expected to receive this notification, process it, and return a success status code to acknowledge receipt.
   version: "1.0.0"
