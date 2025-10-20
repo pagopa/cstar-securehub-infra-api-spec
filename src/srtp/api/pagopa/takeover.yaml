@@ -1,0 +1,106 @@
+openapi: 3.0.3
+info:
+  title: "User Takeover Notification API"
+  description: |
+    This API specification defines the endpoint that client systems must expose to receive notifications about user takeovers.
+
+    When a user is successfully transferred from one client (the original owner) to another (the new owner) within our system, our system will make a POST request to this `/takeover` endpoint on the original owner's server.
+
+    This call serves as a notification to inform the original owner that they no longer have control over the specified user. The client's endpoint is expected to receive this notification, process it, and return a success status code to acknowledge receipt.
+  version: "1.0.0"
+  contact:
+    name: "Your Company API Support"
+    email: "apisupport@yourcompany.com"
+
+servers:
+  - url: "https://api.client-domain.com/v1"
+    description: "The base URL of the client's API server that will receive the notification."
+
+paths:
+  /takeover:
+    post:
+      summary: "Notify of a User Takeover"
+      description: "This endpoint is called by our system to inform a client that a user previously under their management has been successfully transferred to a new owner."
+      operationId: "notifyUserTakeover"
+      tags:
+        - "Notifications"
+      requestBody:
+        description: "Details of the completed takeover operation."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TakeoverNotification"
+      responses:
+        "204":
+          description: "Success. The notification was received and acknowledged successfully. No response body is needed."
+        "400":
+          description: "Bad Request. The request body sent by our system was malformed or failed validation on the client's end. This could indicate an issue with our system's request or the client's validation logic."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: "Internal Server Error. The client's server encountered an unexpected error while processing the notification. The client should investigate their logs to resolve the issue."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    TakeoverNotification:
+      type: "object"
+      description: "The payload containing information about the user takeover."
+      required:
+        - "oldActivationId"
+        - "fiscalCode"
+        - "takeoverTimestamp"
+      properties:
+        oldActivationId:
+          type: "string"
+          format: "uuid"
+          description: "The previews activationId."
+          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+          minLength: 36
+          maxLength: 36
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        fiscalCode:
+          description: |
+            Fiscal code.
+    
+            It is used as identifier of the Payer (P009) and of the Payee (E005).
+          type: string
+          pattern: "^(([A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z])|(\\d{11}))$"
+          minLength: 11
+          maxLength: 16
+          example: "RSSMRA85T10A562S"
+        takeoverTimestamp:
+          type: "string"
+          format: "date-time"
+          description: "The exact timestamp (ISO 8601 format in UTC) when the takeover was finalized."
+          example: "2025-10-21T10:00:00Z"
+        requestId:
+          description: Identifier of the request.
+          type: string
+          format: uuid
+          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+          minLength: 36
+          maxLength: 36
+          example: "bd615b4a-066d-443e-8dd2-a28a39931fef"
+
+    Error:
+      type: "object"
+      description: "A standard error response payload."
+      required:
+        - "code"
+        - "message"
+      properties:
+        code:
+          type: "string"
+          description: "A client-defined error code for the issue."
+          example: "INVALID_PAYLOAD"
+        message:
+          type: "string"
+          description: "A human-readable description of the error."
+          example: "An unexpected error occurred while processing the takeover notification."
