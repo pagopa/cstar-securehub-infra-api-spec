@@ -45,6 +45,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_merchants_token_ex
     origins                             = local.origins.base,
     selfcare_merchant_api_key_reference = azurerm_api_management_named_value.selfcare_merchant_api_key.display_name,
     selc_base_url                       = var.selc_base_url
+    idpay-allowed-institutions          = join(",", var.allowed_institutions)
   })
 
   depends_on = [

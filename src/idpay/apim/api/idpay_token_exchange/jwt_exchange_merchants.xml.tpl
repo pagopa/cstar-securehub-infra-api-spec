@@ -58,6 +58,48 @@
             return organization["id"].ToString();
         }" />
 
+        <!-- Gate on institutionId: only XXX/YYY/ZZZ proceed, otherwise redirect courtesy page -->
+
+        <!-- Prepare set with allowed institutions -->
+        <set-variable name="allowedCsv" value="${idpay-allowed-institutions}" />
+        <set-variable name="isAllowedInstitution" value="@{
+            var org = (string)context.Variables["institutionId"];
+            var csv = (string)context.Variables["allowedCsv"] ?? "";
+            var set = new HashSet<string>(
+                csv.Split(',').Select(s => s.Trim()).Where(s => !string.IsNullOrEmpty(s)),
+                StringComparer.OrdinalIgnoreCase
+            );
+            return !string.IsNullOrEmpty(org) && set.Contains(org);
+        }" />
+
+        <choose>
+                <when condition="@{
+                    var allowed     = (bool)context.Variables["isAllowedInstitution"];
+                    var isPreflight = string.Equals(context.Request.Method, "OPTIONS", StringComparison.OrdinalIgnoreCase);
+                    return !allowed && !isPreflight;
+                }">
+                <!-- Build  redirect URL -->
+                <set-variable name="redirectUrl" value="https://${idpay-portal-hostname}/portale-esercenti-in-arrivo" />
+                <!-- Redirect -->
+                <return-response>
+                    <set-status code="200" reason="OK" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-header name="X-Location-To" exists-action="override">
+                        <value>@((string)context.Variables["redirectUrl"])</value>
+                    </set-header>
+                    <set-body>@{
+                        return new JObject {
+                            ["code"] = "BAD_REQUEST",
+                            ["message"] = "Invalid institution",
+                        }.ToString();
+                    }</set-body>
+                </return-response>
+            </when>
+        </choose>
+        <!-- Gate on institutionId: only XXX/YYY/ZZZ proceed, otherwise redirect courtesy page -->
+
         <send-request mode="new" response-variable-name="institutionResponse" timeout="10" ignore-error="false">
             <set-url>@("${selc_base_url}"+"/external/v2/onboarding/institutions/"+context.Variables["merchantInstitutionId"])</set-url>
            <set-method>GET</set-method>
