@@ -12,9 +12,6 @@ info:
     name: "Your Company API Support"
     email: "apisupport@yourcompany.com"
 
-servers:
-  - url: "https://api.client-domain.com/v1"
-    description: "The base URL of the client's API server that will receive the notification."
 
 paths:
   /takeover:
