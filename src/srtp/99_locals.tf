@@ -85,7 +85,7 @@ locals {
       product               = "srtp"
       import_descriptor = {
         content_format = "openapi"
-        content_value  = templatefile("./api/pagopa/takeover.openapi.yaml", {})
+        content_value  = templatefile("./api/pagopa/takeover.yaml", {})
       }
     }
     # RTP Payees Registry

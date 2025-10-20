@@ -71,7 +71,7 @@ components:
         fiscalCode:
           description: |
             Fiscal code.
-    
+
             It is used as identifier of the Payer (P009) and of the Payee (E005).
           type: string
           pattern: "^(([A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z])|(\\d{11}))$"
@@ -83,7 +83,7 @@ components:
           format: "date-time"
           description: "The exact timestamp (ISO 8601 format in UTC) when the takeover was finalized."
           example: "2025-10-21T10:00:00Z"
-    
+
     RequestId:
           description: Identifier of the request.
           type: string
