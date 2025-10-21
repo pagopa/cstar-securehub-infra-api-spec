@@ -118,12 +118,7 @@ paths:
         '429':
           description: Too many Request
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionErrorDTO'
-              example:
-                code: PAYMENT_TOO_MANY_REQUESTS
-                message: 'Too many requests'
+            application/json: {}
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
