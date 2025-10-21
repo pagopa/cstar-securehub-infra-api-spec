@@ -258,6 +258,10 @@ locals {
       api_name    = "rtp-mock"
       xml_content = file("./api/test/mock_policy_epc.xml")
     }
+    notifyUserTakeover = {
+      api_name    = "rtp-takevoer-mock"
+      xml_content = file("./api/test/mock_policy_takeover.xml")
+    }
     getPayees = {
       api_name = "rtp-payees-registry"
       xml_content = templatefile("./api/pagopa/payees_registry_get_policy.xml", {

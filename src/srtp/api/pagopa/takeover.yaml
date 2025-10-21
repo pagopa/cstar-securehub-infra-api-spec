@@ -45,6 +45,31 @@ paths:
                 $ref: "#/components/schemas/Error"
 
 components:
+  parameters:
+    RequestId:
+      name: X-Request-Id
+      in: header
+      required: true
+      description: Identifier of the request.
+      schema:
+        type: string
+        format: uuid
+        pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+        minLength: 36
+        maxLength: 36
+        example: "bd615b4a-066d-443e-8dd2-a28a39931fef"
+    Version:
+      name: X-Version
+      in: header
+      required: true
+      description: Version of the required API.
+      schema:
+        type: string
+        pattern: "^[ -~]{1,64}$"
+        minLength: 1
+        maxLength: 64
+        example: "v1"
+
   schemas:
     TakeoverNotification:
       type: "object"
@@ -77,23 +102,6 @@ components:
           format: "date-time"
           description: "The exact timestamp (ISO 8601 format in UTC) when the takeover was finalized."
           example: "2025-10-21T10:00:00Z"
-
-    RequestId:
-          description: Identifier of the request.
-          type: string
-          format: uuid
-          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-          minLength: 36
-          maxLength: 36
-          example: "bd615b4a-066d-443e-8dd2-a28a39931fef"
-
-    Version:
-      description: Version of the required API.
-      type: string
-      pattern: "^[ -~]{1,64}$"
-      minLength: 1
-      maxLength: 64
-      example: "v1"
 
     Error:
       type: "object"
