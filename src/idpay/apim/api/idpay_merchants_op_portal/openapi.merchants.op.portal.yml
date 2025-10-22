@@ -1033,8 +1033,8 @@ paths:
       description: Generate transaction preview pdf
       operationId: getTransactionPreviewPdf
       parameters:
-        - $ref: '#/components/parameters/InitiativeIdPath'
-        - $ref: '#/components/parameters/TrxCodePath'
+        - $ref: '#/components/parameters/initiative_id_path'
+        - $ref: '#/components/parameters/trx_code_path'
       responses:
         "200":
           description: OK
@@ -2315,7 +2315,7 @@ components:
             code: PAYMENT_GENERIC_ERROR
             message: An error occurred during file reading
   parameters:
-    InitiativeIdPath:
+    initiative_id_path:
       name: initiativeId
       in: path
       required: true
@@ -2324,7 +2324,7 @@ components:
         type: string
         maxLength: 24
         pattern: '^[a-zA-Z0-9]+$'
-    TrxCodePath:
+    trx_code_path:
       name: trxCode
       in: path
       description: 'ENG: The transaction''s code - IT: Codice della transazione'
