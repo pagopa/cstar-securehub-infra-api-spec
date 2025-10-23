@@ -1986,6 +1986,10 @@ components:
           type: string
           maxLength: 1048576
           format: binary
+        trxCode:
+          type: string
+          maxLength: 100
+          pattern: "^[a-zA-Z0-9]+$"
   securitySchemes:
     Bearer:
       type: apiKey
