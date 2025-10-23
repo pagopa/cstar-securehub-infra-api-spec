@@ -1267,7 +1267,6 @@ components:
           maximum: 1000000000
           description: "ENG: amount in cents - IT: importo totale della spesa in centesimi"
       required:
-        - productName
         - productGtin
         - amountCents
     PreviewPaymentDTO:
