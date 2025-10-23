@@ -1028,7 +1028,7 @@ paths:
   /transactions/{transactionId}/preview-pdf:
     get:
       tags:
-        - payment
+        - transaction
       summary: 'ENG: Generate a transaction preview pdf - IT: Genera un pdf della preview transazione'
       description: Generate transaction preview pdf
       operationId: getTransactionPreviewPdf
