@@ -1025,7 +1025,7 @@ paths:
               example:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
-  /payment/initiatives/{initiativeId}/bar-code/{trxCode}/preview-pdf:
+  /transactions/{transactionId}/preview-pdf:
     get:
       tags:
         - payment
@@ -1033,8 +1033,7 @@ paths:
       description: Generate transaction preview pdf
       operationId: getTransactionPreviewPdf
       parameters:
-        - $ref: '#/components/parameters/initiative_id_path'
-        - $ref: '#/components/parameters/trx_code_path'
+        - $ref: '#/components/parameters/trx_id_path'
       responses:
         "200":
           description: OK
@@ -1985,6 +1984,8 @@ components:
       properties:
         data:
           type: string
+          maxLength: 1048576
+          format: binary
   securitySchemes:
     Bearer:
       type: apiKey
@@ -2315,23 +2316,14 @@ components:
             code: PAYMENT_GENERIC_ERROR
             message: An error occurred during file reading
   parameters:
-    initiative_id_path:
-      name: initiativeId
+    trx_id_path:
+      name: transactionId
       in: path
-      required: true
-      description: 'ENG: Initiative ID - IT: Identificativo dell''iniziativa'
-      schema:
-        type: string
-        maxLength: 24
-        pattern: '^[a-zA-Z0-9]+$'
-    trx_code_path:
-      name: trxCode
-      in: path
-      description: 'ENG: The transaction''s code - IT: Codice della transazione'
+      description: 'ENG: The transaction''s id - IT: Id della transazione'
       required: true
       schema:
         type: string
-        maxLength: 24
+        maxLength: 255
         pattern: '^[a-zA-Z0-9]+$'
     category_query:
       name: category
