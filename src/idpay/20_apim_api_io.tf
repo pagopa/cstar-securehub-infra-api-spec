@@ -364,4 +364,13 @@ module "idpay_itn_payment_io" {
 
   product_ids = [module.idpay_itn_api_io_product.product_id]
 
+  api_operation_policies = [
+    {
+      operation_id = "retrievectiveBarCodeTransaction"
+      xml_content = templatefile("./apim/api/idpay_payment_io/get-active-barcode-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    }
+  ]
+
 }
