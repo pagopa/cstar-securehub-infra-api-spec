@@ -15,7 +15,7 @@ servers:
     x-internal: true
 tags:
   - name: products
-    description: Operations related to product listing and filtering
+    description: Operazioni relative all'elenco dei prodotti e al filtraggio
   - name: transaction
     description: Operations related to transaction
   - name: point-of-sales
