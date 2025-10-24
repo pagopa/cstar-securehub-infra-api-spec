@@ -357,6 +357,7 @@ paths:
             type: string
             maxLength: 255
             pattern: "^[a-zA-Z0-9]+$"
+            example: "cmhszi7u"
       requestBody:
         description: Request about auth bar-code trx
         content:
@@ -575,6 +576,7 @@ paths:
             type: string
             maxLength: 255
             pattern: "^[a-zA-Z0-9]+$"
+            example: "e1f9503e-f87c-4abb-a1cb-bbb1905ae1fd_BARCODE_1761309360725"
       responses:
         "200":
           description: Ok
@@ -698,6 +700,7 @@ paths:
             type: string
             maxLength: 255
             pattern: "^[a-zA-Z0-9]+$"
+            example: "e1f9503e-f87c-4abb-a1cb-bbb1905ae1fd_BARCODE_1761309360725"
       requestBody:
         content:
           multipart/form-data:
@@ -825,6 +828,7 @@ paths:
             type: string
             maxLength: 255
             pattern: "^[a-zA-Z0-9]+$"
+            example: "e1f9503e-f87c-4abb-a1cb-bbb1905ae1fd_BARCODE_1761309360725"
       requestBody:
         content:
           multipart/form-data:
@@ -995,21 +999,25 @@ components:
           description: "Codice della transazione (codice sconto)"
           maxLength: 24
           pattern: "^[a-zA-Z0-9]+$"
+          example: "cmhszi7u"
         initiativeId:
           type: string
           description: "Identificativo dell'iniziativa"
           maxLength: 100
           pattern: "^[A-Za-z0-9_-]+$"
+          example: "68dd003ccce8c534d1da22bc"
         initiativeName:
           type: string
           description: "Nome della iniziativa"
           maxLength: 1000
           pattern: ".*"
+          example: "Bonus Elettrodomestici"
         trxDate:
           type: string
           format: date-time
           description: "Data della transazione"
           maxLength: 255
+          example: "2025-10-24T12:36:00.725+00:00"
         status:
           type: string
           enum:
@@ -1019,14 +1027,17 @@ components:
             - CAPTURED
             - REWARDED
             - REJECTED
+          example: "CREATED"
         trxExpirationSeconds:
           type: number
           description: "Scadenza della transazione, in secondi"
           minimum: 0
+          example: 300 
         residualBudgetCents:
           type: number
           description: "Budget residuo"
           minimum: 0
+          example: 1000
     PreviewPaymentRequestDTO:
       type: object
       properties:
@@ -1035,17 +1046,20 @@ components:
           description: "Nome del prodotto"
           maxLength: 255
           pattern: .*
+          example: "Forno XYZ"
         productGtin:
           type: string
           description: "Codice GTIN del prodotto"
           maxLength: 14
           pattern: ^[a-zA-Z0-9]{1,14}$
+          example: "OVENS09"
         amountCents:
           type: integer
           format: int64
           minimum: 0
           maximum: 1000000000
           description: "Importo totale della spesa in centesimi"
+          example: 123400
       required:
         - productName
         - productGtin
@@ -1058,11 +1072,13 @@ components:
           description: "Codice della transazione (codice sconto)"
           maxLength: 24
           pattern: "^[a-zA-Z0-9]+$"
+          example: "cmhszi7u"
         trxDate:
           type: string
           format: date-time
           description: "Data della transazione"
           maxLength: 255
+          example: "2025-10-24T12:36:00.725+00:00"
         status:
           type: string
           enum:
@@ -1070,6 +1086,7 @@ components:
             - IDENTIFIED
             - AUTHORIZATION_REQUESTED
             - AUTHORIZED
+          example: "AUTHORIZED"
           description: >-
             Stato del pagamento [CREATED: Creato,
             IDENTIFIED: Utente associato, AUTHORIZATION_REQUESTED:
@@ -1080,36 +1097,43 @@ components:
           description: "Importo originale da pagare in centesimi"
           minimum: 0
           maximum: 1000000000
+          example: 133400
         rewardCents:
           type: integer
           format: int64
           description: "Sconto generato"
           minimum: 0
           maximum: 1000000000
+          example: 10000
         residualAmountCents:
           type: integer
           format: int64
           description: "Importo residuo da pagare dopo lo sconto"
           minimum: 0
           maximum: 1000000000
+          example: 123400
         userId:
           type: string
           description: "Codice fiscale utente"
           maxLength: 16
           pattern: .*
+          example: "RSSMRA85M01H501U"
         productName:
           type: string
           description: "Il nome del prodotto"
           maxLength: 255
           pattern: .*
+          example: "Forno XYZ"
         productGtin:
           type: string
           description: "Codice GTIN del prodotto"
           maxLength: 14
           pattern: ^[a-zA-Z0-9]{1,14}$
+          example: "OVENS09"
         extendedAuthorization:
           type: boolean
           description: "True, se l'autorizzazione è estesa"
+          example: false
     ProductListDTO:
       type: object
       properties:
@@ -1124,6 +1148,7 @@ components:
           description: "Numero della pagina"
           minimum: 0
           maximum: 1000000
+          example: 1
         pageSize:
           type: integer
           format: int32
@@ -1131,6 +1156,7 @@ components:
             "Numero di elementi per pagina"
           minimum: 0
           maximum: 1000000
+          example: 20
         totalElements:
           type: integer
           format: int32
@@ -1138,6 +1164,7 @@ components:
             "Numero totale degli elementi"
           minimum: 0
           maximum: 1000000
+          example: 200
         totalPages:
           type: integer
           format: int32
@@ -1145,6 +1172,7 @@ components:
             "Numero totale delle pagine"
           minimum: 0
           maximum: 1000000
+          example: 10
     ProductDTO:
       type: object
       properties:
@@ -1153,12 +1181,14 @@ components:
           description: "ID del produttore"
           maxLength: 36
           pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$
+          example: "72c2c5f8-1c71-4614-a4b3-95e3aee71c3d"
         registrationDate:
           type: string
           format: date-time
           description:
             "Data caricamento prodotto (dopo la verifica EPREL)"
           maxLength: 255
+          example: "2025-10-16T12:05:19.307+00:00"
         status:
           type: string
           description: "Stato del prodotto"
@@ -1166,16 +1196,19 @@ components:
             - APPROVED
             - REJECTED
             - SUPERVISIONED
+          example: "APPROVED"
         model:
           type: string
           description: "Modello del prodotto"
           maxLength: 100
           pattern: ^.{1,100}$
+          example: "CK501G-SL"
         productGroup:
           type: string
           description: "Categoria EPREL"
           maxLength: 255
           pattern: .*
+          example: "ovens"
         category:
           type: string
           description: "Categoria del prodotto"
@@ -1188,29 +1221,34 @@ components:
             - Lavastoviglie
             - Cappa da cucina
             - Forno
+          example: "Forno"
         brand:
           type: string
           description: "Brand del prodotto"
           maxLength: 100
           pattern: ^.{1,100}$
+          example: "TheBestBrand"
         eprelCode:
           type: string
           description:
             "Codice EPREL del prodotto"
           maxLength: 50
           pattern: ^\\d+$
+          example: 2413748
         gtinCode:
           type: string
           description:
             "Codice GTIN del prodotto"
           maxLength: 14
           pattern: ^[a-zA-Z0-9]{1,14}$
+          example: "OVENS09"
         productCode:
           type: string
           description: "Codice prodotto"
           maxLength: 100
           pattern: ^[a-zA-Z0-9 ]{0,100}$
           nullable: true
+          example: "OV01"
         energyClass:
           type: string
           description:
@@ -1218,39 +1256,46 @@ components:
           maxLength: 4
           pattern: ^(A\\+\\+\\+|A\\+\\+|A\\+|A|B|C|D|E|F|G)$
           nullable: true
+          example: "A"
         countryOfProduction:
           type: string
           description:
             "Paese di produzione del prodotto"
           maxLength: 2
           pattern: ^[A-Z]{2}$
+          example: "IT"
         batchName:
           type: string
           description:
             "Nomelotto del prodotto"
           pattern: ^(Apparecchi_di_refrigerazione|Cappe_Da_Cucina|Lavatrici|Lavastoviglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$
           maxLength: 255
+          example: "Forni_5f4dcc3b5aa765d61d8327deb882cf99.csv"
         linkEprel:
           type: string
           description: "Link EPREL del prodotto"
           maxLength: 255
           format: uri
           nullable: true
+          example: "https://eprel.ec.europa.eu/screen/product/ovens/2413748"
         capacity:
           type: string
           description: "Capacità del prodotto"
           maxLength: 255
           pattern: .*
           nullable: true
+          example: "126 l"
         productName:
           type: string
           description: "Nome del prodotto"
           maxLength: 255
           pattern: .*
+          example: "Forno OV01 A 126 l"
         motivation:
           type: string
           maxLength: 200
           pattern: .*
+          example: "n/a"
     PointOfSaleTransactionsProcessedListDTO:
       type: object
       properties:
@@ -1402,6 +1447,7 @@ components:
           description: "Codice della transazione"
           maxLength: 100
           pattern: "^[a-zA-Z0-9]+$"
+          example: "cmhszi7u"
         fiscalCode:
           type: string
           description: "Codice fiscale del cittadino"
@@ -1473,99 +1519,6 @@ components:
             type: string
             maxLength: 255
             pattern: ".*"
-    PointOfSaleDTO:
-      type: object
-      properties:
-        id:
-          type: string
-          description: "ID del punto vendita"
-          maxLength: 255
-        type:
-          type: string
-          enum:
-            - PHYSICAL
-            - ONLINE
-          description: "Tipo del punto vendita"
-        franchiseName:
-          type: string
-          maxLength: 255
-          description: "Nome del punto vendita"
-        region:
-          type: string
-          description: "Regione del punto vendita"
-          maxLength: 255
-        province:
-          type: string
-          description: "Provincia del punto vendita"
-          maxLength: 255
-        city:
-          type: string
-          description: "Città del punto vendita"
-          maxLength: 255
-        zipCode:
-          type: string
-          description: "CAP del punto vendita"
-          maxLength: 255
-        address:
-          type: string
-          description: "Indirizzo completo del punto vendita"
-          maxLength: 255
-        streetNumber:
-          type: string
-          description: "Numero civico del punto vendita"
-          maxLength: 255
-        website:
-          type: string
-          description: "Sito web del punto vendita"
-          maxLength: 255
-        contactEmail:
-          type: string
-          description: "Email del referente"
-          maxLength: 255
-        contactName:
-          type: string
-          description: "Nome del referente"
-          maxLength: 255
-        contactSurname:
-          type: string
-          description: "Cognome del referente"
-          maxLength: 255
-        channelEmail:
-          type: string
-          description: "Contatto del punto vendita tramite indirizzo email"
-          maxLength: 255
-        channelPhone:
-          type: string
-          description: "Contatto del punto vendita tramite numero di telefono"
-          maxLength: 255
-        channelGeolink:
-          type: string
-          description: "Contatto del punto vendita tramite link geografico o posizione sulla mappa"
-          maxLength: 255
-        channelWebsite:
-          type: string
-          description: "Contatto del punto vendita tramite portale web"
-          maxLength: 255
-    PointOfSaleErrorDTO:
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: string
-          enum:
-            - POINT_OF_SALE_NOT_FOUND
-            - POINT_OF_SALE_BAD_REQUEST
-            - POINT_OF_SALE_INVALID_REQUEST
-            - MERCHANT_NOT_ONBOARDED
-            - POINT_OF_SALE_TOO_MANY_REQUESTS
-            - POINT_OF_SALE_GENERIC_ERROR
-          description: '"Codice di errore:<br> POINT_OF_SALES_NOT_FOUND: Lo store non è stato trovato,<br> MERCHANT_NOT_ONBOARDED: L''esercente non è associato all''iniziativa,<br> POINT_OF_SALES_TOO_MANY_REQUESTS: Troppe richieste,<br> POINT_OF_SALES_INVALID_REQUEST: Qualcosa è andato storto durante l''invio della richiesta,<br> POINT_OF_SALES_GENERIC_ERROR: Errore applicativo"'
-        message:
-          type: string
-          description: "Messaggio di errore"
-          maxLength: 1000
     ErrorDTO:
       type: object
       required:
@@ -1623,6 +1576,7 @@ components:
           description: "Codice della transazione"
           maxLength: 100
           pattern: "^[a-zA-Z0-9]+$"
+          example: "cmhszi7u"
         trxDate:
           type: string
           format: date-time
@@ -2253,5 +2207,6 @@ components:
         type: string
         maxLength: 36
         pattern: .*
+        example: "e1f9503e-f87c-4abb-a1cb-bbb1905ae1fd_BARCODE_1761309360725"
 security:
   - Bearer: []
