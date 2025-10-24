@@ -345,7 +345,7 @@ paths:
     put:
       tags:
         - transaction
-      summary: "IT: Autorizzazione pagamento"
+      summary: "Autorizzazione pagamento"
       description: "Autorizzazione pagamento"
       operationId: authPaymentBarCode
       parameters:
@@ -543,7 +543,7 @@ paths:
     get:
       tags:
         - transaction
-      summary: "Scarica il file della fattura"
+      summary: "Scarica il file della fattura della transazione"
       description: "Scarica il file della fattura della transazione"
       operationId: downloadInvoiceFile
       parameters:
@@ -563,13 +563,13 @@ paths:
     delete:
       tags:
         - transaction
-      summary: Point of sales delete transaction
+      summary: Elimina una transazione associata ad un punto vendita
       operationId: deleteTransaction
-      description: "ENG: Delete a transaction associated to a point of sale - IT: Elimina una transazione associata ad un punto vendita"
+      description: "Elimina una transazione associata ad un punto vendita"
       parameters:
         - name: transactionId
           in: path
-          description: The transaction ID
+          description: ID della transazione
           required: true
           schema:
             type: string
@@ -686,13 +686,13 @@ paths:
     post:
       tags:
         - transaction
-      summary: Point of sales reversal transaction
-      description: "ENG: Point of sales reversal transaction <br> IT: Storno di una transazione da parte di un Punto Vendita"
+      summary: Storno di una transazione da parte di un Punto Vendita
+      description: "Storno di una transazione da parte di un Punto Vendita"
       operationId: reversalTransaction
       parameters:
         - name: transactionId
           in: path
-          description: The transaction ID
+          description: ID della transazione
           required: true
           schema:
             type: string
@@ -813,13 +813,13 @@ paths:
     post:
       tags:
         - transaction
-      summary: Point of sales reward transaction
-      description: "ENG: Point of sales reward transaction <br> IT: Riconoscimento di una transazione da parte di un Punto Vendita"
+      summary: Riconoscimento di una transazione da parte di un Punto Vendita
+      description: "Riconoscimento di una transazione da parte di un Punto Vendita"
       operationId: rewardTransaction
       parameters:
         - name: transactionId
           in: path
-          description: The transaction ID
+          description: ID della transazione
           required: true
           schema:
             type: string
