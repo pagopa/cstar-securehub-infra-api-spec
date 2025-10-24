@@ -27,7 +27,7 @@ info:
     
     Le credenziali `<client id>` e `<client secret>` verranno ricevute via e-mail all'indirizzo indicato durante la procedura di adesione. In particolare si riceverà un **one-time share link**, ossia un link che potrà essere usato **una sola volta**, avete una validità pari a **3 giorni**.
     
-    Nella schermata che verrà mostrata visitando il link, verrà indicato il `<client id>` nella sezione *Login*, il `<client secret>` nella sezione *Passoword*.
+    Nella schermata che verrà mostrata visitando il link, verrà indicato il `<client id>` nella sezione *Login*, il `<client secret>` nella sezione *Password*.
     
     Le `<url>` da utilizzarsi sono:
     
