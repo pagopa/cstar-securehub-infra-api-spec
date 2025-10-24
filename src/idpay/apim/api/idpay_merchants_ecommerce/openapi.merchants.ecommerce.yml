@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: IDPAY ITN Merchant Operator Portal API
-  description:  |
+  title: PARI - API e-commerce
+  description: |
     # Note sull'Autenticazione
     Le API descritte nella presente specifica richiedono l'autenticazione tramite **bearer authentication** (nota anche come **token authentication**).
     
