@@ -939,36 +939,34 @@ paths:
 components:
   headers:
     X-RateLimit-Limit:
-      description: The maximum number of requests allowed in the current period
+      description: Numero massimo di richieste consentite nel periodo corrente
       schema:
         type: integer
         format: int64
         minimum: 0
         maximum: 1000000
     X-RateLimit-Remaining:
-      description: The number of requests remaining in the current period
+      description: Il numero di richieste rimanenti nel periodo corrente
       schema:
         type: integer
         format: int64
         minimum: 0
         maximum: 1000000
     X-RateLimit-Reset:
-      description: The time at which the rate limit resets (in UTC epoch seconds)
+      description: "L'ora in cui il limite di velocità viene reimpostato (in secondi dell'epoca UTC)"
       schema:
         type: integer
         format: int64
         minimum: 0
         maximum: 9999999999
     Access-Control-Allow-Origin:
-      description: CORS header to allow cross-origin requests
+      description: Intestazione CORS per consentire richieste cross-origin
       schema:
         type: string
         maxLength: 255
         pattern: .*
     Retry-After:
-      description:
-        Indicates how long the user agent should wait before making a follow-up
-        request
+      description: "Indica per quanto tempo l'agente deve attendere prima di effettuare una richiesta di follow-up"
       schema:
         type: integer
         format: int64
@@ -989,28 +987,28 @@ components:
       properties:
         id:
           type: string
-          description: "ENG: Transaction ID <br> IT: ID della transazione"
+          description: "ID della transazione"
           maxLength: 64
           pattern: .*
         trxCode:
           type: string
-          description: "ENG: Transaction code - IT: Codice della transazione (codice sconto)"
+          description: "Codice della transazione (codice sconto)"
           maxLength: 24
           pattern: "^[a-zA-Z0-9]+$"
         initiativeId:
           type: string
-          description: "ENG: Id of the initiative - IT: Identificativo dell'iniziativa"
+          description: "Identificativo dell'iniziativa"
           maxLength: 100
           pattern: "^[A-Za-z0-9_-]+$"
         initiativeName:
           type: string
-          description: "ENG: Name of the initiative - IT: Nome della iniziativa"
+          description: "Nome della iniziativa"
           maxLength: 1000
           pattern: ".*"
         trxDate:
           type: string
           format: date-time
-          description: "ENG: Transaction date - IT: Data della transazione"
+          description: "Data della transazione"
           maxLength: 255
         status:
           type: string
@@ -1023,23 +1021,23 @@ components:
             - REJECTED
         trxExpirationSeconds:
           type: number
-          description: "ENG: Expiration time of the transaction, in seconds - IT: Scadenza della transazione, in secondi"
+          description: "Scadenza della transazione, in secondi"
           minimum: 0
         residualBudgetCents:
           type: number
-          description: "ENG: The residual budget - IT: Budget residuo"
+          description: "Budget residuo"
           minimum: 0
     PreviewPaymentRequestDTO:
       type: object
       properties:
         productName:
           type: string
-          description: "ENG: prodcut name - IT: il nome del prodotto"
+          description: "Nome del prodotto"
           maxLength: 255
           pattern: .*
         productGtin:
           type: string
-          description: "ENG: prodcut GTIN - IT: il codice GTIN del prodotto"
+          description: "Codice GTIN del prodotto"
           maxLength: 14
           pattern: ^[a-zA-Z0-9]{1,14}$
         amountCents:
@@ -1047,7 +1045,7 @@ components:
           format: int64
           minimum: 0
           maximum: 1000000000
-          description: "ENG: amount in cents - IT: importo totale della spesa in centesimi"
+          description: "Importo totale della spesa in centesimi"
       required:
         - productName
         - productGtin
@@ -1057,13 +1055,13 @@ components:
       properties:
         trxCode:
           type: string
-          description: "ENG: Transaction code - IT: Codice della transazione (codice sconto)"
+          description: "Codice della transazione (codice sconto)"
           maxLength: 24
           pattern: "^[a-zA-Z0-9]+$"
         trxDate:
           type: string
           format: date-time
-          description: "ENG: Transaction date - IT: Data della transazione"
+          description: "Data della transazione"
           maxLength: 255
         status:
           type: string
@@ -1073,47 +1071,45 @@ components:
             - AUTHORIZATION_REQUESTED
             - AUTHORIZED
           description: >-
-            ENG: Status of the payment [CREATED: Created, IDENTIFIED: User
-            related, AUTHORIZATION_REQUESTED: Authorization Requested,
-            AUTHORIZED: authorized] - IT: Stato del pagamento [CREATED: Creato,
+            Stato del pagamento [CREATED: Creato,
             IDENTIFIED: Utente associato, AUTHORIZATION_REQUESTED:
             autorizzazione richiesta, AUTHORIZED: autorizzato]
         originalAmountCents:
           type: integer
           format: int64
-          description: "ENG: Original amount cents - IT: Importo originale da pagare in centesimi"
+          description: "Importo originale da pagare in centesimi"
           minimum: 0
           maximum: 1000000000
         rewardCents:
           type: integer
           format: int64
-          description: "ENG: Reward - IT: sconto generato"
+          description: "Sconto generato"
           minimum: 0
           maximum: 1000000000
         residualAmountCents:
           type: integer
           format: int64
-          description: "ENG: Residual amount to pay - IT: Importo residuo da pagare dopo lo sconto"
+          description: "Importo residuo da pagare dopo lo sconto"
           minimum: 0
           maximum: 1000000000
         userId:
           type: string
-          description: "ENG: user fiscal code - IT: codice fiscale utente"
+          description: "Codice fiscale utente"
           maxLength: 16
           pattern: .*
         productName:
           type: string
-          description: "ENG: prodcut name - IT: il nome del prodotto"
+          description: "Il nome del prodotto"
           maxLength: 255
           pattern: .*
         productGtin:
           type: string
-          description: "ENG: prodcut GTIN - IT: il codice GTIN del prodotto"
+          description: "Codice GTIN del prodotto"
           maxLength: 14
           pattern: ^[a-zA-Z0-9]{1,14}$
         extendedAuthorization:
           type: boolean
-          description: "ENG: True, if extended authorization - IT: True, se l'autorizzazione è estesa"
+          description: "True, se l'autorizzazione è estesa"
     ProductListDTO:
       type: object
       properties:
@@ -1125,31 +1121,28 @@ components:
         pageNo:
           type: integer
           format: int32
-          description: "ENG: The number of the page <br> IT: Il numero della pagina"
+          description: "Numero della pagina"
           minimum: 0
           maximum: 1000000
         pageSize:
           type: integer
           format: int32
           description:
-            "ENG: The element size for page <br> IT: Il numero di elementi
-            per pagina"
+            "ENG: Numero di elementi per pagina"
           minimum: 0
           maximum: 1000000
         totalElements:
           type: integer
           format: int32
           description:
-            "ENG: The total number of the elements <br> IT: Il numero totale
-            degli elementi"
+            "Numero totale degli elementi"
           minimum: 0
           maximum: 1000000
         totalPages:
           type: integer
           format: int32
           description:
-            "ENG: The total number of the pages <br> IT: Il numero totale
-            delle pagine"
+            "Numero totale delle pagine"
           minimum: 0
           maximum: 1000000
     ProductDTO:
@@ -1157,36 +1150,35 @@ components:
       properties:
         organizationId:
           type: string
-          description: "ENG: The name of organization <br> IT: Id del produttore"
+          description: "ID del produttore"
           maxLength: 36
           pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$
         registrationDate:
           type: string
           format: date-time
           description:
-            "ENG: Timestamps of insert (after EPREL checks) <br> IT: Data
-            caricamento prodotto (dopo la verifica EPREL)"
+            "ENG: Data caricamento prodotto (dopo la verifica EPREL)"
           maxLength: 255
         status:
           type: string
-          description: "ENG: The status of the product <br> IT: Lo stato del prodotto"
+          description: "Stato del prodotto"
           enum:
             - APPROVED
             - REJECTED
             - SUPERVISIONED
         model:
           type: string
-          description: "ENG: The mode of the product <br> IT: il modello del prodotto"
+          description: "Modello del prodotto"
           maxLength: 100
           pattern: ^.{1,100}$
         productGroup:
           type: string
-          description: "ENG: The EPREL category <br> IT: categoria EPREL"
+          description: "Categoria EPREL"
           maxLength: 255
           pattern: .*
         category:
           type: string
-          description: "ENG: The category of the product <br> IT: categoria del prodotto"
+          description: "Categoria del prodotto"
           enum:
             - Lavatrice
             - Lavasciuga
@@ -1198,66 +1190,61 @@ components:
             - Forno
         brand:
           type: string
-          description: "ENG: The brand of the product <br> IT: brand del prodotto"
+          description: "Brand del prodotto"
           maxLength: 100
           pattern: ^.{1,100}$
         eprelCode:
           type: string
           description:
-            "ENG: The EPREL code of the product <br> IT: Il code EPREL
-            del prodotto"
+            "Codice EPREL del prodotto"
           maxLength: 50
           pattern: ^\\d+$
         gtinCode:
           type: string
           description:
-            "ENG: The GTIN code of the product <br> IT: Il code GTIN del
-            prodotto"
+            "Codice GTIN del prodotto"
           maxLength: 14
           pattern: ^[a-zA-Z0-9]{1,14}$
         productCode:
           type: string
-          description: "ENG: The product code <br> IT: Il codice prodotto"
+          description: "Codice prodotto"
           maxLength: 100
           pattern: ^[a-zA-Z0-9 ]{0,100}$
           nullable: true
         energyClass:
           type: string
           description:
-            "ENG: The product energy class <br> IT: La classe energetica
-            del prodotto"
+            "Classe energetica del prodotto"
           maxLength: 4
           pattern: ^(A\\+\\+\\+|A\\+\\+|A\\+|A|B|C|D|E|F|G)$
           nullable: true
         countryOfProduction:
           type: string
           description:
-            "ENG: The production country of the product <br> IT: il paese
-            di produzione del prodotto"
+            "Paese di produzione del prodotto"
           maxLength: 2
           pattern: ^[A-Z]{2}$
         batchName:
           type: string
           description:
-            "ENG: The batch name the product <br> IT: il nomelotto del
-            prodotto"
+            "Nomelotto del prodotto"
           pattern: ^(Apparecchi_di_refrigerazione|Cappe_Da_Cucina|Lavatrici|Lavastoviglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$
           maxLength: 255
         linkEprel:
           type: string
-          description: "ENG: The EPREL product link <br> IT: Il link EPREL del prodotto"
+          description: "Link EPREL del prodotto"
           maxLength: 255
           format: uri
           nullable: true
         capacity:
           type: string
-          description: "ENG: The capacity of the product <br> IT: Capacità del  prodotto"
+          description: "Capacità del prodotto"
           maxLength: 255
           pattern: .*
           nullable: true
         productName:
           type: string
-          description: "ENG: The name of the product  <br> IT: Nome del prodotto"
+          description: "Nome del prodotto"
           maxLength: 255
           pattern: .*
         motivation:
@@ -1275,25 +1262,25 @@ components:
         pageNo:
           type: integer
           format: int32
-          description: "ENG: The number of the page <br> IT: Il numero della pagina"
+          description: "Numero della pagina"
           minimum: 0
           maximum: 1000000
         pageSize:
           type: integer
           format: int32
-          description: "ENG: The element size for page <br> IT: Il numero di elementi per pagina"
+          description: "Numero di elementi per pagina"
           minimum: 0
           maximum: 1000000
         totalElements:
           type: integer
           format: int32
-          description: "ENG: The total number of the elements <br> IT: Il numero totale degli elementi"
+          description: "Numero totale degli elementi"
           minimum: 0
           maximum: 1000000
         totalPages:
           type: integer
           format: int32
-          description: "ENG: The total number of the pages <br> IT: Il numero totale delle pagine"
+          description: "Numero totale delle pagine"
           minimum: 0
           maximum: 1000000
     PointOfSaleTransactionProcessedDTO:
@@ -1302,53 +1289,53 @@ components:
       properties:
         id:
           type: string
-          description: "ENG: Transaction ID <br> IT: ID della transazione"
+          description: "ID della transazione"
           maxLength: 64
           pattern: .*
         fiscalCode:
           type: string
-          description: "ENG: Citizen fiscal code - IT: Codice fiscale del cittadino"
+          description: "Codice fiscale del cittadino"
           minLength: 16
           maxLength: 16
           pattern: "^[A-Z0-9]+$"
         effectiveAmountCents:
           type: integer
           format: int64
-          description: "ENG: Transaction amount in cents - IT: Importo della transazione in centesimi"
+          description: "Importo della transazione in centesimi"
           minimum: 0
           maximum: 1000000000
         rewardAmountCents:
           type: integer
           format: int64
-          description: "ENG: Reward amount in cents - IT: Premio generato in centesimi"
+          description: "Premio generato in centesimi"
           minimum: 0
           maximum: 1000000000
         authorizedAmountCents:
           type: integer
           format: int64
-          description: "ENG: Authorized amount in cents - IT: Importo autorizzato in centesimi"
+          description: "Importo autorizzato in centesimi"
           minimum: 0
           maximum: 1000000000
         trxDate:
           type: string
           format: date-time
-          description: "ENG: The date of the transaction - IT: La data della transazione"
+          description: "Data della transazione"
           maxLength: 255
         updateDate:
           type: string
           format: date-time
-          description: "ENG: The date of the transaction update - IT: La data di aggiornamento della transazione"
+          description: "Data di aggiornamento della transazione"
           maxLength: 255
         status:
           type: string
-          description: "ENG: The status of the transaction - IT: Lo stato della transazione"
+          description: "Stato della transazione"
           enum:
             - REWARDED
             - CANCELLED
             - REFUNDED
         channel:
           type: string
-          description: "ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione"
+          description: "Canale da cui avviene la transazione"
           maxLength: 24
           enum:
             - BARCODE
@@ -1367,7 +1354,7 @@ components:
       properties:
         filename:
           type: string
-          description: "ENG: The name of the invoice file <br> IT: Il nome del file della fattura"
+          description: "Nome del file della fattura"
           maxLength: 255
     PointOfSaleTransactionsListDTO:
       type: object
@@ -1380,25 +1367,25 @@ components:
         pageNo:
           type: integer
           format: int32
-          description: "ENG: The number of the page <br> IT: Il numero della pagina"
+          description: "Numero della pagina"
           minimum: 0
           maximum: 1000000
         pageSize:
           type: integer
           format: int32
-          description: "ENG: The element size for page <br> IT: Il numero di elementi per pagina"
+          description: "Numero di elementi per pagina"
           minimum: 0
           maximum: 1000000
         totalElements:
           type: integer
           format: int32
-          description: "ENG: The total number of the elements <br> IT: Il numero totale degli elementi"
+          description: "Numero totale degli elementi"
           minimum: 0
           maximum: 1000000
         totalPages:
           type: integer
           format: int32
-          description: "ENG: The total number of the pages <br> IT: Il numero totale delle pagine"
+          description: "Numero totale delle pagine"
           minimum: 0
           maximum: 1000000
     PointOfSaleTransactionDTO:
@@ -1407,64 +1394,64 @@ components:
       properties:
         id:
           type: string
-          description: "ENG: Transaction ID <br> IT: ID della transazione"
+          description: "ID della transazione"
           maxLength: 64
           pattern: .*
         trxCode:
           type: string
-          description: "ENG: Transaction code - IT: Il codice della transazione"
+          description: "Codice della transazione"
           maxLength: 100
           pattern: "^[a-zA-Z0-9]+$"
         fiscalCode:
           type: string
-          description: "ENG: Citizen fiscal code - IT: Codice fiscale del cittadino"
+          description: "Codice fiscale del cittadino"
           minLength: 16
           maxLength: 16
           pattern: "^[A-Z0-9]+$"
         effectiveAmountCents:
           type: integer
           format: int64
-          description: "ENG: Transaction amount in cents - IT: Importo della transazione in centesimi"
+          description: "Importo della transazione in centesimi"
           minimum: 0
           maximum: 1000000000
         rewardAmountCents:
           type: integer
           format: int64
-          description: "ENG: Reward amount in cents - IT: Premio generato in centesimi"
+          description: "Premio generato in centesimi"
           minimum: 0
           maximum: 1000000000
         trxDate:
           type: string
           format: date-time
-          description: "ENG: The date of the transaction - IT: La data della transazione"
+          description: "Data della transazione"
           maxLength: 255
         trxExpirationSeconds:
           type: number
-          description: "ENG: Expiration time of the transaction, in seconds - IT: Scadenza della transazione, in secondi"
+          description: "Scadenza della transazione in secondi"
           minimum: 0
         updateDate:
           type: string
           format: date-time
-          description: "ENG: The date of the transaction update - IT: La data di aggiornamento della transazione"
+          description: "Data di aggiornamento della transazione"
           maxLength: 255
         status:
           type: string
-          description: "ENG: The status of the transaction - IT: Lo stato della transazione"
+          description: "Stato della transazione"
           enum:
             - AUTHORIZED
             - CAPTURED
         splitPayment:
           type: boolean
-          description: "ENG: TRUE, if the authorized sum is less than the requested sum or FALSE, if the authorized sum is equal to the requested sum - IT: TRUE, se la somma autorizzata è inferiore alla somma richiesta o FALSE, se la somma autorizzata è uguale alla somma richiesta."
+          description: "TRUE, se la somma autorizzata è inferiore alla somma richiesta o FALSE, se la somma autorizzata è uguale alla somma richiesta."
         residualAmountCents:
           type: integer
           format: int64
-          description: "ENG: Remaining amount to be paid if the authorized sum is less than the requested sum - IT: Importo restante da pagare nel caso in cui la somma autorizzata sia inferiore alla somma richiesta."
+          description: "Importo restante da pagare nel caso in cui la somma autorizzata sia inferiore alla somma richiesta."
           minimum: 0
           maximum: 1000000000
         channel:
           type: string
-          description: "ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione"
+          description: "Canale da cui avviene la transazione"
           maxLength: 24
           enum:
             - BARCODE
@@ -1474,12 +1461,12 @@ components:
           type: string
           format: uri
           maxLength: 2048
-          description: "ENG: Url to the QR code image - IT: Url all'immagine del QR code"
+          description: "Url all'immagine del QR code"
         qrcodeTxtUrl:
           type: string
           format: uri
           maxLength: 2048
-          description: "ENG: Url of the QR code link - IT: Url del QR code"
+          description: "Url del QR code"
         additionalProperties:
           type: object
           additionalProperties:
@@ -1491,25 +1478,25 @@ components:
       properties:
         id:
           type: string
-          description: "ENG: The id for the point of sale <br> IT: Id del punto vendita"
+          description: "ID del punto vendita"
           maxLength: 255
         type:
           type: string
           enum:
             - PHYSICAL
             - ONLINE
-          description: "ENG: The type of the point of sale <br> IT: Il tipo del punto vendita"
+          description: "Tipo del punto vendita"
         franchiseName:
           type: string
           maxLength: 255
-          description: "ENG: The name of the point of sale <br> IT: Il nome del punto vendita"
+          description: "Nome del punto vendita"
         region:
           type: string
-          description: "ENG: The region of the point of sale <br> IT: La regione del punto vendita"
+          description: "Regione del punto vendita"
           maxLength: 255
         province:
           type: string
-          description: "ENG: The province of the point of sale <br> IT: La provincia del punto vendita"
+          description: "Provincia del punto vendita"
           maxLength: 255
         city:
           type: string
