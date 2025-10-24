@@ -575,7 +575,7 @@ paths:
           schema:
             type: string
             maxLength: 255
-            pattern: "^[a-zA-Z0-9]+$"
+            pattern: "^[a-zA-Z0-9\\-\\_]+$"
             example: "e1f9503e-f87c-4abb-a1cb-bbb1905ae1fd_BARCODE_1761309360725"
       responses:
         "200":
@@ -699,7 +699,7 @@ paths:
           schema:
             type: string
             maxLength: 255
-            pattern: "^[a-zA-Z0-9]+$"
+            pattern: "^[a-zA-Z0-9\\-\\_]+$"
             example: "e1f9503e-f87c-4abb-a1cb-bbb1905ae1fd_BARCODE_1761309360725"
       requestBody:
         content:
@@ -827,7 +827,7 @@ paths:
           schema:
             type: string
             maxLength: 255
-            pattern: "^[a-zA-Z0-9]+$"
+            pattern: "^[a-zA-Z0-9\\-\\_]+$"
             example: "e1f9503e-f87c-4abb-a1cb-bbb1905ae1fd_BARCODE_1761309360725"
       requestBody:
         content:
@@ -1230,15 +1230,13 @@ components:
           example: "TheBestBrand"
         eprelCode:
           type: string
-          description:
-            "Codice EPREL del prodotto"
+          description: "Codice EPREL del prodotto"
           maxLength: 50
-          pattern: ^\\d+$
-          example: 2413748
+          pattern: ^[0-9]+$
+          example: "2413748"
         gtinCode:
           type: string
-          description:
-            "Codice GTIN del prodotto"
+          description: "Codice GTIN del prodotto"
           maxLength: 14
           pattern: ^[a-zA-Z0-9]{1,14}$
           example: "OVENS09"
@@ -1251,26 +1249,23 @@ components:
           example: "OV01"
         energyClass:
           type: string
-          description:
-            "Classe energetica del prodotto"
+          description: "Classe energetica del prodotto"
           maxLength: 4
           pattern: ^(A\\+\\+\\+|A\\+\\+|A\\+|A|B|C|D|E|F|G)$
           nullable: true
           example: "A"
         countryOfProduction:
           type: string
-          description:
-            "Paese di produzione del prodotto"
+          description: "Paese di produzione del prodotto"
           maxLength: 2
           pattern: ^[A-Z]{2}$
           example: "IT"
         batchName:
           type: string
-          description:
-            "Nomelotto del prodotto"
-          pattern: ^(Apparecchi_di_refrigerazione|Cappe_Da_Cucina|Lavatrici|Lavastoviglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\\.csv$
+          description: "Nomelotto del prodotto"
+          pattern: ^(Apparecchi_di_refrigerazione|Cappe_Da_Cucina|Lavatrici|Lavastoviglie|Piani_Cottura|Forni|Lavasciuga|Asciugatrici)_[a-fA-F0-9]{24}\.csv$
           maxLength: 255
-          example: "Forni_5f4dcc3b5aa765d61d8327deb882cf99.csv"
+          example: "Forni_5f4dcc3b5aa765d61d8327de.csv"
         linkEprel:
           type: string
           description: "Link EPREL del prodotto"
@@ -1757,6 +1752,9 @@ components:
       type: oauth2
       flows:
         clientCredentials:
+          tokenUrl: https://api-mcshared.cstar.pagopa.it/auth-itn/realms/merchant-operator/protocol/openid-connect/token
+          refreshUrl: https://
+          scopes: { }    
   responses:
     GET_products_200_Response:
       description: Ok
@@ -2154,8 +2152,8 @@ components:
       schema:
         type: string
         maxLength: 50
-        pattern: ^\d+$
-        example: 2413748
+        pattern: ^[0-9]+$
+        example: "2413748"
     gtinCode_query:
       name: gtinCode
       in: query
@@ -2272,7 +2270,7 @@ components:
       required: true
       schema:
         type: string
-        maxLength: 36
+        maxLength: 255
         pattern: .*
         example: "e1f9503e-f87c-4abb-a1cb-bbb1905ae1fd_BARCODE_1761309360725"
 security:
