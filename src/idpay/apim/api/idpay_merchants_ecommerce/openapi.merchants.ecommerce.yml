@@ -58,7 +58,7 @@ paths:
     put:
       tags:
         - transaction
-      summary: Capture the transaction
+      summary: Cattura la transazione
       description: Cattura la transazione
       operationId: capturePayment
       parameters:
@@ -179,20 +179,20 @@ paths:
     put:
       tags:
         - transaction
-      summary: "ENG: Preview Payment - IT: Anteprima pagamento"
-      description: Preview payment
+      summary: "Anteprima pagamento"
+      description: Anteprima pagamento
       operationId: previewPayment
       parameters:
         - name: trxCode
           in: path
-          description: "ENG: The transaction's code - IT: Codice della transazione"
+          description: "Codice della transazione"
           required: true
           schema:
             type: string
             maxLength: 24
             pattern: "^[a-zA-Z0-9]+$"
       requestBody:
-        description: "ENG: trxCode - IT: Identificativo della transizione"
+        description: "Identificativo della transizione"
         required: true
         content:
           application/json:
@@ -316,8 +316,8 @@ paths:
     get:
       tags:
         - products
-      summary: Returns the products list
-      description: "ENG: Returns product list <br> IT: Lista prodotti"
+      summary: Restituisce la lista dei prodotti
+      description: "Lista prodotti"
       operationId: getProducts
       parameters:
         - $ref: "#/components/parameters/page_query"
@@ -345,13 +345,13 @@ paths:
     put:
       tags:
         - transaction
-      summary: "ENG: Authorize payment - IT: Autorizzazione pagamento"
-      description: "ENG: Authorize payment <br> IT: Autorizzazione pagamento"
+      summary: "IT: Autorizzazione pagamento"
+      description: "Autorizzazione pagamento"
       operationId: authPaymentBarCode
       parameters:
         - name: trxCode
           in: path
-          description: "ENG: The transaction's code - IT: Codice della transazione"
+          description: "Codice della transazione"
           required: true
           schema:
             type: string
@@ -489,8 +489,8 @@ paths:
     get:
       tags:
         - transaction
-      summary: "ENG: Returns the list of processed transactions associated to a point of sale - IT: Ritorna la lista delle transazioni processate associate ad un punto vendita"
-      description: "ENG: Returns the list of processed transactions associated to a point of sale - IT: Ritorna la lista delle transazioni processate associate ad un punto vendita"
+      summary: "Ritorna la lista delle transazioni processate associate ad un punto vendita"
+      description: "Ritorna la lista delle transazioni processate associate ad un punto vendita"
       operationId: getPointOfSaleTransactionsProcessed
       parameters:
         - $ref: "#/components/parameters/page_query"
@@ -516,8 +516,8 @@ paths:
     get:
       tags:
         - transaction
-      summary: "ENG: Returns the list of in progress transactions associated to a point of sale - IT: Ritorna la lista delle transazioni in corso associate ad un punto vendita"
-      description: "ENG: Returns the list of in progress transactions associated to a point of sale - IT: Ritorna la lista delle transazioni in corso associate ad un punto vendita"
+      summary: "Ritorna la lista delle transazioni in corso associate ad un punto vendita"
+      description: "Ritorna la lista delle transazioni in corso associate ad un punto vendita"
       operationId: getPointOfSaleTransactions
       parameters:
         - $ref: "#/components/parameters/page_query"
@@ -543,9 +543,8 @@ paths:
     get:
       tags:
         - transaction
-      summary: "ENG: Download invoice file - IT: Scarica il file della fattura"
-      description: "ENG: Download the invoice file of the transaction<br>
-        IT: Scarica il file della fattura della transazione"
+      summary: "Scarica il file della fattura"
+      description: "Scarica il file della fattura della transazione"
       operationId: downloadInvoiceFile
       parameters:
         - $ref: "#/components/parameters/transactionId_path"
