@@ -2294,7 +2294,7 @@ components:
     status_trx_processed_query:
       name: status
       in: query
-      description: Transaction processed status
+      description: Stato della transazione processata
       required: false
       schema:
         type: string
@@ -2318,7 +2318,7 @@ components:
     status_trx_in_progress_query:
       name: status
       in: query
-      description: Transaction in progress status
+      description: Stato della transazione attualmente in corso
       required: false
       schema:
         type: string
@@ -2349,7 +2349,7 @@ components:
     initiativeId_path:
       name: initiativeId
       in: path
-      description: The initiative ID
+      description: ID dell'iniziativa
       required: true
       schema:
         type: string
@@ -2358,7 +2358,7 @@ components:
     pointOfSaleId_path:
       name: pointOfSaleId
       in: path
-      description: The point of sale ID
+      description: ID del punto vendita
       required: true
       schema:
         type: string
@@ -2367,7 +2367,7 @@ components:
     transactionId_path:
       name: transactionId
       in: path
-      description: The transaction ID
+      description: ID della transazione
       required: true
       schema:
         type: string
