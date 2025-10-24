@@ -65,7 +65,7 @@ components:
       description: Version of the required API.
       schema:
         type: string
-        pattern: "^[ -~]{1,64}$"
+        pattern: "^v[1-9]\d*$"
         minLength: 1
         maxLength: 64
         example: "v1"
