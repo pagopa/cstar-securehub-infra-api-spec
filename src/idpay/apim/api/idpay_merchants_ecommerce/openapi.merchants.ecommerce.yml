@@ -1128,7 +1128,7 @@ components:
           type: integer
           format: int32
           description:
-            "ENG: Numero di elementi per pagina"
+            "Numero di elementi per pagina"
           minimum: 0
           maximum: 1000000
         totalElements:
@@ -1157,7 +1157,7 @@ components:
           type: string
           format: date-time
           description:
-            "ENG: Data caricamento prodotto (dopo la verifica EPREL)"
+            "Data caricamento prodotto (dopo la verifica EPREL)"
           maxLength: 255
         status:
           type: string
