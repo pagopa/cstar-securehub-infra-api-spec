@@ -2258,24 +2258,6 @@ components:
           - updateDate, asc
           - status, asc
           - productName, asc
-    initiativeId_path:
-      name: initiativeId
-      in: path
-      description: ID dell'iniziativa
-      required: true
-      schema:
-        type: string
-        maxLength: 36
-        pattern: .*
-    pointOfSaleId_path:
-      name: pointOfSaleId
-      in: path
-      description: ID del punto vendita
-      required: true
-      schema:
-        type: string
-        maxLength: 36
-        pattern: .*
     transactionId_path:
       name: transactionId
       in: path
