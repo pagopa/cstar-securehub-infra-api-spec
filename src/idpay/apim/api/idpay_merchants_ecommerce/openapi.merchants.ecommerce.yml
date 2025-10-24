@@ -1500,51 +1500,51 @@ components:
           maxLength: 255
         city:
           type: string
-          description: "ENG: The city of the point of sale <br> IT: La città del punto vendita"
+          description: "Città del punto vendita"
           maxLength: 255
         zipCode:
           type: string
-          description: "ENG: The zip code of the point of sale <br> IT: Il CAP del punto vendita"
+          description: "CAP del punto vendita"
           maxLength: 255
         address:
           type: string
-          description: "ENG: The address of the point of sale <br> IT: L'indirizzo completo del punto vendita"
+          description: "Indirizzo completo del punto vendita"
           maxLength: 255
         streetNumber:
           type: string
-          description: "ENG: The street number of the point of sale <br> IT: Il numero civico del punto vendita"
+          description: "Numero civico del punto vendita"
           maxLength: 255
         website:
           type: string
-          description: "ENG: The website of the point of sale <br> IT: Il sito web del punto vendita"
+          description: "Sito web del punto vendita"
           maxLength: 255
         contactEmail:
           type: string
-          description: "ENG: The email of the contact person <br> IT: L'email del referente"
+          description: "Email del referente"
           maxLength: 255
         contactName:
           type: string
-          description: "ENG: The name of the contact person <br> IT: Il nome del referente"
+          description: "Nome del referente"
           maxLength: 255
         contactSurname:
           type: string
-          description: "ENG: The surname of the contact person <br> IT: Il cognome del referente"
+          description: "Cognome del referente"
           maxLength: 255
         channelEmail:
           type: string
-          description: "ENG: Store contact via email address <br> IT: Contatto del punto vendita tramite indirizzo email."
+          description: "Contatto del punto vendita tramite indirizzo email"
           maxLength: 255
         channelPhone:
           type: string
-          description: "ENG: Store contact via phone number <br> IT: Contatto del punto vendita tramite numero di telefono"
+          description: "Contatto del punto vendita tramite numero di telefono"
           maxLength: 255
         channelGeolink:
           type: string
-          description: "ENG: Store contact providing a map link or location for navigation <br> IT: Contatto del punto vendita tramite link geografico o posizione sulla mappa"
+          description: "Contatto del punto vendita tramite link geografico o posizione sulla mappa"
           maxLength: 255
         channelWebsite:
           type: string
-          description: "ENG: Store contact via a web-based portal <br> IT: Contatto del punto vendita tramite portale web"
+          description: "Contatto del punto vendita tramite portale web"
           maxLength: 255
     PointOfSaleErrorDTO:
       type: object
@@ -1561,10 +1561,10 @@ components:
             - MERCHANT_NOT_ONBOARDED
             - POINT_OF_SALE_TOO_MANY_REQUESTS
             - POINT_OF_SALE_GENERIC_ERROR
-          description: '"ENG: Error code:<br> POINT_OF_SALES_NOT_FOUND: The sale was not found,<br> MERCHANT_NOT_ONBOARDED: The merchant is not associated to the initiative,<br> POINT_OF_SALES_TOO_MANY_REQUESTS: Too many requests,<br> POINT_OF_SALES_INVALID_REQUEST: Something went wrong handling the request,<br> POINT_OF_SALES_GENERIC_ERROR: Application error,<br> - IT: Codice di errore:<br> POINT_OF_SALES_NOT_FOUND: Lo store non è stato trovato,<br> MERCHANT_NOT_ONBOARDED: L''esercente non è associato all''iniziativa,<br> POINT_OF_SALES_TOO_MANY_REQUESTS: Troppe richieste,<br> POINT_OF_SALES_INVALID_REQUEST: Qualcosa è andato storto durante l''invio della richiesta,<br> POINT_OF_SALES_GENERIC_ERROR: Errore applicativo"'
+          description: '"Codice di errore:<br> POINT_OF_SALES_NOT_FOUND: Lo store non è stato trovato,<br> MERCHANT_NOT_ONBOARDED: L''esercente non è associato all''iniziativa,<br> POINT_OF_SALES_TOO_MANY_REQUESTS: Troppe richieste,<br> POINT_OF_SALES_INVALID_REQUEST: Qualcosa è andato storto durante l''invio della richiesta,<br> POINT_OF_SALES_GENERIC_ERROR: Errore applicativo"'
         message:
           type: string
-          description: "ENG: Error message- IT: Messaggio di errore"
+          description: "Messaggio di errore"
           maxLength: 1000
     ErrorDTO:
       type: object
@@ -1592,10 +1592,10 @@ components:
           format: int64
           minimum: 0
           maximum: 1000000
-          description: "ENG: Amount of transaction - IT: Importo della transazione"
+          description: "Importo della transazione"
         idTrxAcquirer:
           type: string
-          description: "ENG: Transaction acquirer ID- IT: Identificativo della transazione rispetto all'acquirer"
+          description: "Identificativo della transazione rispetto all'acquirer"
           maxLength: 100
           format: uuid
         additionalProperties:
@@ -1615,32 +1615,32 @@ components:
       properties:
         id:
           type: string
-          description: "ENG: Id of the payment - IT: Identificativo del pagamento"
+          description: "Identificativo del pagamento"
           maxLength: 100
           format: uuid
         trxCode:
           type: string
-          description: "ENG: Transaction code - IT: Codice della transazione"
+          description: "Codice della transazione"
           maxLength: 100
           pattern: "^[a-zA-Z0-9]+$"
         trxDate:
           type: string
           format: date-time
-          description: "ENG: Transaction date - IT: Data della transazione"
+          description: "Data della transazione"
           maxLength: 255
         initiativeId:
           type: string
-          description: "ENG: Id of the initiative - IT: Identificativo dell'iniziativa"
+          description: "Identificativo dell'iniziativa"
           maxLength: 100
           pattern: "^[A-Za-z0-9_-]+$"
         initiativeName:
           type: string
-          description: "ENG: Name of the initiative - IT: Nome della iniziativa"
+          description: "Nome della iniziativa"
           maxLength: 1000
           pattern: ".*"
         businessName:
           type: string
-          description: "ENG: Business name - IT: Nome dell'esercente"
+          description: "Nome dell'esercente"
           maxLength: 1000
           pattern: ".*"
         status:
@@ -1650,40 +1650,40 @@ components:
             - IDENTIFIED
             - AUTHORIZATION_REQUESTED
             - AUTHORIZED
-          description: "ENG: Status of the payment [CREATED: Created, IDENTIFIED: User related, AUTHORIZATION_REQUESTED: Authorization Requested, AUTHORIZED: authorized] - IT: Stato del pagamento [CREATED: Creato, IDENTIFIED: Utente associato, AUTHORIZATION_REQUESTED: autorizzazione richiesta, AUTHORIZED: autorizzato]"
+          description: "Stato del pagamento [CREATED: Creato, IDENTIFIED: Utente associato, AUTHORIZATION_REQUESTED: autorizzazione richiesta, AUTHORIZED: autorizzato]"
         rewardCents:
           type: integer
           format: int64
           minimum: 0
           maximum: 1000000
-          description: "ENG: Reward - IT: Premio generato"
+          description: "Premio generato"
         amountCents:
           type: integer
           format: int64
           minimum: 0
           maximum: 1000000
-          description: "ENG: Amount cents - IT: Importo in centessimi"
+          description: "Importo in centessimi"
         residualBudgetCents:
           type: integer
           format: int64
           minimum: 0
           maximum: 1000000
-          description: "ENG: Residual budget - IT: Budget residuo"
+          description: "Budget residuo"
         splitPayment:
           type: boolean
-          description: "ENG: TRUE, if the authorized sum is less than the requested sum or FALSE, if the authorized sum is equal to the requested sum - IT: TRUE, se la somma autorizzata è inferiore alla somma richiesta o FALSE, se la somma autorizzata è uguale alla somma richiesta."
+          description: "TRUE, se la somma autorizzata è inferiore alla somma richiesta o FALSE, se la somma autorizzata è uguale alla somma richiesta."
         residualAmountCents:
           type: integer
           format: int64
           minimum: 0
           maximum: 1000000
-          description: "ENG: Remaining amount to be paid if the authorized sum is less than the requested sum - IT: Importo restante da pagare nel caso in cui la somma autorizzata sia inferiore alla somma richiesta."
+          description: "Importo restante da pagare nel caso in cui la somma autorizzata sia inferiore alla somma richiesta."
     DownloadInvoiceResponseDTO:
       type: object
       properties:
         invoiceUrl:
           type: string
-          description: "ENG: URL to download the invoice file - IT: URL per scaricare il file della fattura"
+          description: "Url per scaricare il file della fattura"
           maxLength: 255
       required:
         - invoiceUrl
@@ -1723,10 +1723,10 @@ components:
             - PAYMENT_STATUS_NOT_VALID
             - PAYMENT_TRANSACTION_VERSION_PENDING
             - PRODUCT_NOT_FOUND
-          description: '"ENG: Error code:<br> PAYMENT_NOT_FOUND_OR_EXPIRED: transaction not found or expired<br> PAYMENT_TRANSACTION_EXPIRED: transaction expired<br> PAYMENT_INITIATIVE_NOT_FOUND: initiative not found<br> PAYMENT_INITIATIVE_INVALID_DATE: initiative invalid date<br> PAYMENT_INITIATIVE_NOT_DISCOUNT: initiative is not of discount type<br> PAYMENT_ALREADY_AUTHORIZED: transaction already authorized<br> PAYMENT_ALREADY_CANCELLED: transaction already cancelled<br> PAYMENT_BUDGET_EXHAUSTED: budget exhausted<br> PAYMENT_GENERIC_REJECTED: generic rejected error (transaction rejected)<br> PAYMENT_TOO_MANY_REQUESTS: too many request, retry<br> PAYMENT_GENERIC_ERROR: application error (connection microservice error)<br> PAYMENT_USER_SUSPENDED: the user has been suspended on the initiative<br> PAYMENT_USER_NOT_ONBOARDED: user not onboarded<br> PAYMENT_USER_UNSUBSCRIBED: user unsubscribed<br> PAYMENT_ALREADY_ASSIGNED:  transaction already assigned<br> PAYMENT_NOT_ALLOWED_FOR_TRX_STATUS: operation on transaction not allowed due to status<br> PAYMENT_NOT_ALLOWED_MISMATCHED_MERCHANT: operation on transaction not allowed due to merchant mismatched<br> PAYMENT_USER_NOT_ASSOCIATED: user not associated to the transaction<br> PAYMENT_DELETE_NOT_ALLOWED_FOR_TRX_STATUS: cancellation of transaction not allowed due to status<br> PAYMENT_UNRELATE_NOT_ALLOWED_FOR_TRX_STATUS: unrelate transaction not allowed due to status<br> PAYMENT_AMOUNT_NOT_VALID: amount of transaction not valid<br> PAYMENT_MERCHANT_NOT_ONBOARDED: the merchant is not onboarded<br> PAYMENT_INVALID_REQUEST: request validation error<br> PAYMENT_STATUS_NOT_VALID: transaction status not valid<br> PAYMENT_TRANSACTION_VERSION_PENDING: The transaction version is actually locked<br> IT: Codice di errore<br> PAYMENT_NOT_FOUND_OR_EXPIRED: transazione non trovata oppure scaduta<br> PAYMENT_TRANSACTION_EXPIRED: transazione scaduta<br> PAYMENT_INITIATIVE_NOT_FOUND: iniziativa non trovata<br> PAYMENT_INITIATIVE_INVALID_DATE: iniziativa con data invalida<br> PAYMENT_INITIATIVE_NOT_DISCOUNT: iniziativa non è di tipo a sconto<br> PAYMENT_ALREADY_AUTHORIZED: transazione già autorizzata<br> PAYMENT_ALREADY_CANCELLED: transazione già cancellata<br> PAYMENT_BUDGET_EXHAUSTED: budget esaurito<br> PAYMENT_GENERIC_REJECTED: errore generico, transazione rigettata<br> PAYMENT_TOO_MANY_REQUESTS: troppe richieste, riprovare<br> PAYMENT_GENERIC_ERROR: errore generico (errore nella connessione ad un microservizio)<br> PAYMENT_USER_SUSPENDED: l''utente è stato sospeso dall''iniziativa<br> PAYMENT_USER_NOT_ONBOARDED: utente non onboardato all''iniziativa<br> PAYMENT_USER_UNSUBSCRIBED: utente disiscritto dall''iniziativa<br> PAYMENT_ALREADY_ASSIGNED:  transazione già assegnata<br> PAYMENT_NOT_ALLOWED_FOR_TRX_STATUS: transazione non consentita a causa dello stato della transazione<br> PAYMENT_NOT_ALLOWED_MISMATCHED_MERCHANT: transazione non consentita a causa della mancata corrispondenza del merchant<br> PAYMENT_USER_NOT_ASSOCIATED: utente non associato alla transazione<br> PAYMENT_DELETE_NOT_ALLOWED_FOR_TRX_STATUS: annullamento della transazione non consentito a causa dello stato della transazione<br> PAYMENT_UNRELATE_NOT_ALLOWED_FOR_TRX_STATUS: disassociazione non consentita a causa dello stato della transazione<br> PAYMENT_AMOUNT_NOT_VALID: importo nella transazione non valido<br> PAYMENT_MERCHANT_NOT_ONBOARDED: il merchant non è onboardato<br> PAYMENT_INVALID_REQUEST: errore di validazione della richiesta<br> PAYMENT_STATUS_NOT_VALID: stato della transazione non valido"<br> PAYMENT_TRANSACTION_VERSION_PENDING: La versione del contatore è attualmente bloccata<br> PRODUCT_NOT_FOUND: Prodotto non trovato o non approvato '
+          description: '"Codice di errore<br> PAYMENT_NOT_FOUND_OR_EXPIRED: transazione non trovata oppure scaduta<br> PAYMENT_TRANSACTION_EXPIRED: transazione scaduta<br> PAYMENT_INITIATIVE_NOT_FOUND: iniziativa non trovata<br> PAYMENT_INITIATIVE_INVALID_DATE: iniziativa con data invalida<br> PAYMENT_INITIATIVE_NOT_DISCOUNT: iniziativa non è di tipo a sconto<br> PAYMENT_ALREADY_AUTHORIZED: transazione già autorizzata<br> PAYMENT_ALREADY_CANCELLED: transazione già cancellata<br> PAYMENT_BUDGET_EXHAUSTED: budget esaurito<br> PAYMENT_GENERIC_REJECTED: errore generico, transazione rigettata<br> PAYMENT_TOO_MANY_REQUESTS: troppe richieste, riprovare<br> PAYMENT_GENERIC_ERROR: errore generico (errore nella connessione ad un microservizio)<br> PAYMENT_USER_SUSPENDED: l''utente è stato sospeso dall''iniziativa<br> PAYMENT_USER_NOT_ONBOARDED: utente non onboardato all''iniziativa<br> PAYMENT_USER_UNSUBSCRIBED: utente disiscritto dall''iniziativa<br> PAYMENT_ALREADY_ASSIGNED:  transazione già assegnata<br> PAYMENT_NOT_ALLOWED_FOR_TRX_STATUS: transazione non consentita a causa dello stato della transazione<br> PAYMENT_NOT_ALLOWED_MISMATCHED_MERCHANT: transazione non consentita a causa della mancata corrispondenza del merchant<br> PAYMENT_USER_NOT_ASSOCIATED: utente non associato alla transazione<br> PAYMENT_DELETE_NOT_ALLOWED_FOR_TRX_STATUS: annullamento della transazione non consentito a causa dello stato della transazione<br> PAYMENT_UNRELATE_NOT_ALLOWED_FOR_TRX_STATUS: disassociazione non consentita a causa dello stato della transazione<br> PAYMENT_AMOUNT_NOT_VALID: importo nella transazione non valido<br> PAYMENT_MERCHANT_NOT_ONBOARDED: il merchant non è onboardato<br> PAYMENT_INVALID_REQUEST: errore di validazione della richiesta<br> PAYMENT_STATUS_NOT_VALID: stato della transazione non valido"<br> PAYMENT_TRANSACTION_VERSION_PENDING: La versione del contatore è attualmente bloccata<br> PRODUCT_NOT_FOUND: Prodotto non trovato o non approvato '
         message:
           type: string
-          description: "ENG: Error message- IT: Messaggio di errore"
+          description: "Messaggio di errore"
           maxLength: 1000
           pattern: ".*"
     ReversalInvoiceDTO:
