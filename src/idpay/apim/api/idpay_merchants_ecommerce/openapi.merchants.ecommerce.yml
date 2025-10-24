@@ -1,7 +1,40 @@
 openapi: 3.0.1
 info:
   title: IDPAY ITN Merchant Operator Portal API
-  description: IDPAY ITN Merchant Operator Portal API
+  description:  |
+    # Note sull'Autenticazione
+    Le API descritte nella presente specifica richiedono l'autenticazione tramite **bearer authentication** (nota anche come **token authentication**).
+    
+    La bearer authentication è uno schema di autenticazione HTTP che utilizza token di sicurezza chiamati **bearer token**.
+    
+    Il client deve inviare questo token nel header `Authorization` delle chiamate HTTP alle API:
+    
+    ```
+    Authorization: Bearer <token>
+    ```
+    
+    Per ottenere il `<token>` è necessario che il client si autentichi tramite una richiesta di seguito esemplificata:
+    
+    ```bash
+    curl \
+      -L '<url>' \
+      -X POST \
+      -H 'Content-Type: application/x-www-form-urlencoded' \
+      --data-urlencode 'grant_type=client_credentials' \
+      --data-urlencode 'client_id=<client id>' \
+      --data-urlencode 'client_secret=<client secret>'
+    ```
+    
+    Le credenziali `<client id>` e `<client secret>` verranno ricevute via e-mail all'indirizzo indicato durante la procedura di adesione. In particolare si riceverà un **one-time share link**, ossia un link che potrà essere usato **una sola volta**, avete una validità pari a **3 giorni**.
+    
+    Nella schermata che verrà mostrata visitando il link, verrà indicato il `<client id>` nella sezione *Login*, il `<client secret>` nella sezione *Passoword*.
+    
+    Le `<url>` da utilizzarsi sono:
+    
+    | Ambiente   | `<url>` |
+    | :--------: | :------ |
+    | UAT        | https://api-mcshared.uat.cstar.pagopa.it/auth-itn/realms/merchant-operator/protocol/openid-connect/token |
+    | Produzione | https://api-mcshared.cstar.pagopa.it/auth-itn/realms/merchant-operator/protocol/openid-connect/token |
   version: "1.0"
   contact:
     name: PagoPA S.p.A.
