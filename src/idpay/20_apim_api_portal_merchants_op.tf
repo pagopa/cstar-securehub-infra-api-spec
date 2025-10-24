@@ -24,6 +24,7 @@ module "idpay_itn_api_portal_merchants_op_product" {
     rate_limit_merchants_portal   = var.rate_limit_merchants_portal_product
     openid_config_url_merchant_op = local.openid_config_url_merchant_op
     merchant_op_client_id         = local.merchant_op_client_id
+    merchant_op_client_id_test    = local.merchant_op_client_id_test
     keycloak_url_merchant_op      = var.keycloak_url_merchant_op
   })
 

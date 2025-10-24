@@ -84,12 +84,7 @@ paths:
         '429':
           description: Too many Request
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: 'WALLET_TOO_MANY_REQUESTS'
-                message: 'Too many requests'
+            application/json: {}
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -213,12 +208,7 @@ paths:
         '429':
           description: Too many Request
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InitiativeErrorDTO'
-              example:
-                  code: 'INITIATIVE_TOO_MANY_REQUESTS'
-                  message: 'Too many requests'
+            application/json: {}
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -342,12 +332,7 @@ paths:
         '429':
           description: Too many Request
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: 'WALLET_TOO_MANY_REQUESTS'
-                message: 'Too many requests'
+            application/json: {}
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -1817,7 +1802,7 @@ components:
         maskedPan:
           type: string
           description: 'ENG: Masked Pan - IT: Masked Pan'
-          example: '1234 **** **** 5678'
+          example: '1234 **** **** 5679'
         channel:
           type: string
           description: 'ENG: Channel - IT: Canale di richiesta'
@@ -1954,7 +1939,7 @@ components:
         maskedPan:
           type: string
           description: 'ENG: Masked Pan - IT: Masked Pan'
-          example: '1234 **** **** 5678'
+          example: '1234 **** **** 5679'
         brand:
           type: string
           example: 'https://cstarpayment/cardBrand'

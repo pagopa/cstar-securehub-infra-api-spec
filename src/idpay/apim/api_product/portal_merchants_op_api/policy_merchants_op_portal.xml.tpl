@@ -16,14 +16,24 @@
             <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid." output-token-variable-name="validatedToken">
                 <openid-config url="${openid_config_url_merchant_op}" />
               <required-claims>
-                <claim name="azp">
-                  <value>${merchant_op_client_id}</value>
-                </claim>
                 <claim name="iss">
                   <value>${keycloak_url_merchant_op}</value>
                 </claim>
               </required-claims>
             </validate-jwt>
+
+        <set-variable name="azp" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("azp", ""))" />
+        <choose>
+            <when condition="@((string)context.Variables["azp"] != "${merchant_op_client_id}" && (string)context.Variables["azp"] != "${merchant_op_client_id_test}")">
+                <return-response>
+                    <set-status code="401" reason="Unauthorized" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>{"statusCode":401,"message":"Unauthorized. Invalid azp claim."}</set-body>
+                </return-response>
+            </when>
+        </choose>
 
         <set-variable name="merchantId" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("merchant_id", ""))" />
         <set-header name="x-merchant-id" exists-action="override">
