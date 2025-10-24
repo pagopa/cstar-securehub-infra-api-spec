@@ -51,8 +51,6 @@ tags:
     description: Operazioni relative all'elenco dei prodotti e al filtraggio
   - name: transaction
     description: Operazioni relative alle transazioni
-  - name: point-of-sales
-    description: Operazioni sul punto vendita del Venditore
 paths:
   /transactions/bar-code/{trxCode}/capture:
     put:
