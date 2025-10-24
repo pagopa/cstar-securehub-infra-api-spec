@@ -7,10 +7,10 @@ info:
     name: PagoPA S.p.A.
     email: cstar@pagopa.it
 servers:
-  - description: Development Test
+  - description: Test di Sviluppo
     url: https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant-op
     x-internal: true
-  - description: User Acceptance Test
+  - description: Test di Accettazione dell'Utente
     url: https://api-io.uat.cstar.pagopa.it/idpay-itn/merchant-op
     x-internal: true
 tags:
