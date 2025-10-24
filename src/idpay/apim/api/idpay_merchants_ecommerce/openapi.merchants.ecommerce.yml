@@ -50,21 +50,21 @@ tags:
   - name: products
     description: Operazioni relative all'elenco dei prodotti e al filtraggio
   - name: transaction
-    description: Operations related to transaction
+    description: Operazioni relative alle transazioni
   - name: point-of-sales
-    description: Operations on merchant points of sale
+    description: Operazioni sul punto vendita del Venditore
 paths:
   /transactions/bar-code/{trxCode}/capture:
     put:
       tags:
         - transaction
       summary: Capture the transaction
-      description: Capture the transaction
+      description: Cattura la transazione
       operationId: capturePayment
       parameters:
         - name: trxCode
           in: path
-          description: "ENG: The transaction's code - IT: Codice della transazione"
+          description: "Codice della transazione"
           required: true
           schema:
             type: string
