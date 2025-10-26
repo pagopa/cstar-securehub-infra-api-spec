@@ -4,17 +4,17 @@ info:
   description: |
     # Note sull'Autenticazione
     Le API descritte nella presente specifica richiedono l'autenticazione tramite **bearer authentication** (nota anche come **token authentication**).
-    
+
     La bearer authentication è uno schema di autenticazione HTTP che utilizza token di sicurezza chiamati **bearer token**.
-    
+
     Il client deve inviare questo token nel header `Authorization` delle chiamate HTTP alle API:
-    
+
     ```
     Authorization: Bearer <token>
     ```
-    
+
     Per ottenere il `<token>` è necessario che il client si autentichi tramite una richiesta di seguito esemplificata:
-    
+
     ```bash
     curl \
       -L '<url>' \
@@ -24,13 +24,13 @@ info:
       --data-urlencode 'client_id=<client id>' \
       --data-urlencode 'client_secret=<client secret>'
     ```
-    
+
     Le credenziali `<client id>` e `<client secret>` verranno ricevute via e-mail all'indirizzo indicato durante la procedura di adesione. In particolare si riceverà un **one-time share link**, ossia un link che potrà essere usato **una sola volta**, avete una validità pari a **3 giorni**.
-    
+
     Nella schermata che verrà mostrata visitando il link, verrà indicato il `<client id>` nella sezione *Login*, il `<client secret>` nella sezione *Password*.
-    
+
     Le `<url>` da utilizzarsi sono:
-    
+
     | Ambiente   | `<url>` |
     | :--------: | :------ |
     | UAT        | https://api-mcshared.uat.cstar.pagopa.it/auth-itn/realms/merchant-operator/protocol/openid-connect/token |
@@ -1030,7 +1030,7 @@ components:
           type: number
           description: "Scadenza della transazione, in secondi"
           minimum: 0
-          example: 300 
+          example: 300
         residualBudgetCents:
           type: number
           description: "Budget residuo"
@@ -1752,7 +1752,7 @@ components:
         clientCredentials:
           tokenUrl: https://api-mcshared.cstar.pagopa.it/auth-itn/realms/merchant-operator/protocol/openid-connect/token
           refreshUrl: https://
-          scopes: { }    
+          scopes: { }
   responses:
     GET_products_200_Response:
       description: Ok
