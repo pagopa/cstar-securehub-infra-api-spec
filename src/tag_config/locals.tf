@@ -5,7 +5,7 @@ locals {
     "/",
     slice(local.cwd_split, local.src_idx + 1, length(local.cwd_split))
   )
-  folder_value = local.relative_folder != "" ? local.relative_folder : local.cwd_split[length(local.cwd_split) - 1]
+  folder_value  = local.relative_folder != "" ? local.relative_folder : local.cwd_split[length(local.cwd_split) - 1]
   source_suffix = local.relative_folder != "" ? "/src/${local.relative_folder}" : ""
   tags = {
     CreatedBy   = "Terraform"
