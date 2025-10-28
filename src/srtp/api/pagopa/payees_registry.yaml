@@ -11,13 +11,13 @@ info:
 
 servers:
   - description: Development/Test
-    url: https://api-rtp.dev.cstar.pagopa.it
+    url: https://api-rtp.dev.cstar.pagopa.it/rtp/payees
     x-internal: true
   - description: User Acceptance Test
-    url: https://api-rtp.uat.cstar.pagopa.it
+    url: https://api-rtp.uat.cstar.pagopa.it/rtp/payees
     x-internal: false
   - description: Production
-    url: https://api-rtp.cstar.pagopa.it
+    url: https://api-rtp.cstar.pagopa.it/rtp/payees
     x-internal: false
 
 tags:
@@ -183,9 +183,9 @@ components:
     Version:
       description: The version of the API being requested.
       type: string
-      pattern: "^[ -~]{1,64}$"
+      pattern: '^v[1-9]\d{0,63}$'
       minLength: 1
-      maxLength: 64
+      maxLength: 62
       example: "v1"
 
     # --------------------------------------------------------------------------
