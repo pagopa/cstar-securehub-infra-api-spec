@@ -856,7 +856,7 @@ components:
       additionalProperties: false
       properties:
         nextActivationId:
-          $ref: '#/components/schemas/ActivationId'
+          $ref: '#/components/schemas/NextActivationId'
         size:
           $ref: '#/components/schemas/PageSize'
       required:
