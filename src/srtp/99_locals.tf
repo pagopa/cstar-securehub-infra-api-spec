@@ -78,7 +78,7 @@ locals {
     rtp-takevoer-mock = {
       description           = "RTP ITN MOCK API TAKEOVER"
       display_name          = "RTP ITN MOCK API TAKEOVER"
-      path                  = "${local.api_context_path}/takeover"
+      path                  = local.api_context_path
       revision              = "1"
       protocols             = ["https"]
       subscription_required = false
