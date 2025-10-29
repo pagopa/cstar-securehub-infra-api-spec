@@ -284,7 +284,7 @@ locals {
         xml_content = file("./api/test/mock_policy_epc.xml")
       }
       notifyUserTakeover = {
-        api_name    = "rtp-takevoer-mock"
+        api_name    = "rtp-takeover-mock"
         xml_content = file("./api/test/mock_policy_takeover.xml")
       }
     }
