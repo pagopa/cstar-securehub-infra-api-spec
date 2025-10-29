@@ -36,9 +36,6 @@ info:
     | UAT        | https://api-mcshared.uat.cstar.pagopa.it/auth-itn/realms/merchant-operator/protocol/openid-connect/token |
     | Produzione | https://api-mcshared.cstar.pagopa.it/auth-itn/realms/merchant-operator/protocol/openid-connect/token |
   version: "1.0"
-  contact:
-    name: PagoPA S.p.A.
-    email: cstar@pagopa.it
 servers:
   - description: Test di Sviluppo
     url: https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant-ecommerce

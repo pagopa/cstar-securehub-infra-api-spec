@@ -23,7 +23,7 @@ locals {
   mc_shared_base_url = "https://api-mcshared.${local.dns_zone}/auth"
   api_context_path   = "rtp"
 
-  apis = {
+  apis = merge({
     # RTP Activation
     rtp-activation = {
       display_name          = "RTP ITN Activation API"
@@ -58,34 +58,6 @@ locals {
         verbosity                 = "information"
         http_correlation_protocol = "W3C"
         headers_to_log            = ["RequestId"]
-      }
-    }
-    # RTP Mock
-    rtp-mock = {
-      description           = "RTP ITN MOCK API EPC"
-      display_name          = "RTP ITN MOCK API EPC"
-      path                  = "${local.api_context_path}/mock"
-      revision              = "1"
-      protocols             = ["https"]
-      subscription_required = false
-      product               = "srtp"
-      import_descriptor = {
-        content_format = "openapi"
-        content_value  = templatefile("./api/epc/EPC133-22_v3.1_SRTP_spec.openapi.yaml", {})
-      }
-    }
-    # RTP Takeover Mock
-    rtp-takevoer-mock = {
-      description           = "RTP ITN MOCK API TAKEOVER"
-      display_name          = "RTP ITN MOCK API TAKEOVER"
-      path                  = local.api_context_path
-      revision              = "1"
-      protocols             = ["https"]
-      subscription_required = false
-      product               = "srtp"
-      import_descriptor = {
-        content_format = "openapi"
-        content_value  = templatefile("./api/pagopa/takeover.yaml", {})
       }
     }
     # RTP Payees Registry
@@ -195,7 +167,38 @@ locals {
         headers_to_log            = ["RequestId"]
       }
     }
-  }
+    },
+    var.env_short == "p" ? {} : {
+      # RTP Mock
+      rtp-mock = {
+        description           = "RTP ITN MOCK API EPC"
+        display_name          = "RTP ITN MOCK API EPC"
+        path                  = "${local.api_context_path}/mock"
+        revision              = "1"
+        protocols             = ["https"]
+        subscription_required = false
+        product               = "srtp"
+        import_descriptor = {
+          content_format = "openapi"
+          content_value  = templatefile("./api/epc/EPC133-22_v3.1_SRTP_spec.openapi.yaml", {})
+        }
+      }
+      # RTP Takeover Mock
+      rtp-takeover-mock = {
+        description           = "RTP ITN MOCK API TAKEOVER"
+        display_name          = "RTP ITN MOCK API TAKEOVER"
+        path                  = "${local.api_context_path}/mock/takeover"
+        revision              = "1"
+        protocols             = ["https"]
+        subscription_required = false
+        product               = "srtp"
+        import_descriptor = {
+          content_format = "openapi"
+          content_value  = templatefile("./api/pagopa/takeover.yaml", {})
+        }
+      }
+    }
+  )
   products = {
     # SRTP
     srtp = {
@@ -245,41 +248,46 @@ locals {
     }
   }
 
-  api_operation_policy = {
-    activate = {
-      api_name    = "rtp-activation"
-      xml_content = templatefile("./api/pagopa/activation_policy.xml", {})
+  api_operation_policy = merge(
+    {
+      activate = {
+        api_name    = "rtp-activation"
+        xml_content = templatefile("./api/pagopa/activation_policy.xml", {})
+      }
+      getPayees = {
+        api_name = "rtp-payees-registry"
+        xml_content = templatefile("./api/pagopa/payees_registry_get_policy.xml", {
+          storage_account_name = local.rtp_storage_account_name
+        })
+      }
+      createRtp = {
+        api_name = "rtp-service-provider"
+        xml_content = templatefile("./api/pagopa/send_policy.xml", {
+          fragment_id = "rtp-validate-token-mcshared-v2",
+          enableAuth  = var.enable_auth_send
+        })
+      }
+      getServiceProviders = {
+        api_name = "rtp-service_providers-registry"
+        xml_content = templatefile("./api/pagopa/service_providers_registry_get_policy.xml", {
+          storage_account_name = local.rtp_storage_account_name
+        })
+      }
+    },
+    var.env_short == "p" ? {} : {
+      postRequestToPayRequests = {
+        api_name    = "rtp-mock"
+        xml_content = file("./api/test/mock_policy_epc.xml")
+      }
+      postRequestToPayCancellationRequest = {
+        api_name    = "rtp-mock"
+        xml_content = file("./api/test/mock_policy_epc.xml")
+      }
+      notifyUserTakeover = {
+        api_name    = "rtp-takeover-mock"
+        xml_content = file("./api/test/mock_policy_takeover.xml")
+      }
     }
-    postRequestToPayRequests = {
-      api_name    = "rtp-mock"
-      xml_content = file("./api/test/mock_policy_epc.xml")
-    }
-    postRequestToPayCancellationRequest = {
-      api_name    = "rtp-mock"
-      xml_content = file("./api/test/mock_policy_epc.xml")
-    }
-    notifyUserTakeover = {
-      api_name    = "rtp-takevoer-mock"
-      xml_content = file("./api/test/mock_policy_takeover.xml")
-    }
-    getPayees = {
-      api_name = "rtp-payees-registry"
-      xml_content = templatefile("./api/pagopa/payees_registry_get_policy.xml", {
-        storage_account_name = local.rtp_storage_account_name
-      })
-    }
-    createRtp = {
-      api_name = "rtp-service-provider"
-      xml_content = templatefile("./api/pagopa/send_policy.xml", {
-        fragment_id = "rtp-validate-token-mcshared-v2",
-        enableAuth  = var.enable_auth_send
-      })
-    }
-    getServiceProviders = {
-      api_name = "rtp-service_providers-registry"
-      xml_content = templatefile("./api/pagopa/service_providers_registry_get_policy.xml", {
-        storage_account_name = local.rtp_storage_account_name
-      })
-    }
-  }
+  )
+
 }
