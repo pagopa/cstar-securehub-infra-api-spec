@@ -144,7 +144,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/RequestId'
         - $ref: '#/components/parameters/Version'
-        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/NextActivationId'
         - $ref: '#/components/parameters/PageSize'
       responses:
         "200":
@@ -660,13 +660,16 @@ components:
     # --------------------------------------------------------------------------
     # Basic types for paging.
     # --------------------------------------------------------------------------
-    PageNumber:
-      description: Number of the page.
-      type: integer
-      format: int32
-      minimum: 0
-      maximum: 2147483647
-      example: 1
+    NextActivationId:
+      description: >
+        Identifier for the next page. Use this UUID as `NextActivationId` header
+        in the next request to continue pagination. Null if there are no more pages.
+      type: string
+      format: uuid
+      pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+      minLength: 36
+      maxLength: 36
+      example: "d0d654e6-97da-4848-b568-99fedccb642b"
 
     PageSize:
       description: Size of the page.
@@ -674,22 +677,6 @@ components:
       format: int32
       minimum: 1
       maximum: 128
-      example: 20
-
-    TotalElements:
-      description: Total elements.
-      type: integer
-      format: int64
-      minimum: 0
-      maximum: 9223372036854775807
-      example: 20
-
-    TotalPages:
-      description: Total pages.
-      type: integer
-      format: int64
-      minimum: 0
-      maximum: 9223372036854775807
       example: 20
 
     # --------------------------------------------------------------------------
@@ -868,23 +855,14 @@ components:
       type: object
       additionalProperties: false
       properties:
-        totalElements:
-          $ref: '#/components/schemas/TotalElements'
-        totalPages:
-          $ref: '#/components/schemas/TotalPages'
-        page:
-          $ref: '#/components/schemas/PageNumber'
+        nextActivationId:
+          $ref: '#/components/schemas/NextActivationId'
         size:
           $ref: '#/components/schemas/PageSize'
       required:
-        - totalElements
-        - totalPages
-        - page
         - size
       example:
-        totalElements: 198
-        totalPages: 10
-        page: 5
+        nextActivationId: "bd615b4a-066d-443e-8dd2-a28a39931fef"
         size: 20
 
     # --------------------------------------------------------------------------
@@ -1048,11 +1026,11 @@ components:
       properties:
         activations:
           $ref: '#/components/schemas/Activations'
-        page:
+        metadata:
           $ref: '#/components/schemas/PageMetadata'
       required:
         - activations
-        - page
+        - metadata
       example:
         activations:
           - id: "d0d654e6-97da-4848-b568-99fedccb642b"
@@ -1060,10 +1038,8 @@ components:
             payer:
               fiscalCode: "RSSMRA85T10A562S"
               rtpSpId: "12345678911"
-        page:
-          totalElements: 2
-          totalPages: 2
-          page: 1
+        metadata:
+          nextActivationId: "d0d654e6-97da-4848-b568-99fedccb642b"
           size: 1
 
     PartyId:
@@ -1139,6 +1115,16 @@ components:
       schema:
         $ref: '#/components/schemas/ActivationId'
 
+    NextActivationId:
+      name: NextActivationId
+      in: header
+      description: >
+        Identifier used for seek pagination. If omitted or null, the response will start from the first page.
+        If a UUID is provided, the response will continue from the specified activation point.
+      required: false
+      schema:
+        $ref: '#/components/schemas/NextActivationId'
+
     Otp:
       name: otp
       in: path
@@ -1146,14 +1132,6 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/TakeOverOtp'
-
-    PageNumber:
-      name: page
-      in: query
-      description: Number of the requested page of data.
-      required: true
-      schema:
-        $ref: '#/components/schemas/PageNumber'
 
     PageSize:
       name: size
