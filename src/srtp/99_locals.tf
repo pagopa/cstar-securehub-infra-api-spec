@@ -74,6 +74,20 @@ locals {
         content_value  = templatefile("./api/epc/EPC133-22_v3.1_SRTP_spec.openapi.yaml", {})
       }
     }
+    # RTP Takeover Mock
+    rtp-takevoer-mock = {
+      description           = "RTP ITN MOCK API TAKEOVER"
+      display_name          = "RTP ITN MOCK API TAKEOVER"
+      path                  = local.api_context_path
+      revision              = "1"
+      protocols             = ["https"]
+      subscription_required = false
+      product               = "srtp"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = templatefile("./api/pagopa/takeover.yaml", {})
+      }
+    }
     # RTP Payees Registry
     rtp-payees-registry = {
       description           = "RTP ITN Payees Registry API"
@@ -243,6 +257,10 @@ locals {
     postRequestToPayCancellationRequest = {
       api_name    = "rtp-mock"
       xml_content = file("./api/test/mock_policy_epc.xml")
+    }
+    notifyUserTakeover = {
+      api_name    = "rtp-takevoer-mock"
+      xml_content = file("./api/test/mock_policy_takeover.xml")
     }
     getPayees = {
       api_name = "rtp-payees-registry"
