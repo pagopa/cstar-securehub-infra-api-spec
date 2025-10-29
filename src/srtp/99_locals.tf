@@ -184,7 +184,7 @@ locals {
         }
       }
       # RTP Takeover Mock
-      rtp-takevoer-mock = {
+      rtp-takeover-mock = {
         description           = "RTP ITN MOCK API TAKEOVER"
         display_name          = "RTP ITN MOCK API TAKEOVER"
         path                  = local.api_context_path
