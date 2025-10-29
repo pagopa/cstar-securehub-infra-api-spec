@@ -360,6 +360,11 @@ variable "merchant_portal_referer" {
   description = "Allowed Referer for Merchant Portal"
 }
 
+variable "initiative_id_bonus_elettrodomestici" {
+  type        = string
+  description = "Bonus elettrodomestici initiative ID"
+}
+
 variable "keycloak_url_user" {
   type        = string
   description = "Keycloak URL for user realm"

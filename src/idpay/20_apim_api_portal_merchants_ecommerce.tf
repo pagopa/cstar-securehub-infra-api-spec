@@ -20,11 +20,9 @@ module "idpay_itn_api_portal_merchants_ecommerce_product" {
   subscriptions_limit = 0
 
   policy_xml = templatefile("./apim/api_product/portal_merchants_ecommerce_api/policy_merchants_ecommerce_portal.xml.tpl", {
-    origins                       = local.origins_bonus_elettrodomestici.base //TODO
+    origins                       = local.origins_bonus_elettrodomestici.base
     rate_limit_merchants_portal   = var.rate_limit_merchants_portal_product
-    openid_config_url_merchant_op = local.openid_config_url_merchant_op  //TODO
-    merchant_op_client_id         = local.merchant_op_client_id //TODO
-    merchant_op_client_id_test    = local.merchant_op_client_id_test //TODO
+    openid_config_url_merchant_op = local.openid_config_url_merchant_op
     keycloak_url_merchant_op      = var.keycloak_url_merchant_op
   })
 
@@ -60,56 +58,63 @@ module "idpay_itn_portal_merchants_ecommerce_api" {
   api_operation_policies = [
     {
       operation_id = "getProducts"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/get-rbd-products-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-rbd-products-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "capturePayment"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/put-capture-payment-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/put-capture-payment-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
-    {// no changes
+    {
       operation_id = "previewPayment"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/put-payment-bar-code-preview-trxcode-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/put-payment-bar-code-preview-trxcode-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "authPaymentBarCode"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/put-bar-code-authorize-merchant-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/put-bar-code-authorize-merchant-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getPointOfSaleTransactionsProcessed"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/get-pos-transactions-processed-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-pos-transactions-processed-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-        initiative_id = local.initiative_id
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
       })
     },
     {
       operation_id = "getPointOfSaleTransactions"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/get-pos-transactions-progress-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-pos-transactions-progress-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
       })
     },
     {
       operation_id = "deleteTransaction"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/delete-transactions-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/delete-transactions-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "rewardTransaction"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/post-reward-payment-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/post-reward-payment-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "reversalTransaction"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/post-reversal-payment-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/post-reversal-payment-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "downloadInvoiceFile"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-invoice-download-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }

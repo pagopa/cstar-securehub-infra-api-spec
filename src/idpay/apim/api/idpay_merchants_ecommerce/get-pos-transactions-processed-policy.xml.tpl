@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaytransactions" />
-        <rewrite-uri template="@("/idpay/initiatives/${initiative_id}/point-of-sales/{pointOfSaleId}/transactions/processed")" />
+        <rewrite-uri template="@("/idpay/initiatives/${initiative_id_bonus_elettrodomestici}/point-of-sales/" + (string)context.Variables["pointOfSaleId"] + "/transactions/processed")" />
     </inbound>
     <backend>
         <base />

@@ -41,10 +41,10 @@ info:
     email: cstar@pagopa.it
 servers:
   - description: Test di Sviluppo
-    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant-op
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant-ecommerce
     x-internal: true
   - description: Test di Accettazione dell'Utente
-    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/merchant-op
+    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/merchant-ecommerce
     x-internal: true
 tags:
   - name: products
