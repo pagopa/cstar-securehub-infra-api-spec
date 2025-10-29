@@ -67,7 +67,7 @@ components:
         type: string
         pattern: "^v[1-9]\\d{0,63}$"
         minLength: 1
-        maxLength: 64
+        maxLength: 65
         example: "v1"
 
   schemas:
