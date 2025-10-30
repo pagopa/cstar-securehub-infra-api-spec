@@ -9,7 +9,7 @@ info:
     url: https://www.pagopa.gov.it/
 servers:
   - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant
-    description: DEV
+    description: Development Test
     x-internal: false
 tags:
   - name: merchant-upload
