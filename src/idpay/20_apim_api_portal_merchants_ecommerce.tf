@@ -3,6 +3,7 @@
 #
 
 module "idpay_itn_api_portal_merchants_ecommerce_product" {
+  count  = var.env_short != "p" ? 1 : 0
   source = "./.terraform/modules/__v4__/api_management_product"
 
 
@@ -34,6 +35,7 @@ module "idpay_itn_api_portal_merchants_ecommerce_product" {
 
 ## IDPAY Portal Merchant Ecommerce API ##
 module "idpay_itn_portal_merchants_ecommerce_api" {
+  count  = var.env_short != "p" ? 1 : 0
   source = "./.terraform/modules/__v4__/api_management_api"
 
   name                = "${var.env_short}-idpay-itn-portal-merchant-ecommerce"
@@ -48,7 +50,7 @@ module "idpay_itn_portal_merchants_ecommerce_api" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaymerchant/idpay/merchant/portal"
 
   content_format = "openapi"
-  content_value  = file("./apim/api/idpay_merchants_ecommerce/openapi.merchants.ecommerce.tmp.yml")
+  content_value  = file("./apim/api/idpay_merchants_ecommerce/openapi.merchants.ecommerce.yml")
 
   xml_content = file("./apim/api/base_policy.xml")
 
@@ -83,14 +85,14 @@ module "idpay_itn_portal_merchants_ecommerce_api" {
     {
       operation_id = "getPointOfSaleTransactionsProcessed"
       xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-pos-transactions-processed-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
         initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
       })
     },
     {
       operation_id = "getPointOfSaleTransactions"
       xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-pos-transactions-progress-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
         initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
       })
     },

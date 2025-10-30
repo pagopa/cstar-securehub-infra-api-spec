@@ -187,7 +187,7 @@ paths:
             maxLength: 24
             pattern: "^[a-zA-Z0-9]+$"
       requestBody:
-        description: "Identificativo della transizione"
+        description: "Identificativo della transazione"
         required: true
         content:
           application/json:
@@ -1147,24 +1147,21 @@ components:
         pageSize:
           type: integer
           format: int32
-          description:
-            "Numero di elementi per pagina"
+          description: "Numero di elementi per pagina"
           minimum: 0
           maximum: 1000000
           example: 20
         totalElements:
           type: integer
           format: int32
-          description:
-            "Numero totale degli elementi"
+          description: "Numero totale degli elementi"
           minimum: 0
           maximum: 1000000
           example: 200
         totalPages:
           type: integer
           format: int32
-          description:
-            "Numero totale delle pagine"
+          description: "Numero totale delle pagine"
           minimum: 0
           maximum: 1000000
           example: 10
@@ -1180,8 +1177,7 @@ components:
         registrationDate:
           type: string
           format: date-time
-          description:
-            "Data caricamento prodotto (dopo la verifica EPREL)"
+          description: "Data caricamento prodotto (dopo la verifica EPREL)"
           maxLength: 255
           example: "2025-10-16T12:05:19.307+00:00"
         status:
@@ -1649,7 +1645,7 @@ components:
           format: int64
           minimum: 0
           maximum: 1000000
-          description: "Importo in centessimi"
+          description: "Importo in centesimi"
           example: 123400
         residualBudgetCents:
           type: integer
@@ -1748,7 +1744,7 @@ components:
       flows:
         clientCredentials:
           tokenUrl: https://api-mcshared.cstar.pagopa.it/auth-itn/realms/merchant-operator/protocol/openid-connect/token
-          refreshUrl: https://
+          refreshUrl: https://api-mcshared.cstar.pagopa.it/auth-itn/realms/merchant-operator/protocol/openid-connect/token
           scopes: { }
   responses:
     GET_products_200_Response:
