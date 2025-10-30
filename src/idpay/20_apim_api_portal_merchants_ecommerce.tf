@@ -48,7 +48,7 @@ module "idpay_itn_portal_merchants_ecommerce_api" {
   service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaymerchant/idpay/merchant/portal"
 
   content_format = "openapi"
-  content_value  = file("./apim/api/idpay_merchants_ecommerce/openapi.merchants.ecommerce.portal.yml")
+  content_value  = file("./apim/api/idpay_merchants_ecommerce/openapi.merchants.ecommerce.tmp.yml")
 
   xml_content = file("./apim/api/base_policy.xml")
 
