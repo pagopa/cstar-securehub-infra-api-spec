@@ -7,8 +7,13 @@
       <value>@((string)context.Variables["varUserIdFromValidToken"])</value>
     </set-header>
     <rewrite-uri
-        template="@("/idpay/merchant/organization/"+((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_id", "")+"/reportedUser")"
-        copy-unmatched-parameters="true" />
+      template="@(
+        "/idpay/merchant/organization/"
+        + ((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_id", "")
+        + "/reportedUser/"
+        + Uri.EscapeDataString((string)context.Request.MatchedParameters.GetValueOrDefault("userFiscalCode",""))
+      )"
+      copy-unmatched-parameters="true" />
   </inbound>
   <backend>
     <base />
