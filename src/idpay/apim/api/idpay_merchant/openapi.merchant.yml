@@ -409,6 +409,139 @@ paths:
           description: Too many requests
         '500':
           description: Server error
+  /reportedUser:
+    post:
+      tags: [ reported-user ]
+      summary: Create reported user
+      description: "ENG: Flag a user (fiscal code) for a merchant/initiative pair <br> IT: Segnala un utente (CF) per coppia merchant/iniziativa"
+      operationId: createReportedUser
+      security:
+        - Bearer: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportedUserRequestDTO'
+            examples:
+              createReportedUser:
+                value:
+                  merchantId: "MERCHANT_12345"
+                  initiativeId: "INITIATIVE_67890"
+                  userFiscalCode: "RSSMRA85T10A562S"
+      responses:
+        '200':
+          description: Business outcome
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportedUserCreateResponseDTO'
+              examples:
+                ok:
+                  value: { status: "OK", errorKey: "" }
+                alreadyReported:
+                  value: { status: "KO", errorKey: "Already reported" }
+        '401':
+          description: Authentication failed
+        '403':
+          description: Not authorized
+        '500':
+          description: Server error
+
+    get:
+      tags: [ reported-user ]
+      summary: Search reported users
+      description: "ENG: Search reported users by optional filters <br> IT: Ricerca segnalazioni con filtri opzionali"
+      operationId: searchReportedUsers
+      security:
+        - Bearer: [ ]
+      parameters:
+        - name: merchantId
+          in: query
+          required: false
+          schema: { type: string }
+          description: Merchant ID
+          example: MERCHANT_12345
+        - name: initiativeId
+          in: query
+          required: false
+          schema: { type: string }
+          description: Initiative ID
+          example: INITIATIVE_67890
+        - name: userFiscalCode
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Citizen fiscal code
+          example: RSSMRA85T10A562S
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReportedUserDTO'
+              examples:
+                list:
+                  value:
+                    - fiscalCode: "RSSMRA85T10A562S"
+                      reportedDate: "2025-10-30T09:15:12Z"
+                      transactionId: "TRX_001"
+                      transactionDate: "2025-10-30T09:14:50Z"
+                    - fiscalCode: "VRDLGI90A01H501Z"
+                      reportedDate: "2025-10-29T16:02:45Z"
+                      transactionId: "TRX_002"
+                      transactionDate: "2025-10-29T15:59:10Z"
+        '401':
+          description: Authentication failed
+        '500':
+          description: Server error
+
+    delete:
+      tags: [ reported-user ]
+      summary: Delete reported user
+      description: "ENG: Remove a report for the given fiscal code <br> IT: Rimuove la segnalazione per il codice fiscale indicato"
+      operationId: deleteReportedUser
+      security:
+        - Bearer: [ ]
+      parameters:
+        - name: userFiscalCode
+          in: query
+          required: false   # allineato al controller (@RequestParam(required = false))
+          schema:
+            type: string
+          description: Citizen fiscal code of the reported user
+          example: RSSMRA85T10A562S
+      responses:
+        '200':
+          description: Business outcome
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportedUserCreateResponseDTO'
+              examples:
+                ok:
+                  value: { status: "OK", errorKey: "" }
+                notFound:
+                  value: { status: "KO", errorKey: "UserId not found" }
+                entityNotFound:
+                  value: { status: "KO", errorKey: "Entity not found" }
+                serviceUnavailable:
+                  value: { status: "KO", errorKey: "Service unavailable" }
+                differentMerchant:
+                  value: { status: "KO", errorKey: "Different Merchant Id" }
+                differentInitiative:
+                  value: { status: "KO", errorKey: "Different Initiative Id" }
+        '401':
+          description: Authentication failed
+        '403':
+          description: Not authorized
+        '500':
+          description: Server error
+
 components:
   schemas:
     MerchantUpdateDTO:
@@ -845,6 +978,79 @@ components:
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
+    ReportedUserRequestDTO:
+      type: object
+      required: [ merchantId, initiativeId, userFiscalCode ]
+      properties:
+        merchantId:
+          type: string
+          description: Merchant ID
+          example: MERCHANT_12345
+        initiativeId:
+          type: string
+          description: Initiative ID
+          example: INITIATIVE_67890
+        userFiscalCode:
+          type: string
+          description: Citizen fiscal code
+          example: RSSMRA85T10A562S
+
+    ReportedUserCreateResponseDTO:
+      type: object
+      required: [ status, errorKey ]
+      properties:
+        status:
+          type: string
+          description: Outcome of the operation
+          enum: [ OK, KO ]
+          example: OK
+        errorKey:
+          type: string
+          nullable: true
+          description: >
+            Error reason if status == KO; empty string otherwise.
+            Possible business messages:
+             - "UserId not found"
+             - "Entity not found"
+             - "Service unavailable"
+             - "Different Merchant Id"
+             - "Already reported"
+             - "Different Initiative Id"
+          enum:
+            - ""
+            - "UserId not found"
+            - "Entity not found"
+            - "Service unavailable"
+            - "Different Merchant Id"
+            - "Already reported"
+            - "Different Initiative Id"
+          example: ""
+
+    ReportedUserDTO:
+      type: object
+      required: [ fiscalCode, reportedDate ]
+      properties:
+        fiscalCode:
+          type: string
+          description: Citizen fiscal code
+          example: RSSMRA85T10A562S
+        reportedDate:
+          type: string
+          format: date-time
+          description: When the user was reported
+          example: 2025-10-30T09:15:12Z
+        transactionId:
+          type: string
+          nullable: true
+          description: Related transaction ID (if any)
+          example: TRX_001
+        transactionDate:
+          type: string
+          format: date-time
+          nullable: true
+          description: Related transaction date (if any)
+          example: 2025-10-30T09:14:50Z
+
   securitySchemes:
     Bearer:
       type: apiKey
@@ -852,3 +1058,4 @@ components:
       in: header
 security:
   - Bearer: []
+
