@@ -3,8 +3,13 @@ info:
   title: IDPAY ITN Welfare Portal Merchant API
   description: IDPAY ITN Welfare Portal Merchant
   version: 1.0.1
+  contact:
+    name: PagoPA S.p.A.
+    url: https://www.pagopa.it
+    email: support@pagopa.it
 servers:
   - url: "https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant/portal"
+    x-internal: true
 
 tags:
   - name: point-of-sales
@@ -37,16 +42,75 @@ paths:
       responses:
         "204":
           description: No Content - Successfully saved or updated
+          headers:
+            X-RateLimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
         "400":
           description: Bad request - Invalid input data
+          headers:
+            X-RateLimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ValidationErrorDTO"
         "401":
           description: Unauthorized - Authentication failed
+          headers:
+            X-RateLimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleErrorDTO"
+              example:
+                code: POINT_OF_SALE_UNAUTHORIZED
+                message: Authentication failed
         "404":
           description: Not Found
+          headers:
+            X-RateLimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
           content:
             application/json:
               schema:
@@ -56,6 +120,19 @@ paths:
                 message: Point of sale with id 123 not found.
         "429":
           description: Too many Request - Rate limit exceeded
+          headers:
+            X-RateLimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
           content:
             application/json:
               schema:
@@ -150,8 +227,41 @@ paths:
                 message: Something went wrong handling request
         "401":
           description: Unauthorized - Authentication Failed
+          headers:
+            X-RateLimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleErrorDTO"
+              example:
+                code: POINT_OF_SALE_UNAUTHORIZED
+                message: Authentication failed
         "404":
           description: Not Found
+          headers:
+            X-RateLimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
           content:
             application/json:
               schema:
@@ -161,6 +271,19 @@ paths:
                 message: Point of sale with id 123 not found.
         "429":
           description: Too many Request - Rate limit exceeded
+          headers:
+            X-RateLimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
           content:
             application/json:
               schema:
@@ -217,6 +340,19 @@ paths:
           description: Unauthorized - Authentication Failed
         "404":
           description: Not Found
+          headers:
+            X-RateLimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
           content:
             application/json:
               schema:
@@ -226,6 +362,19 @@ paths:
                 message: Point of sale with id 123 not found.
         "429":
           description: Too many Request - Rate limit exceeded
+          headers:
+            X-RateLimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
           content:
             application/json:
               schema:
