@@ -3,6 +3,9 @@ info:
   title: IDPAY ITN Welfare Portal Merchant API
   description: IDPAY ITN Welfare Portal Merchant
   version: 1.0.1
+  contact:
+    name: API Support
+    email: support@example.com
 servers:
   - url: "https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant/portal"
     x-internal: false
@@ -41,6 +44,7 @@ paths:
           schema:
             type: string
             maxLength: 64
+            pattern: '.*'
       requestBody:
         description: List of points of sale to save or update
         required: true
@@ -55,6 +59,7 @@ paths:
         "204":
           description: No Content - Successfully saved or updated
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -65,6 +70,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ValidationErrorDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -75,6 +81,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/PointOfSaleErrorDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -88,6 +95,7 @@ paths:
                 code: POINT_OF_SALE_NOT_FOUND
                 message: Point of sale with id 123 not found.
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -101,9 +109,22 @@ paths:
                 code: POINT_OF_SALE_TOO_MANY_REQUESTS
                 message: Too many requests
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
+        "500":
+          description: Internal Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleErrorDTO"
+              example:
+                code: POINT_OF_SALE_GENERIC_ERROR
+                message: An internal error occurred
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
     get:
       tags:
         - point-of-sales
@@ -118,33 +139,35 @@ paths:
           schema:
             type: string
             maxLength: 64
+            pattern: '.*'
         - name: type
           in: query
           description: Filter by point of sale type
           required: false
           schema:
             type: string
-            enum:
-              - PHYSICAL
-              - ONLINE
+            enum: [PHYSICAL, ONLINE]
         - name: city
           in: query
           required: false
           schema:
             type: string
             maxLength: 128
+            pattern: '.*'
         - name: address
           in: query
           required: false
           schema:
             type: string
             maxLength: 256
+            pattern: '.*'
         - name: contactName
           in: query
           required: false
           schema:
             type: string
             maxLength: 128
+            pattern: '.*'
         - name: page
           in: query
           required: false
@@ -167,6 +190,7 @@ paths:
           schema:
             type: string
             maxLength: 128
+            pattern: '.*'
       responses:
         "200":
           description: Successful response with a paginated list of points of sale
@@ -175,6 +199,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ListPointOfSaleDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -188,6 +213,7 @@ paths:
                 code: POINT_OF_SALE_BAD_REQUEST
                 message: Something went wrong handling request
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -198,6 +224,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/PointOfSaleErrorDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -211,6 +238,7 @@ paths:
                 code: POINT_OF_SALE_NOT_FOUND
                 message: Point of sale with id 123 not found.
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -224,9 +252,22 @@ paths:
                 code: POINT_OF_SALE_TOO_MANY_REQUESTS
                 message: Too many requests
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleErrorDTO"
+              example:
+                code: POINT_OF_SALE_GENERIC_ERROR
+                message: An error occurred during file reading
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
 
   /{merchantId}/point-of-sales/{pointOfSaleId}:
     get:
@@ -242,12 +283,14 @@ paths:
           schema:
             type: string
             maxLength: 64
+            pattern: '.*'
         - name: pointOfSaleId
           in: path
           required: true
           schema:
             type: string
             maxLength: 64
+            pattern: '.*'
       responses:
         "200":
           description: Successful response with point of sale detail
@@ -256,6 +299,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/PointOfSaleDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -269,6 +313,7 @@ paths:
                 code: POINT_OF_SALE_BAD_REQUEST
                 message: Something went wrong handling request
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -279,6 +324,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/PointOfSaleErrorDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -292,6 +338,7 @@ paths:
                 code: POINT_OF_SALE_NOT_FOUND
                 message: Point of sale with id 123 not found.
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -305,9 +352,22 @@ paths:
                 code: POINT_OF_SALE_TOO_MANY_REQUESTS
                 message: Too many requests
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleErrorDTO"
+              example:
+                code: POINT_OF_SALE_GENERIC_ERROR
+                message: An error occurred during file reading
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
 
   /initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions/processed:
     get:
@@ -374,10 +434,7 @@ paths:
           required: false
           schema:
             type: string
-            enum:
-              - REWARDED
-              - CANCELLED
-              - REFUNDED
+            enum: [REWARDED, CANCELLED, REFUNDED]
         - name: productGtin
           in: query
           required: false
@@ -393,6 +450,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/PointOfSaleTransactionsProcessedListDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -406,6 +464,7 @@ paths:
                 code: "PAYMENT_INVALID_REQUEST"
                 message: "Something went wrong handling the request"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -416,6 +475,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/TransactionErrorDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -429,6 +489,8 @@ paths:
                 code: "PAYMENT_TOO_MANY_REQUESTS"
                 message: "Too many requests"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -441,6 +503,8 @@ paths:
               example:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
 
   /initiatives:
     get:
@@ -460,6 +524,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/InitiativeDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -473,6 +538,7 @@ paths:
                 code: MERCHANT_INVALID_REQUEST
                 message: Something went wrong handling request
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -483,6 +549,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/MerchantErrorDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -496,6 +563,8 @@ paths:
                 code: MERCHANT_TOO_MANY_REQUESTS
                 message: Too many requests
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -508,6 +577,8 @@ paths:
               example:
                 code: MERCHANT_GENERIC_ERROR
                 message: An error occurred
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
 
   /initiatives/{initiativeId}/statistics:
     get:
@@ -524,6 +595,7 @@ paths:
           schema:
             type: string
             maxLength: 64
+            pattern: '.*'
       responses:
         "200":
           description: Ok
@@ -532,6 +604,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/MerchantStatisticsDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -545,6 +618,7 @@ paths:
                 code: STATISTICS_INVALID_REQUEST
                 message: Something went wrong handling request
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -555,6 +629,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/StatisticsErrorDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -568,6 +643,7 @@ paths:
                 code: STATISTICS_NOT_FOUND
                 message: Stats not found
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -581,6 +657,8 @@ paths:
                 code: STATISTICS_MANAGER_TOO_MANY_REQUESTS
                 message: Too many requests
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -593,6 +671,8 @@ paths:
               example:
                 code: STATISTICS_MANAGER_GENERIC_ERROR
                 message: Application error
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
 
   /transactions:
     post:
@@ -615,6 +695,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/TransactionResponse"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -628,6 +709,7 @@ paths:
                 code: PAYMENT_INVALID_REQUEST
                 message: Something went wrong handling the request
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -637,6 +719,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TransactionErrorDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "403":
           description: Forbidden
           content:
@@ -646,6 +733,11 @@ paths:
               example:
                 code: PAYMENT_INITIATIVE_INVALID_DATE
                 message: "Cannot create transaction out of valid period. Initiative startDate: %s endDate: %s"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "404":
           description: The requested resource was not found
           content:
@@ -655,6 +747,11 @@ paths:
               example:
                 code: PAYMENT_INITIATIVE_NOT_FOUND
                 message: "Cannot find initiative with id [%s]"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "429":
           description: Too many requests
           content:
@@ -664,6 +761,12 @@ paths:
               example:
                 code: PAYMENT_TOO_MANY_REQUESTS
                 message: Too many requests
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "500":
           description: Generic error
           content:
@@ -673,12 +776,15 @@ paths:
               example:
                 code: PAYMENT_GENERIC_ERROR
                 message: Application error
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
 
   /transactions/{transactionId}:
     delete:
       tags:
         - merchant-transactions
       summary: "ENG: Merchant delete transaction - IT: Cancellazione transazione da parte dell'esercente"
+      description: "ENG: Delete a transaction created by the merchant - IT: Cancellazione di una transazione creata dall'esercente"
       operationId: deleteTransaction
       parameters:
         - name: transactionId
@@ -687,10 +793,13 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
+            pattern: '.*'
       responses:
         "200":
           description: Ok
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -704,6 +813,7 @@ paths:
                 code: PAYMENT_INVALID_REQUEST
                 message: Something went wrong handling the request
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -714,6 +824,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/TransactionErrorDTO"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -727,6 +838,7 @@ paths:
                 code: PAYMENT_NOT_ALLOWED_MISMATCHED_MERCHANT
                 message: "The merchant with id [%s] associated to the transaction is not equal to the merchant with id [%s]"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -740,6 +852,7 @@ paths:
                 code: PAYMENT_NOT_FOUND_OR_EXPIRED
                 message: "Cannot find transaction with transactionId [%s]"
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -753,6 +866,8 @@ paths:
                 code: PAYMENT_TOO_MANY_REQUESTS
                 message: Too many requests
           headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
             X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
             X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
             X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
@@ -765,6 +880,8 @@ paths:
               example:
                 code: PAYMENT_GENERIC_ERROR
                 message: Application error
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
 
   /initiatives/{initiativeId}/transactions:
     get:
@@ -778,30 +895,6 @@ paths:
           in: path
           description: The initiative ID
           required: true
-          schema:
-            type: string
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: size
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: fiscalCode
-          in: query
-          description: Fiscal Code
-          required: false
-          schema:
-            type: string
-        - name: status
-          in: query
-          description: Transaction status
-          required: false
           schema:
             type: string
       responses:
@@ -853,30 +946,6 @@ paths:
           in: path
           description: The initiative ID
           required: true
-          schema:
-            type: string
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: size
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: fiscalCode
-          in: query
-          description: Fiscal Code
-          required: false
-          schema:
-            type: string
-        - name: status
-          in: query
-          description: Transaction status
-          required: false
           schema:
             type: string
       responses:
@@ -1290,412 +1359,202 @@ paths:
           description: Server error
 
 components:
+  headers:
+    Access-Control-Allow-Origin:
+      description: Indicates whether the response can be shared with the given origin
+      schema:
+        type: string
+        example: "*"
+    Retry-After:
+      description: Indicates how long the user agent should wait before making a follow-up request (seconds)
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        example: 120
+    X-RateLimit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+    X-RateLimit-Remaining:
+      description: The number of remaining requests in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+    X-RateLimit-Reset:
+      description: Seconds until the rate limit resets
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+
   schemas:
     InitiativeDTO:
       type: object
       properties:
-        initiativeId:
-          type: string
-        initiativeName:
-          type: string
-        organizationName:
-          type: string
+        initiativeId: { type: string }
+        initiativeName: { type: string }
+        organizationName: { type: string }
         status:
           type: string
-          enum:
-            - PUBLISHED
-            - APPROVED
-            - IN_REVISION
-            - TO_CHECK
-            - SUSPENDED
-            - DRAFT
-            - CLOSED
-        startDate:
-          type: string
-          format: date
-        endDate:
-          type: string
-          format: date
-        serviceId:
-          type: string
-        enabled:
-          type: boolean
+          enum: [PUBLISHED, APPROVED, IN_REVISION, TO_CHECK, SUSPENDED, DRAFT, CLOSED]
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        serviceId: { type: string }
+        enabled: { type: boolean }
     MerchantStatisticsDTO:
       type: object
       properties:
-        amountCents:
-          type: integer
-          format: int64
-          example: 100
-        accruedCents:
-          type: integer
-          format: int64
-          example: 100
-        refundedCents:
-          type: integer
-          format: int64
-          example: 100
+        amountCents: { type: integer, format: int64, example: 100 }
+        accruedCents: { type: integer, format: int64, example: 100 }
+        refundedCents: { type: integer, format: int64, example: 100 }
     MerchantTransactionsListDTO:
       type: object
-      required:
-        - content
-        - pageNo
-        - pageSize
-        - totalElements
-        - totalPages
+      required: [content, pageNo, pageSize, totalElements, totalPages]
       properties:
         content:
           type: array
-          items:
-            $ref: "#/components/schemas/MerchantTransactionDTO"
-        pageNo:
-          type: integer
-          format: int32
-        pageSize:
-          type: integer
-          format: int32
-        totalElements:
-          type: integer
-          format: int32
-        totalPages:
-          type: integer
-          format: int32
+          items: { $ref: "#/components/schemas/MerchantTransactionDTO" }
+        pageNo: { type: integer, format: int32 }
+        pageSize: { type: integer, format: int32 }
+        totalElements: { type: integer, format: int32 }
+        totalPages: { type: integer, format: int32 }
     MerchantTransactionDTO:
       type: object
-      required:
-        - trxCode
-        - trxId
-        - effectiveAmountCents
-        - trxExpirationSeconds
-        - status
+      required: [trxCode, trxId, effectiveAmountCents, trxExpirationSeconds, status]
       properties:
-        trxCode:
-          type: string
-          description: "ENG: Transaction code - IT: Il codice della transazione"
-        trxId:
-          type: string
-          description: "ENG: Transaction ID - IT: L'ID della transazione"
-        fiscalCode:
-          type: string
-          description: "ENG: Citizen fiscal code - IT: Codice fiscale del cittadino"
-        effectiveAmountCents:
-          type: integer
-          format: int64
-          description: "ENG: Transaction amount - IT: Quantitativo della transazione"
-          example: 100
-        rewardAmountCents:
-          type: integer
-          format: int64
-          description: "ENG: Reward amount - IT: Premio generato"
-          example: 100
-        trxDate:
-          type: string
-          format: date-time
-          description: "ENG: The date of the transaction - IT: La data della transazione"
-        trxExpirationSeconds:
-          type: number
-          description: "ENG: Expiration time of the transaction, in seconds - IT: Scadenza della transazione, in secondi"
-        updateDate:
-          type: string
-          format: date-time
-          description: "ENG: The date of the transaction update - IT: La data di aggiornamento della transazione"
+        trxCode: { type: string, description: "ENG: Transaction code - IT: Il codice della transazione" }
+        trxId: { type: string, description: "ENG: Transaction ID - IT: L'ID della transazione" }
+        fiscalCode: { type: string, description: "ENG: Citizen fiscal code - IT: Codice fiscale del cittadino" }
+        effectiveAmountCents: { type: integer, format: int64, description: "ENG: Transaction amount - IT: Quantitativo della transazione", example: 100 }
+        rewardAmountCents: { type: integer, format: int64, description: "ENG: Reward amount - IT: Premio generato", example: 100 }
+        trxDate: { type: string, format: date-time, description: "ENG: The date of the transaction - IT: La data della transazione" }
+        trxExpirationSeconds: { type: number, description: "ENG: Expiration time of the transaction, in seconds - IT: Scadenza della transazione, in secondi" }
+        updateDate: { type: string, format: date-time, description: "ENG: The date of the transaction update - IT: La data di aggiornamento della transazione" }
         status:
           type: string
-          enum:
-            - CREATED
-            - IDENTIFIED
-            - AUTHORIZATION_REQUESTED
-            - AUTHORIZED
-            - REJECTED
+          enum: [CREATED, IDENTIFIED, AUTHORIZATION_REQUESTED, AUTHORIZED, REJECTED]
           description: "ENG: Status of the transaction - IT: Stato della transazione"
-        splitPayment:
-          type: boolean
-          description: "ENG: TRUE, if the authorized sum is less than the requested sum or FALSE, if the authorized sum is equal to the requested sum - IT: TRUE, se la somma autorizzata è inferiore alla somma richiesta o FALSE, se la somma autorizzata è uguale alla somma richiesta."
-        residualAmountCents:
-          type: integer
-          format: int64
-          description: "ENG: Remaining amount to be paid if the authorized sum is less than the requested sum - IT: Importo restante da pagare nel caso in cui la somma autorizzata sia inferiore alla somma richiesta."
-        channel:
-          type: string
-          description: "ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione"
-        qrcodePngUrl:
-          type: string
-          description: "ENG: Url to the QR code image - IT: Url all'immagine del QR code"
-        qrcodeTxtUrl:
-          type: string
-          description: "ENG: Url of the QR code link - IT: Url del QR code"
+        splitPayment: { type: boolean, description: "ENG: TRUE... - IT: TRUE..." }
+        residualAmountCents: { type: integer, format: int64, description: "ENG: Remaining amount... - IT: Importo restante..." }
+        channel: { type: string, description: "ENG: Channel... - IT: Canale..." }
+        qrcodePngUrl: { type: string, description: "ENG: Url to the QR code image - IT: Url all'immagine del QR code" }
+        qrcodeTxtUrl: { type: string, description: "ENG: Url of the QR code link - IT: Url del QR code" }
         additionalProperties:
           type: object
-          additionalProperties:
-            type: string
-          description: "ENG: Additional properties of the transaction - IT: Proprietà aggiuntive della transazione"
+          additionalProperties: { type: string }
+          description: "ENG: Additional properties... - IT: Proprietà aggiuntive..."
     MerchantTransactionsProcessedListDTO:
       type: object
-      required:
-        - content
-        - pageNo
-        - pageSize
-        - totalElements
-        - totalPages
+      required: [content, pageNo, pageSize, totalElements, totalPages]
       properties:
         content:
           type: array
-          items:
-            $ref: "#/components/schemas/MerchantTransactionProcessedDTO"
-        pageNo:
-          type: integer
-          format: int32
-        pageSize:
-          type: integer
-          format: int32
-        totalElements:
-          type: integer
-          format: int32
-        totalPages:
-          type: integer
-          format: int32
+          items: { $ref: "#/components/schemas/MerchantTransactionProcessedDTO" }
+        pageNo: { type: integer, format: int32 }
+        pageSize: { type: integer, format: int32 }
+        totalElements: { type: integer, format: int32 }
+        totalPages: { type: integer, format: int32 }
     MerchantTransactionProcessedDTO:
       type: object
-      required:
-        - trxId
-        - effectiveAmountCents
-        - status
+      required: [trxId, effectiveAmountCents, status]
       properties:
-        trxId:
-          type: string
-          description: "ENG: Transaction ID - IT: L'ID della transazione"
-        fiscalCode:
-          type: string
-          description: "ENG: Citizen fiscal code - IT: Codice fiscale del cittadino"
-        effectiveAmountCents:
-          type: integer
-          format: int64
-          description: "ENG: Transaction amount - IT: Quantitativo della transazione"
-          example: 100
-        rewardAmountCents:
-          type: integer
-          format: int64
-          description: "ENG: Reward amount - IT: Premio generato"
-          example: 100
-        trxDate:
-          type: string
-          format: date-time
-          description: "ENG: The date of the transaction - IT: La data della transazione"
-        updateDate:
-          type: string
-          format: date-time
-          description: "ENG: The date of the transaction update - IT: La data di aggiornamento della transazione"
+        trxId: { type: string, description: "ENG: Transaction ID - IT: L'ID della transazione" }
+        fiscalCode: { type: string, description: "ENG: Citizen fiscal code - IT: Codice fiscale del cittadino" }
+        effectiveAmountCents: { type: integer, format: int64, description: "ENG: Transaction amount - IT: Quantitativo della transazione", example: 100 }
+        rewardAmountCents: { type: integer, format: int64, description: "ENG: Reward amount - IT: Premio generato", example: 100 }
+        trxDate: { type: string, format: date-time, description: "ENG: The date of the transaction - IT: La data della transazione" }
+        updateDate: { type: string, format: date-time, description: "ENG: The date of the transaction update - IT: La data di aggiornamento della transazione" }
         status:
           type: string
-          enum:
-            - REWARDED
-            - CANCELLED
+          enum: [REWARDED, CANCELLED]
           description: "ENG: Status of the transaction - IT: Stato della transazione"
-        channel:
-          type: string
-          description: "ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione"
+        channel: { type: string, description: "ENG: Channel... - IT: Canale..." }
     MerchantDetailDTO:
       type: object
       properties:
-        initiativeId:
-          type: string
-          description: "ENG: The ID of the initiative <br> IT: L'ID' dell'iniziativa"
-        initiativeName:
-          type: string
-          description: "ENG: The name of the initiative <br> IT: Il nome dell'iniziativa"
-        businessName:
-          type: string
-          description: "ENG: The name of the merchant <br> IT: La ragione sociale dell'esercente"
-        legalOfficeAddress:
-          type: string
-          description: "ENG: The address of the legal office <br> IT: L'indirizzo della sede legale"
-        legalOfficeMunicipality:
-          type: string
-          description: "ENG: The municipality of the legal office <br> IT: Il comune della sede legale"
-        legalOfficeProvince:
-          type: string
-          description: "ENG: The province of the legal office <br> IT: La provincia della sede legale"
-        legalOfficeZipCode:
-          type: string
-          description: "ENG: The zipcode of the legal office <br> IT: Il CAP della sede legale"
-        certifiedEmail:
-          type: string
-          description: "ENG: The certified email address of the merchant <br> IT: L'indirizzo email PEC dell' esercente"
-        fiscalCode:
-          type: string
-          description: "ENG: The fiscal code/vat number of the merchant <br> IT: Il codice fiscale/partita iva dell'esercente"
-        vatNumber:
-          type: string
-          description: "ENG: The vat number of the merchant <br> IT: La partita iva dell'esercente"
+        initiativeId: { type: string, description: "ENG: The ID of the initiative <br> IT: L'ID' dell'iniziativa" }
+        initiativeName: { type: string, description: "ENG: The name of the initiative <br> IT: Il nome dell'iniziativa" }
+        businessName: { type: string, description: "ENG: The name of the merchant <br> IT: La ragione sociale dell'esercente" }
+        legalOfficeAddress: { type: string, description: "ENG: The address of the legal office <br> IT: L'indirizzo della sede legale" }
+        legalOfficeMunicipality: { type: string, description: "ENG: The municipality... <br> IT: Il comune..." }
+        legalOfficeProvince: { type: string, description: "ENG: The province... <br> IT: La provincia..." }
+        legalOfficeZipCode: { type: string, description: "ENG: The zipcode... <br> IT: Il CAP..." }
+        certifiedEmail: { type: string, description: "ENG: The certified email... <br> IT: L'indirizzo email PEC..." }
+        fiscalCode: { type: string, description: "ENG: The fiscal code/vat number... <br> IT: Il codice fiscale/partita iva..." }
+        vatNumber: { type: string, description: "ENG: The vat number... <br> IT: La partita iva..." }
         status:
           type: string
-          enum:
-            - UPLOADED
-          description: "ENG: One of the possible merchant onboarding status: <ul><li>UPLOADED:This is the initial status after the csv upload</li></ul>IT: Uno dei possibili stati dell'onboarding da parte dell'esercente: <ul><li>UPLOADED:Questo è lo stato iniziale dopo il caricamento del file csv</li></ul>"
-        iban:
-          type: string
-          description: "ENG: The iban of the merchant <br> IT: L'iban dell'esercente"
-        ibanHolder:
-          type: string
-          description: "ENG: The holder of the IBAN <br> IT: L'intestatario dell'IBAN"
-        creationDate:
-          type: string
-          format: date-time
-          description: "ENG: Time and date of the initiative creation <br> IT: La data ed ora della creazione dell'iniziativa"
-        updateDate:
-          type: string
-          format: date-time
-          description: "ENG: Time and date of the last status update <br> IT: La data ed ora dell'ultimo aggiornamento dello stato"
-        activationDate:
-          type: string
-          format: date-time
-          description: "ENG: Time and date of the merchant activation date <br> IT: La data ed ora di attivazione dell'esercente"
+          enum: [UPLOADED]
+          description: "ENG: One of the possible merchant onboarding status... IT: ..."
+        iban: { type: string, description: "ENG: The iban... <br> IT: L'iban..." }
+        ibanHolder: { type: string, description: "ENG: The holder of the IBAN... <br> IT: ..." }
+        creationDate: { type: string, format: date-time, description: "ENG: Time and date... <br> IT: ..." }
+        updateDate: { type: string, format: date-time, description: "ENG: Time and date... <br> IT: ..." }
+        activationDate: { type: string, format: date-time, description: "ENG: Time and date... <br> IT: ..." }
     TransactionCreationRequest:
       type: object
-      required:
-        - initiativeId
-        - amountCents
-        - idTrxAcquirer
+      required: [initiativeId, amountCents, idTrxAcquirer]
       properties:
-        initiativeId:
-          type: string
-        amountCents:
-          type: integer
-          format: int64
-        mcc:
-          type: string
-        idTrxAcquirer:
-          type: string
+        initiativeId: { type: string }
+        amountCents: { type: integer, format: int64 }
+        mcc: { type: string }
+        idTrxAcquirer: { type: string }
         additionalProperties:
           type: object
-          additionalProperties:
-            type: string
+          additionalProperties: { type: string }
     TransactionResponse:
       type: object
-      required:
-        - id
-        - trxCode
-        - initiativeId
-        - merchantId
-        - idTrxAcquirer
-        - trxDate
-        - trxExpirationSeconds
-        - amountCents
-        - amountCurrency
-        - acquirerId
-        - status
-        - qrcodePngUrl
-        - qrcodeTxtUrl
+      required: [id, trxCode, initiativeId, merchantId, idTrxAcquirer, trxDate, trxExpirationSeconds, amountCents, amountCurrency, acquirerId, status, qrcodePngUrl, qrcodeTxtUrl]
       properties:
-        id:
-          type: string
-        trxCode:
-          type: string
-        initiativeId:
-          type: string
-        merchantId:
-          type: string
-        idTrxAcquirer:
-          type: string
-        trxDate:
-          type: string
-          format: date-time
-        trxExpirationSeconds:
-          type: number
-        amountCents:
-          type: integer
-          format: int64
-        amountCurrency:
-          type: string
-        mcc:
-          type: string
-        acquirerId:
-          type: string
+        id: { type: string }
+        trxCode: { type: string }
+        initiativeId: { type: string }
+        merchantId: { type: string }
+        idTrxAcquirer: { type: string }
+        trxDate: { type: string, format: date-time }
+        trxExpirationSeconds: { type: number }
+        amountCents: { type: integer, format: int64 }
+        amountCurrency: { type: string }
+        mcc: { type: string }
+        acquirerId: { type: string }
         status:
           type: string
-          enum:
-            - CREATED
-            - IDENTIFIED
-            - AUTHORIZED
-            - REWARDED
-            - REJECTED
-        merchantFiscalCode:
-          type: string
-        vat:
-          type: string
-        splitPayment:
-          type: boolean
-        residualAmountCents:
-          type: integer
-          format: int64
-        qrcodePngUrl:
-          type: string
-        qrcodeTxtUrl:
-          type: string
+          enum: [CREATED, IDENTIFIED, AUTHORIZED, REWARDED, REJECTED]
+        merchantFiscalCode: { type: string }
+        vat: { type: string }
+        splitPayment: { type: boolean }
+        residualAmountCents: { type: integer, format: int64 }
+        qrcodePngUrl: { type: string }
+        qrcodeTxtUrl: { type: string }
         additionalProperties:
           type: object
-          additionalProperties:
-            type: string
+          additionalProperties: { type: string }
     AuthPaymentResponseDTO:
       type: object
-      required:
-        - id
-        - trxCode
-        - initiativeId
-        - status
-        - amountCents
+      required: [id, trxCode, initiativeId, status, amountCents]
       properties:
-        id:
-          type: string
-          description: "ENG: Id of the payment - IT: Identificativo del pagamento"
-        trxCode:
-          type: string
-          description: "ENG: Transaction code - IT: Codice della transazione"
-        trxDate:
-          type: string
-          format: date-time
-          description: "ENG: Transaction date - IT: Data della transazione"
-        initiativeId:
-          type: string
-          description: "ENG: Id of the initiative - IT: Identificativo dell'iniziativa"
-        initiativeName:
-          type: string
-          description: "ENG: Name of the initiative - IT: Nome della iniziativa"
-        businessName:
-          type: string
-          description: "ENG: Business name - IT: Nome dell'esercente"
+        id: { type: string, description: "ENG: Id of the payment - IT: Identificativo del pagamento" }
+        trxCode: { type: string, description: "ENG: Transaction code - IT: Codice della transazione" }
+        trxDate: { type: string, format: date-time, description: "ENG: Transaction date - IT: Data della transazione" }
+        initiativeId: { type: string, description: "ENG: Id of the initiative - IT: Identificativo dell'iniziativa" }
+        initiativeName: { type: string, description: "ENG: Name of the initiative - IT: Nome della iniziativa" }
+        businessName: { type: string, description: "ENG: Business name - IT: Nome dell'esercente" }
         status:
           type: string
-          enum:
-            - CREATED
-            - IDENTIFIED
-            - AUTHORIZATION_REQUESTED
-            - AUTHORIZED
-          description: "ENG: Status of the payment [CREATED: Created, IDENTIFIED: User related, AUTHORIZATION_REQUESTED: Authorization Requested, AUTHORIZED: authorized] - IT: Stato del pagamento [CREATED: Creato, IDENTIFIED: Utente associato, AUTHORIZATION_REQUESTED: autorizzazione richiesta, AUTHORIZED: autorizzato]"
-        rewardCents:
-          type: integer
-          format: int64
-          description: "ENG: Reward - IT: Premio generato"
-        amountCents:
-          type: integer
-          format: int64
-          description: "ENG: Amount cents - IT: Importo in centessimi"
-        residualBudgetCents:
-          type: integer
-          format: int64
-          description: "ENG: Residual budget - IT: Budget residuo"
-        splitPayment:
-          type: boolean
-          description: "ENG: TRUE, if the authorized sum is less than the requested sum or FALSE, if the authorized sum is equal to the requested sum - IT: TRUE, se la somma autorizzata è inferiore alla somma richiesta o FALSE, se la somma autorizzata è uguale alla somma richiesta."
-        residualAmountCents:
-          type: integer
-          format: int64
-          description: "ENG: Remaining amount to be paid if the authorized sum is less than the requested sum - IT: Importo restante da pagare nel caso in cui la somma autorizzata sia inferiore alla somma richiesta."
+          enum: [CREATED, IDENTIFIED, AUTHORIZATION_REQUESTED, AUTHORIZED]
+          description: "ENG: Status of the payment ... IT: ..."
+        rewardCents: { type: integer, format: int64, description: "ENG: Reward - IT: Premio generato" }
+        amountCents: { type: integer, format: int64, description: "ENG: Amount cents - IT: Importo in centessimi" }
+        residualBudgetCents: { type: integer, format: int64, description: "ENG: Residual budget - IT: Budget residuo" }
+        splitPayment: { type: boolean, description: "ENG: TRUE... - IT: TRUE..." }
+        residualAmountCents: { type: integer, format: int64, description: "ENG: Remaining amount... - IT: ..." }
     TransactionErrorDTO:
       type: object
-      required:
-        - code
-        - message
+      required: [code, message]
       properties:
         code:
           type: string
@@ -1731,315 +1590,133 @@ components:
           description: "ENG: Error message- IT: Messaggio di errore"
     AuthBarCodePaymentDTO:
       type: object
-      required:
-        - amountCents
-        - idTrxAcquirer
+      required: [amountCents, idTrxAcquirer]
       properties:
-        amountCents:
-          type: integer
-          format: int64
-          description: "ENG: Amount of transaction - IT: Importo della transazione"
-        idTrxAcquirer:
-          type: string
-          description: "ENG: Transaction acquirer ID- IT: Identificativo della transazione rispetto all'acquirer"
+        amountCents: { type: integer, format: int64, description: "ENG: Amount of transaction - IT: Importo della transazione" }
+        idTrxAcquirer: { type: string, description: "ENG: Transaction acquirer ID- IT: Identificativo..." }
         additionalProperties:
           type: object
-          additionalProperties:
-            type: string
+          additionalProperties: { type: string }
     StatisticsErrorDTO:
       type: object
-      required:
-        - code
-        - message
+      required: [code, message]
       properties:
         code:
           type: string
-          enum:
-            - STATISTICS_NOT_FOUND
-            - STATISTICS_INVALID_REQUEST
-            - STATISTICS_TOO_MANY_REQUESTS
-            - STATISTICS_GENERIC_ERROR
-            - STATISTICS_MANAGER_TOO_MANY_REQUESTS
-            - STATISTICS_MANAGER_GENERIC_ERROR
-        message:
-          type: string
-          description: "ENG: Error message - IT: Messaggio di errore"
+          enum: [STATISTICS_NOT_FOUND, STATISTICS_INVALID_REQUEST, STATISTICS_TOO_MANY_REQUESTS, STATISTICS_GENERIC_ERROR, STATISTICS_MANAGER_TOO_MANY_REQUESTS, STATISTICS_MANAGER_GENERIC_ERROR]
+        message: { type: string, description: "ENG: Error message - IT: Messaggio di errore" }
     MerchantErrorDTO:
       type: object
-      required:
-        - code
-        - message
+      required: [code, message]
       properties:
         code:
           type: string
-          enum:
-            - MERCHANT_NOT_FOUND
-            - MERCHANT_NOT_ONBOARDED
-            - MERCHANT_TOO_MANY_REQUESTS
-            - MERCHANT_INVALID_REQUEST
-            - MERCHANT_GENERIC_ERROR
-        message:
-          type: string
-          description: "ENG: Error message- IT: Messaggio di errore"
+          enum: [MERCHANT_NOT_FOUND, MERCHANT_NOT_ONBOARDED, MERCHANT_TOO_MANY_REQUESTS, MERCHANT_INVALID_REQUEST, MERCHANT_GENERIC_ERROR]
+        message: { type: string, description: "ENG: Error message- IT: Messaggio di errore" }
     PointOfSaleDTO:
       type: object
       properties:
-        id:
-          type: string
-          description: "ENG: The id for the point of sale <br> IT: Id del punto vendita"
-        type:
-          type: string
-          enum:
-            - PHYSICAL
-            - ONLINE
-          description: "ENG: The type of the point of sale <br> IT: Il tipo del punto vendita"
-        franchiseName:
-          type: string
-          description: "ENG: The name of the point of sale <br> IT: Il nome del punto vendita"
-        region:
-          type: string
-          description: "ENG: The region of the point of sale <br> IT: La regione del punto vendita"
-        province:
-          type: string
-          description: "ENG: The province of the point of sale <br> IT: La provincia del punto vendita"
-        city:
-          type: string
-          description: "ENG: The city of the point of sale <br> IT: La città del punto vendita"
-        zipCode:
-          type: string
-          description: "ENG: The zip code of the point of sale <br> IT: Il CAP del punto vendita"
-        address:
-          type: string
-          description: "ENG: The address of the point of sale <br> IT: L'indirizzo completo del punto vendita"
-        streetNumber:
-          type: string
-          description: "ENG: The street number of the point of sale <br> IT: Il numero civico del punto vendita"
-        website:
-          type: string
-          description: "ENG: The website of the point of sale <br> IT: Il sito web del punto vendita"
-        contactEmail:
-          type: string
-          description: "ENG: The email of the contact person <br> IT: L'email del referente"
-        contactName:
-          type: string
-          description: "ENG: The name of the contact person <br> IT: Il nome del referente"
-        contactSurname:
-          type: string
-          description: "ENG: The surname of the contact person <br> IT: Il cognome del referente"
-        channelEmail:
-          type: string
-          description: "ENG: Store contact via email address <br> IT: Contatto del punto vendita tramite indirizzo email."
-        channelPhone:
-          type: string
-          description: "ENG: Store contact via phone number <br> IT: Contatto del punto vendita tramite numero di telefono"
-        channelGeolink:
-          type: string
-          description: "ENG: Store contact providing a map link or location for navigation <br> IT: Contatto del punto vendita tramite link geografico o posizione sulla mappa"
-        channelWebsite:
-          type: string
-          description: "ENG: Store contact via a web-based portal <br> IT: Contatto del punto vendita tramite portale web"
+        id: { type: string, description: "ENG: The id... <br> IT: Id..." }
+        type: { type: string, enum: [PHYSICAL, ONLINE], description: "ENG: The type... <br> IT: ..." }
+        franchiseName: { type: string, description: "ENG: The name... <br> IT: ..." }
+        region: { type: string, description: "ENG: The region... <br> IT: ..." }
+        province: { type: string, description: "ENG: The province... <br> IT: ..." }
+        city: { type: string, description: "ENG: The city... <br> IT: ..." }
+        zipCode: { type: string, description: "ENG: The zip code... <br> IT: ..." }
+        address: { type: string, description: "ENG: The address... <br> IT: ..." }
+        streetNumber: { type: string, description: "ENG: The street number... <br> IT: ..." }
+        website: { type: string, description: "ENG: The website... <br> IT: ..." }
+        contactEmail: { type: string, description: "ENG: The email... <br> IT: ..." }
+        contactName: { type: string, description: "ENG: The name... <br> IT: ..." }
+        contactSurname: { type: string, description: "ENG: The surname... <br> IT: ..." }
+        channelEmail: { type: string, description: "ENG: Store contact via email... <br> IT: ..." }
+        channelPhone: { type: string, description: "ENG: Store contact via phone... <br> IT: ..." }
+        channelGeolink: { type: string, description: "ENG: Store contact providing a map link... <br> IT: ..." }
+        channelWebsite: { type: string, description: "ENG: Store contact via a web-based portal... <br> IT: ..." }
     ListPointOfSaleDTO:
       type: object
       properties:
         content:
           type: array
-          items:
-            $ref: "#/components/schemas/PointOfSaleDTO"
-        pageNumber:
-          type: integer
-          format: int32
-          description: "ENG: The number of the page <br> IT: Il numero della pagina"
-        pageSize:
-          type: integer
-          format: int32
-          description: "ENG: The element size for page <br> IT: Il numero di elementi per pagina"
-        totalElements:
-          type: integer
-          format: int32
-          description: "ENG: The total number of the elements <br> IT: Il numero totale degli elementi"
-        totalPages:
-          type: integer
-          format: int32
-          description: "ENG: The total number of the pages <br> IT: Il numero totale delle pagine"
+          items: { $ref: "#/components/schemas/PointOfSaleDTO" }
+        pageNumber: { type: integer, format: int32, description: "ENG: The number of the page <br> IT: ..." }
+        pageSize: { type: integer, format: int32, description: "ENG: The element size for page <br> IT: ..." }
+        totalElements: { type: integer, format: int32, description: "ENG: The total number... <br> IT: ..." }
+        totalPages: { type: integer, format: int32, description: "ENG: The total number of the pages <br> IT: ..." }
     PointOfSaleErrorDTO:
       type: object
-      required:
-        - code
-        - message
+      required: [code, message]
       properties:
         code:
           type: string
-          enum:
-            - POINT_OF_SALE_NOT_FOUND
-            - POINT_OF_SALE_BAD_REQUEST
-            - POINT_OF_SALE_INVALID_REQUEST
-            - MERCHANT_NOT_ONBOARDED
-            - POINT_OF_SALE_TOO_MANY_REQUESTS
-            - POINT_OF_SALE_GENERIC_ERROR
-        message:
-          type: string
-          description: "ENG: Error message- IT: Messaggio di errore"
+          enum: [POINT_OF_SALE_NOT_FOUND, POINT_OF_SALE_BAD_REQUEST, POINT_OF_SALE_INVALID_REQUEST, MERCHANT_NOT_ONBOARDED, POINT_OF_SALE_TOO_MANY_REQUESTS, POINT_OF_SALE_GENERIC_ERROR]
+        message: { type: string, description: "ENG: Error message- IT: Messaggio di errore" }
     ValidationErrorDTO:
       type: object
-      required:
-        - code
-        - message
-        - errors
+      required: [code, message, errors]
       properties:
-        code:
-          type: string
-          enum:
-            - VALIDATION_ERROR
-        message:
-          type: string
-          description: Some fields are invalid. See details for more information
+        code: { type: string, enum: [VALIDATION_ERROR] }
+        message: { type: string, description: Some fields are invalid. See details for more information }
         errors:
           type: array
-          items:
-            $ref: "#/components/schemas/ValidationErrorDetail"
+          items: { $ref: "#/components/schemas/ValidationErrorDetail" }
     ValidationErrorDetail:
       type: object
-      required:
-        - index
-        - field
-        - value
-        - code
-        - message
+      required: [index, field, value, code, message]
       properties:
-        index:
-          type: integer
-          description: The index of the value
-        field:
-          type: string
-          description: Name of the field where the validation error occurred
-        value:
-          type: string
-          description: The value that was provided but rejected due to validation failure
-        code:
-          type: string
-          description: "Specific validation error code (e.g., NotNull)"
-        message:
-          type: string
-          description: Description of the validation error
+        index: { type: integer, description: The index of the value }
+        field: { type: string, description: Name of the field where the validation error occurred }
+        value: { type: string, description: The value that was provided but rejected due to validation failure }
+        code: { type: string, description: "Specific validation error code (e.g., NotNull)" }
+        message: { type: string, description: Description of the validation error }
     MerchantIbanPatchDTO:
       type: object
       properties:
-        iban:
-          type: string
-          description: "ENG: The IBAN of the merchant <br> IT: L'IBAN dell'esercente"
-        ibanHolder:
-          type: string
-          description: "ENG: The holder of the IBAN <br> IT: L'intestatario dell'IBAN"
+        iban: { type: string, description: "ENG: The IBAN... <br> IT: ..." }
+        ibanHolder: { type: string, description: "ENG: The holder of the IBAN... <br> IT: ..." }
     PointOfSaleTransactionsProcessedListDTO:
       type: object
       properties:
         content:
           type: array
-          items:
-            $ref: '#/components/schemas/PointOfSaleTransactionProcessedDTO'
+          items: { $ref: '#/components/schemas/PointOfSaleTransactionProcessedDTO' }
           maxItems: 1000
-        pageNo:
-          type: integer
-          format: int32
-          description: 'ENG: The number of the page <br> IT: Il numero della pagina'
-          minimum: 0
-          maximum: 1000000
-        pageSize:
-          type: integer
-          format: int32
-          description: 'ENG: The element size for page <br> IT: Il numero di elementi per pagina'
-          minimum: 0
-          maximum: 1000000
-        totalElements:
-          type: integer
-          format: int32
-          description: 'ENG: The total number of the elements <br> IT: Il numero totale degli elementi'
-          minimum: 0
-          maximum: 1000000
-        totalPages:
-          type: integer
-          format: int32
-          description: 'ENG: The total number of the pages <br> IT: Il numero totale delle pagine'
-          minimum: 0
-          maximum: 1000000
+        pageNo: { type: integer, format: int32, description: 'ENG: The number of the page <br> IT: Il numero della pagina', minimum: 0, maximum: 1000000 }
+        pageSize: { type: integer, format: int32, description: 'ENG: The element size for page <br> IT: Il numero di elementi per pagina', minimum: 0, maximum: 1000000 }
+        totalElements: { type: integer, format: int32, description: 'ENG: The total number of the elements <br> IT: ...', minimum: 0, maximum: 1000000 }
+        totalPages: { type: integer, format: int32, description: 'ENG: The total number of the pages <br> IT: ...', minimum: 0, maximum: 1000000 }
     PointOfSaleTransactionProcessedDTO:
       type: object
       properties:
-        id:
-          type: string
-          description: 'ENG: Transaction ID <br> IT: ID della transazione'
-          maxLength: 64
-          pattern: '.*'
-        fiscalCode:
-          type: string
-          description: 'ENG: Citizen fiscal code - IT: Codice fiscale del cittadino'
-          maxLength: 16
-          pattern: '.*'
-        effectiveAmountCents:
-          type: integer
-          format: int64
-          description: 'ENG: Transaction amount in cents - IT: Importo della transazione in centesimi'
-          minimum: -1000000000
-          maximum: 1000000000
-        rewardAmountCents:
-          type: integer
-          format: int64
-          description: 'ENG: Reward amount in cents - IT: Premio generato in centesimi'
-          minimum: -1000000000
-          maximum: 1000000000
-        authorizedAmountCents:
-          type: integer
-          format: int64
-          description: "ENG: Authorized amount in cents - IT: Importo autorizzato in centesimi"
-          minimum: 0
-          maximum: 1000000000
-        trxDate:
-          type: string
-          format: date-time
-          description: 'ENG: The date of the transaction - IT: La data della transazione'
-          maxLength: 255
-        updateDate:
-          type: string
-          format: date-time
-          description: 'ENG: The date of the transaction update - IT: La data di aggiornamento della transazione'
-          maxLength: 255
+        id: { type: string, description: 'ENG: Transaction ID <br> IT: ID della transazione', maxLength: 64, pattern: '.*' }
+        fiscalCode: { type: string, description: 'ENG: Citizen fiscal code - IT: Codice fiscale del cittadino', maxLength: 16, pattern: '.*' }
+        effectiveAmountCents: { type: integer, format: int64, description: 'ENG: Transaction amount in cents - IT: ...', minimum: -1000000000, maximum: 1000000000 }
+        rewardAmountCents: { type: integer, format: int64, description: 'ENG: Reward amount in cents - IT: ...', minimum: -1000000000, maximum: 1000000000 }
+        authorizedAmountCents: { type: integer, format: int64, description: "ENG: Authorized amount in cents - IT: ...", minimum: 0, maximum: 1000000000 }
+        trxDate: { type: string, format: date-time, description: 'ENG: The date of the transaction - IT: ...', maxLength: 255 }
+        updateDate: { type: string, format: date-time, description: 'ENG: The date of the transaction update - IT: ...', maxLength: 255 }
         status:
           type: string
-          description: 'ENG: The status of the transaction - IT: Lo stato della transazione'
-          enum:
-            - REWARDED
-            - CANCELLED
-            - REFUNDED
-        channel:
-          type: string
-          description: 'ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione'
-          maxLength: 24
+          description: 'ENG: The status of the transaction - IT: ...'
+          enum: [REWARDED, CANCELLED, REFUNDED]
+        channel: { type: string, description: 'ENG: Channel from which the transaction takes place - IT: ...', maxLength: 24 }
         additionalProperties:
           type: object
-          additionalProperties:
-            type: string
+          additionalProperties: { type: string }
         invoiceFile:
           $ref: '#/components/schemas/InvoiceFileDTO'
     InvoiceFileDTO:
       type: object
       properties:
-        filename:
-          type: string
-          description: 'ENG: The name of the invoice file <br> IT: Il nome del file della fattura'
+        filename: { type: string, description: 'ENG: The name of the invoice file <br> IT: ...' }
     DownloadInvoiceResponseDTO:
       type: object
       properties:
-        invoiceUrl:
-          type: string
-          description: "ENG: URL to download the invoice file - IT: URL per scaricare il file della fattura"
-      required:
-        - invoiceUrl
+        invoiceUrl: { type: string, description: "ENG: URL to download the invoice file - IT: ..." }
+      required: [invoiceUrl]
     ReportedUserRequestDTO:
       type: object
-      required:
-        - merchantId
-        - initiativeId
-        - userFiscalCode
+      required: [merchantId, initiativeId, userFiscalCode]
       properties:
         merchantId:
           type: string
@@ -2061,16 +1738,12 @@ components:
           example: RSSMRA85T10A562S
     ReportedUserCreateResponseDTO:
       type: object
-      required:
-        - status
-        - errorKey
+      required: [status, errorKey]
       properties:
         status:
           type: string
           description: Outcome of the operation
-          enum:
-            - OK
-            - KO
+          enum: [OK, KO]
           example: OK
         errorKey:
           type: string
@@ -2084,66 +1757,17 @@ components:
              - "Different Merchant Id"
              - "Already reported"
              - "Different Initiative Id"
-          enum:
-            - ""
-            - "UserId not found"
-            - "Entity not found"
-            - "Service unavailable"
-            - "Different Merchant Id"
-            - "Already reported"
-            - "Different Initiative Id"
+          enum: ["", "UserId not found", "Entity not found", "Service unavailable", "Different Merchant Id", "Already reported", "Different Initiative Id"]
           maxLength: 64
           example: ""
     ReportedUserDTO:
       type: object
-      required:
-        - fiscalCode
-        - reportedDate
+      required: [fiscalCode, reportedDate]
       properties:
-        fiscalCode:
-          type: string
-          maxLength: 16
-          pattern: '^[A-Z0-9]{11,16}$'
-          description: Citizen fiscal code
-          example: RSSMRA85T10A562S
-        reportedDate:
-          type: string
-          format: date-time
-          maxLength: 64
-          description: When the user was reported
-          example: 2025-10-30T09:15:12Z
-        transactionId:
-          type: string
-          nullable: true
-          maxLength: 64
-          description: Related transaction ID (if any)
-          example: TRX_001
-        transactionDate:
-          type: string
-          format: date-time
-          nullable: true
-          maxLength: 64
-          description: Related transaction date (if any)
-          example: 2025-10-30T09:14:50Z
-  headers:
-    X-RateLimit-Limit:
-      description: The number of allowed requests in the current period
-      schema:
-        type: integer
-        format: int32
-        minimum: 0
-    X-RateLimit-Remaining:
-      description: The number of remaining requests in the current period
-      schema:
-        type: integer
-        format: int32
-        minimum: 0
-    X-RateLimit-Reset:
-      description: Seconds until the rate limit resets
-      schema:
-        type: integer
-        format: int32
-        minimum: 0
+        fiscalCode: { type: string, maxLength: 16, pattern: '^[A-Z0-9]{11,16}$', description: Citizen fiscal code, example: RSSMRA85T10A562S }
+        reportedDate: { type: string, format: date-time, maxLength: 64, description: When the user was reported, example: 2025-10-30T09:15:12Z }
+        transactionId: { type: string, nullable: true, maxLength: 64, description: Related transaction ID (if any), example: TRX_001 }
+        transactionDate: { type: string, format: date-time, nullable: true, maxLength: 64, description: Related transaction date (if any), example: 2025-10-30T09:14:50Z }
   securitySchemes:
     Bearer:
       type: apiKey
