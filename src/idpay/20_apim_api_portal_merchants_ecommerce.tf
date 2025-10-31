@@ -34,7 +34,7 @@ module "idpay_itn_api_portal_merchants_ecommerce_product" {
 
 ## IDPAY Portal Merchant Ecommerce API ##
 module "idpay_itn_portal_merchants_ecommerce_api" {
-  count  = var.env_short != "p" ? 1 : 0
+  //count  = var.env_short != "p" ? 1 : 0
   source = "./.terraform/modules/__v4__/api_management_api"
 
   name                = "${var.env_short}-idpay-itn-portal-merchant-ecommerce"
