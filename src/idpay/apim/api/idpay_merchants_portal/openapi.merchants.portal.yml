@@ -5,17 +5,25 @@ info:
   version: 1.0.1
 servers:
   - url: "https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant/portal"
+    x-internal: false
 
 tags:
   - name: point-of-sales
     description: Operations on merchant points of sale
   - name: point-of-sale-transactions
+    description: Operations on transactions for a specific point of sale
   - name: merchant-initiatives
+    description: Operations to list merchant initiatives
   - name: merchant-initiative-statistics
+    description: Statistics for merchant initiatives
   - name: merchant-transactions
+    description: Operations on merchant transactions
   - name: transaction
+    description: Operations related to a single transaction
   - name: merchant-detail
+    description: Retrieve and update merchant details
   - name: reported-user
+    description: Create, search, and delete reported users
 
 paths:
   /{merchantId}/point-of-sales:
@@ -32,6 +40,7 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
       requestBody:
         description: List of points of sale to save or update
         required: true
@@ -39,19 +48,36 @@ paths:
           application/json:
             schema:
               type: array
+              maxItems: 1000
               items:
                 $ref: "#/components/schemas/PointOfSaleDTO"
       responses:
         "204":
           description: No Content - Successfully saved or updated
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "400":
           description: Bad request - Invalid input data
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ValidationErrorDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "401":
           description: Unauthorized - Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleErrorDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "404":
           description: Not Found
           content:
@@ -61,6 +87,10 @@ paths:
               example:
                 code: POINT_OF_SALE_NOT_FOUND
                 message: Point of sale with id 123 not found.
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "429":
           description: Too many Request - Rate limit exceeded
           content:
@@ -70,15 +100,10 @@ paths:
               example:
                 code: POINT_OF_SALE_TOO_MANY_REQUESTS
                 message: Too many requests
-        "500":
-          description: Internal Server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PointOfSaleErrorDTO"
-              example:
-                code: POINT_OF_SALE_GENERIC_ERROR
-                message: An internal error occured
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
     get:
       tags:
         - point-of-sales
@@ -92,6 +117,7 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
         - name: type
           in: query
           description: Filter by point of sale type
@@ -106,33 +132,41 @@ paths:
           required: false
           schema:
             type: string
+            maxLength: 128
         - name: address
           in: query
           required: false
           schema:
             type: string
+            maxLength: 256
         - name: contactName
           in: query
           required: false
           schema:
             type: string
+            maxLength: 128
         - name: page
           in: query
           required: false
           schema:
             type: integer
             format: int32
+            minimum: 0
+            maximum: 1000000
         - name: size
           in: query
           required: false
           schema:
             type: integer
             format: int32
+            minimum: 1
+            maximum: 1000
         - name: sort
           in: query
           required: false
           schema:
             type: string
+            maxLength: 128
       responses:
         "200":
           description: Successful response with a paginated list of points of sale
@@ -140,6 +174,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ListPointOfSaleDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "400":
           description: Bad request - Invalid query parameters
           content:
@@ -149,8 +187,20 @@ paths:
               example:
                 code: POINT_OF_SALE_BAD_REQUEST
                 message: Something went wrong handling request
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "401":
           description: Unauthorized - Authentication Failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleErrorDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "404":
           description: Not Found
           content:
@@ -160,6 +210,10 @@ paths:
               example:
                 code: POINT_OF_SALE_NOT_FOUND
                 message: Point of sale with id 123 not found.
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "429":
           description: Too many Request - Rate limit exceeded
           content:
@@ -169,15 +223,10 @@ paths:
               example:
                 code: POINT_OF_SALE_TOO_MANY_REQUESTS
                 message: Too many requests
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PointOfSaleErrorDTO"
-              example:
-                code: POINT_OF_SALE_GENERIC_ERROR
-                message: An error occurred during file reading
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
 
   /{merchantId}/point-of-sales/{pointOfSaleId}:
     get:
@@ -192,11 +241,13 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
         - name: pointOfSaleId
           in: path
           required: true
           schema:
             type: string
+            maxLength: 64
       responses:
         "200":
           description: Successful response with point of sale detail
@@ -204,6 +255,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PointOfSaleDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "400":
           description: Bad request - Invalid query parameters
           content:
@@ -213,8 +268,20 @@ paths:
               example:
                 code: POINT_OF_SALE_BAD_REQUEST
                 message: Something went wrong handling request
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "401":
           description: Unauthorized - Authentication Failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfSaleErrorDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "404":
           description: Not Found
           content:
@@ -224,6 +291,10 @@ paths:
               example:
                 code: POINT_OF_SALE_NOT_FOUND
                 message: Point of sale with id 123 not found.
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "429":
           description: Too many Request - Rate limit exceeded
           content:
@@ -233,15 +304,10 @@ paths:
               example:
                 code: POINT_OF_SALE_TOO_MANY_REQUESTS
                 message: Too many requests
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PointOfSaleErrorDTO"
-              example:
-                code: POINT_OF_SALE_GENERIC_ERROR
-                message: An error occurred during file reading
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
 
   /initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions/processed:
     get:
@@ -257,14 +323,14 @@ paths:
           schema:
             type: string
             maxLength: 36
-            pattern: .*
+            pattern: '.*'
         - name: pointOfSaleId
           in: path
           required: true
           schema:
             type: string
             maxLength: 36
-            pattern: .*
+            pattern: '.*'
         - name: page
           in: query
           required: false
@@ -318,7 +384,7 @@ paths:
           schema:
             type: string
             maxLength: 14
-            pattern: ^[a-zA-Z0-9]{1,14}$
+            pattern: '^[a-zA-Z0-9]{1,14}$'
       responses:
         "200":
           description: Ok
@@ -326,6 +392,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PointOfSaleTransactionsProcessedListDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "400":
           description: Bad request
           content:
@@ -335,8 +405,20 @@ paths:
               example:
                 code: "PAYMENT_INVALID_REQUEST"
                 message: "Something went wrong handling the request"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "401":
           description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "429":
           description: Too many requests
           content:
@@ -346,6 +428,10 @@ paths:
               example:
                 code: "PAYMENT_TOO_MANY_REQUESTS"
                 message: "Too many requests"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "500":
           description: Generic error
           content:
@@ -370,8 +456,13 @@ paths:
             application/json:
               schema:
                 type: array
+                maxItems: 1000
                 items:
                   $ref: "#/components/schemas/InitiativeDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "400":
           description: Bad request
           content:
@@ -381,8 +472,20 @@ paths:
               example:
                 code: MERCHANT_INVALID_REQUEST
                 message: Something went wrong handling request
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "401":
           description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MerchantErrorDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "429":
           description: Too Many Requests
           content:
@@ -392,6 +495,10 @@ paths:
               example:
                 code: MERCHANT_TOO_MANY_REQUESTS
                 message: Too many requests
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "500":
           description: Server ERROR
           content:
@@ -416,6 +523,7 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
       responses:
         "200":
           description: Ok
@@ -423,6 +531,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MerchantStatisticsDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "400":
           description: Bad request
           content:
@@ -432,8 +544,20 @@ paths:
               example:
                 code: STATISTICS_INVALID_REQUEST
                 message: Something went wrong handling request
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "401":
           description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatisticsErrorDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "404":
           description: The requested ID was not found
           content:
@@ -443,6 +567,10 @@ paths:
               example:
                 code: STATISTICS_NOT_FOUND
                 message: Stats not found
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "429":
           description: Too many Request
           content:
@@ -452,6 +580,10 @@ paths:
               example:
                 code: STATISTICS_MANAGER_TOO_MANY_REQUESTS
                 message: Too many requests
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "500":
           description: Server ERROR
           content:
@@ -467,6 +599,7 @@ paths:
       tags:
         - merchant-transactions
       summary: "ENG: Merchant create transaction - IT: Creazione transazione da parte dell'esercente"
+      description: "ENG: Merchant creates a transaction - IT: Creazione transazione da parte dell'esercente"
       operationId: createTransaction
       requestBody:
         description: General information about Transaction
@@ -481,6 +614,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TransactionResponse"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "400":
           description: Bad request
           content:
@@ -490,8 +627,16 @@ paths:
               example:
                 code: PAYMENT_INVALID_REQUEST
                 message: Something went wrong handling the request
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "401":
           description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
         "403":
           description: Forbidden
           content:
@@ -545,6 +690,10 @@ paths:
       responses:
         "200":
           description: Ok
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "400":
           description: Bad request
           content:
@@ -554,8 +703,20 @@ paths:
               example:
                 code: PAYMENT_INVALID_REQUEST
                 message: Something went wrong handling the request
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "401":
           description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "403":
           description: Forbidden
           content:
@@ -565,6 +726,10 @@ paths:
               example:
                 code: PAYMENT_NOT_ALLOWED_MISMATCHED_MERCHANT
                 message: "The merchant with id [%s] associated to the transaction is not equal to the merchant with id [%s]"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "404":
           description: The requested resource was not found
           content:
@@ -574,6 +739,10 @@ paths:
               example:
                 code: PAYMENT_NOT_FOUND_OR_EXPIRED
                 message: "Cannot find transaction with transactionId [%s]"
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "429":
           description: Too many requests
           content:
@@ -583,6 +752,10 @@ paths:
               example:
                 code: PAYMENT_TOO_MANY_REQUESTS
                 message: Too many requests
+          headers:
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "500":
           description: Generic error
           content:
@@ -714,7 +887,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/MerchantTransactionsProcessedListDTO"
         "401":
-          description: Autentication failed
+          description: Authentication failed
         "404":
           description: The requested resource was not found
         "429":
@@ -794,7 +967,7 @@ paths:
                 $ref: "#/components/schemas/TransactionErrorDTO"
               example:
                 code: PAYMENT_GENERIC_ERROR
-                message: A generic error occured
+                message: A generic error occurred
 
   /{pointOfSaleId}/transactions/{transactionId}/download:
     get:
@@ -1738,7 +1911,7 @@ components:
           description: The index of the value
         field:
           type: string
-          description: Name of the field where the validation error occured
+          description: Name of the field where the validation error occurred
         value:
           type: string
           description: The value that was provided but rejected due to validation failure
@@ -1796,12 +1969,12 @@ components:
           type: string
           description: 'ENG: Transaction ID <br> IT: ID della transazione'
           maxLength: 64
-          pattern: .*
+          pattern: '.*'
         fiscalCode:
           type: string
           description: 'ENG: Citizen fiscal code - IT: Codice fiscale del cittadino'
           maxLength: 16
-          pattern: .*
+          pattern: '.*'
         effectiveAmountCents:
           type: integer
           format: int64
@@ -1952,6 +2125,25 @@ components:
           maxLength: 64
           description: Related transaction date (if any)
           example: 2025-10-30T09:14:50Z
+  headers:
+    X-RateLimit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+    X-RateLimit-Remaining:
+      description: The number of remaining requests in the current period
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+    X-RateLimit-Reset:
+      description: Seconds until the rate limit resets
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
   securitySchemes:
     Bearer:
       type: apiKey
