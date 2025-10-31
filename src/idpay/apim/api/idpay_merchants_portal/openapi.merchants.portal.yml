@@ -1164,7 +1164,6 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/MerchantErrorDTO' }
-
 components:
   schemas:
     InitiativeDTO:
