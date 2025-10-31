@@ -108,6 +108,11 @@ keycloak_url_merchant_op = "https://api-mcshared.uat.cstar.pagopa.it/auth-itn/re
 #
 merchant_portal_referer = "https://welfare.uat.cstar.pagopa.it/portale-esercenti"
 
+#
+# Bonus Elettrodomestici initiativeId
+#
+initiative_id_bonus_elettrodomestici = "68dd003ccce8c534d1da22bc"
+
 # OpenID Configuration URL for User
 keycloak_url_user    = "https://api-mcshared.uat.cstar.pagopa.it/auth-itn/realms/user"
 keycloak_timeout_sec = 5
