@@ -204,6 +204,7 @@ module "idpay_itn_merchants_portal" {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
+    }
   ]
 
   depends_on = [
