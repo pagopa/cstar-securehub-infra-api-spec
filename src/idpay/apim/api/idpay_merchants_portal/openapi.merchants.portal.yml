@@ -897,6 +897,8 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
+            pattern: '.*'
       responses:
         "200":
           description: Ok
@@ -913,8 +915,23 @@ paths:
               example:
                 code: PAYMENT_INVALID_REQUEST
                 message: Something went wrong handling the request
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "401":
           description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "429":
           description: Too many requests
           content:
@@ -924,6 +941,11 @@ paths:
               example:
                 code: PAYMENT_TOO_MANY_REQUESTS
                 message: Too many requests
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "500":
           description: Generic error
           content:
@@ -948,6 +970,8 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
+            pattern: '.*'
       responses:
         "200":
           description: Ok
@@ -955,20 +979,80 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MerchantTransactionsProcessedListDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              example:
+                code: PAYMENT_INVALID_REQUEST
+                message: Something went wrong handling the request
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "401":
           description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "404":
           description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "429":
           description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              example:
+                code: PAYMENT_TOO_MANY_REQUESTS
+                message: Too many requests
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "500":
           description: Generic error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              example:
+                code: PAYMENT_GENERIC_ERROR
+                message: Application error
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
 
   /transactions/bar-code/{trxCode}/authorize:
     put:
       tags:
         - merchant-transactions
       summary: "ENG: Authorize payment - IT: Autorizzazione pagamento"
+      description: "ENG: Authorize a payment by barcode - IT: Autorizza un pagamento tramite barcode"
       operationId: authPaymentBarCode
       parameters:
         - name: trxCode
@@ -977,6 +1061,8 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
+            pattern: '.*'
       requestBody:
         description: Request about auth bar-code trx
         content:
@@ -990,6 +1076,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthPaymentResponseDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "400":
           description: Bad request
           content:
@@ -999,8 +1090,22 @@ paths:
               example:
                 code: PAYMENT_AMOUNT_NOT_VALID
                 message: "Cannot authorize transaction with invalid amount [%s]"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "401":
           description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "403":
           description: Forbidden
           content:
@@ -1010,6 +1115,11 @@ paths:
               example:
                 code: PAYMENT_ALREADY_AUTHORIZED
                 message: "Transaction with trxCode [trxCode] is already authorized"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "404":
           description: The requested resource was not found
           content:
@@ -1019,6 +1129,11 @@ paths:
               example:
                 code: PAYMENT_NOT_FOUND_EXPIRED
                 message: "Cannot find transaction with trxCode [trxCode]"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "429":
           description: Too many requests
           content:
@@ -1028,6 +1143,12 @@ paths:
               example:
                 code: PAYMENT_TOO_MANY_REQUESTS
                 message: Too many request on the ms reward calculator
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
+            X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+            X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+            X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
         "500":
           description: Generic error
           content:
@@ -1037,7 +1158,8 @@ paths:
               example:
                 code: PAYMENT_GENERIC_ERROR
                 message: A generic error occurred
-
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
   /{pointOfSaleId}/transactions/{transactionId}/download:
     get:
       tags:
@@ -1052,12 +1174,16 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
+            pattern: '.*'
         - name: transactionId
           in: path
           description: "ENG: Transaction ID - IT: ID della transazione"
           required: true
           schema:
             type: string
+            maxLength: 64
+            pattern: '.*'
       responses:
         "200":
           description: Ok
@@ -1065,6 +1191,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DownloadInvoiceResponseDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
         "400":
           description: Bad request
           content:
@@ -1074,8 +1202,16 @@ paths:
               example:
                 code: INVALID_REQUEST
                 message: Something went wrong handling request
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
         "401":
           description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
         "429":
           description: Too many requests
           content:
@@ -1083,8 +1219,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/TransactionErrorDTO"
               example:
-                code: TOO_MANY_REQUESTS
+                code: PAYMENT_TOO_MANY_REQUESTS
                 message: Too many requests
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
         "500":
           description: Generic error
           content:
@@ -1092,8 +1231,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/TransactionErrorDTO"
               example:
-                code: GENERIC_ERROR
+                code: PAYMENT_GENERIC_ERROR
                 message: An error occurred during file reading
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
 
   /initiatives/{initiativeId}:
     get:
@@ -1109,6 +1250,8 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
+            pattern: '.*'
       responses:
         "200":
           description: Ok
@@ -1116,6 +1259,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MerchantDetailDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
         "400":
           description: Bad request
           content:
@@ -1125,6 +1270,8 @@ paths:
               example:
                 code: MERCHANT_INVALID_REQUEST
                 message: Something went wrong handling request
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
         "401":
           description: Authentication failed
         "404":
@@ -1136,6 +1283,8 @@ paths:
               example:
                 code: MERCHANT_NOT_ONBOARDED
                 message: The current merchant is not onboarded on initiative
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
         "429":
           description: Too many Request
           content:
@@ -1145,6 +1294,9 @@ paths:
               example:
                 code: MERCHANT_TOO_MANY_REQUESTS
                 message: Too many requests
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
         "500":
           description: Server ERROR
           content:
@@ -1154,6 +1306,8 @@ paths:
               example:
                 code: MERCHANT_GENERIC_ERROR
                 message: An error occurred during file reading
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
     patch:
       tags:
         - merchant-detail
@@ -1167,6 +1321,8 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
+            pattern: '.*'
       requestBody:
         description: The IBAN to be updated
         required: true
@@ -1181,6 +1337,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MerchantDetailDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
         "400":
           description: Bad request
           content:
@@ -1190,8 +1348,16 @@ paths:
               example:
                 code: MERCHANT_INVALID_REQUEST
                 message: Something went wrong handling request
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
         "401":
           description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MerchantErrorDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
         "404":
           description: The requested ID was not found
           content:
@@ -1201,6 +1367,8 @@ paths:
               example:
                 code: MERCHANT_NOT_ONBOARDED
                 message: The current merchant is not onboarded on initiative
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
         "429":
           description: Too many Request
           content:
@@ -1210,6 +1378,9 @@ paths:
               example:
                 code: MERCHANT_TOO_MANY_REQUESTS
                 message: Too many requests
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
         "500":
           description: Server ERROR
           content:
@@ -1219,6 +1390,8 @@ paths:
               example:
                 code: MERCHANT_GENERIC_ERROR
                 message: An error occurred during the update
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
 
   /reported-user:
     post:
@@ -1242,23 +1415,67 @@ paths:
                   initiativeId: "INITIATIVE_67890"
                   userFiscalCode: "RSSMRA85T10A562S"
       responses:
-        '200':
-          description: Business outcome
+        "200":
+          description: Ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReportedUserCreateResponseDTO'
-              examples:
-                ok:
-                  value: { status: "OK", errorKey: "" }
-                alreadyReported:
-                  value: { status: "KO", errorKey: "Already reported" }
-        '401':
+                $ref: "#/components/schemas/MerchantDetailDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MerchantErrorDTO"
+              example:
+                code: MERCHANT_INVALID_REQUEST
+                message: Something went wrong handling request
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+        "401":
           description: Authentication failed
-        '403':
-          description: Not authorized
-        '500':
-          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MerchantErrorDTO"
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+        "404":
+          description: The requested ID was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MerchantErrorDTO"
+              example:
+                code: MERCHANT_NOT_ONBOARDED
+                message: The current merchant is not onboarded on initiative
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+        "429":
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MerchantErrorDTO"
+              example:
+                code: MERCHANT_TOO_MANY_REQUESTS
+                message: Too many requests
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+            Retry-After: { $ref: '#/components/headers/Retry-After' }
+        "500":
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MerchantErrorDTO"
+              example:
+                code: MERCHANT_GENERIC_ERROR
+                message: An error occurred during the update
+          headers:
+            Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
     get:
       tags:
         - reported-user
