@@ -1127,8 +1127,6 @@ paths:
       summary: Create reported user
       description: "ENG: Flag a user (fiscal code) for a merchant/initiative pair <br> IT: Segnala un utente (CF) per coppia merchant/iniziativa"
       operationId: createReportedUser
-      security:
-        - Bearer: [ ]
       requestBody:
         required: true
         content:
@@ -1195,7 +1193,6 @@ paths:
       summary: Search reported users
       description: "ENG: Search reported users by optional filters <br> IT: Ricerca segnalazioni con filtri opzionali"
       operationId: searchReportedUsers
-      security: [ { Bearer: [ ] } ]
       parameters:
         - name: merchantId
           in: query
@@ -1265,7 +1262,6 @@ paths:
       summary: Delete reported user
       description: "ENG: Remove a report for the given fiscal code <br> IT: Rimuove la segnalazione per il codice fiscale indicato"
       operationId: deleteReportedUser
-      security: [ { Bearer: [ ] } ]
       parameters:
         - name: userFiscalCode
           in: path
