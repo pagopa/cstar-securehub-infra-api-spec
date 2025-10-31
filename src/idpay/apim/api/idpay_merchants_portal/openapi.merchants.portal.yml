@@ -52,7 +52,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/PointOfSaleErrorDTO"
               example:
-                "code": POINT_OF_SALE_NOT_FOUND
+                code: POINT_OF_SALE_NOT_FOUND
                 message: Point of sale with id 123 not found.
         "429":
           description: Too many Request - Rate limit exceeded
@@ -71,7 +71,7 @@ paths:
                 $ref: "#/components/schemas/PointOfSaleErrorDTO"
               example:
                 code: POINT_OF_SALE_GENERIC_ERROR
-                message: An internal error occured
+                message: An internal error occurred
     get:
       tags:
         - point-of-sales
@@ -779,7 +779,7 @@ paths:
                 $ref: "#/components/schemas/TransactionErrorDTO"
               example:
                 code: PAYMENT_TOO_MANY_REQUESTS
-                message: Too many request on the ms reward calculator
+                message: Too many requests on the ms reward calculator
         "500":
           description: Generic error
           content:
@@ -788,7 +788,8 @@ paths:
                 $ref: "#/components/schemas/TransactionErrorDTO"
               example:
                 code: PAYMENT_GENERIC_ERROR
-                message: A generic error occured
+                message: A generic error occurred
+
   /{pointOfSaleId}/transactions/{transactionId}/download:
     get:
       tags:
@@ -816,8 +817,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref:
-                  "#/components/schemas/DownloadInvoiceResponseDTO"
+                $ref: "#/components/schemas/DownloadInvoiceResponseDTO"
         "400":
           description: Bad request
           content:
@@ -971,6 +971,140 @@ paths:
               example:
                 code: MERCHANT_GENERIC_ERROR
                 message: An error occurred during the update
+  /reported-user:
+    post:
+      tags: [ reported-user ]
+      summary: Create reported user
+      description: "ENG: Flag a user (fiscal code) for a merchant/initiative pair <br> IT: Segnala un utente (CF) per coppia merchant/iniziativa"
+      operationId: createReportedUser
+      security:
+        - Bearer: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportedUserRequestDTO'
+            examples:
+              createReportedUser:
+                value:
+                  merchantId: "MERCHANT_12345"
+                  initiativeId: "INITIATIVE_67890"
+                  userFiscalCode: "RSSMRA85T10A562S"
+      responses:
+        '200':
+          description: Business outcome
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportedUserCreateResponseDTO'
+              examples:
+                ok:
+                  value: { status: "OK", errorKey: "" }
+                alreadyReported:
+                  value: { status: "KO", errorKey: "Already reported" }
+        '401':
+          description: Authentication failed
+        '403':
+          description: Not authorized
+        '500':
+          description: Server error
+
+    get:
+      tags: [ reported-user ]
+      summary: Search reported users
+      description: "ENG: Search reported users by optional filters <br> IT: Ricerca segnalazioni con filtri opzionali"
+      operationId: searchReportedUsers
+      security:
+        - Bearer: [ ]
+      parameters:
+        - name: merchantId
+          in: query
+          required: false
+          schema: { type: string }
+          description: Merchant ID
+          example: MERCHANT_12345
+        - name: initiativeId
+          in: query
+          required: false
+          schema: { type: string }
+          description: Initiative ID
+          example: INITIATIVE_67890
+        - name: userFiscalCode
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Citizen fiscal code
+          example: RSSMRA85T10A562S
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReportedUserDTO'
+              examples:
+                list:
+                  value:
+                    - fiscalCode: "RSSMRA85T10A562S"
+                      reportedDate: "2025-10-30T09:15:12Z"
+                      transactionId: "TRX_001"
+                      transactionDate: "2025-10-30T09:14:50Z"
+                    - fiscalCode: "VRDLGI90A01H501Z"
+                      reportedDate: "2025-10-29T16:02:45Z"
+                      transactionId: "TRX_002"
+                      transactionDate: "2025-10-29T15:59:10Z"
+        '401':
+          description: Authentication failed
+        '500':
+          description: Server error
+  /reported-user/{userFiscalCode}:
+    delete:
+      tags: [ reported-user ]
+      summary: Delete reported user
+      description: "ENG: Remove a report for the given fiscal code <br> IT: Rimuove la segnalazione per il codice fiscale indicato"
+      operationId: deleteReportedUser
+      security:
+        - Bearer: [ ]
+      parameters:
+        - name: userFiscalCode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Citizen fiscal code of the reported user
+          example: RSSMRA85T10A562S
+      responses:
+        '200':
+          description: Business outcome
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportedUserCreateResponseDTO'
+              examples:
+                ok:
+                  value: { status: "OK", errorKey: "" }
+                notFound:
+                  value: { status: "KO", errorKey: "UserId not found" }
+                entityNotFound:
+                  value: { status: "KO", errorKey: "Entity not found" }
+                serviceUnavailable:
+                  value: { status: "KO", errorKey: "Service unavailable" }
+                differentMerchant:
+                  value: { status: "KO", errorKey: "Different Merchant Id" }
+                differentInitiative:
+                  value: { status: "KO", errorKey: "Different Initiative Id" }
+        '401':
+          description: Authentication failed
+        '403':
+          description: Not authorized
+        '500':
+          description: Server error
+
+
 components:
   schemas:
     InitiativeDTO:
@@ -1609,7 +1743,7 @@ components:
           description: The index of the value
         field:
           type: string
-          description: Name of the field where the validation error occured
+          description: Name of the field where the validation error occurred
         value:
           type: string
           description: The value that was provided but rejected due to validation failure
@@ -1732,10 +1866,167 @@ components:
           description: "ENG: URL to download the invoice file - IT: URL per scaricare il file della fattura"
       required:
         - invoiceUrl
+    ReportedUserRequestDTO:
+      type: object
+      required: [ merchantId, initiativeId, userFiscalCode ]
+      properties:
+        merchantId:
+          type: string
+          maxLength: 64
+          pattern: '^[A-Z0-9\-_]+$'
+          description: Merchant ID
+          example: MERCHANT_12345
+        initiativeId:
+          type: string
+          maxLength: 64
+          pattern: '^[A-Z0-9\-_]+$'
+          description: Initiative ID
+          example: INITIATIVE_67890
+        userFiscalCode:
+          type: string
+          maxLength: 16
+          pattern: '^[A-Z0-9]{11,16}$'
+          description: Citizen fiscal code
+          example: RSSMRA85T10A562S
+    ReportedUserCreateResponseDTO:
+      type: object
+      required: [ status, errorKey ]
+      properties:
+        status:
+          type: string
+          description: Outcome of the operation
+          enum: [ OK, KO ]
+          example: OK
+        errorKey:
+          type: string
+          nullable: true
+          description: >
+            Error reason if status == KO; empty string otherwise.
+            Possible business messages:
+             - "UserId not found"
+             - "Entity not found"
+             - "Service unavailable"
+             - "Different Merchant Id"
+             - "Already reported"
+             - "Different Initiative Id"
+          enum:
+            - ""
+            - "UserId not found"
+            - "Entity not found"
+            - "Service unavailable"
+            - "Different Merchant Id"
+            - "Already reported"
+            - "Different Initiative Id"
+          maxLength: 64
+          example: ""
+    ReportedUserDTO:
+      type: object
+      required: [ fiscalCode, reportedDate ]
+      properties:
+        fiscalCode:
+          type: string
+          maxLength: 16
+          pattern: '^[A-Z0-9]{11,16}$'
+          description: Citizen fiscal code
+          example: RSSMRA85T10A562S
+        reportedDate:
+          type: string
+          format: date-time
+          maxLength: 64
+          description: When the user was reported
+          example: 2025-10-30T09:15:12Z
+        transactionId:
+          type: string
+          nullable: true
+          maxLength: 64
+          description: Related transaction ID (if any)
+          example: TRX_001
+        transactionDate:
+          type: string
+          format: date-time
+          nullable: true
+          maxLength: 64
+          description: Related transaction date (if any)
+          example: 2025-10-30T09:14:50Z
+    ErrorDTO:
+      type: object
+      required: [ code, message ]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+
   securitySchemes:
     Bearer:
       type: apiKey
       name: Authorization
       in: header
+
+  headers:
+    Access-Control-Allow-Origin:
+      description: CORS allow origin
+      schema:
+        type: string
+        enum: [ "*" ]
+    X-RateLimit-Limit:
+      description: Max requests permitted in the current window.
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 2147483647
+    X-RateLimit-Remaining:
+      description: Remaining requests in the current window.
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 2147483647
+    X-RateLimit-Reset:
+      description: Epoch seconds when the window resets.
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 2147483647
+    Retry-After:
+      description: Seconds to wait before retrying.
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 2147483647
+
+  responses:
+    UnauthorizedError:
+      description: Authentication failed
+      headers:
+        Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+        X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+        X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+        X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorDTO' }
+    InternalServerError:
+      description: Server error
+      headers:
+        Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorDTO' }
+    TooManyRequests:
+      description: Too many requests
+      headers:
+        Access-Control-Allow-Origin: { $ref: '#/components/headers/Access-Control-Allow-Origin' }
+        X-RateLimit-Limit: { $ref: '#/components/headers/X-RateLimit-Limit' }
+        X-RateLimit-Remaining: { $ref: '#/components/headers/X-RateLimit-Remaining' }
+        X-RateLimit-Reset: { $ref: '#/components/headers/X-RateLimit-Reset' }
+        Retry-After: { $ref: '#/components/headers/Retry-After' }
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorDTO' }
+
 security:
   - Bearer: []

@@ -203,7 +203,28 @@ module "idpay_itn_merchants_portal" {
       xml_content = templatefile("./apim/api/idpay_merchants_portal/get-invoice-download-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
-    }
+    },
+    {
+          operation_id = "createReportedUser"
+
+          xml_content = templatefile("./apim/api/idpay_merchant/post-reported-user-policy.xml.tpl", {
+            ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+          })
+        },
+        {
+          operation_id = "searchReportedUsers"
+
+          xml_content = templatefile("./apim/api/idpay_merchant/get-reported-user-policy.xml.tpl", {
+            ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+          })
+        },
+        {
+          operation_id = "deleteReportedUser"
+
+          xml_content = templatefile("./apim/api/idpay_merchant/delete-reported-user-policy.xml.tpl", {
+            ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+          })
+        }
   ]
 
   depends_on = [
