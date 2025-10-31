@@ -1,0 +1,703 @@
+openapi: 3.0.3
+info:
+  title: API per l'assistenza 
+  version: 1.0.0
+  description: |
+    API per l'assistenza dei beneficiari dell'iniziativa Bonus Elettrodomestici
+  contact:
+    name: CSTAR
+    email: cstar@pagopa.it
+    
+servers:
+  - description: Test/Sviluppo
+    url: https://api.dev.cstar.pagopa.it/idpay-itn/service
+    x-internal: true
+  - description: User Acceptance Test
+    url: https://api.uat.cstar.pagopa.it/idpay-itn/service
+    x-internal: true
+  - description: Produzione
+    url: https://api.cstar.pagopa.it/idpay-itn/service
+    x-internal: false
+    
+tags:
+  - name: service
+    description: Operazione per l'assistenza
+
+paths:
+  /onboardings/status:
+    post:
+      operationId: getOnboardingStatus
+      description: |
+        Restituisce le informazioni su una richiesta di adesione conoscendo il
+        codice fiscale del beneficiario
+      tags: [service]
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/Version'
+      requestBody:
+        $ref: '#/components/requestBodies/GetStatus'
+      responses:
+        "200":
+          #description: Ok
+          $ref: '#/components/responses/OnboardingStatus'
+        "400":
+          #description: Bad request
+          $ref: '#/components/responses/Error'
+        "401":
+          #description: Wrong credentials
+          $ref: '#/components/responses/Error'
+        "403":
+          #description: Forbidden
+          $ref: '#/components/responses/Error'
+        "404":
+          #description: Not found
+          $ref: '#/components/responses/Error'
+        "406":
+          #description: Not acceptable. Did you require application/json?
+          $ref: '#/components/responses/Error'
+        "415":
+          #description: Unsupported media type. Did you provide application/json?
+          $ref: '#/components/responses/Error'
+        "429":
+          #description: Too many request
+          $ref: '#/components/responses/Error'
+        "500":
+          #description: Server error
+          $ref: '#/components/responses/Error'
+        default:
+          #description: Unexpected error
+          $ref: '#/components/responses/Error'
+          
+  /vouchers/status:
+    post:
+      operationId: getVoucherStatus
+      description: |
+        Restituisce le informazioni su voucher conoscendo il codice fiscale del
+        beneficiario
+      tags: [service]
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/Version'
+      requestBody:
+        $ref: '#/components/requestBodies/GetStatus'
+      responses:
+        "200":
+          #description: Ok
+          $ref: '#/components/responses/VoucherStatus'
+        "400":
+          #description: Bad request
+          $ref: '#/components/responses/Error'
+        "401":
+          #description: Wrong credentials
+          $ref: '#/components/responses/Error'
+        "403":
+          #description: Forbidden
+          $ref: '#/components/responses/Error'
+        "404":
+          #description: Not found
+          $ref: '#/components/responses/Error'
+        "406":
+          #description: Not acceptable. Did you require application/json?
+          $ref: '#/components/responses/Error'
+        "415":
+          #description: Unsupported media type. Did you provide application/json?
+          $ref: '#/components/responses/Error'
+        "429":
+          #description: Too many request
+          $ref: '#/components/responses/Error'
+        "500":
+          #description: Server error
+          $ref: '#/components/responses/Error'
+        default:
+          #description: Unexpected error
+          $ref: '#/components/responses/Error'
+
+components:
+  # ============================================================================
+  # Schemas
+  # ============================================================================
+  schemas:
+    # --------------------------------------------------------------------------
+    # Technical types
+    # --------------------------------------------------------------------------
+    AccessControlAllowOrigin:
+      description: |
+        Indicates whether the response can be shared with requesting code from
+        the given origin
+      type: string
+      pattern: "^[ -~]{1,2048}$"
+      minLength: 1
+      maxLength: 2048
+
+    RateLimitLimit:
+      description: The number of allowed requests in the current period
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 240
+      
+    RateLimitReset:
+      description: The number of seconds left in the current period
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 60
+      
+    RetryAfter:
+      description: |
+        The number of seconds to wait before allowing a follow-up request
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 240
+      
+    # --------------------------------------------------------------------------
+    # Basic types
+    # --------------------------------------------------------------------------
+    Channel:
+      description: Canale
+      enum:
+        - IO
+        - WEB
+      type: string
+      example: "IO"
+      
+    DateOfBirth:
+      description: Data di nascita del beneficiario
+      type: string
+      format: date
+      pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+      minLength: 10
+      maxLength: 10
+      example: "1985-12-10"
+      
+    DateOfOnboardingRequest:
+      description: Data di richiesta dell'adesione
+      type: string
+      format: date
+      pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+      minLength: 10
+      maxLength: 10
+      example: "2025-12-19"
+    
+    Email:
+      description: E-mail del beneficiario
+      type: string
+      pattern: "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+      minLength: 6
+      maxLength: 256
+      example: "mario.rossi@miaemail.it"
+      
+    ErrorCode:
+      description: Codice d'errore
+      type: string
+      pattern: "^[A-F0-9]{9}$"
+      minLength: 9
+      maxLength: 9
+      example: "999999999"
+
+    ErrorDescription:
+      description: Descrizione dell'errore
+      type: string
+      pattern: "^[ -~]{0,256}$"
+      minLength: 0
+      maxLength: 256
+      example: "Error description"
+
+    ExpirationDate:
+      description: Data di scadenza del voucher
+      type: string
+      format: date
+      pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+      minLength: 10
+      maxLength: 10
+      example: "2025-12-31"
+
+    FiscalCode:
+      description: Codice fiscale del beneficiario
+      type: string
+      pattern: "^(([A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z])|(\\d{11}))$"
+      minLength: 11
+      maxLength: 16
+      example: "RSSMRA85T10A562S"
+      
+    IseeOptionSelected:
+      description: Opzione ISEE selezionata dal beneficiario
+      enum:
+        - BELOW
+        - ABOVE
+        - UNAVAILABLE
+      type: string
+      example: "BELOW"
+      
+    IssueDate:
+      description: Data di emissione del voucher
+      type: string
+      format: date
+      pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+      minLength: 10
+      maxLength: 10
+      example: "2025-12-20"
+      
+    MaxDiscountAmount:
+      description: Importo massimo dello sconto applicabile in centesimi di euro
+      type: integer
+      format: int32
+      minimum: 10000
+      maximum: 20000
+      example: 10000
+      
+    Name:
+      description: Nome del beneficiario
+      type: string
+      pattern: "^[ -~]{1,256}$"
+      minLength: 1
+      maxLength: 256
+      example: "Mario"
+      
+    OnboardingStatus:
+      description: Stato della richiesta di adesione
+      enum:
+        - UNDER_EVALUATION
+        - 100_APPROVED
+        - 200_APPROVED
+        - 200_REQUESTED_BUT_100_AWARDED
+        - ONBOARDING_REQUESTED_BY_ANOTHER_FAMILY_MEMBER
+        - WAINTING_LIST
+        - INITIATIVE_ENDED
+        - BUDGET_EXHAUSTED
+        - AGE_REQUIREMENTS_NOT_MET
+      type: string
+      example: "UNDER_EVALUATION"
+      
+    Surname:
+      description: Cognome del beneficiario
+      type: string
+      pattern: "^[ -~]{1,256}$"
+      minLength: 1
+      maxLength: 256
+      example: "Rossi"
+
+    VoucherStatus:
+      description: Stato del voucher
+      enum:
+        - SPENT
+        - TO_BE_SPENT
+        - EXPIRED
+        - PREAUTHORIZED
+        - REVERSED
+      type: string
+      example: "SPENT"
+
+    DateOfUse:
+      description: |
+        Data di utilizzo del voucher se il suo stato è SPENT, PREAUTHORIZED o
+        REVERSED
+      type: string
+      format: date
+      pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+      minLength: 10
+      maxLength: 10
+      example: "2025-12-25"
+      
+    AmountUsed:
+      description: |
+        Importo utilizzato del voucher in centesimi di euro se il suo stato è
+        SPENT, PREAUTHORIZED o REVERSED
+      type: integer
+      format: int32
+      minimum: 0
+      maximum: 20000
+      example: 5400
+      
+    TypeOfStore:
+      description: |
+        Tipologia di negozio in cui è stato utilizzato il voucher se il suo
+        stato è SPENT, PREAUTHORIZED o REVERSED
+      enum:
+        - PHYSICAL
+        - ONLINE
+      type: string
+      example: "PHYSICAL"
+      
+    Merchant:
+      description: |
+        Nome del negozio in cui è stato utilizzato il voucher se il suo stato è
+        SPENT, PREAUTHORIZED o REVERSED
+      type: string
+      pattern: "^[ -~]{1,2048}$"
+      minLength: 1
+      maxLength: 2048
+      example: "Elettrodomestici SRL"
+      
+    MerchantAddress:
+      description: |
+        Indirizzo del negozio in cui è stato utilizzato il voucher se il suo
+        stato è SPENT, PREAUTHORIZED o REVERSED e se il tipo di negozio è
+        PHYSICAL
+      type: string
+      pattern: "^[ -~]{1,2048}$"
+      minLength: 1
+      maxLength: 2048
+      example: "Via Roma 10, 00100 Roma RM"
+    
+    MerchantCity:
+      description: |
+        Città del negozio in cui è stato utilizzato il voucher se il suo stato è
+        SPENT, PREAUTHORIZED o REVERSED e se il tipo di negozio è PHYSICAL
+      type: string
+      pattern: "^[ -~]{1,256}$"
+      minLength: 1
+      maxLength: 256
+      example: "Roma"
+      
+    PhoneNumber:
+      description: |
+        Numero di telefono del negozio in cui è stato utilizzato il voucher se
+        il suo stato è SPENT, PREAUTHORIZED o REVERSED e se il tipo di negozio è
+        PHYSICAL
+      type: string
+      pattern: "^[ -~]{0,20}$"
+      minLength: 0
+      maxLength: 20
+      example: "+390612345678"
+        
+    URL:
+      description: |
+        Sito web del negozio in cui è stato utilizzato il voucher se il suo
+        stato è SPENT, PREAUTHORIZED o REVERSED e se il tipo di negozio è ONLINE
+      type: string
+      format: uri
+      pattern: "^[ -~]{0,2048}$"
+      minLength: 0
+      maxLength: 2048
+      example: "https://www.elettrodomesticisrl.it"
+      
+    GoodAmount:
+      description: |
+        Importo del bene acquistato con il voucher in centesimi di euro
+      type: integer
+      format: int32
+      minimum: 0
+      maximum: 2147483647 
+      example: 18000
+        
+    GoodDescription:
+      description: Descrizione del bene acquistato con il voucher
+      type: string
+      pattern: "^[ -~]{1,2048}$"
+      minLength: 1
+      maxLength: 2048
+      example: "Lavatrice modello XY1234"
+      
+    # --------------------------------------------------------------------------
+    # Complex type for error handling.
+    # --------------------------------------------------------------------------
+    Error:
+      description: Error details.
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        description:
+          $ref: '#/components/schemas/ErrorDescription'
+      required:
+        - code
+        - description
+      example:
+        code: "999999999"
+        description: "Error description"
+
+    Errors:
+      description: List of errors.
+      type: object
+      additionalProperties: false
+      properties:
+        errors:
+          type: array
+          minItems: 1
+          maxItems: 32
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+        - errors
+      example:
+        errors:
+          - code: "999999999"
+            description: "Error description"
+
+    # --------------------------------------------------------------------------
+    # Complex types
+    # --------------------------------------------------------------------------
+    GetStatus:
+      description: Dati di input della richiesta di stato
+      type: object
+      additionalProperties: false
+      properties:
+        fiscalCode:
+          $ref: '#/components/schemas/FiscalCode'
+      required:
+        - fiscalCode
+      example:
+        fiscalCode: "RSSMRA85T10A562S"
+
+    OnboardingStatusData:
+      description: Informazioni di una richiesta di adesione
+      additionalProperties: false
+      properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        surname:
+          $ref: '#/components/schemas/Surname'
+        dateOfBirth:
+          $ref: '#/components/schemas/DateOfBirth'
+        dateOfOnboardingRequest:
+          $ref: '#/components/schemas/DateOfOnboardingRequest'
+        iseeOptionSelected:
+          $ref: '#/components/schemas/IseeOptionSelected'
+        channel:
+          $ref: '#/components/schemas/Channel'
+        email:
+          $ref: '#/components/schemas/Email'
+        status:
+          $ref: '#/components/schemas/OnboardingStatus'
+      required:
+        - name
+        - surname
+        - dateOfBirth
+        - dateOfOnboardingRequest
+        - iseeOptionSelected
+        - channel
+        - email
+        - status
+      example:
+        name: "Mario"
+        surname: "Rossi"
+        dateOfBirth: "1985-12-10"
+        dateOfOnboardingRequest: "2025-12-19"
+        iseeOptionSelected: "BELOW"
+        channel: "IO"
+        email: "mario.rossi@miaemail.it"
+        status: "100_APPROVED"
+        
+    VoucherStatusData:
+      description: Informazioni di un voucher
+      additionalProperties: false
+      properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        surname:
+          $ref: '#/components/schemas/Surname'
+        dateOfBirth:
+          $ref: '#/components/schemas/DateOfBirth'
+        issueDate:
+          $ref: '#/components/schemas/IssueDate'
+        expirationDate:
+          $ref: '#/components/schemas/ExpirationDate'
+        maxDiscountAmount:
+          $ref: '#/components/schemas/MaxDiscountAmount'
+        status:
+          $ref: '#/components/schemas/VoucherStatus'
+        dateOfUse:
+          $ref: '#/components/schemas/DateOfUse'
+        amountUsed:
+          $ref: '#/components/schemas/AmountUsed'
+        typeOfStore:
+          $ref: '#/components/schemas/TypeOfStore'
+        merchant:
+          $ref: '#/components/schemas/Merchant'
+        merchantAddress:
+          $ref: '#/components/schemas/MerchantAddress'
+        merchantCity:
+          $ref: '#/components/schemas/MerchantCity'
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        url:
+          $ref: '#/components/schemas/URL'
+        goodAmount:
+          $ref: '#/components/schemas/GoodAmount'
+        goodDescription:
+          $ref: '#/components/schemas/GoodDescription'
+      required:
+        - name
+        - surname
+        - dateOfBirth
+        - issueDate
+        - expirationDate
+        - maxDiscountAmount
+        - status
+      example:
+        name: "Mario"
+        surname: "Rossi"
+        dateOfBirth: "1985-12-10"
+        issueDate: "2025-12-20"
+        expirationDate: "2025-12-31"
+        maxDiscountAmount: 10000
+        status: "SPENT"
+        dateOfUse: "2025-12-25"
+        amountUsed: 5400
+        typeOfStore: "PHYSICAL"
+        merchant: "Elettrodomestici SRL"
+        merchantAddress: "Via Roma 10, 00100 Roma RM"
+        merchantCity: "Roma"
+        phoneNumber: "+390612345678"
+        goodAmount: 18000
+        goodDescription: "Lavatrice modello XY1234"
+
+  # ============================================================================
+  # Request bodies
+  # ============================================================================
+  requestBodies:
+    GetStatus:
+      description: Richiesta per le informazioni su una richiesta di adesione
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetStatus'
+
+  # ============================================================================
+  # Parameters
+  # ============================================================================
+  parameters:
+    RequestId:
+      name: RequestId
+      in: header
+      description: Request Id that will be logged by services
+      required: false
+      schema:
+        type: string
+        format: uuid
+        pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+        minLength: 36
+        maxLength: 36
+        example: "d0d654e6-97da-4848-b568-99fedccb642b"
+        
+    Version:
+      name: Version
+      in: header
+      description: Version of the required API
+      required: false
+      schema:
+        type: string
+        pattern: "^[ -~]{1,64}$"
+        minLength: 1
+        maxLength: 64
+        example: "1.0.0-alpha-a.b-c-somethinglong+build.1-aef.1-its-okay"
+        
+  # ============================================================================
+  # Responses
+  # ============================================================================
+  responses:
+    OnboardingStatus:
+      description: Risposta con le informazioni su una richiesta di adesione
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OnboardingStatusData'
+
+    VoucherStatus:
+      description: Risposta con le informazioni su un voucher
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VoucherStatusData'
+
+    Error:
+      description: Risposta d'errore
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            minLength: 0
+            maxLength: 65535
+                    
+  # ============================================================================
+  # Security schemes
+  # ============================================================================
+  securitySchemes:
+    apiKeyAuth:
+      description: API key per l'autorizzazione
+      type: apiKey
+      in: header
+      name: API-Key
