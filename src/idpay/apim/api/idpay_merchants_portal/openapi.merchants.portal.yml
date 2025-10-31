@@ -153,7 +153,7 @@ paths:
       tags:
         - point-of-sales
       summary: Retrieve a list of points of sale
-      description: "Returns a paginated list of points of sale for the specified merchant, with optional filters."
+      description: Returns a paginated list of points of sale for the specified merchant, with optional filters.
       operationId: getPointOfSales
       parameters:
         - name: merchantId
@@ -162,33 +162,36 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
+            pattern: '^[A-Za-z0-9_-]{1,64}$'
         - name: type
           in: query
           description: Filter by point of sale type
           required: false
           schema:
             type: string
-            enum:
-              - PHYSICAL
-              - ONLINE
+            enum: [ PHYSICAL, ONLINE ]
         - name: city
           in: query
           description: Filter by city
           required: false
           schema:
             type: string
+            maxLength: 100
         - name: address
           in: query
           description: Filter by full address
           required: false
           schema:
             type: string
+            maxLength: 255
         - name: contactName
           in: query
           description: Filter by contact person's name
           required: false
           schema:
             type: string
+            maxLength: 100
         - name: page
           in: query
           description: Page number for pagination
@@ -196,6 +199,8 @@ paths:
           schema:
             type: integer
             format: int32
+            minimum: 0
+            maximum: 1000000
         - name: size
           in: query
           description: Number of elements per page
@@ -203,21 +208,68 @@ paths:
           schema:
             type: integer
             format: int32
+            minimum: 1
+            maximum: 200
         - name: sort
           in: query
           description: Sorting criteria
           required: false
           schema:
             type: string
+            maxLength: 50
       responses:
         "200":
           description: Successful response with a paginated list of points of sale
+          headers:
+            X-RateLimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 1000000
+            X-RateLimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 1000000
+            X-RateLimit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 86400
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ListPointOfSaleDTO"
         "400":
           description: Bad request - Invalid query parameters
+          headers:
+            X-RateLimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 1000000
+            X-RateLimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 1000000
+            X-RateLimit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 86400
           content:
             application/json:
               schema:
@@ -232,14 +284,23 @@ paths:
               description: The number of allowed requests in the current period
               schema:
                 type: integer
+                format: int32
+                minimum: 1
+                maximum: 1000000
             X-RateLimit-Remaining:
               description: The number of remaining requests in the current period
               schema:
                 type: integer
+                format: int32
+                minimum: 0
+                maximum: 1000000
             X-RateLimit-Reset:
               description: The number of seconds left in the current period
               schema:
                 type: integer
+                format: int32
+                minimum: 0
+                maximum: 86400
           content:
             application/json:
               schema:
@@ -254,14 +315,23 @@ paths:
               description: The number of allowed requests in the current period
               schema:
                 type: integer
+                format: int32
+                minimum: 1
+                maximum: 1000000
             X-RateLimit-Remaining:
               description: The number of remaining requests in the current period
               schema:
                 type: integer
+                format: int32
+                minimum: 0
+                maximum: 1000000
             X-RateLimit-Reset:
               description: The number of seconds left in the current period
               schema:
                 type: integer
+                format: int32
+                minimum: 0
+                maximum: 86400
           content:
             application/json:
               schema:
@@ -276,14 +346,23 @@ paths:
               description: The number of allowed requests in the current period
               schema:
                 type: integer
+                format: int32
+                minimum: 1
+                maximum: 1000000
             X-RateLimit-Remaining:
               description: The number of remaining requests in the current period
               schema:
                 type: integer
+                format: int32
+                minimum: 0
+                maximum: 1000000
             X-RateLimit-Reset:
               description: The number of seconds left in the current period
               schema:
                 type: integer
+                format: int32
+                minimum: 0
+                maximum: 86400
           content:
             application/json:
               schema:
@@ -2103,7 +2182,6 @@ components:
           example: OK
         errorKey:
           type: string
-          nullable: true
           description: >
             Error reason if status == KO; empty string otherwise.
             Possible business messages:
