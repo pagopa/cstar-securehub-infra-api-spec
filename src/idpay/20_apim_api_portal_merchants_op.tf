@@ -101,8 +101,8 @@ module "idpay_itn_portal_merchants_op_api" {
       })
     },
     {
-      operation_id = "rewardTransaction"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/post-reward-payment-policy.xml.tpl", {
+      operation_id = "invoiceTransaction"
+      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/post-invoice-payment-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
