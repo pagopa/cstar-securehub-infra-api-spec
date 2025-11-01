@@ -807,13 +807,13 @@ paths:
               example:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
-  /transactions/{transactionId}/reward:
+  /transactions/{transactionId}/invoice:
     post:
       tags:
         - transaction
-      summary: Riconoscimento di una transazione da parte di un Punto Vendita
-      description: "Riconoscimento di una transazione da parte di un Punto Vendita"
-      operationId: rewardTransaction
+      summary: Inserimento della fattura in una transazione, da parte di un Punto Vendita
+      description: "Inserimento della fattura in una transazione, da parte di un Punto Vendita"
+      operationId: invoiceTransaction
       parameters:
         - name: transactionId
           in: path
@@ -828,7 +828,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: "#/components/schemas/RewardInvoiceDTO"
+              $ref: "#/components/schemas/InvoiceDTO"
       responses:
         "204":
           description: Ok - no content
@@ -1709,6 +1709,7 @@ components:
             - PAYMENT_MERCHANT_NOT_ONBOARDED
             - PAYMENT_INVALID_REQUEST
             - PAYMENT_STATUS_NOT_VALID
+            - PAYMENT_TOO_RECENT
             - PAYMENT_TRANSACTION_VERSION_PENDING
             - PRODUCT_NOT_FOUND
           example: "PAYMENT_NOT_FOUND_OR_EXPIRED"
@@ -1728,7 +1729,7 @@ components:
           type: string
           format: binary
           maxLength: 255
-    RewardInvoiceDTO:
+    InvoiceDTO:
       type: object
       required:
         - file
