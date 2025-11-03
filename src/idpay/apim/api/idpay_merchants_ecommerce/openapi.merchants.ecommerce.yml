@@ -1056,7 +1056,6 @@ components:
           description: "Importo totale della spesa in centesimi"
           example: 123400
       required:
-        - productName
         - productGtin
         - amountCents
     PreviewPaymentDTO:
