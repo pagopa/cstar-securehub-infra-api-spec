@@ -35,6 +35,8 @@ tags:
     description: ''
   - name: wallet
     description: ''
+  - name: support
+    description: ''
   - name: payment
     description: ''
 paths:
@@ -2889,6 +2891,78 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
+  /support:
+    post:
+      tags:
+        - support
+      summary: "ENG: Generate Zendesk SSO HTML - IT: Genera l'HTML SSO per Zendesk"
+      description: >
+        ENG: Builds and returns the Zendesk SSO HTML snippet for the given user.
+        IT: Costruisce e restituisce l'HTML di SSO Zendesk per l'utente indicato.
+      operationId: createSupportSso
+      parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
+      requestBody:
+        required: true
+        description: >
+          ENG: Data required to build the Zendesk SSO HTML.
+          IT: Dati necessari per generare l'HTML di SSO Zendesk.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupportRequestDTO'
+            examples:
+              example:
+                value:
+                  email: "mario.rossi@example.com"
+                  fiscalCode: "RSSMRA80A01H501U"
+                  name: "Mario Rossi"
+                  ticketFormId: "1234567890"
+                  subject: "Assistenza IDPAY"
+                  message: "Ho bisogno di supporto sulla mia iniziativa"
+                  productId: "IDPAY"
+                  data: "contesto opzionale"
+                  customFields:
+                    comune: "Roma"
+                    canale: "IO"
+      responses:
+        '200':
+          description: "ENG: SSO HTML built - IT: HTML SSO generato"
+          content:
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              examples:
+                invalidRequest:
+                  value:
+                    code: "WALLET_INVALID_REQUEST"
+                    message: "Invalid payload for support SSO"
+        '401':
+          description: "Authentication failed"
+          content:
+            application/json: {}
+        '429':
+          description: "Too many requests"
+          content:
+            application/json: {}
+        '500':
+          description: "Server ERROR"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletErrorDTO'
+              examples:
+                generic:
+                  value:
+                    code: "WALLET_GENERIC_ERROR"
+                    message: "Application error"
+
   '/payment/qr-code/{trxCode}/relate-user':
     put:
       tags:
@@ -3703,6 +3777,43 @@ paths:
               $ref: '#/components/headers/Retry-After'
 components:
   schemas:
+    SupportRequestDTO:
+      type: object
+      required:
+        - email
+        - fiscalCode
+      properties:
+        email:
+          type: string
+          format: email
+          description: "ENG: User email - IT: Email dell'utente"
+        fiscalCode:
+          type: string
+          description: "ENG: Italian fiscal code - IT: Codice fiscale"
+        name:
+          type: string
+          description: "ENG: Full name - IT: Nome e cognome"
+        ticketFormId:
+          type: string
+          description: "ENG: Zendesk ticket form id - IT: Id del ticket form Zendesk"
+        subject:
+          type: string
+          description: "ENG: Ticket subject - IT: Oggetto del ticket"
+        message:
+          type: string
+          description: "ENG: Ticket message - IT: Messaggio del ticket"
+        productId:
+          type: string
+          description: "ENG: Product identifier - IT: Identificativo prodotto"
+        data:
+          type: string
+          description: "ENG: Additional context - IT: Contesto aggiuntivo"
+        customFields:
+          type: object
+          additionalProperties:
+            type: string
+          description: "ENG: Map of custom fields - IT: Mappa di campi custom"
+
     IbanDTO:
       type: object
       required:
