@@ -2056,7 +2056,7 @@ components:
         fiscalCode: { type: string, maxLength: 16, pattern: '^[A-Z0-9]{11,16}$', description: Citizen fiscal code, example: RSSMRA85T10A562S }
         reportedDate: { type: string, format: date-time, maxLength: 64, description: When the user was reported, example: 2025-10-30T09:15:12Z }
         transactionId: { type: string, nullable: true, maxLength: 64, description: Related transaction ID (if any), example: TRX_001 }
-        transactionDate: { type: string, format: date-time, nullable: true, maxLength: 64, description: Related transaction date (if any), example: 2025-10-30T09:14:50Z }
+        trxChargeDate: { type: string, format: date-time, nullable: true, maxLength: 64, description: Related transaction date (if any), example: 2025-10-30T09:14:50Z }
   securitySchemes:
     Bearer:
       type: apiKey
