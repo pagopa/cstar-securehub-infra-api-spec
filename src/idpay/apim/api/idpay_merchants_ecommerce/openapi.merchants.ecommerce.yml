@@ -38,10 +38,10 @@ info:
   version: "1.0"
 servers:
   - description: Test di Sviluppo
-    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant-op
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/merchant-ecommerce
     x-internal: true
   - description: Test di Accettazione dell'Utente
-    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/merchant-op
+    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/merchant-ecommerce
     x-internal: true
 tags:
   - name: products
@@ -187,7 +187,7 @@ paths:
             maxLength: 24
             pattern: "^[a-zA-Z0-9]+$"
       requestBody:
-        description: "Identificativo della transizione"
+        description: "Identificativo della transazione"
         required: true
         content:
           application/json:
@@ -807,13 +807,13 @@ paths:
               example:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
-  /transactions/{transactionId}/reward:
+  /transactions/{transactionId}/invoice:
     post:
       tags:
         - transaction
-      summary: Riconoscimento di una transazione da parte di un Punto Vendita
-      description: "Riconoscimento di una transazione da parte di un Punto Vendita"
-      operationId: rewardTransaction
+      summary: Inserimento della fattura in una transazione, da parte di un Punto Vendita
+      description: "Inserimento della fattura in una transazione, da parte di un Punto Vendita"
+      operationId: invoiceTransaction
       parameters:
         - name: transactionId
           in: path
@@ -828,7 +828,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: "#/components/schemas/RewardInvoiceDTO"
+              $ref: "#/components/schemas/InvoiceDTO"
       responses:
         "204":
           description: Ok - no content
@@ -1147,24 +1147,21 @@ components:
         pageSize:
           type: integer
           format: int32
-          description:
-            "Numero di elementi per pagina"
+          description: "Numero di elementi per pagina"
           minimum: 0
           maximum: 1000000
           example: 20
         totalElements:
           type: integer
           format: int32
-          description:
-            "Numero totale degli elementi"
+          description: "Numero totale degli elementi"
           minimum: 0
           maximum: 1000000
           example: 200
         totalPages:
           type: integer
           format: int32
-          description:
-            "Numero totale delle pagine"
+          description: "Numero totale delle pagine"
           minimum: 0
           maximum: 1000000
           example: 10
@@ -1180,8 +1177,7 @@ components:
         registrationDate:
           type: string
           format: date-time
-          description:
-            "Data caricamento prodotto (dopo la verifica EPREL)"
+          description: "Data caricamento prodotto (dopo la verifica EPREL)"
           maxLength: 255
           example: "2025-10-16T12:05:19.307+00:00"
         status:
@@ -1649,7 +1645,7 @@ components:
           format: int64
           minimum: 0
           maximum: 1000000
-          description: "Importo in centessimi"
+          description: "Importo in centesimi"
           example: 123400
         residualBudgetCents:
           type: integer
@@ -1713,6 +1709,7 @@ components:
             - PAYMENT_MERCHANT_NOT_ONBOARDED
             - PAYMENT_INVALID_REQUEST
             - PAYMENT_STATUS_NOT_VALID
+            - PAYMENT_TOO_RECENT
             - PAYMENT_TRANSACTION_VERSION_PENDING
             - PRODUCT_NOT_FOUND
           example: "PAYMENT_NOT_FOUND_OR_EXPIRED"
@@ -1732,7 +1729,7 @@ components:
           type: string
           format: binary
           maxLength: 255
-    RewardInvoiceDTO:
+    InvoiceDTO:
       type: object
       required:
         - file
@@ -1748,7 +1745,7 @@ components:
       flows:
         clientCredentials:
           tokenUrl: https://api-mcshared.cstar.pagopa.it/auth-itn/realms/merchant-operator/protocol/openid-connect/token
-          refreshUrl: https://
+          refreshUrl: https://api-mcshared.cstar.pagopa.it/auth-itn/realms/merchant-operator/protocol/openid-connect/token
           scopes: { }
   responses:
     GET_products_200_Response:
