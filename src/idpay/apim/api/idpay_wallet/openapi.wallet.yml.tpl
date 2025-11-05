@@ -1674,8 +1674,8 @@ paths:
         requestBody:
           required: true
           description: >
-                    ENG: User data for JWT creation
-                    IT: Dati utente per la creazione del JWT
+            ENG: User data for JWT creation IT: Dati utente per la creazione del
+            JWT
           content:
             application/json:
               schema:
@@ -1684,11 +1684,11 @@ paths:
                 valid:
                   summary: Esempio valido
                   value:
-                    email: "mario.rossi@example.it"
-                    firstName: "Mario"
-                    lastName: "Rossi"
-                    fiscalCode: "RSSMRA80A01H501U"
-                    productId: "IO"
+                    email: mario.rossi@example.it
+                    firstName: Mario
+                    lastName: Rossi
+                    fiscalCode: RSSMRA80A01H501U
+                    productId: IO
         responses:
           '200':
             description: JWT successfully generated
@@ -1699,8 +1699,8 @@ paths:
                 examples:
                   ok:
                     value:
-                      jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                      returnTo: "https://assistenza.example.it/sso/jwt?return_to=%2Fhc%2Fit"
+                      jwt: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                      returnTo: 'https://assistenza.example.it/sso/jwt?return_to=%2Fhc%2Fit'
             headers:
               Access-Control-Allow-Origin:
                 $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -1719,8 +1719,8 @@ paths:
                 examples:
                   invalidEmail:
                     value:
-                      code: 'SUPPORT_INVALID_REQUEST'
-                      message: 'email must be a well-formed email address'
+                      code: SUPPORT_INVALID_REQUEST
+                      message: email must be a well-formed email address
             headers:
               Access-Control-Allow-Origin:
                 $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -1739,8 +1739,8 @@ paths:
                 examples:
                   unauthorized:
                     value:
-                      code: 'SUPPORT_UNAUTHORIZED'
-                      message: 'Authentication required or token invalid'
+                      code: SUPPORT_UNAUTHORIZED
+                      message: Authentication required or token invalid
             headers:
               Access-Control-Allow-Origin:
                 $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -1759,8 +1759,8 @@ paths:
                 examples:
                   throttled:
                     value:
-                      code: 'SUPPORT_TOO_MANY_REQUESTS'
-                      message: 'Too many requests'
+                      code: SUPPORT_TOO_MANY_REQUESTS
+                      message: Too many requests
             headers:
               Access-Control-Allow-Origin:
                 $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -1779,8 +1779,8 @@ paths:
                 examples:
                   generic:
                     value:
-                      code: 'SUPPORT_GENERIC_ERROR'
-                      message: 'Application error while generating JWT'
+                      code: SUPPORT_GENERIC_ERROR
+                      message: Application error while generating JWT
             headers:
               Access-Control-Allow-Origin:
                 $ref: '#/components/headers/Access-Control-Allow-Origin'
@@ -2306,22 +2306,24 @@ components:
         firstName:
           type: string
           description: 'ENG: First name - IT: Nome'
-          pattern: "^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$"
+          pattern: '^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$'
           maxLength: 64
         lastName:
           type: string
           description: 'ENG: Last name - IT: Cognome'
-          pattern: "^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$"
+          pattern: '^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$'
           maxLength: 64
         fiscalCode:
           type: string
-          description: "ENG: Italian fiscal code - IT: Codice fiscale"
-          pattern: "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$"
+          description: 'ENG: Italian fiscal code - IT: Codice fiscale'
+          pattern: '^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$'
           minLength: 16
           maxLength: 16
         productId:
           type: string
-          description: 'ENG: Product identifier (e.g. IO) - IT: Identificativo prodotto (es. IO)'
+          description: >
+            ENG: Product identifier (e.g. IO) - IT: Identificativo prodotto (es.
+            IO)
           pattern: '^[A-Za-z0-9_-]{1,64}$'
           maxLength: 64
     SupportResponseDTO:
@@ -2337,7 +2339,9 @@ components:
             returnTo:
               type: string
               format: uri
-              description: 'ENG: Redirect URL for Zendesk SSO - IT: URL di redirect per SSO Zendesk'
+              description: >
+                ENG: Redirect URL for Zendesk SSO - IT: URL di redirect per SSO
+                Zendesk
     SupportErrorDTO:
       title: SupportErrorDTO
       type: object
@@ -2353,16 +2357,13 @@ components:
             - SUPPORT_TOO_MANY_REQUESTS
             - SUPPORT_GENERIC_ERROR
           description: >
-            ENG: Error code
-            - SUPPORT_INVALID_REQUEST: validation failed
-            - SUPPORT_UNAUTHORIZED: authentication failed
-            - SUPPORT_TOO_MANY_REQUESTS: throttling applied
-            - SUPPORT_GENERIC_ERROR: application error
-            IT: Codice di errore
-            - SUPPORT_INVALID_REQUEST: validazione fallita
-            - SUPPORT_UNAUTHORIZED: autenticazione fallita
-            - SUPPORT_TOO_MANY_REQUESTS: superato il rate limit
-            - SUPPORT_GENERIC_ERROR: errore applicativo
+            ENG: Error code - SUPPORT_INVALID_REQUEST: validation failed -
+            SUPPORT_UNAUTHORIZED: authentication failed -
+            SUPPORT_TOO_MANY_REQUESTS: throttling applied -
+            SUPPORT_GENERIC_ERROR: application error IT: Codice di errore -
+            SUPPORT_INVALID_REQUEST: validazione fallita - SUPPORT_UNAUTHORIZED:
+            autenticazione fallita - SUPPORT_TOO_MANY_REQUESTS: superato il rate
+            limit - SUPPORT_GENERIC_ERROR: errore applicativo
         message:
           type: string
           description: 'ENG: Error message - IT: Messaggio di errore'
