@@ -3019,7 +3019,6 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-
   '/payment/qr-code/{trxCode}/relate-user':
     put:
       tags:
@@ -4147,33 +4146,6 @@ components:
           description: >-
             ENG: ToS Initiative Image URL - IT: URL dell'immagine
             dell'iniziativa per i ToS
-    InitiativeErrorDTO:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-            - INITIATIVE_INVALID_LOCALE_FORMAT
-            - INITIATIVE_INVALID_REQUEST
-            - INITIATIVE_NOT_FOUND
-            - INITIATIVE_TOO_MANY_REQUESTS
-            - INITIATIVE_GENERIC_ERROR
-          description: |-
-            'ENG: Error code:
-             INITIATIVE_INVALID_LOCALE_FORMAT: Initiative not found due to invalid locale format,
-             INITIATIVE_INVALID_REQUEST: Something went wrong handling the request,
-             INITIATIVE_NOT_FOUND: Initiative not found,
-             INITIATIVE_TOO_MANY_REQUESTS: Too many requests,
-             INITIATIVE_GENERIC_ERROR: Application error,
-             - IT: Codice di errore:
-             INITIATIVE_INVALID_LOCALE_FORMAT: Iniziativa non trovata a causa di format locale non valido,
-             INITIATIVE_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
-             INITIATIVE_NOT_FOUND: Iniziativa non trovata,
-             INITIATIVE_TOO_MANY_REQUESTS: Troppe richieste,
-             INITIATIVE_GENERIC_ERROR: Errore generico'
-        message:
-          type: string
-          description: 'ENG: Error message - IT: Messaggio di errore'
     OnboardingErrorDTO:
       type: object
       required:
@@ -5795,6 +5767,33 @@ components:
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
+    InitiativeErrorDTO:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+            - INITIATIVE_INVALID_LOCALE_FORMAT
+            - INITIATIVE_INVALID_REQUEST
+            - INITIATIVE_NOT_FOUND
+            - INITIATIVE_TOO_MANY_REQUESTS
+            - INITIATIVE_GENERIC_ERROR
+          description: >-
+            'ENG: Error code:
+             INITIATIVE_INVALID_LOCALE_FORMAT: Initiative not found due to invalid locale format,
+             INITIATIVE_INVALID_REQUEST: Something went wrong handling the request,
+             INITIATIVE_NOT_FOUND: Initiative not found,
+             INITIATIVE_TOO_MANY_REQUESTS: Too many requests,
+             INITIATIVE_GENERIC_ERROR: Application error,
+             - IT: Codice di errore:
+             INITIATIVE_INVALID_LOCALE_FORMAT: Iniziativa non trovata a causa di format locale non valido,
+             INITIATIVE_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+             INITIATIVE_NOT_FOUND: Iniziativa non trovata,
+             INITIATIVE_TOO_MANY_REQUESTS: Troppe richieste,
+             INITIATIVE_GENERIC_ERROR: Errore generico'
+        message:
+          type: string
+          description: 'ENG: Error message - IT: Messaggio di errore'
     PaymentInstrumentErrorDTO:
       type: object
       required:
