@@ -40,7 +40,6 @@ paths:
               type: array
               items:
                 $ref: "#/components/schemas/PointOfSaleDTO"
-                maxItems: 999999
       responses:
         "204":
           description: No Content - Successfully saved or updated
