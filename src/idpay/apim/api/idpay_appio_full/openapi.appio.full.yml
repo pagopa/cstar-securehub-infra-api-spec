@@ -5870,7 +5870,7 @@ components:
             SUPPORT_UNAUTHORIZED: authentication failed -
             SUPPORT_TOO_MANY_REQUESTS: throttling applied -
             SUPPORT_GENERIC_ERROR: application error IT: Codice di errore -
-            SUPPORT_INVALID_REQUEST: validazione fallita - S    UPPORT_UNAUTHORIZED:
+            SUPPORT_INVALID_REQUEST: validazione fallita - SUPPORT_UNAUTHORIZED:
             autenticazione fallita - SUPPORT_TOO_MANY_REQUESTS: superato il rate
             limit - SUPPORT_GENERIC_ERROR: errore applicativo
         message:
