@@ -51,21 +51,21 @@ paths:
                 type: integer
                 format: int64
                 minimum: 0
-                maximum: 1000
+                maximum: 1000000
             X-RateLimit-Remaining:
               description: The number of remaining requests in the current period
               schema:
                 type: integer
                 format: int64
                 minimum: 0
-                maximum: 1000
+                maximum: 1000000
             X-RateLimit-Reset:
               description: The number of seconds left in the current period
               schema:
                 type: integer
                 format: int64
                 minimum: 0
-                maximum: 1000
+                maximum: 1000000
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
         "400":
@@ -77,18 +77,21 @@ paths:
                 type: integer
                 format: int64
                 minimum: 0
-                maximum: 1000
+                maximum: 1000000
             X-RateLimit-Remaining:
               description: The number of remaining requests in the current period
               schema:
                 type: integer
+                format: int64
+                minimum: 0
+                maximum: 1000000
             X-RateLimit-Reset:
               description: The number of seconds left in the current period
               schema:
                 type: integer
                 format: int64
                 minimum: 0
-                maximum: 1000
+                maximum: 1000000
           content:
             application/json:
               schema:
@@ -100,14 +103,23 @@ paths:
               description: The number of allowed requests in the current period
               schema:
                 type: integer
+                format: int64
+                minimum: 0
+                maximum: 1000000
             X-RateLimit-Remaining:
               description: The number of remaining requests in the current period
               schema:
                 type: integer
+                format: int64
+                minimum: 0
+                maximum: 1000000
             X-RateLimit-Reset:
               description: The number of seconds left in the current period
               schema:
                 type: integer
+                format: int64
+                minimum: 0
+                maximum: 1000000
           content:
             application/json:
               schema:
@@ -122,14 +134,23 @@ paths:
               description: The number of allowed requests in the current period
               schema:
                 type: integer
+                format: int64
+                minimum: 0
+                maximum: 1000000
             X-RateLimit-Remaining:
               description: The number of remaining requests in the current period
               schema:
                 type: integer
+                format: int64
+                minimum: 0
+                maximum: 1000000
             X-RateLimit-Reset:
               description: The number of seconds left in the current period
               schema:
                 type: integer
+                format: int64
+                minimum: 0
+                maximum: 1000000
           content:
             application/json:
               schema:
@@ -144,14 +165,23 @@ paths:
               description: The number of allowed requests in the current period
               schema:
                 type: integer
+                format: int64
+                minimum: 0
+                maximum: 1000000
             X-RateLimit-Remaining:
               description: The number of remaining requests in the current period
               schema:
                 type: integer
+                format: int64
+                minimum: 0
+                maximum: 1000000
             X-RateLimit-Reset:
               description: The number of seconds left in the current period
               schema:
                 type: integer
+                format: int64
+                minimum: 0
+                maximum: 1000000
           content:
             application/json:
               schema:
