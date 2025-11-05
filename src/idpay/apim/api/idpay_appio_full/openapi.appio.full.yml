@@ -5815,12 +5815,12 @@ components:
         firstName:
           type: string
           description: 'ENG: First name - IT: Nome'
-          pattern: '^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$'
+          pattern: '^[A-Za-zÀ-ÖØ-öø-ÿ'' -]{1,64}$'
           maxLength: 64
         lastName:
           type: string
           description: 'ENG: Last name - IT: Cognome'
-          pattern: '^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$'
+          pattern: '^[A-Za-zÀ-ÖØ-öø-ÿ'' -]{1,64}$'
           maxLength: 64
         fiscalCode:
           type: string
@@ -5870,7 +5870,7 @@ components:
             SUPPORT_UNAUTHORIZED: authentication failed -
             SUPPORT_TOO_MANY_REQUESTS: throttling applied -
             SUPPORT_GENERIC_ERROR: application error IT: Codice di errore -
-            SUPPORT_INVALID_REQUEST: validazione fallita - SUPPORT_UNAUTHORIZED:
+            SUPPORT_INVALID_REQUEST: validazione fallita - S    UPPORT_UNAUTHORIZED:
             autenticazione fallita - SUPPORT_TOO_MANY_REQUESTS: superato il rate
             limit - SUPPORT_GENERIC_ERROR: errore applicativo
         message:

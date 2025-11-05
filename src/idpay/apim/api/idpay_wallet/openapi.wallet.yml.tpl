@@ -2306,12 +2306,12 @@ components:
         firstName:
           type: string
           description: 'ENG: First name - IT: Nome'
-          pattern: '^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$'
+          pattern: '^[A-Za-zÀ-ÖØ-öø-ÿ'' -]{1,64}$'
           maxLength: 64
         lastName:
           type: string
           description: 'ENG: Last name - IT: Cognome'
-          pattern: '^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$'
+          pattern: '^[A-Za-zÀ-ÖØ-öø-ÿ'' -]{1,64}$'
           maxLength: 64
         fiscalCode:
           type: string
