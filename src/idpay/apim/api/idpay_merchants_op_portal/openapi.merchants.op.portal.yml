@@ -1687,6 +1687,7 @@ components:
       properties:
         invoiceUrl:
           type: string
+          maxLength: 10000
           description: "ENG: URL to download the invoice file - IT: URL per scaricare il file della fattura"
       required:
         - invoiceUrl
@@ -1739,6 +1740,7 @@ components:
       properties:
         file:
           type: string
+          maxLength: 41943040
           format: binary
     RewardInvoiceDTO:
       type: object
@@ -1747,6 +1749,7 @@ components:
       properties:
         file:
           type: string
+          maxLength: 41943040
           format: binary
   securitySchemes:
     Bearer:
@@ -2099,7 +2102,7 @@ components:
           schema:
             $ref: "#/components/schemas/TransactionErrorDTO"
           example:
-            code: INVALID_REQUEST
+            code: PAYMENT_INVALID_REQUEST
             message: Something went wrong handling request
     GET_download_invoice_file_401_Response:
       description: Authentication failed
@@ -2134,7 +2137,7 @@ components:
           schema:
             $ref: "#/components/schemas/TransactionErrorDTO"
           example:
-            code: TOO_MANY_REQUESTS
+            code: PAYMENT_TOO_MANY_REQUESTS
             message: Too many requests
     GET_download_invoice_file_500_Response:
       description: Server ERROR
@@ -2146,7 +2149,7 @@ components:
           schema:
             $ref: "#/components/schemas/TransactionErrorDTO"
           example:
-            code: GENERIC_ERROR
+            code: PAYMENT_GENERIC_ERROR
             message: An error occurred during file reading
   parameters:
     category_query:
