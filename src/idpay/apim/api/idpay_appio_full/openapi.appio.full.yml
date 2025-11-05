@@ -35,8 +35,11 @@ tags:
     description: ''
   - name: wallet
     description: ''
+  - name: support
+    description: ''
   - name: payment
     description: ''
+
 paths:
   '/iban/{iban}':
     get:
