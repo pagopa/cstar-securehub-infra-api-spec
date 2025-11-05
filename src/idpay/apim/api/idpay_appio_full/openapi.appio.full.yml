@@ -2891,22 +2891,26 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/support':
+  /wallet/support:
     post:
       tags:
         - support
-      summary: 'ENG: Build a Zendesk JWT and return redirect URL - IT: Genera un JWT per Zendesk e restituisce la URL di redirect'
+      summary: >
+        ENG: Build a Zendesk JWT and return redirect URL
+        IT: Genera un JWT per Zendesk e restituisce la URL di redirect
       description: >
         ENG: Generates a JWT token for Zendesk SSO based on user data.
         IT: Genera un token JWT per SSO Zendesk a partire dai dati utente.
       operationId: buildZendeskJwt
       security:
-        - bearerAuth: [ ]
+        - bearerAuth: []
       parameters:
         - $ref: '#/components/parameters/ApiVersionHeader'
       requestBody:
         required: true
-        description: 'ENG: User data for JWT creation - IT: Dati utente per la creazione del JWT'
+        description: >
+          ENG: User data for JWT creation
+          IT: Dati utente per la creazione del JWT
         content:
           application/json:
             schema:
