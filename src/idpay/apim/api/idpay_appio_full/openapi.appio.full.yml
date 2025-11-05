@@ -39,7 +39,6 @@ tags:
     description: ''
   - name: payment
     description: ''
-
 paths:
   '/iban/{iban}':
     get:
@@ -1204,7 +1203,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/':
+  /wallet/:
     get:
       tags:
         - wallet
@@ -2527,7 +2526,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/code/status':
+  /wallet/code/status:
     get:
       tags:
         - wallet
@@ -2621,7 +2620,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/code/generate':
+  /wallet/code/generate:
     post:
       tags:
         - wallet
