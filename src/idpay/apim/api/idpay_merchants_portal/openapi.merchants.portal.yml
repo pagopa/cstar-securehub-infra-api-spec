@@ -48,12 +48,16 @@ paths:
               description: The number of allowed requests in the current period
               schema:
                 type: integer
-
+                format: int64
+                minimum: 0
+                maximum: 1000
             X-RateLimit-Remaining:
               description: The number of remaining requests in the current period
               schema:
                 type: integer
                 format: int64
+                minimum: 0
+                maximum: 1000
             X-RateLimit-Reset:
               description: The number of seconds left in the current period
               schema:
@@ -68,6 +72,9 @@ paths:
               description: The number of allowed requests in the current period
               schema:
                 type: integer
+                format: int64
+                minimum: 0
+                maximum: 1000
             X-RateLimit-Remaining:
               description: The number of remaining requests in the current period
               schema:
@@ -76,6 +83,7 @@ paths:
               description: The number of seconds left in the current period
               schema:
                 type: integer
+                format: int64
                 minimum: 0
                 maximum: 1000
           content:
