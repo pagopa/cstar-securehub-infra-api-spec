@@ -1201,7 +1201,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  /wallet/:
+  /:
     get:
       tags:
         - wallet
@@ -1301,7 +1301,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/detail':
+  '/{initiativeId}/detail':
     get:
       tags:
         - wallet
@@ -1427,7 +1427,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}':
+  '/{initiativeId}':
     get:
       tags:
         - wallet
@@ -1553,7 +1553,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/iban':
+  '/{initiativeId}/iban':
     put:
       tags:
         - wallet
@@ -1693,7 +1693,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/instruments/by-wallet/{idWallet}':
+  '/{initiativeId}/instruments/by-wallet/{idWallet}':
     put:
       tags:
         - wallet
@@ -1852,7 +1852,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/instruments':
+  '/{initiativeId}/instruments':
     get:
       tags:
         - wallet
@@ -1968,7 +1968,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/instruments/{instrumentId}':
+  '/{initiativeId}/instruments/{instrumentId}':
     delete:
       tags:
         - wallet
@@ -2130,7 +2130,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/unsubscribe':
+  '/{initiativeId}/unsubscribe':
     delete:
       tags:
         - wallet
@@ -2257,7 +2257,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/status':
+  '/{initiativeId}/status':
     get:
       tags:
         - wallet
@@ -2390,7 +2390,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/instrument/{idWallet}/initiatives':
+  '/instrument/{idWallet}/initiatives':
     get:
       tags:
         - wallet
@@ -2524,7 +2524,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  /wallet/code/status:
+  '/code/status':
     get:
       tags:
         - wallet
@@ -2618,7 +2618,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  /wallet/code/generate:
+  '/code/generate':
     post:
       tags:
         - wallet
@@ -2760,7 +2760,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/{initiativeId}/code/instruments':
+  '/{initiativeId}/code/instruments':
     put:
       tags:
         - wallet
@@ -2889,7 +2889,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/support':
+  '/support':
     post:
       tags:
         - support
