@@ -1921,7 +1921,6 @@ components:
           type: string
           maxLength: 10000
           description: "ENG: URL to download the invoice file - IT: URL per scaricare il file della fattura"
-          maxLength: 255
       required:
         - invoiceUrl
     TransactionErrorDTO:
