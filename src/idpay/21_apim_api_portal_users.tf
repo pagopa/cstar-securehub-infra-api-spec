@@ -119,7 +119,7 @@ module "idpay_itn_users_portal_api" {
     },
     {
       operation_id = "buildZendeskJwt"
-      xml_content = templatefile("./apim/api/zendesk_connector/post-build-jwt-web-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_wallet/post-build-jwt-web-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
