@@ -2896,11 +2896,11 @@ paths:
       tags:
         - support
       summary: >
-        ENG: Build a Zendesk JWT and return redirect URL
-        IT: Genera un JWT per Zendesk e restituisce la URL di redirect
+        ENG: Build a Zendesk JWT and return redirect URL IT: Genera un JWT per
+        Zendesk e restituisce la URL di redirect
       description: >
-        ENG: Generates a JWT token for Zendesk SSO based on user data.
-        IT: Genera un token JWT per SSO Zendesk a partire dai dati utente.
+        ENG: Generates a JWT token for Zendesk SSO based on user data. IT:
+        Genera un token JWT per SSO Zendesk a partire dai dati utente.
       operationId: buildZendeskJwt
       security:
         - bearerAuth: []
