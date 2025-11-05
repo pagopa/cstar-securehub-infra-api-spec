@@ -5866,6 +5866,84 @@ components:
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
+
+    SupportRequestDTO:
+      title: SupportRequestDTO
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          description: 'ENG: User email (required) - IT: Email utente (obbligatoria)'
+          minLength: 5
+          maxLength: 254
+        firstName:
+          type: string
+          description: 'ENG: First name - IT: Nome'
+          pattern: "^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$"
+          maxLength: 64
+        lastName:
+          type: string
+          description: 'ENG: Last name - IT: Cognome'
+          pattern: "^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$"
+          maxLength: 64
+        fiscalCode:
+          type: string
+          description: "ENG: Italian fiscal code - IT: Codice fiscale"
+          pattern: "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$"
+          minLength: 16
+          maxLength: 16
+        productId:
+          type: string
+          description: 'ENG: Product identifier (e.g. IO) - IT: Identificativo prodotto (es. IO)'
+          pattern: '^[A-Za-z0-9_-]{1,64}$'
+          maxLength: 64
+
+    SupportResponseDTO:
+      title: SupportResponseDTO
+      type: object
+      required:
+        - jwt
+        - returnTo
+      properties:
+        jwt:
+          type: string
+          description: 'ENG: Generated JWT - IT: JWT generato'
+        returnTo:
+          type: string
+          format: uri
+          description: 'ENG: Redirect URL for Zendesk SSO - IT: URL di redirect per SSO Zendesk'
+
+    SupportErrorDTO:
+      title: SupportErrorDTO
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - SUPPORT_INVALID_REQUEST
+            - SUPPORT_UNAUTHORIZED
+            - SUPPORT_TOO_MANY_REQUESTS
+            - SUPPORT_GENERIC_ERROR
+          description: >
+            ENG: Error code
+            - SUPPORT_INVALID_REQUEST: validation failed
+            - SUPPORT_UNAUTHORIZED: authentication failed
+            - SUPPORT_TOO_MANY_REQUESTS: throttling applied
+            - SUPPORT_GENERIC_ERROR: application error
+            IT: Codice di errore
+            - SUPPORT_INVALID_REQUEST: validazione fallita
+            - SUPPORT_UNAUTHORIZED: autenticazione fallita
+            - SUPPORT_TOO_MANY_REQUESTS: superato il rate limit
+            - SUPPORT_GENERIC_ERROR: errore applicativo
+        message:
+          type: string
+          description: 'ENG: Error message - IT: Messaggio di errore'
     AuthPaymentResponseDTO:
       type: object
       required:
@@ -6016,83 +6094,6 @@ components:
           maxLength: 2500
           pattern: '^[a-zA-Z0-9 _@\-.!?]+'
           description: 'ENG: Error message- IT: Messaggio di errore'
-    SupportRequestDTO:
-      title: SupportRequestDTO
-      type: object
-      required:
-        - email
-      properties:
-        email:
-          type: string
-          format: email
-          description: 'ENG: User email (required) - IT: Email utente (obbligatoria)'
-          minLength: 5
-          maxLength: 254
-        firstName:
-          type: string
-          description: 'ENG: First name - IT: Nome'
-          pattern: "^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$"
-          maxLength: 64
-        lastName:
-          type: string
-          description: 'ENG: Last name - IT: Cognome'
-          pattern: "^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$"
-          maxLength: 64
-        fiscalCode:
-          type: string
-          description: "ENG: Italian fiscal code - IT: Codice fiscale"
-          pattern: "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$"
-          minLength: 16
-          maxLength: 16
-        productId:
-          type: string
-          description: 'ENG: Product identifier (e.g. IO) - IT: Identificativo prodotto (es. IO)'
-          pattern: '^[A-Za-z0-9_-]{1,64}$'
-          maxLength: 64
-
-    SupportResponseDTO:
-      title: SupportResponseDTO
-      type: object
-      required:
-        - jwt
-        - returnTo
-      properties:
-        jwt:
-          type: string
-          description: 'ENG: Generated JWT - IT: JWT generato'
-        returnTo:
-          type: string
-          format: uri
-          description: 'ENG: Redirect URL for Zendesk SSO - IT: URL di redirect per SSO Zendesk'
-
-    SupportErrorDTO:
-      title: SupportErrorDTO
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: string
-          enum:
-            - SUPPORT_INVALID_REQUEST
-            - SUPPORT_UNAUTHORIZED
-            - SUPPORT_TOO_MANY_REQUESTS
-            - SUPPORT_GENERIC_ERROR
-          description: >
-            ENG: Error code
-            - SUPPORT_INVALID_REQUEST: validation failed
-            - SUPPORT_UNAUTHORIZED: authentication failed
-            - SUPPORT_TOO_MANY_REQUESTS: throttling applied
-            - SUPPORT_GENERIC_ERROR: application error
-            IT: Codice di errore
-            - SUPPORT_INVALID_REQUEST: validazione fallita
-            - SUPPORT_UNAUTHORIZED: autenticazione fallita
-            - SUPPORT_TOO_MANY_REQUESTS: superato il rate limit
-            - SUPPORT_GENERIC_ERROR: errore applicativo
-        message:
-          type: string
-          description: 'ENG: Error message - IT: Messaggio di errore'
 
     TransactionErrorDTO1:
       type: object

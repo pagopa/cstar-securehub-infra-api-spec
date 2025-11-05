@@ -2372,6 +2372,7 @@ components:
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
+
     SupportRequestDTO:
       title: SupportRequestDTO
       type: object
