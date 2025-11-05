@@ -1361,6 +1361,12 @@ components:
           description: "Data della transazione"
           maxLength: 255
           example: "2025-10-24T12:36:00.725+00:00"
+        trxChargeDate:
+          type: string
+          format: date-time
+          description: "La data di autorizzazione del pagamento"
+          maxLength: 255
+          example: "2025-10-24T12:36:00.725+00:00"
         updateDate:
           type: string
           format: date-time
@@ -1374,6 +1380,7 @@ components:
             - REWARDED
             - CANCELLED
             - REFUNDED
+            - INVOICED
           example: "REWARDED"
         channel:
           type: string
@@ -1478,6 +1485,12 @@ components:
           type: string
           format: date-time
           description: "Data della transazione"
+          maxLength: 255
+          example: "2025-10-24T12:36:00.725+00:00"
+        trxChargeDate:
+          type: string
+          format: date-time
+          description: "La data di autorizzazione del pagamento"
           maxLength: 255
           example: "2025-10-24T12:36:00.725+00:00"
         trxExpirationSeconds:
@@ -2205,6 +2218,7 @@ components:
           - REWARDED
           - CANCELLED
           - REFUNDED
+          - INVOICED
         example: REWARDED
     sort_trx_processed_query:
       name: sort
@@ -2213,13 +2227,13 @@ components:
       schema:
         type: string
         enum:
-          - updateDate, desc
+          - trxChargeDate, desc
           - status, desc
           - productName, desc
-          - updateDate, asc
+          - trxChargeDate, asc
           - status, asc
           - productName, asc
-        example: updateDate, desc
+        example: trxChargeDate, desc
     status_trx_in_progress_query:
       name: status
       in: query
@@ -2247,13 +2261,13 @@ components:
       schema:
         type: string
         enum:
-          - updateDate, desc
+          - trxChargeDate, desc
           - status, desc
           - productName, desc
-          - updateDate, asc
+          - trxChargeDate, asc
           - status, asc
           - productName, asc
-        example: updateDate, desc
+        example: trxChargeDate, desc
     transactionId_path:
       name: transactionId
       in: path

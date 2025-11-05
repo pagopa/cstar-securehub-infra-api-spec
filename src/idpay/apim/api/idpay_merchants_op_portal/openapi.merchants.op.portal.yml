@@ -295,6 +295,7 @@ paths:
         - $ref: "#/components/parameters/gtinCode_query"
         - $ref: "#/components/parameters/productFileId_query"
         - $ref: "#/components/parameters/productName_query"
+        - $ref: '#/components/parameters/fullProductName_query'
         - $ref: "#/components/parameters/status_query"
         - $ref: "#/components/parameters/organizationId_query"
       responses:
@@ -1477,6 +1478,11 @@ components:
           description: "ENG: The name of the product  <br> IT: Nome del prodotto"
           maxLength: 255
           pattern: .*
+        fullProductName:
+          type: string
+          description: 'ENG: The name of the product with GTIN (for merchant)  <br> IT: Nome del prodotto con GTIN (per esercenti)'
+          maxLength: 255
+          pattern: .*
         motivation:
           type: string
           maxLength: 200
@@ -1551,6 +1557,11 @@ components:
           format: date-time
           description: "ENG: The date of the transaction - IT: La data della transazione"
           maxLength: 255
+        trxChargeDate:
+          type: string
+          format: date-time
+          description: "ENG: Payment authorization date - IT: La data di autorizzazione del pagamento"
+          maxLength: 255
         updateDate:
           type: string
           format: date-time
@@ -1563,6 +1574,7 @@ components:
             - REWARDED
             - CANCELLED
             - REFUNDED
+            - INVOICED
         channel:
           type: string
           description: "ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione"
@@ -1654,6 +1666,11 @@ components:
           type: string
           format: date-time
           description: "ENG: The date of the transaction - IT: La data della transazione"
+          maxLength: 255
+        trxChargeDate:
+          type: string
+          format: date-time
+          description: "ENG: Payment authorization date - IT: La data di autorizzazione del pagamento"
           maxLength: 255
         trxExpirationSeconds:
           type: number
@@ -1913,8 +1930,8 @@ components:
       properties:
         invoiceUrl:
           type: string
+          maxLength: 10000
           description: "ENG: URL to download the invoice file - IT: URL per scaricare il file della fattura"
-          maxLength: 255
       required:
         - invoiceUrl
     TransactionErrorDTO:
@@ -1967,8 +1984,8 @@ components:
       properties:
         file:
           type: string
+          maxLength: 41943040
           format: binary
-          maxLength: 255
     InvoiceDTO:
       type: object
       required:
@@ -1976,8 +1993,8 @@ components:
       properties:
         file:
           type: string
+          maxLength: 41943040
           format: binary
-          maxLength: 255
     ReportDTO:
       title: ReportDTO
       type: object
@@ -2432,6 +2449,14 @@ components:
         type: string
         maxLength: 255
         pattern: .*
+    fullProductName_query:
+      name: fullProductName
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 255
+        pattern: .*
     fiscalCode_query:
       name: fiscalCode
       in: query
@@ -2452,6 +2477,7 @@ components:
           - REWARDED
           - CANCELLED
           - REFUNDED
+          - INVOICED
     sort_trx_processed_query:
       name: sort
       in: query
@@ -2459,10 +2485,10 @@ components:
       schema:
         type: string
         enum:
-          - updateDate, desc
+          - trxChargeDate, desc
           - status, desc
           - productName, desc
-          - updateDate, asc
+          - trxChargeDate, asc
           - status, asc
           - productName, asc
     status_trx_in_progress_query:
@@ -2490,10 +2516,10 @@ components:
       schema:
         type: string
         enum:
-          - updateDate, desc
+          - trxChargeDate, desc
           - status, desc
           - productName, desc
-          - updateDate, asc
+          - trxChargeDate, asc
           - status, asc
           - productName, asc
     initiativeId_path:
