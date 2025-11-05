@@ -1656,7 +1656,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/support':
+  '/support':
       post:
         tags:
           - support
