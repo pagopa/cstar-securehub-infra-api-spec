@@ -1201,7 +1201,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  /:
+  '/wallet/':
     get:
       tags:
         - wallet
@@ -1301,7 +1301,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/{initiativeId}/detail':
+  '/wallet/{initiativeId}/detail':
     get:
       tags:
         - wallet
@@ -1427,7 +1427,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/{initiativeId}':
+  '/wallet/{initiativeId}':
     get:
       tags:
         - wallet
@@ -1553,7 +1553,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/{initiativeId}/iban':
+  '/wallet/{initiativeId}/iban':
     put:
       tags:
         - wallet
@@ -1693,7 +1693,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/{initiativeId}/instruments/by-wallet/{idWallet}':
+  '/wallet/{initiativeId}/instruments/by-wallet/{idWallet}':
     put:
       tags:
         - wallet
@@ -1852,7 +1852,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/{initiativeId}/instruments':
+  '/wallet/{initiativeId}/instruments':
     get:
       tags:
         - wallet
@@ -1968,7 +1968,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/{initiativeId}/instruments/{instrumentId}':
+  '/wallet/{initiativeId}/instruments/{instrumentId}':
     delete:
       tags:
         - wallet
@@ -2130,7 +2130,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/{initiativeId}/unsubscribe':
+  '/wallet/{initiativeId}/unsubscribe':
     delete:
       tags:
         - wallet
@@ -2257,7 +2257,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/{initiativeId}/status':
+  '/wallet/{initiativeId}/status':
     get:
       tags:
         - wallet
@@ -2390,7 +2390,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/instrument/{idWallet}/initiatives':
+  '/wallet/instrument/{idWallet}/initiatives':
     get:
       tags:
         - wallet
@@ -2524,7 +2524,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/code/status':
+  '/wallet/code/status':
     get:
       tags:
         - wallet
@@ -2618,7 +2618,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/code/generate':
+  '/wallet/code/generate':
     post:
       tags:
         - wallet
@@ -2760,7 +2760,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/{initiativeId}/code/instruments':
+  '/wallet/{initiativeId}/code/instruments':
     put:
       tags:
         - wallet
@@ -2889,7 +2889,7 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/support':
+  '/wallet/support':
     post:
       tags:
         - support
@@ -4146,6 +4146,33 @@ components:
           description: >-
             ENG: ToS Initiative Image URL - IT: URL dell'immagine
             dell'iniziativa per i ToS
+    InitiativeErrorDTO:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+            - INITIATIVE_INVALID_LOCALE_FORMAT
+            - INITIATIVE_INVALID_REQUEST
+            - INITIATIVE_NOT_FOUND
+            - INITIATIVE_TOO_MANY_REQUESTS
+            - INITIATIVE_GENERIC_ERROR
+          description: |-
+            'ENG: Error code:
+             INITIATIVE_INVALID_LOCALE_FORMAT: Initiative not found due to invalid locale format,
+             INITIATIVE_INVALID_REQUEST: Something went wrong handling the request,
+             INITIATIVE_NOT_FOUND: Initiative not found,
+             INITIATIVE_TOO_MANY_REQUESTS: Too many requests,
+             INITIATIVE_GENERIC_ERROR: Application error,
+             - IT: Codice di errore:
+             INITIATIVE_INVALID_LOCALE_FORMAT: Iniziativa non trovata a causa di format locale non valido,
+             INITIATIVE_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
+             INITIATIVE_NOT_FOUND: Iniziativa non trovata,
+             INITIATIVE_TOO_MANY_REQUESTS: Troppe richieste,
+             INITIATIVE_GENERIC_ERROR: Errore generico'
+        message:
+          type: string
+          description: 'ENG: Error message - IT: Messaggio di errore'
     OnboardingErrorDTO:
       type: object
       required:
@@ -5767,30 +5794,78 @@ components:
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
-    InitiativeErrorDTO:
+    SupportRequestDTO:
+      title: SupportRequestDTO
       type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          description: 'ENG: User email (required) - IT: Email utente (obbligatoria)'
+          minLength: 5
+          maxLength: 254
+        firstName:
+          type: string
+          description: 'ENG: First name - IT: Nome'
+          pattern: "^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$"
+          maxLength: 64
+        lastName:
+          type: string
+          description: 'ENG: Last name - IT: Cognome'
+          pattern: "^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$"
+          maxLength: 64
+        fiscalCode:
+          type: string
+          description: "ENG: Italian fiscal code - IT: Codice fiscale"
+          pattern: "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$"
+          minLength: 16
+          maxLength: 16
+        productId:
+          type: string
+          description: 'ENG: Product identifier (e.g. IO) - IT: Identificativo prodotto (es. IO)'
+          pattern: '^[A-Za-z0-9_-]{1,64}$'
+          maxLength: 64
+    SupportResponseDTO:
+      title: SupportResponseDTO
+      type: object
+      required:
+        - jwt
+        - returnTo
+      properties:
+        jwt:
+          type: string
+          description: 'ENG: Generated JWT - IT: JWT generato'
+        returnTo:
+          type: string
+          format: uri
+          description: 'ENG: Redirect URL for Zendesk SSO - IT: URL di redirect per SSO Zendesk'
+    SupportErrorDTO:
+      title: SupportErrorDTO
+      type: object
+      required:
+        - code
+        - message
       properties:
         code:
           type: string
           enum:
-            - INITIATIVE_INVALID_LOCALE_FORMAT
-            - INITIATIVE_INVALID_REQUEST
-            - INITIATIVE_NOT_FOUND
-            - INITIATIVE_TOO_MANY_REQUESTS
-            - INITIATIVE_GENERIC_ERROR
-          description: >-
-            'ENG: Error code:
-             INITIATIVE_INVALID_LOCALE_FORMAT: Initiative not found due to invalid locale format,
-             INITIATIVE_INVALID_REQUEST: Something went wrong handling the request,
-             INITIATIVE_NOT_FOUND: Initiative not found,
-             INITIATIVE_TOO_MANY_REQUESTS: Too many requests,
-             INITIATIVE_GENERIC_ERROR: Application error,
-             - IT: Codice di errore:
-             INITIATIVE_INVALID_LOCALE_FORMAT: Iniziativa non trovata a causa di format locale non valido,
-             INITIATIVE_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
-             INITIATIVE_NOT_FOUND: Iniziativa non trovata,
-             INITIATIVE_TOO_MANY_REQUESTS: Troppe richieste,
-             INITIATIVE_GENERIC_ERROR: Errore generico'
+            - SUPPORT_INVALID_REQUEST
+            - SUPPORT_UNAUTHORIZED
+            - SUPPORT_TOO_MANY_REQUESTS
+            - SUPPORT_GENERIC_ERROR
+          description: >
+            ENG: Error code
+            - SUPPORT_INVALID_REQUEST: validation failed
+            - SUPPORT_UNAUTHORIZED: authentication failed
+            - SUPPORT_TOO_MANY_REQUESTS: throttling applied
+            - SUPPORT_GENERIC_ERROR: application error
+            IT: Codice di errore
+            - SUPPORT_INVALID_REQUEST: validazione fallita
+            - SUPPORT_UNAUTHORIZED: autenticazione fallita
+            - SUPPORT_TOO_MANY_REQUESTS: superato il rate limit
+            - SUPPORT_GENERIC_ERROR: errore applicativo
         message:
           type: string
           description: 'ENG: Error message - IT: Messaggio di errore'
@@ -5865,84 +5940,6 @@ components:
         message:
           type: string
           description: 'ENG: Error message- IT: Messaggio di errore'
-
-    SupportRequestDTO:
-      title: SupportRequestDTO
-      type: object
-      required:
-        - email
-      properties:
-        email:
-          type: string
-          format: email
-          description: 'ENG: User email (required) - IT: Email utente (obbligatoria)'
-          minLength: 5
-          maxLength: 254
-        firstName:
-          type: string
-          description: 'ENG: First name - IT: Nome'
-          pattern: "^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$"
-          maxLength: 64
-        lastName:
-          type: string
-          description: 'ENG: Last name - IT: Cognome'
-          pattern: "^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,64}$"
-          maxLength: 64
-        fiscalCode:
-          type: string
-          description: "ENG: Italian fiscal code - IT: Codice fiscale"
-          pattern: "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$"
-          minLength: 16
-          maxLength: 16
-        productId:
-          type: string
-          description: 'ENG: Product identifier (e.g. IO) - IT: Identificativo prodotto (es. IO)'
-          pattern: '^[A-Za-z0-9_-]{1,64}$'
-          maxLength: 64
-
-    SupportResponseDTO:
-      title: SupportResponseDTO
-      type: object
-      required:
-        - jwt
-        - returnTo
-      properties:
-        jwt:
-          type: string
-          description: 'ENG: Generated JWT - IT: JWT generato'
-        returnTo:
-          type: string
-          format: uri
-          description: 'ENG: Redirect URL for Zendesk SSO - IT: URL di redirect per SSO Zendesk'
-
-    SupportErrorDTO:
-      title: SupportErrorDTO
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: string
-          enum:
-            - SUPPORT_INVALID_REQUEST
-            - SUPPORT_UNAUTHORIZED
-            - SUPPORT_TOO_MANY_REQUESTS
-            - SUPPORT_GENERIC_ERROR
-          description: >
-            ENG: Error code
-            - SUPPORT_INVALID_REQUEST: validation failed
-            - SUPPORT_UNAUTHORIZED: authentication failed
-            - SUPPORT_TOO_MANY_REQUESTS: throttling applied
-            - SUPPORT_GENERIC_ERROR: application error
-            IT: Codice di errore
-            - SUPPORT_INVALID_REQUEST: validazione fallita
-            - SUPPORT_UNAUTHORIZED: autenticazione fallita
-            - SUPPORT_TOO_MANY_REQUESTS: superato il rate limit
-            - SUPPORT_GENERIC_ERROR: errore applicativo
-        message:
-          type: string
-          description: 'ENG: Error message - IT: Messaggio di errore'
     AuthPaymentResponseDTO:
       type: object
       required:
@@ -6093,7 +6090,6 @@ components:
           maxLength: 2500
           pattern: '^[a-zA-Z0-9 _@\-.!?]+'
           description: 'ENG: Error message- IT: Messaggio di errore'
-
     TransactionErrorDTO1:
       type: object
       required:
