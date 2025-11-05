@@ -211,6 +211,7 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 255
         - name: type
           in: query
           description: Filter by point of sale type
@@ -226,18 +227,21 @@ paths:
           required: false
           schema:
             type: string
+            maxLength: 255
         - name: address
           in: query
           description: Filter by full address
           required: false
           schema:
             type: string
+            maxLength: 255
         - name: contactName
           in: query
           description: Filter by contact person's name
           required: false
           schema:
             type: string
+            maxLength: 255
         - name: page
           in: query
           description: Page number for pagination
