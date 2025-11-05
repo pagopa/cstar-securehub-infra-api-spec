@@ -30,6 +30,7 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 100000
       requestBody:
         description: List of points of sale to save or update
         required: true
