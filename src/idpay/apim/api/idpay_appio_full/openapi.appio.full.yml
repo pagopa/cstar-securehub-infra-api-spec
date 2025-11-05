@@ -3876,6 +3876,12 @@ components:
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione del
             record di autodichiarazione
+        value:
+          type: string
+          example: "1, 2, 3"
+          description: >-
+            ENG: Indicates self-consent values - IT: Indica i valori per gli
+            auto consensi
     SelfConsentBoolDTO:
       type: object
       required:
