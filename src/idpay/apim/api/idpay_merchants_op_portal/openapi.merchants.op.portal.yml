@@ -1976,7 +1976,6 @@ components:
           type: string
           maxLength: 41943040
           format: binary
-          maxLength: 255
     InvoiceDTO:
       type: object
       required:
@@ -1986,7 +1985,6 @@ components:
           type: string
           maxLength: 41943040
           format: binary
-          maxLength: 255
     ReportDTO:
       title: ReportDTO
       type: object
