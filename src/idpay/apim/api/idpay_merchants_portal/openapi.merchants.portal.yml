@@ -249,6 +249,8 @@ paths:
           schema:
             type: integer
             format: int32
+            minimum: 0
+            maximum: 1000000
         - name: size
           in: query
           description: Number of elements per page
@@ -256,6 +258,8 @@ paths:
           schema:
             type: integer
             format: int32
+            minimum: 0
+            maximum: 1000000
         - name: sort
           in: query
           description: Sorting criteria
