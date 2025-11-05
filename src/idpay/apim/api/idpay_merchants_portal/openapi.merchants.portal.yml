@@ -38,6 +38,7 @@ paths:
           application/json:
             schema:
               type: array
+              maxItems: 10000
               items:
                 $ref: "#/components/schemas/PointOfSaleDTO"
       responses:
@@ -65,6 +66,8 @@ paths:
                 format: int64
                 minimum: 0
                 maximum: 1000
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
         "400":
           description: Bad request - Invalid input data
           headers:
@@ -1266,6 +1269,13 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/MerchantErrorDTO' }
 components:
+  headers:
+    Access-Control-Allow-Origin:
+      description: CORS header to allow cross-origin requests
+      schema:
+        type: string
+        maxLength: 255
+        pattern: .*
   parameters:
     MerchantIdHeader:
       name: merchant-id
