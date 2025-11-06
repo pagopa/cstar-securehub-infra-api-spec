@@ -786,7 +786,7 @@ components:
       pattern: "^[ -~]{1,2048}$"
       minLength: 1
       maxLength: 2048
-      example: "https://rtp.cstar.pagopa.it/activations/d0d654e6-97da-4848-b568-99fedccb642b"
+      example: "https://rtp.cstar.pagopa.it/activations/takeover/d0d654e6-97da-4848-b568-99fedccb642b"
 
     RequestId:
       description: Identifier of the request.
@@ -1242,7 +1242,7 @@ components:
           schema:
             $ref: '#/components/schemas/RateLimitReset'
         Location:
-          description: URL of the conflicting activation resource.
+          description: URL to do a takeover on a existing activation user.
           required: true
           schema:
             $ref: '#/components/schemas/TakeOverOtpLocation'
