@@ -781,8 +781,7 @@ components:
         value:
           type: string
           example: '1, 2'
-          description: >-
-            ENG: Self-declaration value - IT: Value del record di autodichiarazione
+          description: "ENG: Self-declaration value - IT: Value del record di autodichiarazione"
     SelfConsentBoolDTO:
       type: object
       required:
