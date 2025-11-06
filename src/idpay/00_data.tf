@@ -41,11 +41,6 @@ data "azurerm_key_vault_secret" "selfcare-merchant-api-key" {
   key_vault_id = data.azurerm_key_vault.key_vault_domain.id
 }
 
-data "azurerm_key_vault_secret" "ab-asistance-api-key" {
-  name         = "ab-asistance-api-key"
-  key_vault_id = data.azurerm_key_vault.key_vault_domain.id
-}
-
 #
 # Storage
 #

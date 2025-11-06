@@ -148,6 +148,4 @@ locals {
 
   mcshared-datavault-url = "https://${local.domain_aks_ingress_hostname}/mcshareddatavault"
 
-  # Appliance Bonus Api Key
-  assistance_api_key_reference = ""
 }
