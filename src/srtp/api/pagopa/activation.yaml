@@ -1242,7 +1242,7 @@ components:
           schema:
             $ref: '#/components/schemas/RateLimitReset'
         Location:
-          description: URL to do a takeover on a existing activation user.
+          description: URL to do a takeover on an existing activation user.
           required: true
           schema:
             $ref: '#/components/schemas/TakeOverOtpLocation'
