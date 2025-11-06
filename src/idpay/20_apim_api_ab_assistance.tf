@@ -17,7 +17,7 @@ module "idpay_itn_api_ab_assistance_product" {
 
 }
 
-module "idpay_itn_ab_assistance" {
+module "idpay_itn_ab_assistance_api" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
   name                = "${var.env_short}-idpay-itn-ab-assistance"

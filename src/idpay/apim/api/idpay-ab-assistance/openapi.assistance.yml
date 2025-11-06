@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: API per l'assistenza
+  title: IDPAY ITN AB ASSISTANCE API
   version: 1.0.0
   description: |
     API per l'assistenza dei beneficiari dell'iniziativa Bonus Elettrodomestici
