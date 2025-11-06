@@ -4033,8 +4033,7 @@ components:
           type: string
           example: '1, 2'
           description: >-
-            ENG: Self-declaration value - IT: Value del
-            record di autodichiarazione
+            ENG: Self-declaration value - IT: Value del record di autodichiarazione
     SelfConsentBoolDTO:
       type: object
       required:
