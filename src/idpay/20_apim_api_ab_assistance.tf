@@ -29,7 +29,7 @@ module "idpay_itn_ab_assistance" {
   path         = "idpay-itn/ab/assistance"
   protocols    = ["https"]
 
-  service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayportalwelfarebackeninitiative/idpay/welfare"
+  service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayportalwelfarebackeninitiative/"
 
   content_format = "openapi"
   content_value  = templatefile("./apim/api/idpay-ab-assistance/openapi.assistance.yml", {})
