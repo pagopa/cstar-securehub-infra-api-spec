@@ -1266,7 +1266,7 @@ components:
         value:
           type: array
           items:
-            $ref: "#/components/schemas/RowDataValueDTO"
+            $ref: "#/components/schemas/RowDataDTO"
           description: >-
             ENG: Indicates self-declaration values - IT: Indica i valori per
             l'autodichiarazione
@@ -1300,7 +1300,7 @@ components:
         value:
           type: array
           items:
-            $ref: "#/components/schemas/RowDataDTO"
+            $ref: "#/components/schemas/RowDataValueDTO"
           description: >-
             ENG: Indicates self-declaration values - IT: Indica i valori per
             l'autodichiarazione
