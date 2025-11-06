@@ -38,7 +38,6 @@ paths:
           application/json:
             schema:
               type: array
-              maxItems: 10000
               items:
                 $ref: "#/components/schemas/PointOfSaleDTO"
       responses:
