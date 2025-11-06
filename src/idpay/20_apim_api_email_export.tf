@@ -3,9 +3,9 @@
 module "idpay_itn_api_portal_product_export" {
   source = "./.terraform/modules/__v4__/api_management_product"
 
-  product_id          = "idpay-email-export-v2"
-  display_name        = "IDPAY ITN Email Export v2"
-  description         = "IDPAY ITN Email Export"
+  product_id   = "idpay-email-export-v2"
+  display_name = "IDPAY ITN Email Export v2"
+  description  = "IDPAY ITN Email Export"
 
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
@@ -24,23 +24,23 @@ module "idpay_itn_api_portal_product_export" {
 module "idpay_itn_notification_email_export" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
-  name                 = "${var.env_short}-${local.prefix_api}-idpay-email-export"
-  api_management_name  = data.azurerm_api_management.apim_core.name
-  resource_group_name  = data.azurerm_resource_group.apim_rg.name
+  name                = "${var.env_short}-${local.prefix_api}-idpay-email-export"
+  api_management_name = data.azurerm_api_management.apim_core.name
+  resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description          = "IDPAY ITN Notification Email Export"
-  display_name         = "IDPAY ITN Notification Email API Export"
-  path                 = "idpay-itn/email-notification/export"
-  protocols            = ["https"]
+  description  = "IDPAY ITN Notification Email Export"
+  display_name = "IDPAY ITN Notification Email API Export"
+  path         = "idpay-itn/email-notification/export"
+  protocols    = ["https"]
 
-  service_url          = "${local.domain_aks_ingress_load_balancer_https}/idpaynotificationemail/"
+  service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaynotificationemail/"
 
-  content_format       = "openapi"
-  content_value        = file("./apim/api/idpay_notification_email_export/openapi.notification.email.yml")
+  content_format = "openapi"
+  content_value  = file("./apim/api/idpay_notification_email_export/openapi.notification.email.yml")
 
-  xml_content          = file("./apim/api/base_policy.xml")
+  xml_content = file("./apim/api/base_policy.xml")
 
-  product_ids          = [module.idpay_itn_api_portal_product_export.product_id]
+  product_ids = [module.idpay_itn_api_portal_product_export.product_id]
 
   subscription_required = true
 
@@ -67,7 +67,7 @@ resource "azurerm_api_management_subscription" "idpay_email_export_adf" {
 
   display_name = "ADF Email Export"
 
-  product_id   = module.idpay_itn_api_portal_product_export.id
+  product_id = module.idpay_itn_api_portal_product_export.id
 
   state = "active"
 
