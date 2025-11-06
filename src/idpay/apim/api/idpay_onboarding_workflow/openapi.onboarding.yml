@@ -761,6 +761,29 @@ components:
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
             del record di autodichiarazione
+    RowDataValueDTO:
+      type: object
+      required:
+        - description
+      properties:
+        description:
+          type: string
+          example: descrizione
+          description: >-
+            ENG: Self-declaration description - IT: Descrizione del record di
+            autodichiarazione
+        subDescription:
+          type: string
+          example: sotto descrizione
+          description: >-
+            ENG: Self-declaration sub-description - IT: Sotto descrizione del
+            record di autodichiarazione
+        value:
+          type: string
+          example: '1, 2'
+          description: >-
+            ENG: Self-declaration value - IT: Value del
+            record di autodichiarazione
     SelfConsentBoolDTO:
       type: object
       required:
@@ -837,7 +860,7 @@ components:
           description: "ENG: Self-consent code - IT: Tipologia di multiconsenso"
         value:
           type: string
-          example: "1, 2, 3"
+          example: "1, 2"
           description: "ENG: Indicates self-consent values - IT: Indica i valori per gli auto consensi"
     InitiativeDataDTO:
       type: object
@@ -1243,7 +1266,7 @@ components:
         value:
           type: array
           items:
-            $ref: "#/components/schemas/RowDataDTO"
+            $ref: "#/components/schemas/RowDataValueDTO"
           description: >-
             ENG: Indicates self-declaration values - IT: Indica i valori per
             l'autodichiarazione
