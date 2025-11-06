@@ -14,6 +14,29 @@
   <inbound>
     <base />
 
+    <set-variable name="apiKey" value="@(context.Request.Headers.GetValueOrDefault("x-api-key", ""))" />
+
+    <choose>
+      <when condition="@(!context.Variables.ContainsKey("apiKey") || string.IsNullOrEmpty((string)context.Variables["apiKey"]))">
+        <return-response>
+          <set-status code="401" reason="Unauthorized" />
+          <set-body>{
+            "code": "API_KEY_MISSING",
+            "message": "API Key mancante nella richiesta"
+          }</set-body>
+        </return-response>
+      </when>
+      <when condition="@((string)context.Variables["apiKey"] != "{{${assistance_api_key_reference}}}")">
+        <return-response>
+          <set-status code="403" reason="Forbidden" />
+          <set-body>{
+            "code": "INVALID_API_KEY",
+            "message": "API Key non valida"
+          }</set-body>
+        </return-response>
+      </when>
+    </choose>
+
     <set-variable name="requestBody" value="@((JObject)context.Request.Body.As<JObject>(preserveContent: true))" />
 
     <set-variable name="fiscalCode" value="@( (string)context.Variables.GetValueOrDefault("requestBody")?["fiscalCode"] )" />
