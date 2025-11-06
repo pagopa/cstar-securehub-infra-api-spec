@@ -116,6 +116,14 @@ module "idpay_itn_users_portal_api" {
       xml_content = templatefile("./apim/api/idpay_payment_io/get-generate-pdf-barcode-web-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
+    },
+    {
+      operation_id = "buildZendeskJwt"
+      xml_content = templatefile("./apim/api/idpay_wallet/post-build-jwt-web-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+        origins                        = local.origins_bonus_elettrodomestici.base
+        rate_limit_users_portal        = var.rate_limit_users_portal_product
+      })
     }
   ]
 

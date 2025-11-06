@@ -807,13 +807,13 @@ paths:
               example:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
-  /transactions/{transactionId}/reward:
+  /transactions/{transactionId}/invoice:
     post:
       tags:
         - transaction
-      summary: Riconoscimento di una transazione da parte di un Punto Vendita
-      description: "Riconoscimento di una transazione da parte di un Punto Vendita"
-      operationId: rewardTransaction
+      summary: Inserimento della fattura in una transazione, da parte di un Punto Vendita
+      description: "Inserimento della fattura in una transazione, da parte di un Punto Vendita"
+      operationId: invoiceTransaction
       parameters:
         - name: transactionId
           in: path
@@ -828,7 +828,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: "#/components/schemas/RewardInvoiceDTO"
+              $ref: "#/components/schemas/InvoiceDTO"
       responses:
         "204":
           description: Ok - no content
@@ -1056,7 +1056,6 @@ components:
           description: "Importo totale della spesa in centesimi"
           example: 123400
       required:
-        - productName
         - productGtin
         - amountCents
     PreviewPaymentDTO:
@@ -1362,6 +1361,12 @@ components:
           description: "Data della transazione"
           maxLength: 255
           example: "2025-10-24T12:36:00.725+00:00"
+        trxChargeDate:
+          type: string
+          format: date-time
+          description: "La data di autorizzazione del pagamento"
+          maxLength: 255
+          example: "2025-10-24T12:36:00.725+00:00"
         updateDate:
           type: string
           format: date-time
@@ -1375,6 +1380,7 @@ components:
             - REWARDED
             - CANCELLED
             - REFUNDED
+            - INVOICED
           example: "REWARDED"
         channel:
           type: string
@@ -1479,6 +1485,12 @@ components:
           type: string
           format: date-time
           description: "Data della transazione"
+          maxLength: 255
+          example: "2025-10-24T12:36:00.725+00:00"
+        trxChargeDate:
+          type: string
+          format: date-time
+          description: "La data di autorizzazione del pagamento"
           maxLength: 255
           example: "2025-10-24T12:36:00.725+00:00"
         trxExpirationSeconds:
@@ -1709,6 +1721,7 @@ components:
             - PAYMENT_MERCHANT_NOT_ONBOARDED
             - PAYMENT_INVALID_REQUEST
             - PAYMENT_STATUS_NOT_VALID
+            - PAYMENT_TOO_RECENT
             - PAYMENT_TRANSACTION_VERSION_PENDING
             - PRODUCT_NOT_FOUND
           example: "PAYMENT_NOT_FOUND_OR_EXPIRED"
@@ -1728,7 +1741,7 @@ components:
           type: string
           format: binary
           maxLength: 255
-    RewardInvoiceDTO:
+    InvoiceDTO:
       type: object
       required:
         - file
@@ -2205,6 +2218,7 @@ components:
           - REWARDED
           - CANCELLED
           - REFUNDED
+          - INVOICED
         example: REWARDED
     sort_trx_processed_query:
       name: sort
@@ -2213,13 +2227,13 @@ components:
       schema:
         type: string
         enum:
-          - updateDate, desc
+          - trxChargeDate, desc
           - status, desc
           - productName, desc
-          - updateDate, asc
+          - trxChargeDate, asc
           - status, asc
           - productName, asc
-        example: updateDate, desc
+        example: trxChargeDate, desc
     status_trx_in_progress_query:
       name: status
       in: query
@@ -2247,13 +2261,13 @@ components:
       schema:
         type: string
         enum:
-          - updateDate, desc
+          - trxChargeDate, desc
           - status, desc
           - productName, desc
-          - updateDate, asc
+          - trxChargeDate, asc
           - status, asc
           - productName, asc
-        example: updateDate, desc
+        example: trxChargeDate, desc
     transactionId_path:
       name: transactionId
       in: path

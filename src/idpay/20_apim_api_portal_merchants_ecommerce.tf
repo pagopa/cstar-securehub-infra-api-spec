@@ -34,7 +34,7 @@ module "idpay_itn_api_portal_merchants_ecommerce_product" {
 
 ## IDPAY Portal Merchant Ecommerce API ##
 module "idpay_itn_portal_merchants_ecommerce_api" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short != "p" ? 1 : 0
   source = "./.terraform/modules/__v4__/api_management_api"
 
   name                = "${var.env_short}-idpay-itn-portal-merchant-ecommerce"
@@ -102,8 +102,8 @@ module "idpay_itn_portal_merchants_ecommerce_api" {
       })
     },
     {
-      operation_id = "rewardTransaction"
-      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/post-reward-payment-policy.xml.tpl", {
+      operation_id = "invoiceTransaction"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/post-invoice-payment-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
