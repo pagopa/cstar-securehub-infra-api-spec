@@ -183,6 +183,16 @@ components:
       maxLength: 10
       example: "2025-12-19"
 
+    DateOfOnboardingOk:
+      description: Data di avvenuto onboarding
+      type: string
+      format: date
+      pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+      minLength: 10
+      maxLength: 10
+      example: "2025-12-19"
+
+
     Email:
       description: E-mail del beneficiario
       type: string
@@ -252,6 +262,14 @@ components:
 
     Name:
       description: Nome del beneficiario
+      type: string
+      pattern: "^[ -~]{1,256}$"
+      minLength: 1
+      maxLength: 256
+      example: "Mario"
+
+    DetailKO:
+      description: Dettaglio del KO del onboarding
       type: string
       pattern: "^[ -~]{1,256}$"
       minLength: 1
@@ -365,17 +383,6 @@ components:
       maxLength: 20
       example: "+390612345678"
 
-    URL:
-      description: |
-        Sito web del negozio in cui è stato utilizzato il voucher se il suo
-        stato è SPENT, PREAUTHORIZED o REVERSED e se il tipo di negozio è ONLINE
-      type: string
-      format: uri
-      pattern: "^[ -~]{0,2048}$"
-      minLength: 0
-      maxLength: 2048
-      example: "https://www.elettrodomesticisrl.it"
-
     GoodAmount:
       description: |
         Importo del bene acquistato con il voucher in centesimi di euro
@@ -449,16 +456,16 @@ components:
       description: Informazioni di una richiesta di adesione
       additionalProperties: false
       properties:
+        detailKO:
+          $ref: '#/components/schemas/DetailKO'
         name:
           $ref: '#/components/schemas/Name'
         surname:
           $ref: '#/components/schemas/Surname'
-        dateOfBirth:
-          $ref: '#/components/schemas/DateOfBirth'
         dateOfOnboardingRequest:
           $ref: '#/components/schemas/DateOfOnboardingRequest'
-        iseeOptionSelected:
-          $ref: '#/components/schemas/IseeOptionSelected'
+        dateOfOnboardingOk:
+          $ref: '#/components/schemas/DateOfOnboardingOk'
         channel:
           $ref: '#/components/schemas/Channel'
         email:
@@ -466,13 +473,8 @@ components:
         status:
           $ref: '#/components/schemas/OnboardingStatus'
       required:
-        - name
-        - surname
-        - dateOfBirth
         - dateOfOnboardingRequest
-        - iseeOptionSelected
         - channel
-        - email
         - status
       example:
         name: "Mario"
@@ -492,8 +494,6 @@ components:
           $ref: '#/components/schemas/Name'
         surname:
           $ref: '#/components/schemas/Surname'
-        dateOfBirth:
-          $ref: '#/components/schemas/DateOfBirth'
         issueDate:
           $ref: '#/components/schemas/IssueDate'
         expirationDate:
@@ -516,16 +516,11 @@ components:
           $ref: '#/components/schemas/MerchantCity'
         phoneNumber:
           $ref: '#/components/schemas/PhoneNumber'
-        url:
-          $ref: '#/components/schemas/URL'
         goodAmount:
           $ref: '#/components/schemas/GoodAmount'
         goodDescription:
           $ref: '#/components/schemas/GoodDescription'
       required:
-        - name
-        - surname
-        - dateOfBirth
         - issueDate
         - expirationDate
         - maxDiscountAmount
