@@ -2,8 +2,7 @@ openapi: 3.0.3
 info:
   title: IDPAY ITN AB ASSISTANCE API
   version: 1.0.0
-  description: |
-    API per l'assistenza dei beneficiari dell'iniziativa Bonus Elettrodomestici
+  description: IDPAY ITN AB ASSISTANCE API
   contact:
     name: CSTAR
     email: cstar@pagopa.it
