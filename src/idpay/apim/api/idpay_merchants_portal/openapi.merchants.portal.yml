@@ -887,9 +887,9 @@ paths:
     get:
       tags:
         - transaction
-      summary: "ENG: Download invoice file - IT: Scarica il file della fattura"
-      description: "ENG: Download the invoice file of the transaction<br>
-        IT: Scarica il file della fattura della transazione"
+      summary: "ENG: Download invoice or credit note file - IT: Scarica il file della fattura o nota di credito"
+      description: "ENG: Download the invoice or credit note file of the transaction<br>
+        IT: Scarica il file della fattura o nota di credito della transazione"
       operationId: downloadInvoiceFile
       parameters:
         - name: pointOfSaleId
@@ -911,7 +911,7 @@ paths:
             application/json:
               schema:
                 $ref:
-                  "#/components/schemas/DownloadInvoiceResponseDTO"
+                  "#/components/schemas/DownloadDocumentResponseDTO"
         "400":
           description: Bad request
           content:
@@ -2032,23 +2032,34 @@ components:
           type: object
           additionalProperties:
             type: string
-        invoiceFile:
-          $ref: '#/components/schemas/InvoiceFileDTO'
-    InvoiceFileDTO:
+        invoiceData:
+          $ref: '#/components/schemas/InvoiceDataDTO'
+        creditNoteData:
+          $ref: '#/components/schemas/CreditNoteDataDTO'
+    InvoiceDataDTO:
       type: object
       properties:
         filename:
           type: string
           description: 'ENG: The name of the invoice file <br> IT: Il nome del file della fattura'
-        docNumber:
+        invoiceNumber:
           type: string
           maxLength: 255
-    DownloadInvoiceResponseDTO:
+    CreditNoteDataDTO:
+      type: object
+      properties:
+        filename:
+          type: string
+          description: 'ENG: The name of the credit note file <br> IT: Il nome del file della nota di credito'
+        creditNoteNumber:
+          type: string
+          maxLength: 255
+    DownloadDocumentResponseDTO:
       type: object
       properties:
         invoiceUrl:
           type: string
-          description: "ENG: URL to download the invoice file - IT: URL per scaricare il file della fattura"
+          description: "ENG: URL to download the invoice or credit note file - IT: URL per scaricare il file della fattura o nota di credito"
       required:
         - invoiceUrl
     ReportedUserCreateResponseDTO:

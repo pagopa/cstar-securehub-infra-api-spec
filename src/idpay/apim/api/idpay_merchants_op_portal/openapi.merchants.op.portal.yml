@@ -792,7 +792,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: "#/components/schemas/ReversalInvoiceDTO"
+              $ref: "#/components/schemas/ReversalDTO"
       responses:
         "204":
           description: Ok - no content
@@ -1589,17 +1589,31 @@ components:
             type: string
             maxLength: 255
             pattern: ".*"
-        invoiceFile:
-          $ref: "#/components/schemas/InvoiceFileDTO"
-    InvoiceFileDTO:
+        invoiceData:
+          $ref: "#/components/schemas/InvoiceDataDTO"
+        creditNoteData:
+          $ref: "#/components/schemas/CreditNoteDataDTO"
+    InvoiceDataDTO:
       type: object
       properties:
         filename:
           type: string
           description: "ENG: The name of the invoice file <br> IT: Il nome del file della fattura"
           maxLength: 255
-        docNumber:
+        invoiceNumber:
           type: string
+          description: "ENG: The number of the invoice <br> IT: Il numero del file della fattura"
+          maxLength: 255
+    CreditNoteDataDTO:
+      type: object
+      properties:
+        filename:
+          type: string
+          description: "ENG: The name of the credit note file <br> IT: Il nome del file della fattura"
+          maxLength: 255
+        creditNoteNumber:
+          type: string
+          description: "ENG: The number of the credit note <br> IT: Il numero del file della nota di credito"
           maxLength: 255
     PointOfSaleTransactionsListDTO:
       type: object
@@ -1928,13 +1942,13 @@ components:
           minimum: 0
           maximum: 1000000
           description: "ENG: Remaining amount to be paid if the authorized sum is less than the requested sum - IT: Importo restante da pagare nel caso in cui la somma autorizzata sia inferiore alla somma richiesta."
-    DownloadInvoiceResponseDTO:
+    DownloadDocumentResponseDTO:
       type: object
       properties:
         invoiceUrl:
           type: string
           maxLength: 10000
-          description: "ENG: URL to download the invoice file - IT: URL per scaricare il file della fattura"
+          description: "ENG: URL to download the invoice or credit note file - IT: URL per scaricare il file della fattura o nota di credito"
       required:
         - invoiceUrl
     TransactionErrorDTO:
@@ -1980,30 +1994,28 @@ components:
           description: "ENG: Error message- IT: Messaggio di errore"
           maxLength: 1000
           pattern: ".*"
-    ReversalInvoiceDTO:
+    ReversalDTO:
       type: object
       required:
         - file
-        - docNumber
       properties:
         file:
           type: string
           maxLength: 41943040
           format: binary
-        docNumber:
+        creditNoteNumber:
           type: string
           maxLength: 255
     InvoiceDTO:
       type: object
       required:
         - file
-        - docNumber
       properties:
         file:
           type: string
           maxLength: 41943040
           format: binary
-        docNumber:
+        invoiceNumber:
           type: string
           maxLength: 255
     ReportDTO:
@@ -2281,7 +2293,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/DownloadInvoiceResponseDTO"
+            $ref: "#/components/schemas/DownloadDocumentResponseDTO"
     GET_download_invoice_file_400_Response:
       description: Bad request
       headers:
