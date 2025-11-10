@@ -1598,6 +1598,9 @@ components:
           type: string
           description: "ENG: The name of the invoice file <br> IT: Il nome del file della fattura"
           maxLength: 255
+        docNumber:
+          type: string
+          maxLength: 255
     PointOfSaleTransactionsListDTO:
       type: object
       properties:
@@ -1981,20 +1984,28 @@ components:
       type: object
       required:
         - file
+        - docNumber
       properties:
         file:
           type: string
           maxLength: 41943040
           format: binary
+        docNumber:
+          type: string
+          maxLength: 255
     InvoiceDTO:
       type: object
       required:
         - file
+        - docNumber
       properties:
         file:
           type: string
           maxLength: 41943040
           format: binary
+        docNumber:
+          type: string
+          maxLength: 255
     ReportDTO:
       title: ReportDTO
       type: object
