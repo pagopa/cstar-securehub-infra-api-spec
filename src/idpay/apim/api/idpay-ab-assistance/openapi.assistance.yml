@@ -523,7 +523,6 @@ components:
       required:
         - issueDate
         - expirationDate
-        - maxDiscountAmount
         - status
       example:
         name: "Mario"
