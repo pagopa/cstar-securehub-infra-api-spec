@@ -1752,7 +1752,6 @@ components:
       type: object
       required:
         - file
-        - docNumber
       properties:
         file:
           type: string
