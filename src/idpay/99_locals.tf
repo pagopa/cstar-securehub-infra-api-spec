@@ -147,4 +147,5 @@ locals {
   keycloak_url_user_account = "${var.keycloak_url_user}/account"
 
   mcshared-datavault-url = "https://${local.domain_aks_ingress_hostname}/mcshareddatavault"
+
 }
