@@ -41,6 +41,7 @@ module "idpay_itn_ab_assistance_api" {
 
   xml_content = file("./apim/api/base_policy.xml")
 
+  subscription_required = true
 
   product_ids = [module.idpay_itn_api_ab_assistance_product.product_id]
 
