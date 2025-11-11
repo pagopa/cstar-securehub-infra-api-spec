@@ -137,6 +137,7 @@ locals {
   openid_config_url_merchant_op = "${var.keycloak_url_merchant_op}/.well-known/openid-configuration"
   merchant_op_client_id         = "frontend"
   merchant_op_client_id_test    = "performance-test-client"
+  users_op_client_id_test       = "performance-test-client"
 
   # AWS places
   aws_places_endpoint = "places.geo.eu-central-1.amazonaws.com"

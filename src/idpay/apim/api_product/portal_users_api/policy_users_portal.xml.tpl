@@ -39,14 +39,23 @@
         <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid." output-token-variable-name="jwt">
             <openid-config url="${openid_config_url_user}" />
             <required-claims>
-                <claim name="azp">
-                    <value>${user_client_id}</value>
-                </claim>
                 <claim name="iss">
                     <value>${keycloak_url_user}</value>
                 </claim>
             </required-claims>
         </validate-jwt>
+        <set-variable name="azp" value="@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("azp", ""))" />
+        <choose>
+            <when condition="@((string)context.Variables["azp"] != "${user_client_id}" && (string)context.Variables["azp"] != "${users_op_client_id_test}")">
+                <return-response>
+                    <set-status code="401" reason="Unauthorized" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>{"statusCode":401,"message":"Unauthorized. Invalid azp claim."}</set-body>
+                </return-response>
+            </when>
+        </choose>
                 <!-- Extract fiscalNumber of token -->
                 <set-variable name="pii" value="@(((Jwt)context.Variables["jwt"]).Claims.ContainsKey("fiscalNumber")
     ? ((Jwt)context.Variables["jwt"]).Claims["fiscalNumber"].FirstOrDefault()
