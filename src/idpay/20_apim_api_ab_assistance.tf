@@ -13,9 +13,13 @@ module "idpay_itn_api_ab_assistance_product" {
 
   published             = true
   subscription_required = true
-  approval_required     = true
+  approval_required     = false
 
   subscriptions_limit = 50
+
+  policy_xml = templatefile("./apim/api_product/ab_assistance/policy_assistance.xml.tpl", {
+    origins = local.origins.base
+  })
 }
 
 module "idpay_itn_ab_assistance_api" {
@@ -30,7 +34,7 @@ module "idpay_itn_ab_assistance_api" {
   path         = "idpay-itn/ab/assistance"
   protocols    = ["https"]
 
-  service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayportalwelfarebackeninitiative/"
+  service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayportalwelfarebackendinitiative/"
 
   content_format = "openapi"
   content_value  = templatefile("./apim/api/idpay-ab-assistance/openapi.assistance.yml", {})
@@ -43,13 +47,13 @@ module "idpay_itn_ab_assistance_api" {
   api_operation_policies = [
     {
       operation_id = "getOnboardingStatus"
-      xml_content = templatefile("./apim/api/idpay-ab-assistance/get-onboarding-status.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay-ab-assistance/post-onboarding-status.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getVoucherStatus"
-      xml_content = templatefile("./apim/api/idpay-ab-assistance/get-voucher-status.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay-ab-assistance/post-voucher-status.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
