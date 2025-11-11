@@ -1135,7 +1135,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ProductDTO"
-          maxItems: 1000000
+          maxItems: 1000
         pageNo:
           type: integer
           format: int32
@@ -1288,7 +1288,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PointOfSaleTransactionProcessedDTO"
-          maxItems: 1000000
+          maxItems: 1000
         pageNo:
           type: integer
           format: int32
@@ -1418,7 +1418,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PointOfSaleTransactionDTO"
-          maxItems: 1000000
+          maxItems: 1000
         pageNo:
           type: integer
           format: int32
