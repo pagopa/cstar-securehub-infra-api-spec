@@ -28,6 +28,7 @@ module "idpay_itn_api_portal_users_product" {
     keycloak_url_user_account = local.keycloak_url_user_account
     keycloak_timeout_sec      = var.keycloak_timeout_sec
     env_short                 = var.env_short
+    users_op_client_id_test   = local.users_op_client_id_test
   })
 
   groups = ["developers"]
