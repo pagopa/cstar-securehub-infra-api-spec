@@ -13,6 +13,18 @@
 <policies>
     <inbound>
         <base />
+        <return-response>
+            <set-status code="500" reason="Internal Server Error" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>
+                {
+                    "error": "Internal Server Error",
+                    "message": "Simulated stub response for walletwithinstrument"
+                }
+            </set-body>
+        </return-response>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaywallet" />
         <rewrite-uri template="@("idpay/wallet/instrument/{idWallet}/"+ (string)context.Variables["tokenPDV"] + "/initiatives")" />
     </inbound>
