@@ -49,7 +49,7 @@
     </choose>
 
     <set-variable name="tokenPDV" value="@((string)context.Variables["pdv_token"])" />
-    <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayportalwelfarebackeninitiative" />
+    <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayportalwelfarebackendinitiative" />
     <rewrite-uri template="@("/idpay/assistance/onboardings/status/68dd003ccce8c534d1da22bc/" + (string)context.Variables["tokenPDV"])" />
 
   </inbound>
