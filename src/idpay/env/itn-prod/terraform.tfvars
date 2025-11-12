@@ -26,7 +26,6 @@ external_domain          = "pagopa.it"
 #
 rate_limit_assistance_product   = 1000
 rate_limit_issuer_product       = 2000
-rate_limit_users_portal_product = 2000
 rate_limit_mil_merchant_product = 2000
 rate_limit_mil_citizen_product  = 2000
 
@@ -34,7 +33,7 @@ rate_limit_minint_product = 1000
 
 rate_limit_portal_product           = 2500
 rate_limit_merchants_portal_product = 2500
-
+rate_limit_users_portal_product     = 3000000 #3 Million
 
 #
 # Register Token Exchange
@@ -61,7 +60,7 @@ aks_legacy_instance_name = "prod01"
 # IO
 #
 appio_timeout_sec     = 5
-rate_limit_io_product = 300000
+rate_limit_io_product = 3000000 #3 Million
 webViewUrl            = "https://api-io.cstar.pagopa.it/idpay/self-expense/login"
 
 #
