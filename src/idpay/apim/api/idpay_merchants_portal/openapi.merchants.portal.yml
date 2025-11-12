@@ -2040,6 +2040,9 @@ components:
         filename:
           type: string
           description: 'ENG: The name of the invoice file <br> IT: Il nome del file della fattura'
+        docNumber:
+          type: string
+          maxLength: 255
     DownloadInvoiceResponseDTO:
       type: object
       properties:

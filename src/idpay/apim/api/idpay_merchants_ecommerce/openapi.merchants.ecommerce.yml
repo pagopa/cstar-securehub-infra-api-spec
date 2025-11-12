@@ -1408,6 +1408,9 @@ components:
           description: "Nome del file della fattura"
           maxLength: 255
           example: "invoice_12345.pdf"
+        docNumber:
+          type: string
+          maxLength: 255
     PointOfSaleTransactionsListDTO:
       type: object
       properties:
@@ -1741,6 +1744,9 @@ components:
           type: string
           format: binary
           maxLength: 255
+        docNumber:
+          type: string
+          maxLength: 255
     InvoiceDTO:
       type: object
       required:
@@ -1749,6 +1755,9 @@ components:
         file:
           type: string
           format: binary
+          maxLength: 255
+        docNumber:
+          type: string
           maxLength: 255
   securitySchemes:
     Bearer:
