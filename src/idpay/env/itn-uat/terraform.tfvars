@@ -60,7 +60,7 @@ aks_legacy_instance_name = "uat01"
 # IO
 #
 appio_timeout_sec     = 5
-rate_limit_io_product = 300000
+rate_limit_io_product = 3000000
 webViewUrl            = "https://api-io.uat.cstar.pagopa.it/idpay/self-expense/login"
 
 #
