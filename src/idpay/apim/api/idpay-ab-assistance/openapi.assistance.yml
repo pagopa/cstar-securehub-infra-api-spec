@@ -743,4 +743,3 @@ components:
       description: API key per l'autorizzazione
       type: apiKey
       in: header
-      name: API-Key
