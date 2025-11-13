@@ -33,8 +33,7 @@ paths:
       security:
         - apiKeyAuth: []
       parameters:
-        - $ref: '#/components/parameters/RequestId'
-        - $ref: '#/components/parameters/Version'
+        - $ref: '#/components/parameters/Ocp-Apim-Subscription-Key'
       requestBody:
         $ref: '#/components/requestBodies/GetStatus'
       responses:
@@ -46,7 +45,7 @@ paths:
           $ref: '#/components/responses/Error'
         "401":
           #description: Wrong credentials
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/Error401'
         "403":
           #description: Forbidden
           $ref: '#/components/responses/Error'
@@ -79,8 +78,7 @@ paths:
       security:
         - apiKeyAuth: []
       parameters:
-        - $ref: '#/components/parameters/RequestId'
-        - $ref: '#/components/parameters/Version'
+        - $ref: '#/components/parameters/Ocp-Apim-Subscription-Key'
       requestBody:
         $ref: '#/components/requestBodies/GetStatus'
       responses:
@@ -92,7 +90,7 @@ paths:
           $ref: '#/components/responses/Error'
         "401":
           #description: Wrong credentials
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/Error401'
         "403":
           #description: Forbidden
           $ref: '#/components/responses/Error'
@@ -279,15 +277,11 @@ components:
     OnboardingStatus:
       description: Stato della richiesta di adesione
       enum:
-        - UNDER_EVALUATION
-        - 100_APPROVED
-        - 200_APPROVED
-        - 200_REQUESTED_BUT_100_AWARDED
-        - ONBOARDING_REQUESTED_BY_ANOTHER_FAMILY_MEMBER
-        - WAINTING_LIST
-        - INITIATIVE_ENDED
-        - BUDGET_EXHAUSTED
-        - AGE_REQUIREMENTS_NOT_MET
+        - ONBOARDING_KO
+        - ONBOARDING_OK
+        - ON_EVALUATION
+        - UNSUBSCRIBED
+        - JOINED
       type: string
       example: "UNDER_EVALUATION"
 
@@ -302,11 +296,10 @@ components:
     VoucherStatus:
       description: Stato del voucher
       enum:
-        - SPENT
-        - TO_BE_SPENT
-        - EXPIRED
-        - PREAUTHORIZED
-        - REVERSED
+        - USED,
+        - EXPIRED,
+        - ACTIVE,
+        - EXPIRING
       type: string
       example: "SPENT"
 
@@ -419,6 +412,22 @@ components:
         code: "999999999"
         description: "Error description"
 
+    Error401:
+      description: Error details.
+      type: object
+      additionalProperties: false
+      properties:
+        statusCode:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          $ref: '#/components/schemas/ErrorDescription'
+      required:
+        - statusCode
+        - message
+      example:
+        statusCode: "401"
+        message: "Error description"
+
     Errors:
       description: List of errors.
       type: object
@@ -479,9 +488,7 @@ components:
       example:
         name: "Mario"
         surname: "Rossi"
-        dateOfBirth: "1985-12-10"
         dateOfOnboardingRequest: "2025-12-19"
-        iseeOptionSelected: "BELOW"
         channel: "IO"
         email: "mario.rossi@miaemail.it"
         status: "100_APPROVED"
@@ -527,11 +534,10 @@ components:
       example:
         name: "Mario"
         surname: "Rossi"
-        dateOfBirth: "1985-12-10"
         issueDate: "2025-12-20"
         expirationDate: "2025-12-31"
         maxDiscountAmount: 10000
-        status: "SPENT"
+        status: "USED"
         dateOfUse: "2025-12-25"
         amountUsed: 5400
         typeOfStore: "PHYSICAL"
@@ -557,6 +563,13 @@ components:
   # Parameters
   # ============================================================================
   parameters:
+    Ocp-Apim-Subscription-Key:
+      name: Ocp-Apim-Subscription-Key
+      in: header
+      required: true
+      schema:
+        type: string
+
     RequestId:
       name: RequestId
       in: header
@@ -677,7 +690,44 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Errors'
+            $ref: '#/components/schemas/Error'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            minLength: 0
+            maxLength: 65535
+
+    Error401:
+      description: Risposta d'errore 401
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error401'
         text/*:
           schema:
             type: string
@@ -693,4 +743,3 @@ components:
       description: API key per l'autorizzazione
       type: apiKey
       in: header
-      name: API-Key
