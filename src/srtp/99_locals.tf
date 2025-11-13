@@ -9,9 +9,9 @@ locals {
   apim_logger_id    = "${data.azurerm_api_management.apim.id}/loggers/${local.project}-apim-logger"
   api_management_id = data.azurerm_api_management.apim.id
 
-  dns_external_domain = "pagopa.it"
-  dns_zone            = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.${local.dns_external_domain}"
-  rtp_fe_origin       = "rtp.${local.dns_zone}"
+  dns_external_domain    = "pagopa.it"
+  dns_zone               = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.${local.dns_external_domain}"
+  rtp_fe_origin          = "rtp.${local.dns_zone}"
   internal_domain_suffix = "internal"
 
   # Default Domain Resource Group
@@ -148,7 +148,7 @@ locals {
       product               = "srtp"
       import_descriptor = {
         content_format = "openapi"
-        content_value = templatefile("./api/epc/callback.openapi.yaml", {})
+        content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
       }
     }
 
