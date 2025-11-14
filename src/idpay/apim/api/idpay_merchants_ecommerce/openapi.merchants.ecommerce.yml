@@ -390,9 +390,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TransactionErrorDTO"
-              example:
-                code: PAYMENT_AMOUNT_NOT_VALID
-                message: "Cannot authorize transaction with invalid amount [%s]"
+              examples:
+                invalidAmount:
+                  summary: Amount not valid
+                  value:
+                    code: PAYMENT_AMOUNT_NOT_VALID
+                    message: "Cannot authorize transaction with invalid amount [%s]"
+                missingAdditionalProperties:
+                  summary: Additional properties not exist
+                  value:
+                    code: TRX_ADDITIONAL_PROPERTIES_NOT_EXIST
+                    message: "Cannot authorize transaction with invalid AdditionalProperties"
+
         "401":
           description: Authentication failed
           headers:
