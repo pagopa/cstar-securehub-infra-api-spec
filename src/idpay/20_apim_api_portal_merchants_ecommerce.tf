@@ -41,8 +41,8 @@ module "idpay_itn_portal_merchants_ecommerce_api" {
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY ITN Portal Merchants ECOMMERCE API"
-  display_name = "IDPAY ITN Portal Merchants ECOMMERCE API"
+  description  = "PARI - API e-commerce"
+  display_name = "PARI - API e-commerce"
   path         = "idpay-itn/merchant-ecommerce"
   protocols    = ["https"]
 
