@@ -1582,6 +1582,7 @@ components:
       required:
         - amountCents
         - idTrxAcquirer
+        - additionalProperties
       properties:
         amountCents:
           type: integer
@@ -1730,6 +1731,7 @@ components:
             - PAYMENT_DELETE_NOT_ALLOWED_FOR_TRX_STATUS
             - PAYMENT_UNRELATE_NOT_ALLOWED_FOR_TRX_STATUS
             - PAYMENT_AMOUNT_NOT_VALID
+            - TRX_ADDITIONAL_PROPERTIES_NOT_EXIST
             - PAYMENT_MERCHANT_NOT_ONBOARDED
             - PAYMENT_INVALID_REQUEST
             - PAYMENT_STATUS_NOT_VALID
