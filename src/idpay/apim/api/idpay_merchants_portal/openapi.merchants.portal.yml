@@ -2192,6 +2192,16 @@ components:
             - CREATED
             - EVALUATING
             - APPROVED
+        posType:
+          type: string
+          description: 'ENG: Point of sales type - IT: Il tipo di punto vendita'
+          enum:
+            - PHYSICAL
+            - ONLINE
+        totalAmountCents:
+          type: integer
+          format: int64
+          example: 100
     RewardBatchErrorDTO:
       type: object
       required:
