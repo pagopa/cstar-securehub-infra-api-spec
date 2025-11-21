@@ -1809,10 +1809,10 @@ components:
           description: "ENG: The vat number of the merchant <br> IT: La partita iva dell'esercente"
         fiscalCode:
           type: string
-          description: 'ENG: Citizen fiscal code - IT: Codice fiscale del cittadino'
+          description: "ENG: The fiscal code/vat number of the merchant <br> IT: Il codice fiscale/partita iva dell'esercente"
         businessName:
-          description: "ENG: Business name - IT: Nome dell'esercente"
           type: string
+          description: "ENG: The name of the merchant <br> IT: La ragione sociale dell'esercente"
     PointOfSaleErrorDTO:
       type: object
       required:
