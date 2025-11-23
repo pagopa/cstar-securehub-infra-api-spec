@@ -2348,6 +2348,7 @@ components:
           enum:
             - REWARD_BATCH_NOT_FOUND
             - REWARD_BATCH_INVALID_REQUEST
+            - REWARD_BATCH_MONTH_TOO_EARLY
             - REWARD_BATCH_TOO_MANY_REQUESTS
             - REWARD_BATCH_GENERIC_ERROR
           description: |-
