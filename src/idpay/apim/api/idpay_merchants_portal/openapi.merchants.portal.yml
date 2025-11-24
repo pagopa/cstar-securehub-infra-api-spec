@@ -2320,12 +2320,13 @@ components:
           nullable: true
           description: "ENG: Path or URL to the report file <br> IT: Percorso o URL del file di report"
           example: "/reports/2025-11/merchant123_report.pdf"
-        assigneLevel:
+        assigneeLevel:
           type: string
           description: "ENG: Current assignee level <br> IT: Livello di assegnazione corrente dell'operatore INVITALIA"
           enum:
             - L1
             - L2
+            - L3
           example: "L1"
         numberOfTransactionsSuspended:
           type: integer
