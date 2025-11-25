@@ -2365,10 +2365,6 @@ components:
           format: date-time
           description: "ENG: End date of the batch period <br> IT: Data di fine del periodo del lotto"
           example: "2025-11-30T23:59:59Z"
-        totalAmountCents:
-          type: integer
-          format: int64
-          example: 100
         approvedAmountCents:
           type: integer
           format: int64
