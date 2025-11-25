@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   title: RTP Activation API.
   version: 1.0.0
-  description: |
+  description: >
     This API is used by Payer Service Providers (PSPs, banks, etc.) to manage RTP 'activations'.
     An activation is a record that links an end-user (Payer) to their chosen Service Provider,
     enabling them to receive Request-To-Pay messages. This is a foundational, B2B setup API
