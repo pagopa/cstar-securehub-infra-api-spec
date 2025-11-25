@@ -2354,7 +2354,7 @@ components:
           description: 'ENG: Reward Batch name - IT: Nome del lotto'
           maxLength: 255
           pattern: .*
-          example: 'novembre 2025 - fisico - rigettati'
+          example: 'novembre 2025'
         startDate:
           type: string
           format: date-time
@@ -2374,6 +2374,10 @@ components:
           format: int64
           description: "ENG: Approved transaction amount in cents <br> IT: Importo approvato delle transazioni in centesimi"
           example: 95000
+        initialAmountCents:
+          type: integer
+          format: int64
+          example: 100
         numberOfTransactions:
           type: integer
           format: int64
