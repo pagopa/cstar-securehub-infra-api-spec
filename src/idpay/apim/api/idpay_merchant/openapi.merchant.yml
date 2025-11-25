@@ -554,7 +554,28 @@ paths:
             type: string
       responses:
         "204":
-          description: Operazione completata senza contenuto
+          description: Empty response
+  /initiatives/{initiativeId}/reward-batches/{rewardBatchId}/validated:
+    post:
+      tags:
+        - reward-batches
+      summary: Approva l'intero reward batch
+      description: "ENG: Validate the indicated reward batch, considering all valid transactions. - IT: Valida il lotto di indicato, considerando tutte le transazioni valide."
+      operationId: validateRewardBatch
+      parameters:
+        - name: initiativeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: rewardBatchId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Empty response
   /initiatives/{initiativeId}/reward-batches:
     get:
       tags:

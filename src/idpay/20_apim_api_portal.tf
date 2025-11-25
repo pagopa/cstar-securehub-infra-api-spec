@@ -584,6 +584,13 @@ module "idpay_itn_merchant_portal" {
       })
     },
     {
+      operation_id = "validateRewardBatch"
+
+      xml_content = templatefile("./apim/api/idpay_merchant/post-reward-batch-validate-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
       operation_id = "rejectTransactions"
 
       xml_content = templatefile("./apim/api/idpay_merchant/post-reject-transactions-policy.xml.tpl", {
@@ -611,7 +618,6 @@ module "idpay_itn_merchant_portal" {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
-
   ]
 
 }
