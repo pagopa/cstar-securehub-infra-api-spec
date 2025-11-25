@@ -575,7 +575,43 @@ module "idpay_itn_merchant_portal" {
       xml_content = templatefile("./apim/api/idpay_merchant/get-reward-batches-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
+    },
+    {
+      operation_id = "approveRewardBatch"
+
+      xml_content = templatefile("./apim/api/idpay_merchant/post-reward-batch-approve-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "rejectTransactions"
+
+      xml_content = templatefile("./apim/api/idpay_merchant/post-reject-transactions-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "suspendTransactions"
+
+      xml_content = templatefile("./apim/api/idpay_merchant/post-suspend-transactions-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "approveTransactions"
+
+      xml_content = templatefile("./apim/api/idpay_merchant/post-approve-transactions-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "downloadInvoiceFile"
+
+      xml_content = templatefile("./apim/api/idpay_merchant/get-invoice-download-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
     }
+
   ]
 
 }
