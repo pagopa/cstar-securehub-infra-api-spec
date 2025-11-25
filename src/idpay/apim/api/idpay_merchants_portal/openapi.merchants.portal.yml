@@ -916,12 +916,6 @@ paths:
         e ordinamento per elaborationDateTime (tramite parametro sort di pageable).
       operationId: getMerchantTransactionsProcessed
       parameters:
-        - name: x-merchant-id
-          in: header
-          description: Merchant identifier
-          required: true
-          schema:
-            type: string
         - name: initiativeId
           in: path
           description: The initiative ID
