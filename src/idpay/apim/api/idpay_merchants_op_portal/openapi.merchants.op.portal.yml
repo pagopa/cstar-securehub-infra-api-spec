@@ -1035,7 +1035,7 @@ paths:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
   /initiatives/{initiativeId}/transactions/{transactionId}/invoice/update:
-    post:
+    put:
       tags:
         - transaction
       summary: Point of sales update invoice transaction
@@ -1050,6 +1050,14 @@ paths:
             type: string
             maxLength: 255
             pattern: "^[a-zA-Z0-9]+$"
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+            maxLength: 100
+            pattern: "^[A-Za-z0-9_-]+$"
       requestBody:
         content:
           multipart/form-data:
