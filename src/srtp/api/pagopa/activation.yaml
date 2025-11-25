@@ -4,18 +4,20 @@ info:
   title: RTP Activation API.
   version: 1.0.0
   description: |
-    This API is used by Payer Service Providers (PSPs, banks, etc.) to manage RTP 'activations'.
-    An activation is a record that links an end-user (Payer) to their chosen Service Provider,
-    enabling them to receive Request-To-Pay messages. This is a foundational, B2B setup API
-    that must be used before any RTPs can be sent to a Payer.
+    This API is used by Payer Service Providers (PSPs, banks, etc.) to manage
+    RTP activations.
+    An activation is a record that links an end-user (Payer) to their chosen
+    Service Provider, enabling them to receive Request-To-Pay messages.
+    This is a foundational, B2B setup API that must be used before any RTPs
+    can be sent to a Payer.
     API to handle RTP activations initiated by the Payer's RTP Service Provider.
 
     Error codes follow the format ZZXXKYYYT where:
-    - ZZ: Domain identifier
-    - XX: Error category (01=Authentication, 02=Validation, etc.)
-    - K: Method type
-    - YYY: Detailed error code
-    - T: Severity (F=Fatal, E=Error, W=Warning)
+      - ZZ: Domain identifier
+      - XX: Error category (01=Authentication, 02=Validation, etc.)
+      - K: Method type
+      - YYY: Detailed error code
+      - T: Severity (F=Fatal, E=Error, W=Warning)
   contact:
     name: PagoPA S.p.A.
     email: rtp@pagopa.it
