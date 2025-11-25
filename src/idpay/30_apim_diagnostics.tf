@@ -26,6 +26,9 @@ locals {
     module.idpay_itn_merchants_portal.name,
     module.idpay_itn_portal_merchants_op_api.name,
 
+    # Modules Portal Merchants Ecommerce
+    module.idpay_itn_portal_merchants_ecommerce_api.name,
+
     # Modules Notification/Email
     module.idpay_itn_notification_email_api.name,
 
