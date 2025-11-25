@@ -559,7 +559,7 @@ paths:
     post:
       tags:
         - reward-batches
-      summary: Approva l'intero reward batch
+      summary: Valida l'intero reward batch
       description: "ENG: Validate the indicated reward batch, considering all valid transactions. - IT: Valida il lotto di indicato, considerando tutte le transazioni valide."
       operationId: validateRewardBatch
       parameters:
@@ -589,6 +589,30 @@ paths:
           required: true
           schema:
             type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 10000
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 1000
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - name, desc
+              - name, asc
       responses:
         "200":
           description: Successful response with reward batches
