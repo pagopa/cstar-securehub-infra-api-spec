@@ -427,6 +427,12 @@ paths:
           required: false
           schema:
             $ref: "#/components/schemas/RewardBatchTrxStatus"
+        - name: pointOfSaleId
+          in: query
+          description: The point of sale ID
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: Ok
@@ -589,6 +595,27 @@ paths:
           required: true
           schema:
             type: string
+        - name: status
+          in: query
+          description: "ENG: Filter reward batches by status - IT: Filtra lotti per stato"
+          required: false
+          schema:
+            type: string
+            enum:
+              - CREATED
+              - SENT
+              - EVALUATING
+              - APPROVED
+        - name: assigneeLevel
+          in: query
+          description: "ENG: Filter reward batches by assigned operator - IT: Filtra lotti in base all'operatore assegnato al lotto"
+          required: false
+          schema:
+            type: string
+            enum:
+              - L1
+              - L2
+              - L3
         - name: page
           in: query
           required: false
@@ -1058,6 +1085,9 @@ components:
           type: string
         pointOfSaleType:
           type: string
+        pointOfSaleId:
+          type: string
+          description: "ENG: Point of sale identifier - IT: Identificativo del punto vendita"
         invoiceFile:
           $ref: "#/components/schemas/InvoiceFileDTO"
     InvoiceFileDTO:
