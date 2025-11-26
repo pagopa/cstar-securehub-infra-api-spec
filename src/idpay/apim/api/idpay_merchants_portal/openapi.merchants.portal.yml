@@ -578,7 +578,7 @@ paths:
               - SENT
               - EVALUATING
               - APPROVED
-        - name: assignedOperator
+        - name: assigneeLevel
           in: query
           description: "ENG: Filter reward batches by assigned operator - IT: Filtra lotti in base all'operatore assegnato al lotto"
           required: false
