@@ -403,6 +403,12 @@ paths:
           schema:
             type: integer
             format: int32
+        - name: sort
+          in: query
+          required: false
+          description: "Sorting criteria in the format: property,(asc|desc). i.e. trxChargeDate, desc"
+          schema:
+            type: string
         - name: fiscalCode
           in: query
           description: Fiscal Code
