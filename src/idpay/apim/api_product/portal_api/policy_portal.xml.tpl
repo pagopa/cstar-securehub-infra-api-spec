@@ -51,6 +51,9 @@
                 <claim name="org_name" match="all" />
             </required-claims>
         </validate-jwt>
+        <set-header name="x-organization-role" exists-action="override">
+            <value>@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_role", ""))</value>
+        </set-header>
     </inbound>
     <backend>
         <base />
