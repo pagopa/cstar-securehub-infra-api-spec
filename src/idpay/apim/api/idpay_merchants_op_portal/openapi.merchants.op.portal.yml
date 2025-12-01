@@ -1931,6 +1931,18 @@ components:
           type: string
           description: "ENG: Store contact via a web-based portal <br> IT: Contatto del punto vendita tramite portale web"
           maxLength: 255
+        vatNumber:
+          type: string
+          description: "ENG: The vat number of the merchant <br> IT: La partita iva dell'esercente"
+          maxLength: 255
+        fiscalCode:
+          type: string
+          description: "ENG: The fiscal code/vat number of the merchant <br> IT: Il codice fiscale/partita iva dell'esercente"
+          maxLength: 255
+        businessName:
+          type: string
+          description: "ENG: The name of the merchant <br> IT: La ragione sociale dell'esercente"
+          maxLength: 255
     PointOfSaleErrorDTO:
       type: object
       required:
