@@ -315,21 +315,41 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 255
         - name: pointOfSaleId
           in: path
           description: The point of sale ID
           required: true
           schema:
             type: string
+            maxLength: 255
       responses:
         "200":
           description: Successful response with point of sale detail
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/PointOfSaleDTO"
         "400":
           description: Bad request - Invalid query parameters
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
           content:
             application/json:
               schema:
@@ -339,6 +359,15 @@ paths:
                 message: Something went wrong handling request
         "401":
           description: Unauthorized - Authentication Failed
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
         "404":
           description: Not Found
           headers:
@@ -642,9 +671,9 @@ paths:
           schema:
             type: string
             enum:
-             - L1
-             - L2
-             - L3
+              - L1
+              - L2
+              - L3
         - name: page
           in: query
           required: false
@@ -2569,4 +2598,4 @@ components:
       name: Authorization
       in: header
 security:
-  - Bearer: []
+  - Bearer: [ ]
