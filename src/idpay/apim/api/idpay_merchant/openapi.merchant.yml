@@ -702,6 +702,12 @@ paths:
       parameters:
         - $ref: "#/components/parameters/pointOfSaleId_path"
         - $ref: "#/components/parameters/transactionId_path"
+        - name: x-merchant-id
+          in: header
+          description: Merchant ID
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           $ref: "#/components/responses/GET_download_invoice_file_200_Response"
@@ -1094,9 +1100,9 @@ components:
         pointOfSaleId:
           type: string
           description: "ENG: Point of sale identifier - IT: Identificativo del punto vendita"
-        invoiceFile:
-          $ref: "#/components/schemas/InvoiceFileDTO"
-    InvoiceFileDTO:
+        invoiceData:
+          $ref: "#/components/schemas/InvoiceDataDTO"
+    InvoiceDataDTO:
       type: object
       properties:
         filename:
