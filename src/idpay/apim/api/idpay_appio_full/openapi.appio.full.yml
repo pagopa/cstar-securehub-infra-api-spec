@@ -5478,11 +5478,15 @@ components:
         initialAmountCents:
           type: integer
           format: int64
-          description: 'ENG: Total amount awarded by the initiative - IT: Importo totale assegnato dall''iniziativa'
+          description: >-
+            ENG: Total amount awarded by the initiative - IT: Importo totale
+            assegnato dall'iniziativa
         amountCents:
           type: integer
           format: int64
-          description: 'ENG: Current wallet amount of the initiative - IT: Importo attuale del wallet dell''iniziativa'
+          description: >-
+            ENG: Current wallet amount of the initiative - IT: Importo attuale
+            del wallet dell'iniziativa
         accruedCents:
           type: integer
           format: int64
