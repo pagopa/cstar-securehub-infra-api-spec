@@ -1036,9 +1036,9 @@ paths:
           schema:
             type: string
             enum:
-              - rewardBatchTrxStatus, desc
-              - trxChargeDate, desc
-              - trxChargeDate, asc
+              - rewardBatchTrxStatus,desc
+              - trxChargeDate,desc
+              - trxChargeDate,asc
         - name: fiscalCode
           in: query
           description: Fiscal Code
