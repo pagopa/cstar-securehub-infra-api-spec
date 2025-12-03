@@ -741,5 +741,6 @@ components:
   securitySchemes:
     apiKeyAuth:
       description: API key per l'autorizzazione
+      name: Api Key
       type: apiKey
       in: header
