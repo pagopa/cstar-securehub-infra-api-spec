@@ -2013,10 +2013,14 @@ components:
           type: string
           format: date
           description: 'ENG: End date for the time window in which it is possible to use the voucher''s rewards - IT: Data che indica la fine del periodo di fruizione del voucher'
+        initialAmountCents:
+          type: integer
+          format: int64
+          description: 'ENG: Total amount awarded by the initiative - IT: Importo totale assegnato dall''iniziativa'
         amountCents:
           type: integer
           format: int64
-          description: 'ENG: Initiative total amount - IT: Importo totale dell''iniziativa'
+          description: 'ENG: Current wallet amount of the initiative - IT: Importo attuale del wallet dell''iniziativa'
         accruedCents:
           type: integer
           format: int64
