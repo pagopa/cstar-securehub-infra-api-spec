@@ -493,40 +493,74 @@ components:
         email: "mario.rossi@miaemail.it"
         status: "100_APPROVED"
 
+    ReducedOperation:
+      type: object
+      properties:
+        operationId:
+          type: string
+        operationType:
+          type: string
+        amountCents:
+          type: integer
+          format: int64
+        operationDate:
+          type: string
+          format: date-time
+        businessName:
+          type: string
+
+    ReducedTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+        trxDate:
+          type: string
+          format: date-time
+        amountCents:
+          type: integer
+          format: int64
+        effectiveAmountCents:
+          type: integer
+          format: int64
+        merchantId:
+          type: string
+        pointOfSaleId:
+          type: string
+        goodDescription:
+          type: string
+
+
     VoucherStatusData:
+      type: object
       description: Informazioni di un voucher
       additionalProperties: false
       properties:
         name:
-          $ref: '#/components/schemas/Name'
+          type: string
+          description: Nome del beneficiario
         surname:
-          $ref: '#/components/schemas/Surname'
+          type: string
+          description: Cognome del beneficiario
         issueDate:
-          $ref: '#/components/schemas/IssueDate'
+          type: string
+          format: date-time
+          description: Data di emissione del voucher
         expirationDate:
-          $ref: '#/components/schemas/ExpirationDate'
-        maxDiscountAmount:
-          $ref: '#/components/schemas/MaxDiscountAmount'
+          type: string
+          format: date-time
+          description: Data di scadenza del voucher
         status:
-          $ref: '#/components/schemas/VoucherStatus'
-        dateOfUse:
-          $ref: '#/components/schemas/DateOfUse'
-        amountUsed:
-          $ref: '#/components/schemas/AmountUsed'
-        typeOfStore:
-          $ref: '#/components/schemas/TypeOfStore'
-        merchant:
-          $ref: '#/components/schemas/Merchant'
-        merchantAddress:
-          $ref: '#/components/schemas/MerchantAddress'
-        merchantCity:
-          $ref: '#/components/schemas/MerchantCity'
-        phoneNumber:
-          $ref: '#/components/schemas/PhoneNumber'
-        goodAmount:
-          $ref: '#/components/schemas/GoodAmount'
-        goodDescription:
-          $ref: '#/components/schemas/GoodDescription'
+          type: string
+          description: Stato del voucher (es. USED, ACTIVE)
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReducedOperation'
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReducedTransaction'
       required:
         - issueDate
         - expirationDate
@@ -534,19 +568,23 @@ components:
       example:
         name: "Mario"
         surname: "Rossi"
-        issueDate: "2025-12-20"
-        expirationDate: "2025-12-31"
-        maxDiscountAmount: 10000
+        issueDate: "2025-12-20T00:00:00"
+        expirationDate: "2025-12-31T00:00:00"
         status: "USED"
-        dateOfUse: "2025-12-25"
-        amountUsed: 5400
-        typeOfStore: "PHYSICAL"
-        merchant: "Elettrodomestici SRL"
-        merchantAddress: "Via Roma 10, 00100 Roma RM"
-        merchantCity: "Roma"
-        phoneNumber: "+390612345678"
-        goodAmount: 18000
-        goodDescription: "Lavatrice modello XY1234"
+        operations:
+          - operationId: "OP12345"
+            operationType: "PAYMENT"
+            amountCents: 5400
+            operationDate: "2025-12-25T10:30:00"
+            businessName: "Elettrodomestici SRL"
+        transactions:
+          - id: "TRX98765"
+            trxDate: "2025-12-25T10:30:00"
+            amountCents: 18000
+            effectiveAmountCents: 18000
+            merchantId: "MERCHANT123"
+            pointOfSaleId: "POS456"
+            goodDescription: "Lavatrice modello XY1234"
 
   # ============================================================================
   # Request bodies
