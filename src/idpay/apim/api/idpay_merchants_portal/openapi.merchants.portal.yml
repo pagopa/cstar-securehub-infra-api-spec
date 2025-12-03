@@ -2396,7 +2396,7 @@ components:
     InvoiceFileDTO:
       type: object
       properties:
-        filename:
+        fileName:
           type: string
           description: 'ENG: The name of the invoice file <br> IT: Il nome del file della fattura'
         docNumber:
