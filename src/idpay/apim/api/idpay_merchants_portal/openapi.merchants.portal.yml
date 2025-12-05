@@ -38,6 +38,7 @@ paths:
           application/json:
             schema:
               type: array
+              maxItems: 100000
               items:
                 $ref: "#/components/schemas/PointOfSaleDTO"
       responses:
@@ -1758,7 +1759,7 @@ components:
             docNumber:
               type: string
               description: "ENG: Document number - IT: Numero documento"
-            fileName:
+            filename:
               type: string
               description: "ENG: Associated file name - IT: Nome del file associato"
     MerchantTransactionsProcessedListDTO:
