@@ -520,15 +520,17 @@ components:
         amountCents:
           type: integer
           format: int64
-        effectiveAmountCents:
-          type: integer
-          format: int64
         merchantId:
           type: string
         pointOfSaleId:
           type: string
-        goodDescription:
-          type: string
+        additionalProperties:
+          type: object
+          properties:
+            productGtin:
+              type: string
+            productName:
+              type: string
 
 
     VoucherStatusData:
@@ -573,7 +575,7 @@ components:
         status: "USED"
         operations:
           - operationId: "OP12345"
-            operationType: "PAYMENT"
+            operationType: "TRANSACTION"
             amountCents: 5400
             operationDate: "2025-12-25T10:30:00"
             businessName: "Elettrodomestici SRL"
@@ -581,10 +583,12 @@ components:
           - id: "TRX98765"
             trxDate: "2025-12-25T10:30:00"
             amountCents: 18000
-            effectiveAmountCents: 18000
             merchantId: "MERCHANT123"
             pointOfSaleId: "POS456"
-            goodDescription: "Lavatrice modello XY1234"
+            additionalProperties:
+              - productGtin: "fridge004"
+                productName: "Frigorifero Liebherr CBNasd 575i_091618851 362 l"
+
 
   # ============================================================================
   # Request bodies
