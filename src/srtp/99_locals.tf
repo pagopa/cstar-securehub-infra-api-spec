@@ -64,42 +64,6 @@ locals {
       }
     }
 
-    # RTP Activation (ACA)
-    rtp-activation-aca = {
-      display_name          = "RTP ITN Activation API (ACA)"
-      description           = "RTP ITN Activation API (ACA)"
-      path                  = "${local.api_context_path}/activation-aca"
-      revision              = "1"
-      version               = "v1"
-      protocols             = ["https"]
-      service_url           = "https://${local.project_no_location}-activator-ca.${data.azurerm_container_app_environment.srtp.default_domain}"
-      subscription_required = false
-      product               = "srtp"
-      import_descriptor = {
-        content_format = "openapi"
-        content_value  = templatefile("./api/pagopa/activation.yaml", {})
-      }
-      version_set = {
-        name                = "${var.env_short}-rtp-activation-api-aca-v2"
-        display_name        = "RTP ITN Activation API (ACA)"
-        versioning_scheme   = "Header"
-        version_header_name = "Version"
-      }
-      api_policy = {
-        xml_content = templatefile("./api/pagopa/activation_base_policy.xml", {
-          fragment_id = "rtp-validate-token-mcshared-v2"
-        })
-      }
-      api_diagnostic = {
-        name                      = "applicationinsights"
-        sampling_percentage       = 100.0
-        always_log_errors         = true
-        log_client_ip             = true
-        verbosity                 = "information"
-        http_correlation_protocol = "W3C"
-        headers_to_log            = ["RequestId"]
-      }
-    }
     # RTP Payees Registry
     rtp-payees-registry = {
       description           = "RTP ITN Payees Registry API"
@@ -152,22 +116,6 @@ locals {
       }
     }
 
-    # RTP CALLBACK (ACA)
-    rtp-callback-aca = {
-      description           = "RTP ITN CALLBACK API (ACA)"
-      display_name          = "RTP ITN CALLBACK API (ACA)"
-      path                  = "${local.api_context_path}/cb-aca"
-      revision              = "1"
-      protocols             = ["https"]
-      service_url           = "https://${local.project_no_location}-sender-ca.${data.azurerm_container_app_environment.srtp.default_domain}"
-      subscription_required = false
-      product               = "srtp"
-      import_descriptor = {
-        content_format = "openapi"
-        content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
-      }
-    }
-
     # RTP Service Provider
     rtp-service-provider = {
       description           = "RTP ITN Service Provider API"
@@ -191,28 +139,6 @@ locals {
       }
     }
 
-    # RTP Service Provider (ACA)
-    rtp-service-provider-aca = {
-      description           = "RTP ITN Service Provider API (ACA)"
-      display_name          = "RTP ITN Service Provider API (ACA)"
-      path                  = "${local.api_context_path}/aca"
-      revision              = "1"
-      version               = "v1"
-      protocols             = ["https"]
-      service_url           = "https://${local.project_no_location}-sender-ca.${data.azurerm_container_app_environment.srtp.default_domain}"
-      subscription_required = false
-      product               = "srtp"
-      import_descriptor = {
-        content_format = "openapi"
-        content_value  = templatefile("./api/pagopa/send.openapi.yaml", {})
-      }
-      version_set = {
-        name                = "${var.env_short}-rtp-service-provider-aca-v2"
-        display_name        = "RTP ITN Service Provider API (ACA)"
-        versioning_scheme   = "Header"
-        version_header_name = "Version"
-      }
-    }
     # RTP Service Providers Registry
     rtp-service_providers-registry = {
       description           = "RTP ITN Service Providers Registry API"
