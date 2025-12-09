@@ -511,8 +511,8 @@ module "idpay_itn_merchant_portal" {
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY ITN Merchant"
-  display_name = "IDPAY ITN Merchant API"
+  description  = "IDPAY ITN Welfare Organization Portal Merchant API"
+  display_name = "IDPAY ITN Welfare Organization Portal Merchant API"
   path         = "idpay-itn/merchant"
   protocols    = ["https"]
 
@@ -615,6 +615,13 @@ module "idpay_itn_merchant_portal" {
       operation_id = "downloadInvoiceFile"
 
       xml_content = templatefile("./apim/api/idpay_merchant/get-invoice-download-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "getPointOfSales"
+
+      xml_content = templatefile("./apim/api/idpay_merchant/get-pos-list-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
