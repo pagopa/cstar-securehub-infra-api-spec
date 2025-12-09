@@ -13,11 +13,8 @@
 <policies>
     <inbound>
         <base />
-        <set-header name="x-merchant-id" exists-action="override">
-          <value>@(context.Request.MatchedParameters["merchantId"])</value>
-        </set-header>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaymerchant" />
-        <rewrite-uri template="@("/idpay/merchant/portal/initiatives/{initiativeId}")" />
+        <rewrite-uri template="@("/idpay/merchant/portal/{merchantId}/point-of-sales")" />
     </inbound>
     <backend>
         <base />
