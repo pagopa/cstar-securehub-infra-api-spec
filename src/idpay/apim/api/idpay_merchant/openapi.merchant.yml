@@ -695,7 +695,7 @@ paths:
     get:
       tags:
         - reward-batches
-      summary: "ENG: Download the file containing both approved and rejected transactions from an approved reward batch. IT: Scarica il file contenente le transazioni approvate e quelle respinte di un lotto approvato."
+      summary: "ENG: Download the approved reward batch file containing both approved and rejected transactions. IT: Scarica il file del lotto approvato contenente le transazioni approvate e quelle respinte."
       description: "ENG: This service allows you to download a detailed file with all approved and rejected transactions related to a specific approved reward batch. IT: Questo servizio consente di scaricare un file dettagliato contenente tutte le transazioni approvate e respinte relative a uno specifico lotto approvato."
       operationId: approveDownloadRewardBatch
       parameters:
