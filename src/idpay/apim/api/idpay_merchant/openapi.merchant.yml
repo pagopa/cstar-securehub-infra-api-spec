@@ -1092,7 +1092,7 @@ components:
           schema:
             $ref: "#/components/schemas/RewardBatchErrorDTO"
           example:
-            code: PAYMENT_INVALID_REQUEST
+            code: REWARD_BATCH_INVALID_REQUEST
             message: Something went wrong handling request
     GET_download_reward_batch_file_401_Response:
       description: Authentication failed
@@ -1127,7 +1127,7 @@ components:
           schema:
             $ref: "#/components/schemas/RewardBatchErrorDTO"
           example:
-            code: PAYMENT_TOO_MANY_REQUESTS
+            code: REWARD_BATCH_TOO_MANY_REQUESTS
             message: Too many requests
     GET_download_reward_batch_file_500_Response:
       description: Server ERROR
@@ -1139,7 +1139,7 @@ components:
           schema:
             $ref: "#/components/schemas/RewardBatchErrorDTO"
           example:
-            code: PAYMENT_GENERIC_ERROR
+            code: REWARD_BATCH_GENERIC_ERROR
             message: An error occurred during file reading
   schemas:
     MerchantUpdateDTO:
