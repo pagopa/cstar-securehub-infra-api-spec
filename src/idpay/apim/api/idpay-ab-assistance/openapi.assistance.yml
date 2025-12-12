@@ -496,7 +496,7 @@ components:
     ReducedOperation:
       type: object
       properties:
-        operationId:
+        eventId:
           type: string
         operationType:
           type: string
@@ -524,6 +524,23 @@ components:
           type: string
         pointOfSaleId:
           type: string
+        status:
+          type: string
+          description: |
+            Stato della transazione:
+            - AUTHORIZED: codice accettato da un esercente, budget bloccato ma l'esercente deve confermare entro le 23:59 del giorno dopo, altrimenti si annulla in automatico
+            - CANCELLED: annullata, il budget è tornato al cittadino
+            - CAPTURED: pagamento confermato, il budget non può più tornare al cittadino
+            - INVOICED: fattura caricata
+            - REFUNDED: stornato
+            - REWARDED: la transazione fa parte di un lotto di rimborso inviato a Invitalia
+          enum:
+            - AUTHORIZED
+            - CANCELLED
+            - CAPTURED
+            - INVOICED
+            - REFUNDED
+            - REWARDED
         additionalProperties:
           type: object
           properties:
@@ -574,21 +591,21 @@ components:
         expirationDate: "2025-12-31T00:00:00"
         status: "USED"
         operations:
-          - operationId: "OP12345"
+          - eventId: "OP12345"
             operationType: "TRANSACTION"
             amountCents: 5400
             operationDate: "2025-12-25T10:30:00"
             businessName: "Elettrodomestici SRL"
         transactions:
-          - id: "TRX98765"
+          - id: "OP12345"
             trxDate: "2025-12-25T10:30:00"
             amountCents: 18000
             merchantId: "MERCHANT123"
             pointOfSaleId: "POS456"
-            additionalProperties:
-              - productGtin: "fridge004"
-                productName: "Frigorifero Liebherr CBNasd 575i_091618851 362 l"
-
+            additionalProperties: {
+              productGtin: "fridge004",
+              productName: "Frigorifero Liebherr CBNasd 575i_091618851 362 l"
+            }
 
 
   # ============================================================================
