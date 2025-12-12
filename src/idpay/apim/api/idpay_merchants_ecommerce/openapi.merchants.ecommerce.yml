@@ -830,7 +830,7 @@ paths:
           required: true
           schema:
             type: string
-            maxLength: 50        # richiesto OWASP
+            maxLength: 50
             pattern: '^[A-Za-z0-9\-]+$'
       requestBody:
         required: true
@@ -844,11 +844,12 @@ paths:
                 file:
                   type: string
                   format: binary
+                  maxLength: 2147483647
                   description: Reversal file
                 docNumber:
                   type: string
                   nullable: true
-                  maxLength: 50          # richiesto OWASP
+                  maxLength: 50
                   pattern: '^[A-Za-z0-9\-]*$'
                   description: Optional document number linked to the reversal
       responses:
