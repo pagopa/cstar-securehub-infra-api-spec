@@ -668,7 +668,7 @@ paths:
       summary: Reverse an invoiced transaction
       description: >
         Allows the merchant to upload a reversal a transaction from a batch.
-      operationId: reversalTransaction
+      operationId: reversalTransactionInvoiced
       parameters:
         - name: transactionId
           in: path

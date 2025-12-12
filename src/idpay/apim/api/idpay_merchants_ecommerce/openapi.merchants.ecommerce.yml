@@ -816,6 +816,68 @@ paths:
               example:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
+  /idpay/transactions/{transactionId}/reversal-invoiced:
+    post:
+      summary: Reverse an invoiced transaction
+      description: >
+        Allows the merchant to upload a reversal a transaction from a batch.
+      operationId: reversalTransactionInvoiced
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Reversal file
+                docNumber:
+                  type: string
+                  nullable: true
+                  description: Optional document number linked to the reversal
+      responses:
+        '204':
+          description: Reversal uploaded successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Transaction not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too many requests
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /transactions/{transactionId}/invoice:
     post:
       tags:
