@@ -663,41 +663,41 @@ paths:
               example:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
-/idpay/transactions/{transactionId}/reversal-invoiced:
-  post:
-    tags:
-      - transactions
-    summary: Reverse an invoiced transaction
-    description: >
-      Allows the merchant to refound a transaction from a batch.
-    operationId: reversalTransactionInvoiced
-    parameters:
-      - name: transactionId
-        in: path
-        required: true
-        schema:
-          type: string
-          maxLength: 50        # richiesto OWASP
-          pattern: '^[A-Za-z0-9\-]+$'
-    requestBody:
-      required: true
-      content:
-        multipart/form-data:
+  /transactions/{transactionId}/reversal-invoiced:
+    post:
+      tags:
+        - transaction
+      summary: Reverse an invoiced transaction
+      description: >
+        Allows the merchant to refound a transaction from a batch.
+      operationId: reversalTransactionInvoiced
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
           schema:
-            type: object
-            required:
-              - file
-            properties:
-              file:
-                type: string
-                format: binary
-                description: Reversal file
-              docNumber:
-                type: string
-                nullable: true
-                maxLength: 50          # richiesto OWASP
-                pattern: '^[A-Za-z0-9\-]*$'
-                description: Optional document number linked to the reversal
+            type: string
+            maxLength: 50        # richiesto OWASP
+            pattern: '^[A-Za-z0-9\-]+$'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Reversal file
+                docNumber:
+                  type: string
+                  nullable: true
+                  maxLength: 50          # richiesto OWASP
+                  pattern: '^[A-Za-z0-9\-]*$'
+                  description: Optional document number linked to the   reversal
       responses:
         "204":
           description: Ok - no content
