@@ -2782,14 +2782,14 @@ components:
             "ENG: Error code: REWARD_BATCH_NOT_FOUND: Reward Batch not found,
              REWARD_BATCH_INVALID_REQUEST: Something went wrong handling request,
              REWARD_BATCH_TOO_MANY_REQUESTS: Too many requests,
-             REWARD_BATCH_TRANSACTION_POSTPONE_LIMIT_EXCEEDED: Postponing not allowed beyond initiative limit month,
+             REWARD_BATCH_TRANSACTION_POSTPONE_LIMIT_EXCEEDED: Transaction can be postponed only until the end of the month following the initiative end date,
              REWARD_BATCH_INVALID_MERCHANT: The merchant is not associated with the reward batch,
              REWARD_BATCH_GENERIC_ERROR: Application Error - IT: Codice di errore:
              REWARD_BATCH_NOT_FOUND: lotto non trovato,
              REWARD_BATCH_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
              REWARD_BATCH_TOO_MANY_REQUESTS: Troppe richieste,
              REWARD_BATCH_INVALID_MERCHANT: Il merchant non è associato al lotto,
-             REWARD_BATCH_TRANSACTION_POSTPONE_LIMIT_EXCEEDED: Non è consentito posticipare oltre il mese limite dell'iniziativa,
+             REWARD_BATCH_TRANSACTION_POSTPONE_LIMIT_EXCEEDED: La transazione può essere posticipata solo fino alla fine del mese successivo alla data di fine dell'iniziativa,
              REWARD_BATCH_GENERIC_ERROR: Errore generico
         message:
           type: string
