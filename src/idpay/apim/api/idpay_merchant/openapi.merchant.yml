@@ -565,8 +565,30 @@ paths:
           schema:
             type: string
       responses:
-        "204":
-          description: Empty response
+        "200":
+          description: Reward batch approvato correttamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardBatchDTO"
+        "400":
+          description: Stato del lotto non valido per l’operazione di promozione
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardBatchErrorDTO"
+              example:
+                code: "REWARD_BATCH_INVALID_REQUEST"
+                message: "Reward batch not in a valid state"
+        "404":
+          description: Lotto inesistente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardBatchErrorDTO"
+              example:
+                code: "REWARD_BATCH_NOT_FOUND"
+                message: "Reward batch not found"
   /initiatives/{initiativeId}/reward-batches/{rewardBatchId}/validated:
     post:
       tags:
@@ -586,8 +608,39 @@ paths:
           schema:
             type: string
       responses:
-        "204":
-          description: Empty response
+        "200":
+          description: Lotto validato e promosso correttamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardBatchDTO"
+        "400":
+          description: Stato del lotto non valido per l’operazione di promozione
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardBatchErrorDTO"
+              example:
+                code: "INVALID_BATCH_STATE_FOR_PROMOTION"
+                message: "Invalid state for batch promotion"
+        "403":
+          description: Operatore non autorizzato a eseguire la promozione del lotto
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardBatchErrorDTO"
+              example:
+                code: "ROLE_NOT_ALLOWED_FOR_L2_PROMOTION"
+                message: "Operator not allowed to promote from L2"
+        "404":
+          description: Lotto inesistente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardBatchErrorDTO"
+              example:
+                code: "REWARD_BATCH_NOT_FOUND"
+                message: "Reward batch not found"
   /initiatives/{initiativeId}/reward-batches:
     get:
       tags:
@@ -1745,17 +1798,29 @@ components:
             - REWARD_BATCH_TOO_MANY_REQUESTS
             - REWARD_BATCH_GENERIC_ERROR
             - REWARD_BATCH_INVALID_MERCHANT
+            - ROLE_NOT_ALLOWED_FOR_L1_PROMOTION
+            - ROLE_NOT_ALLOWED_FOR_L2_PROMOTION
+            - BATCH_NOT_ELABORATED_15_PERCENT
+            - INVALID_BATCH_STATE_FOR_PROMOTION
           description: |-
             "ENG: Error code: REWARD_BATCH_NOT_FOUND: Reward Batch not found,
              REWARD_BATCH_INVALID_REQUEST: Something went wrong handling request,
              REWARD_BATCH_TOO_MANY_REQUESTS: Too many requests,
              REWARD_BATCH_GENERIC_ERROR: Application Error
-             REWARD_BATCH_INVALID_MERCHANT: The merchant is not associated with the reward batch - IT: Codice di errore:
+             REWARD_BATCH_INVALID_MERCHANT: The merchant is not associated with the reward batch
+             ROLE_NOT_ALLOWED_FOR_L1_PROMOTION: L1 operator not authorized to promote the batch,
+             ROLE_NOT_ALLOWED_FOR_L2_PROMOTION: L2 operator not authorized to promote the batch,
+             BATCH_NOT_ELABORATED_15_PERCENT: Processed transactions percentage below 15%,
+             INVALID_BATCH_STATE_FOR_PROMOTION: Batch state not valid for promotion - IT: Codice di errore:
              REWARD_BATCH_NOT_FOUND: lotto non trovato,
              REWARD_BATCH_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
              REWARD_BATCH_TOO_MANY_REQUESTS: Troppe richieste,
-             REWARD_BATCH_GENERIC_ERROR: Errore generico
-             REWARD_BATCH_INVALID_MERCHANT: Il merchant non è associato al lotto"
+             REWARD_BATCH_GENERIC_ERROR: Errore generico,
+             REWARD_BATCH_INVALID_MERCHANT: Il merchant non è associato al lotto",
+             ROLE_NOT_ALLOWED_FOR_L1_PROMOTION: Operatore L1 non autorizzato alla promozione del lotto,
+             ROLE_NOT_ALLOWED_FOR_L2_PROMOTION: Operatore L2 non autorizzato alla promozione del lotto,
+             BATCH_NOT_ELABORATED_15_PERCENT: Percentuale di transazioni elaborate inferiore al 15%,
+             INVALID_BATCH_STATE_FOR_PROMOTION: Stato del lotto non valido per la promozione
         message:
           type: string
           description: "ENG: Error message - IT: Messaggio di errore"
@@ -1918,7 +1983,7 @@ components:
     DownloadRewardBatchResponseDTO:
       type: object
       properties:
-        invoiceUrl:
+        approvedBatchUrl:
           type: string
           maxLength: 10000
           description: "ENG: URL to download the approved batch file - IT: URL per scaricare il file del lotto approvato"
