@@ -19,21 +19,51 @@
         <rewrite-uri template="@("idpay/onboarding/{initiativeId}/"+ (string)context.Variables["tokenPDV"]+"/status")" />
     </inbound>
     <backend>
-    <base />
+        <base />
     </backend>
     <outbound>
         <base />
         <choose>
             <!-- 1) if status respond 404 => call /detail cached -->
             <when condition="@((int)context.Response.StatusCode == 404)">
-                <set-variable name="initiativeId" value="@((string)context.Request.MatchedParameters["initiativeId"])" />
-                <set-variable name="detailsCacheKey" value="@("details:" + (string)context.Variables["initiativeId"])" />
-                <set-variable name="cachedDetails" value="" />
-                <cache-lookup-value key="@((string)context.Variables["detailsCacheKey"])" variable-name="cachedDetails" />
                 <choose>
-                    <!-- HIT cache -->
-                    <when condition="@(!string.IsNullOrEmpty((string)context.Variables["cachedDetails"]))">
+                    <!-- check onboarding allowed before cutoff -->
+                    <when condition="@(context.Timestamp < new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc))">
+                        <set-variable name="initiativeId" value="@((string)context.Request.MatchedParameters["initiativeId"])" />
+                        <set-variable name="detailsCacheKey" value="@("details:" + (string)context.Variables["initiativeId"])" />
+                        <set-variable name="cachedDetails" value="" />
+                        <cache-lookup-value key="@((string)context.Variables["detailsCacheKey"])" variable-name="cachedDetails" />
+                        <choose>
+                            <!-- HIT cache -->
+                            <when condition="@(!string.IsNullOrEmpty((string)context.Variables["cachedDetails"]))">
+                                <return-response>
+                                    <set-header name="Content-Type" exists-action="override">
+                                        <value>application/json; charset=utf-8</value>
+                                    </set-header>
+                                    <set-header name="Cache-Control" exists-action="override">
+                                        <value>no-store</value>
+                                    </set-header>
+                                    <set-body>@{
+                                        return (string)context.Variables["cachedDetails"];
+                                        }
+                                    </set-body>
+                                </return-response>
+                            </when>
+                            <!-- MISS cache -->
+                            <otherwise>
+                                <send-request mode="new" response-variable-name="detailsResp" timeout="10" ignore-error="false">
+                            <set-url>@("https://${ingress_load_balancer_hostname}/idpayonboardingworkflow/idpay/onboarding/"
+                    + Uri.EscapeDataString((string)context.Variables["initiativeId"]) + "/detail")</set-url>
+                                    <set-method>GET</set-method>
+                                </send-request>
+                                <cache-store-value key="@((string)context.Variables["detailsCacheKey"])" value="@(((IResponse)context.Variables["detailsResp"]).Body.As<string>(preserveContent:true))" duration="3600" />
+                                <return-response response-variable-name="detailsResp" />
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
                         <return-response>
+                            <set-status code="400" reason="Not Found" />
                             <set-header name="Content-Type" exists-action="override">
                                 <value>application/json; charset=utf-8</value>
                             </set-header>
@@ -41,22 +71,13 @@
                                 <value>no-store</value>
                             </set-header>
                             <set-body>@{
-                                return (string)context.Variables["cachedDetails"];
-                                }
-                            </set-body>
+                            var payload = new JObject(
+                                new JProperty("code", "ONBOARDING_INITIATIVE_ENDED"),
+                                new JProperty("message", "Onboarding not allowed after 01/01/2026")
+                            );
+                            return payload.ToString(Newtonsoft.Json.Formatting.None);
+                            }</set-body>
                         </return-response>
-                    </when>
-                    <!-- MISS cache -->
-                    <otherwise>
-                        <send-request mode="new" response-variable-name="detailsResp" timeout="10" ignore-error="false">
-                            <set-url>@("https://${ingress_load_balancer_hostname}/idpayonboardingworkflow/idpay/onboarding/"
-              + Uri.EscapeDataString((string)context.Variables["initiativeId"]) + "/detail")</set-url>
-                            <set-method>GET</set-method>
-                        </send-request>
-                        <cache-store-value key="@((string)context.Variables["detailsCacheKey"])"
-                            value="@(((IResponse)context.Variables["detailsResp"]).Body.As<string>(preserveContent:true))"
-                            duration="3600" />
-                        <return-response response-variable-name="detailsResp" />
                     </otherwise>
                 </choose>
             </when>
@@ -72,7 +93,7 @@
                     <when condition="@(((string)context.Variables["userStatus"] == "ON_EVALUATION")
                          || ((string)context.Variables["userStatus"] == "ONBOARDING_OK"))">
                         <return-response>
-                            <set-status code="400" reason="" />
+                            <set-status code="400" />
                             <set-header name="Content-Type" exists-action="override">
                                 <value>application/json; charset=utf-8</value>
                             </set-header>
@@ -98,6 +119,6 @@
         </choose>
     </outbound>
     <on-error>
-    <base />
+        <base />
     </on-error>
 </policies>
