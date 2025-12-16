@@ -39,7 +39,7 @@
                 </return-response>
             </otherwise>
         </choose>
-  </inbound> 
+  </inbound>
     <backend>
         <base />
     </backend>
