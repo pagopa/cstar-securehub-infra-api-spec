@@ -13,9 +13,33 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayonboardingworkflow" />
-        <rewrite-uri template="@("idpay/onboarding/"+ (string)context.Variables["tokenPDV"])" />
-    </inbound>
+        <choose>
+            <!-- allowed only before 01/01/2026 -->
+            <when condition="@(context.Timestamp < new DateTime(2026, 1, 1, 0, 0, 0))">
+                <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayonboardingworkflow" />
+                <rewrite-uri template="@("idpay/onboarding/"+ (string)context.Variables["tokenPDV"])" />
+            </when>
+            <!-- not allowed after 01/01/2026  -->
+            <otherwise>
+                <return-response>
+                <set-status code="400" reason="Bad Request" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json; charset=utf-8</value>
+                </set-header>
+                <set-header name="Cache-Control" exists-action="override">
+                    <value>no-store</value>
+                </set-header>
+                <set-body>@{
+                    var payload = new JObject(
+                    new JProperty("code", "ONBOARDING_INITIATIVE_ENDED"),
+                    new JProperty("message", "Operation not allowed after 01/01/2026")
+                    );
+                    return payload.ToString(Newtonsoft.Json.Formatting.None);
+                }</set-body>
+                </return-response>
+            </otherwise>
+        </choose>
+  </inbound>
     <backend>
         <base />
     </backend>

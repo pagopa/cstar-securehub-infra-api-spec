@@ -21,6 +21,33 @@
     </backend>
     <outbound>
         <base />
+        <choose>
+            <!-- handle 404 - user not onboarded -->
+            <when condition="@(
+                ((int)context.Response.StatusCode == 404)
+                && (context.Timestamp >= new DateTime(2026, 1, 1, 0, 0, 0))
+            )">
+                <return-response>
+                <set-status code="400" reason="Bad Request" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json; charset=utf-8</value>
+                </set-header>
+                <set-header name="Cache-Control" exists-action="override">
+                    <value>no-store</value>
+                </set-header>
+                <set-body>@{
+                    var payload = new JObject(
+                    new JProperty("code", "ONBOARDING_INITIATIVE_ENDED"),
+                    new JProperty("message", "Onboarding not allowed after 01/01/2026")
+                    );
+                    return payload.ToString(Newtonsoft.Json.Formatting.None);
+                }</set-body>
+                </return-response>
+            </when>
+
+            <!-- otherwise pass-through -->
+            <otherwise />
+        </choose>
     </outbound>
     <on-error>
         <base />

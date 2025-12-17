@@ -664,6 +664,7 @@ paths:
               - CREATED
               - SENT
               - EVALUATING
+              - APPROVING
               - APPROVED
         - name: assigneeLevel
           in: query
@@ -1720,6 +1721,7 @@ components:
             - CREATED
             - SENT
             - EVALUATING
+            - APPROVING
             - APPROVED
         partial:
           type: boolean
@@ -1783,6 +1785,21 @@ components:
           format: int64
           description: "ENG: Number of rejected transactions <br> IT: Numero di transazioni rigettate"
           example: 2
+        approvalDate:
+          type: string
+          format: date-time
+          description: "ENG: Start date of the batch  <br> IT: Data di inizio del periodo del "
+          example: "2025-11-01T00:00:00Z"
+        creationDate:
+          type: string
+          format: date-time
+          description: "ENG: Start date of the batch - IT: Data di inizio del periodo del "
+          example: "2025-11-01T00:00:00Z"
+        updateDate:
+          type: string
+          format: date-time
+          description: "ENG: Start date of the batch  <br> IT: Data di inizio del periodo del "
+          example: "2025-11-01T00:00:00Z"
     RewardBatchErrorDTO:
       type: object
       required:
