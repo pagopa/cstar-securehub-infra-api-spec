@@ -763,12 +763,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: x-merchant-id
-          in: header
-          description: Merchant ID
-          required: false
-          schema:
-            type: string
       responses:
         "200":
           $ref: "#/components/responses/GET_download_reward_batch_file_200_Response"
