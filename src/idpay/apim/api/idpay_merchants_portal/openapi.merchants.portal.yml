@@ -659,6 +659,7 @@ paths:
               - CREATED
               - SENT
               - EVALUATING
+              - APPROVING
               - APPROVED
         - name: assigneeLevel
           in: query
@@ -2690,6 +2691,7 @@ components:
             - CREATED
             - SENT
             - EVALUATING
+            - APPROVING
             - APPROVED
         partial:
           type: boolean
