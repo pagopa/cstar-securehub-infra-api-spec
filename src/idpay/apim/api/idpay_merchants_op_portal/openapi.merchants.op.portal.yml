@@ -1432,6 +1432,8 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 36
+            pattern: "^[A-Za-z0-9_-]+$"
       responses:
         "200":
           description: Ok
@@ -1439,6 +1441,7 @@ paths:
             application/json:
               schema:
                 type: array
+                maxItems: 500
                 items:
                   $ref: "#/components/schemas/FranchisePointOfSaleDTO"
           headers:
