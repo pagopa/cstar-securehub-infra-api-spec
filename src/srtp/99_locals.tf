@@ -190,6 +190,22 @@ locals {
           content_value  = templatefile("./api/epc/EPC133-22_v3.1_SRTP_spec.openapi.yaml", {})
         }
       }
+
+      # RTP GPD Message Mock
+      rtp-gpd-message-mock = {
+        description           = "RTP ITN GPD Message Mock API"
+        display_name          = "RTP ITN GPD Message Mock API"
+        path                  = "gpd"
+        revision              = "1"
+        protocols             = ["https"]
+        subscription_required = false
+        product               = "srtp"
+        import_descriptor = {
+          content_format = "openapi"
+          content_value  = templatefile("./api/pagopa/sender.openapi.yaml", {})
+        }
+      }
+
       # RTP Takeover Mock
       rtp-takeover-mock = {
         description           = "RTP ITN MOCK API TAKEOVER"
@@ -289,6 +305,10 @@ locals {
       postRequestToPayCancellationRequest = {
         api_name    = "rtp-mock"
         xml_content = file("./api/test/mock_policy_epc.xml")
+      }
+      processGpdMessage = {
+        api_name    = "rtp-gpd-message-mock"
+        xml_content = file("./api/test/mock_policy_gpd.xml")
       }
       notifyUserTakeover = {
         api_name    = "rtp-takeover-mock"
