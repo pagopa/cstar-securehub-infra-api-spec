@@ -191,11 +191,11 @@ locals {
         }
       }
 
-      # RTP GPD Message Mock
-      rtp-gpd-message-mock = {
-        description           = "RTP ITN GPD Message Mock API"
-        display_name          = "RTP ITN GPD Message Mock API"
-        path                  = "gpd"
+      # RTP GPD Message Processing Mock
+      rtp-gpd-message-processing-mock = {
+        description           = "RTP ITN GPD Message Processing Mock API"
+        display_name          = "RTP ITN GPD Message Processing Mock API"
+        path                  = "${local.api_context_path}/mock/gpd"
         revision              = "1"
         protocols             = ["https"]
         subscription_required = false
