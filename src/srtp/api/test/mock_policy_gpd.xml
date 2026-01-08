@@ -97,12 +97,12 @@
                         "serviceProviderCreditor": "15376371009",
                         "events": [
                             {
-                                "timestamp": "2025-09-16T15:26:57.085",
+                                "timestamp": "2025-09-16T15:26:57.085Z",
                                 "precStatus": null,
                                 "triggerEvent": "CREATE_RTP"
                             },
                             {
-                                "timestamp": "2025-09-16T15:27:06.421",
+                                "timestamp": "2025-09-16T15:27:06.421Z",
                                 "precStatus": "CREATED",
                                 "triggerEvent": "REJECT_RTP"
                             }
