@@ -845,4 +845,4 @@ components:
           refreshUrl: /token
           scopes:
             admin_rtp_send: Administrative permission to manage RTP lifecycle
-            process_rtp_send: Permission to process GDP messages into RTP operations
+            process_rtp_send: Permission to process GPD messages into RTP operations
