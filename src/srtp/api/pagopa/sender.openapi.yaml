@@ -62,7 +62,7 @@ paths:
           #description: Unsupported media type. Did you provide application/json?
           $ref: '#/components/responses/GenericError'
         "429":
-          #description: Too many request.
+          #description: Too many requests.
           $ref: '#/components/responses/GenericError'
         "500":
           #description: Server error.
