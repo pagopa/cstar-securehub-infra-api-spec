@@ -666,6 +666,8 @@ paths:
               - EVALUATING
               - APPROVING
               - APPROVED
+              - TO_APPROVE
+              - TO_WORK
         - name: assigneeLevel
           in: query
           description: "ENG: Filter reward batches by assigned operator - IT: Filtra lotti in base all'operatore assegnato al lotto"
