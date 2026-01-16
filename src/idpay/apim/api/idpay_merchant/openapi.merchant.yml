@@ -1787,6 +1787,11 @@ components:
           format: int64
           description: "ENG: Number of rejected transactions <br> IT: Numero di transazioni rigettate"
           example: 2
+        merchantSendDate:
+          type: string
+          format: date-time
+          description: "ENG: Date and time when the merchant sent the batch <br> IT: Data e ora di invio del lotto da parte del merchant"
+          example: "2025-11-01T00:00:00Z"
         approvalDate:
           type: string
           format: date-time
