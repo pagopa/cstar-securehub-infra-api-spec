@@ -678,12 +678,6 @@ paths:
               - L1
               - L2
               - L3
-        - name: businessName
-          in: query
-          description: "ENG: Filter reward batches by businessName - IT: Filtra lotti in base all'insegna del lotto"
-          required: false
-          schema:
-            type: string
         - name: month
           in: query
           description: "ENG: Filter reward batches by month - IT: Filtra lotti in base al periodo del lotto"
