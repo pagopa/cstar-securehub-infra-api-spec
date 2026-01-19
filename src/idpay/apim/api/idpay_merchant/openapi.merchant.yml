@@ -684,6 +684,12 @@ paths:
           required: false
           schema:
             type: string
+        - name: merchantId
+          in: query
+          description: "ENG: Filter reward batches by merchantId - IT: Filtra lotti in base all'insegna del lotto"
+          required: false
+          schema:
+            type: string
         - name: page
           in: query
           required: false
