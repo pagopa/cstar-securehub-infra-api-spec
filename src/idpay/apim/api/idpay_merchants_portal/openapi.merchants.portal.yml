@@ -2861,6 +2861,11 @@ components:
           format: int64
           description: "ENG: Approved transaction amount in cents <br> IT: Importo approvato delle transazioni in centesimi"
           example: 95000
+        suspendedAmountCents:
+          type: integer
+          format: int64
+          description: "ENG: Suspended transaction amount in cents <br> IT: Importo sospeso delle transazioni in centesimi"
+          example: 95000
         initialAmountCents:
           type: integer
           format: int64
