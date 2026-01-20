@@ -527,13 +527,13 @@ module "idpay_itn_merchant_portal" {
   subscription_required = false
 
   api_operation_policies = [
-#     {
-#       operation_id = "getMerchantList"
-#
-#       xml_content = templatefile("./apim/api/idpay_merchant/get-merchant-list-policy.xml.tpl", {
-#         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-#       })
-#     },
+    {
+      operation_id = "getMerchantList"
+
+      xml_content = templatefile("./apim/api/idpay_merchant/get-merchant-list-by-initiative-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
     {
       operation_id = "getMerchantDetail"
 
