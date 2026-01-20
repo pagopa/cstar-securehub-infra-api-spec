@@ -530,7 +530,7 @@ module "idpay_itn_merchant_portal" {
     {
       operation_id = "getMerchantList"
 
-      xml_content = templatefile("./apim/api/idpay_merchant/get-merchant-list-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchant/get-merchant-list-by-initiative-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
