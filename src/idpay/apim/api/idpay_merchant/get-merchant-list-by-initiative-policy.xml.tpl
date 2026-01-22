@@ -14,12 +14,27 @@
     <inbound>
         <base />
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaymerchant" />
-        <rewrite-uri template="@("idpay/merchant/initiative/{initiativeId}/merchants")" />
+        <cache-lookup-value key="@($"idpay-merchantList-{context.Request.MatchedParameters["initiativeId"]}-{context.Request.Url.QueryString}")" variable-name="merchantListResponse"  />
+        <choose>
+            <!-- If API Management find it in the cache, make a request for it and store it -->
+            <when condition="@(context.Variables.ContainsKey("merchantListResponse"))">
+                <return-response response-variable-name="merchantListResponse" />
+            </when>
+            <otherwise>
+                <rewrite-uri template="@("idpay/merchant/initiative/{initiativeId}/merchants")" />
+            </otherwise>
+        </choose>
     </inbound>
     <backend>
         <base />
     </backend>
     <outbound>
+        <choose>
+            <when condition="@(context.Response.StatusCode >= 200 &&  context.Response.StatusCode < 300)">
+                <!-- Store result in cache -->
+                <cache-store-value key="@($"idpay-merchantList-{context.Request.MatchedParameters["initiativeId"]}-{context.Request.Url.QueryString}")" value="@(context.Response)" duration="86400"  />
+            </when>
+        </choose>
         <base />
     </outbound>
     <on-error>
