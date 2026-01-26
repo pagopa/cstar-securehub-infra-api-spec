@@ -1446,6 +1446,8 @@ components:
         pointOfSaleId:
           type: string
           description: "ENG: Point of sale identifier - IT: Identificativo del punto vendita"
+        checksError:
+          $ref: "#/components/schemas/ChecksErrorDTO"
         invoiceData:
           $ref: "#/components/schemas/InvoiceDataDTO"
     InvoiceDataDTO:
@@ -1868,8 +1870,27 @@ components:
           type: string
           description: "ENG: Reason associated with TRX status - IT: Motivo associato allo stato della trx"
           example: "Invoice error"
+        checksError:
+          $ref: "#/components/schemas/ChecksErrorDTO"
       required:
         - transactionIds
+    ChecksErrorDTO:
+      type: object
+      properties:
+        cfError:
+          type: boolean
+        productEligibilityError:
+          type: boolean
+        disposalRaeeError:
+          type: boolean
+        price:
+          type: boolean
+        bonus:
+          type: boolean
+        sellerReference:
+          type: boolean
+        accountingDocument:
+          type: boolean
     TransactionActionResponse:
       type: object
       properties:
