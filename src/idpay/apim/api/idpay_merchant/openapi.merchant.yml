@@ -1883,13 +1883,13 @@ components:
           type: boolean
         disposalRaeeError:
           type: boolean
-        price:
+        priceError:
           type: boolean
-        bonus:
+        bonusError:
           type: boolean
-        sellerReference:
+        sellerReferenceError:
           type: boolean
-        accountingDocument:
+        accountingDocumentError:
           type: boolean
     TransactionActionResponse:
       type: object
