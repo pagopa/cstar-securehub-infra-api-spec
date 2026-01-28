@@ -88,7 +88,7 @@ paths:
         "400":
           description: Bad Request - The request sent by the client is invalid.
           $ref: '#/components/responses/BadRequest'
-          
+
 components:
   schemas:
     SynchronousSepaRequestToPayErrorResponse:
