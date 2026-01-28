@@ -80,14 +80,14 @@ paths:
               $ref: '#/components/schemas/SepaRequestToPayCancellationResponseResource'
         required: true
       responses:
-          "200":
-            description: OK - the callback server accepts the callback.
-          "403":
-            description: Forbidden - The client is not authorized to call this endpoint.
-            $ref: '#/components/responses/Unauthorized'
-          "400":
-            description: Bad Request - The request sent by the client is invalid.
-            $ref: '#/components/responses/BadRequest'
+        "200":
+          description: OK - the callback server accepts the callback.
+        "403":
+          description: Forbidden - The client is not authorized to call this endpoint.
+          $ref: '#/components/responses/Unauthorized'
+        "400":
+          description: Bad Request - The request sent by the client is invalid.
+          $ref: '#/components/responses/BadRequest'
 
 components:
   schemas:
