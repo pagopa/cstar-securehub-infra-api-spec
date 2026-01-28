@@ -65,6 +65,30 @@ paths:
           description: Bad Request - The request sent by the client is invalid.
           $ref: '#/components/responses/BadRequest'
 
+  /cancel:
+    post:
+      summary: 'Posting of a SEPA Request-To-Pay Cancellation Response to the Payee''s SRTP Service Provider'
+      description: |
+        This endpoint is called by the payer's SRTP-SP to forward a SEPA payment cancellation request response to the payee's SRTP-SP via the callback URL provided during the initial request.
+      operationId: sendCallbackCancel
+      tags: [callback-cancel]
+      requestBody:
+        description: ISO20022 based SEPA Request-To-Pay Cancellation Response
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SepaRequestToPayCancellationResponseResource'
+        required: true
+      responses:
+        "200":
+          description: OK - the callback server accepts the callback.
+        "403":
+          description: Forbidden - The client is not authorized to call this endpoint.
+          $ref: '#/components/responses/Unauthorized'
+        "400":
+          description: Bad Request - The request sent by the client is invalid.
+          $ref: '#/components/responses/BadRequest'
+          
 components:
   schemas:
     SynchronousSepaRequestToPayErrorResponse:
