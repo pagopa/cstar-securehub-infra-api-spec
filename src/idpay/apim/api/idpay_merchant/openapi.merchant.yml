@@ -1866,14 +1866,26 @@ components:
           example:
             - "trx123456"
             - "trx789012"
-        reason:
-          type: string
+        reasons:
+          type: array
+          items:
+            type:
+            $ref: "#/components/schemas/ReasonDTO"
           description: "ENG: Reason associated with TRX status - IT: Motivo associato allo stato della trx"
-          example: "Invoice error"
         checksError:
           $ref: "#/components/schemas/ChecksErrorDTO"
       required:
         - transactionIds
+    ReasonDTO:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+          example: "2026-01-30T10:00:00Z"
+        reason:
+          type: string
+          example: "Invoice error"
     ChecksErrorDTO:
       type: object
       properties:
