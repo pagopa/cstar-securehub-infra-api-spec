@@ -439,6 +439,14 @@ paths:
           required: false
           schema:
             type: string
+        - name: trxCode
+          in: query
+          description: "ENG: The transaction's code - IT: Codice della transazione"
+          required: false
+          schema:
+            type: string
+            maxLength: 100
+            pattern: '^[A-Z0-9]+$'
       responses:
         "200":
           description: Ok
@@ -484,7 +492,24 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TransactionActionResponse"
-
+        "400":
+          description: Richiesta non valida
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              example:
+                code: "INVALID_CHECKS_ERROR"
+                message: "almeno un campo di checksError deve essere impostato a true"
+        "404":
+          description: Lotto inesistente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardBatchErrorDTO"
+              example:
+                code: "REWARD_BATCH_NOT_FOUND"
+                message: "Reward batch not found"
   /initiatives/{initiativeId}/reward-batches/{rewardBatchId}/transactions/suspended:
     post:
       tags:
@@ -515,7 +540,24 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TransactionActionResponse"
-
+        "400":
+          description: Richiesta non valida
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionErrorDTO"
+              example:
+                code: "INVALID_CHECKS_ERROR"
+                message: "almeno un campo di checksError deve essere impostato a true"
+        "404":
+          description: Lotto inesistente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardBatchErrorDTO"
+              example:
+                code: "REWARD_BATCH_NOT_FOUND"
+                message: "Reward batch not found"
   /initiatives/{initiativeId}/reward-batches/{rewardBatchId}/transactions/approved:
     post:
       tags:
@@ -1615,6 +1657,7 @@ components:
             - PAYMENT_MERCHANT_NOT_ONBOARDED
             - PAYMENT_INVALID_REQUEST
             - PAYMENT_STATUS_NOT_VALID
+            - INVALID_CHECKS_ERROR
           description: >-
             "ENG: Error code:<br>
             PAYMENT_NOT_FOUND_OR_EXPIRED: transaction not found or expired<br>
@@ -1641,6 +1684,7 @@ components:
             PAYMENT_MERCHANT_NOT_ONBOARDED: the merchant is not onboarded<br>
             PAYMENT_INVALID_REQUEST: request validation error<br>
             PAYMENT_STATUS_NOT_VALID: transaction status not valid<br>
+            INVALID_CHECKS_ERROR: at least one checksError field must be true<br>
             IT: Codice di errore<br>
             PAYMENT_NOT_FOUND_OR_EXPIRED: transazione non trovata oppure scaduta<br>
             PAYMENT_TRANSACTION_EXPIRED: transazione scaduta<br>
@@ -1666,6 +1710,7 @@ components:
             PAYMENT_MERCHANT_NOT_ONBOARDED: il merchant non è onboardato<br>
             PAYMENT_INVALID_REQUEST: errore di validazione della richiesta<br>
             PAYMENT_STATUS_NOT_VALID: stato della transazione non valido"
+            INVALID_CHECKS_ERROR: almeno un campo di checksError deve essere impostato a true<br>
         message:
           type: string
           description: "ENG: Error message- IT: Messaggio di errore"
@@ -1905,6 +1950,8 @@ components:
         sellerReferenceError:
           type: boolean
         accountingDocumentError:
+          type: boolean
+        genericError:
           type: boolean
     TransactionActionResponse:
       type: object
