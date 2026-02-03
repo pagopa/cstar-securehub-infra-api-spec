@@ -1914,11 +1914,8 @@ components:
           example:
             - "trx123456"
             - "trx789012"
-        reasons:
-          type: array
-          items:
-            type:
-            $ref: "#/components/schemas/ReasonDTO"
+        reason:
+          type: string
           description: "ENG: Reason associated with TRX status - IT: Motivo associato allo stato della trx"
         checksError:
           $ref: "#/components/schemas/ChecksErrorDTO"
