@@ -216,7 +216,7 @@ paths:
         An attempt to access another SP's activation will result in a 404 Not Found.
       tags: [read]
       security:
-        - oAuth2: [admin_rtp_activations, read_rtp_activations]
+        - oAuth2: [admin_rtp_activations, read_rtp_activations, read_rtp_all]
       parameters:
         - $ref: '#/components/parameters/RequestId'
         - $ref: '#/components/parameters/Version'
@@ -461,7 +461,7 @@ paths:
         matches the subject claim of the access token.
       tags: [read]
       security:
-        - oAuth2: [admin_rtp_activations, read_rtp_activations]
+        - oAuth2: [admin_rtp_activations, read_rtp_activations, read_rtp_all]
       parameters:
         - $ref: '#/components/parameters/RequestId'
         - $ref: '#/components/parameters/Version'
@@ -1257,4 +1257,5 @@ components:
           scopes:
             admin_rtp_activations: Grants full administrative access to all activations.
             write_rtp_activations: Grants permission to create, update, or delete activations.
-            read_rtp_activations: Grants permission to read activation data.
+            read_rtp_activations: Read RTP activation belonging to the requesting subject.
+            read_rtp_all: Read all RTP activations.
