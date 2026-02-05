@@ -462,6 +462,65 @@ paths:
           description: Too many requests
         "500":
           description: Server error
+  /{merchantId}/initiative/{initiativeId}/transactions/report:
+    get:
+      tags:
+        - merchant-transactions
+      summary: Generates a report with all transactions associated with a merchant and a reference period and returns the data from the created file
+      description: "ENG: Generates a report with all transactions associated with a merchant and a reference period and returns the data from the created file <br> IT: Genera un report con tutte le transazioni associate ad un esercente e ad un periodo di riferimento e ritorna i dati del file creato"
+      operationId: getMerchantTransactionsReport
+      parameters:
+        - name: merchantId
+          in: path
+          description: The merchant ID
+          required: true
+          schema:
+            type: string
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+        - name: startPeriod
+          in: query
+          description: start date of the reference period
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: endPeriod
+          in: query
+          description: end date of the reference period
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: rewardBatchAssignee
+          in: query
+          description: Invitalia operator level
+          required: false
+          schema:
+            type: string
+            enum:
+              - L1
+              - L2
+              - L3
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MerchantReportDTO"
+        "401":
+          description: Autentication failed
+        "404":
+          description: Merchant not found
+        "429":
+          description: Too many requests
+        "500":
+          description: Server error
   /initiatives/{initiativeId}/reward-batches/{rewardBatchId}/transactions/rejected:
     post:
       tags:
@@ -2069,6 +2128,53 @@ components:
           type: integer
           format: int32
           description: "ENG: The total number of the pages <br> IT: Il numero totale delle pagine"
+    MerchantReportDTO:
+      type: object
+      properties:
+        initiativeId:
+          type: string
+          description: "ENG: The ID of the initiative <br> IT: L'ID' dell'iniziativa"
+        initiativeName:
+          type: string
+          description: "ENG: The name of the initiative <br> IT: Il nome dell'iniziativa"
+        state:
+          type: string
+          enum:
+            - CREATED
+            - FAILED
+          description: "ENG: Report status <br> IT: Stato del report"
+        fileName:
+          type: string
+          description: "ENG: Name of the report <br> IT: Nome del report"
+        requestDate:
+          type: string
+          format: date-time
+          description: "ENG: Report request date <br> IT: Data di richiesta del report"
+        elaborationDate:
+          type: string
+          format: date-time
+          description: "ENG: Report processing end date <br> IT: Data di fine elaborazione del report"
+        startPeriod:
+          type: string
+          format: date-time
+          description: "ENG: Start date of the reference period <br> IT: Data di inizio del periodo di riferimento"
+        endPeriod:
+          type: string
+          format: date-time
+          description: "ENG: End date of the reference period <br> IT: Data di fine del periodo di riferimento"
+        merchantId:
+          type: string
+          description: "ENG: Merchant ID <br> IT: L'ID dell'esercente"
+        businessName:
+          type: string
+          description: "ENG: The name of the merchant <br> IT: La ragione sociale dell'esercente"
+        rewardBatchAssignee:
+          type: string
+          enum:
+            - L1
+            - L2
+            - L3
+          description: "ENG: Invitalia operator level <br> IT: Livello dell'operatore Invitalia"
     PointOfSaleErrorDTO:
       type: object
       required:
