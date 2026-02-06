@@ -479,7 +479,7 @@ paths:
         - name: merchantId
           in: query
           description: The merchant ID
-          required: true
+          required: false
           schema:
             type: string
         - name: startPeriod
