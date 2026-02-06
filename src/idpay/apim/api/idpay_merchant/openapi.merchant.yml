@@ -468,7 +468,7 @@ paths:
         - merchant-transactions
       summary: Generates a report with all transactions associated with a merchant and a reference period and returns the data from the created file
       description: "ENG: Generates a report with all transactions associated with a merchant and a reference period and returns the data from the created file <br> IT: Genera un report con tutte le transazioni associate ad un esercente e ad un periodo di riferimento e ritorna i dati del file creato"
-      operationId: getMerchantTransactionsReport
+      operationId: generateMerchantTransactionsReport
       parameters:
         - name: initiativeId
           in: path
