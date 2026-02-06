@@ -13,21 +13,18 @@
 <policies>
     <inbound>
         <base />
-        <set-header name="x-merchant-id" exists-action="override">
-            <value>@(context.Request.Query.GetValueOrDefault("merchantId"))</value>
-        </set-header>
+
+        <choose>
+            <when condition="@(!context.Request.Headers.ContainsKey("x-merchant-id"))">
+                <set-header name="x-merchant-id" exists-action="override">
+                    <value>@(context.Request.Query.GetValueOrDefault("merchantId"))</value>
+                </set-header>
+            </when>
+        </choose>
+
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaytransactions" />
         <rewrite-uri template="@("/idpay/merchant/portal/initiatives/{initiativeId}/transactions/report")" />
     </inbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound>
-        <base />
-    </outbound>
-    <on-error>
-        <base />
-    </on-error>
-</policies>
+    </policies>
 
 
