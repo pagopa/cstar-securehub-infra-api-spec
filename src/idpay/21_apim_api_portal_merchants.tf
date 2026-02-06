@@ -179,6 +179,13 @@ module "idpay_itn_merchants_portal" {
       })
     },
     {
+      operation_id = "getMerchantTransactionsReport"
+
+      xml_content = templatefile("./apim/api/idpay_merchants_portal/get-merchant-transactions-report-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
       operation_id = "getProcessedTransactionStatuses"
       xml_content = templatefile("./apim/api/idpay_merchants_portal/get-merchant-transactions-processed-statuses-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname

@@ -462,23 +462,23 @@ paths:
           description: Too many requests
         "500":
           description: Server error
-  /{merchantId}/initiative/{initiativeId}/transactions/report:
-    get:
+  /initiative/{initiativeId}/transactions/report:
+    post:
       tags:
         - merchant-transactions
       summary: Generates a report with all transactions associated with a merchant and a reference period and returns the data from the created file
       description: "ENG: Generates a report with all transactions associated with a merchant and a reference period and returns the data from the created file <br> IT: Genera un report con tutte le transazioni associate ad un esercente e ad un periodo di riferimento e ritorna i dati del file creato"
       operationId: getMerchantTransactionsReport
       parameters:
-        - name: merchantId
-          in: path
-          description: The merchant ID
-          required: true
-          schema:
-            type: string
         - name: initiativeId
           in: path
           description: The initiative ID
+          required: true
+          schema:
+            type: string
+        - name: merchantId
+          in: query
+          description: The merchant ID
           required: true
           schema:
             type: string
@@ -2131,16 +2131,20 @@ components:
     MerchantReportDTO:
       type: object
       properties:
+        id:
+          type: string
+          description: "ENG: Report ID <br> IT: ID del report"
+          maxLength: 64
+          pattern: .*
         initiativeId:
           type: string
           description: "ENG: The ID of the initiative <br> IT: L'ID' dell'iniziativa"
-        initiativeName:
-          type: string
-          description: "ENG: The name of the initiative <br> IT: Il nome dell'iniziativa"
-        state:
+        merchantReportStatus:
           type: string
           enum:
-            - CREATED
+            - INSERTED
+            - IN_PROGRESS
+            - GENERATED
             - FAILED
           description: "ENG: Report status <br> IT: Stato del report"
         fileName:
