@@ -26,5 +26,3 @@
         <rewrite-uri template="@("/idpay/merchant/portal/initiatives/{initiativeId}/transactions/report")" />
     </inbound>
     </policies>
-
-
