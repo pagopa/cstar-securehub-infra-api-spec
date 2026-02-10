@@ -206,6 +206,21 @@ locals {
         }
       }
 
+      # RTP GPD Message Processing Mock
+      rtp-send-mock = {
+        description           = "RTP ITN Send Mock API"
+        display_name          = "RTP ITN Send Mock API"
+        path                  = "${local.api_context_path}/mock/send"
+        revision              = "1"
+        protocols             = ["https"]
+        subscription_required = false
+        product               = "srtp"
+        import_descriptor = {
+          content_format = "openapi"
+          content_value  = templatefile("./api/pagopa/send.openapi.yaml", {})
+        }
+      }
+
       # RTP Takeover Mock
       rtp-takeover-mock = {
         description           = "RTP ITN MOCK API TAKEOVER"
@@ -313,6 +328,10 @@ locals {
       notifyUserTakeover = {
         api_name    = "rtp-takeover-mock"
         xml_content = file("./api/test/mock_policy_takeover.xml")
+      }
+      snedRtp = {
+        api_name    = "rtp-send-mock"
+        xml_content = file("./api/test/mock_policy_send.xml")
       }
     }
   )
