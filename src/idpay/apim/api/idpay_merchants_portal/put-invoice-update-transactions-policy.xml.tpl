@@ -11,18 +11,27 @@
     - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.
 -->
 <policies>
-    <inbound>
-        <base />
-        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaytransactions" />
-        <rewrite-uri template="@("/idpay/transactions/{transactionId}/invoice/update")" />
-    </inbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound>
-        <base />
-    </outbound>
-    <on-error>
-        <base />
-    </on-error>
+  <inbound>
+    <base />
+
+    <choose>
+      <when condition="@(!context.Request.Headers.ContainsKey("x-point-of-sale-id")
+                        || string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault("x-point-of-sale-id","")))">
+        <return-response>
+          <set-status code="400" reason="Bad Request" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>{"statusCode":400,"message":"Missing required header: x-point-of-sale-id"}</set-body>
+        </return-response>
+      </when>
+    </choose>
+
+    <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaytransactions" />
+    <rewrite-uri template="@("/idpay/transactions/{transactionId}/invoice/update")" />
+  </inbound>
+
+  <backend><base /></backend>
+  <outbound><base /></outbound>
+  <on-error><base /></on-error>
 </policies>
