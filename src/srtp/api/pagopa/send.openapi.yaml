@@ -679,11 +679,13 @@ components:
         - REJECTED
         - USER_ACCEPTED
         - USER_REJECTED
-        - PAYED
+        - PAID
         - ERROR_SEND
+        - CANCELLED_PAID
         - CANCELLED_ACCR
         - CANCELLED_REJECTED
         - ERROR_CANCEL
+        - RFC_SENT
 
     RtpEvent:
       type: string
@@ -700,6 +702,8 @@ components:
         - ERROR_CANCEL_RTP
         - CANCEL_RTP_ACCR
         - CANCEL_RTP_REJECTED
+        - CONFIRM_RFC
+        - CANCEL_RTP_PAID
 
     GenericError:
       description: Generic error.
