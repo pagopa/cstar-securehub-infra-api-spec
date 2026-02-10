@@ -259,9 +259,9 @@ module "idpay_itn_merchants_portal" {
       })
     },
     {
-       operation_id = "updateInvoiceTransaction"
-       xml_content = templatefile("./apim/api/idpay_merchants_portal/put-invoice-update-transactions-policy.xml.tpl", {
-         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      operation_id = "updateInvoiceTransaction"
+      xml_content = templatefile("./apim/api/idpay_merchants_portal/put-invoice-update-transactions-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
   ]
