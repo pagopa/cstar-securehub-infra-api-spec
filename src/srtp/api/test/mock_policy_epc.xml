@@ -1,44 +1,125 @@
-<!--
-    IMPORTANT:
-    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.
-    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.
-    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.
-    - To add a policy, place the cursor at the desired insertion point and select a policy from the sidebar.
-    - To remove a policy, delete the corresponding policy statement from the policy document.
-    - Position the <base> element within a section element to inherit all policies from the corresponding section element in the enclosing scope.
-    - Remove the <base> element to prevent inheriting policies from the corresponding section element in the enclosing scope.
-    - Policies are applied in the order of their appearance, from the top down.
-    - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.
--->
 <policies>
-  <inbound>
-    <base/>
-    <choose>
-      <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;RSSMRA85T10X000D&quot;))">
-        <return-response>
-          <set-status code="502" reason="Bad Gateway"/>
-          <set-header name="Content-Type" exists-action="override">
-            <value>application/json</value>
-          </set-header>
-        </return-response>
-      </when>
-      <otherwise>
-        <return-response>
-          <set-status code="201" reason="OK"/>
-          <set-header name="Content-Type" exists-action="override">
-            <value>application/json</value>
-          </set-header>
-        </return-response>
-      </otherwise>
-    </choose>
-  </inbound>
-  <backend>
-    <base/>
-  </backend>
-  <outbound>
-    <base/>
-  </outbound>
-  <on-error>
-    <base/>
-  </on-error>
+    <inbound>
+        <base />
+        <choose>
+            <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;QBICLE31R41A110G&quot;))">
+                <return-response>
+                    <set-status code="201" reason="Created" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@{
+            return @"{
+              ""Document"": {
+                ""CdtrPmtActvtnReqStsRpt"": {
+                  ""GrpHdr"": {
+                    ""MsgId"": ""MSG-RESP-20231027-001"",
+                    ""CreDtTm"": ""2023-10-27T10:30:00Z"",
+                    ""InitgPty"": {
+                      ""Id"": {
+                        ""OrgId"": {
+                          ""Othr"": {
+                            ""Id"": ""RTP-SP-ID-12345""
+                          }
+                        }
+                      }
+                    }
+                  },
+                  ""OrgnlGrpInfAndSts"": {
+                    ""OrgnlMsgId"": ""MSG-REQ-ORIG-98765"",
+                    ""OrgnlMsgNmId"": ""pain.013.001.10"",
+                    ""GrpSts"": ""ACTC""
+                  },
+                  ""OrgnlPmtInfAndSts"": {
+                    ""OrgnlPmtInfId"": ""PMT-INF-001"",
+                    ""TxInfAndSts"": {
+                      ""OrgnlInstrId"": ""INSTR-ID-123456789"",
+                      ""OrgnlEndToEndId"": ""E2E-REF-2023-XYZ"",
+                      ""TxSts"": ""ACTC""
+                    }
+                  }
+                }
+              }
+            }";
+          }</set-body>
+                </return-response>
+            </when>
+            <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;LSSUDV05L25B272V&quot;))">
+                <return-response>
+                    <set-status code="400" reason="Bad Request" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@{
+            return @"{
+              ""Document"": {
+                ""CdtrPmtActvtnReqStsRpt"": {
+                  ""GrpHdr"": {
+                    ""MsgId"": ""MSG-REJ-20231027-X01"",
+                    ""CreDtTm"": ""2023-10-27T14:30:00Z"",
+                    ""InitgPty"": {
+                      ""Id"": {
+                        ""OrgId"": {
+                          ""Othr"": {
+                            ""Id"": ""PSP-PAYEE-ID-123""
+                          }
+                        }
+                      }
+                    }
+                  },
+                  ""OrgnlGrpInfAndSts"": {
+                    ""OrgnlMsgId"": ""RTP-REQ-ORIG-001"",
+                    ""OrgnlMsgNmId"": ""pain.013.001.10"",
+                    ""GrpSts"": ""RJCT""
+                  },
+                  ""OrgnlPmtInfAndSts"": {
+                    ""OrgnlPmtInfId"": ""PMT-INF-001"",
+                    ""TxInfAndSts"": {
+                      ""OrgnlEndToEndId"": ""E2E-123456789"",
+                      ""TxSts"": ""RJCT"",
+                      ""StsRsnInf"": {
+                        ""Orgtr"": {
+                          ""Id"": {
+                            ""OrgId"": {
+                              ""Othr"": {
+                                ""Id"": ""PSP-PAYEE-ID-123""
+                              }
+                            }
+                          }
+                        },
+                        ""Rsn"": {
+                          ""Cd"": ""BE16""
+                        },
+                        ""AddtlInf"": [
+                          ""Fiscal Code LSSUDV05L25B272V invalid or unknown""
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }";
+          }</set-body>
+                </return-response>
+            </when>
+            <otherwise>
+                <return-response>
+                    <set-status code="201" reason="Created" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@("{}")</set-body>
+                </return-response>
+            </otherwise>
+        </choose>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
 </policies>
