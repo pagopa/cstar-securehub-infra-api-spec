@@ -1800,10 +1800,22 @@ paths:
             maxLength: 255
             pattern: "^[a-zA-Z0-9]+$"
       requestBody:
+        required: true
         content:
           multipart/form-data:
             schema:
-              $ref: "#/components/schemas/InvoiceDTO"
+              allOf:
+                - $ref: "#/components/schemas/InvoiceDTO"
+                - type: object
+                  properties:
+                    file:
+                      type: string
+                      format: binary
+                      description: Invoice file
+                    docNumber:
+                      type: string
+                      maxLength: 255
+                      description: Invoice document number
       responses:
         "204":
           description: Ok - no content
