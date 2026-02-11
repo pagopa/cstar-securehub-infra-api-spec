@@ -10,33 +10,55 @@
                     </set-header>
                     <set-body>@{
             return @"{
-              ""Document"": {
-                ""CdtrPmtActvtnReqStsRpt"": {
-                  ""GrpHdr"": {
-                    ""MsgId"": ""MSG-RESP-20231027-001"",
-                    ""CreDtTm"": ""2023-10-27T10:30:00Z"",
-                    ""InitgPty"": {
-                      ""Id"": {
-                        ""OrgId"": {
-                          ""Othr"": {
-                            ""Id"": ""RTP-SP-ID-12345""
+              ""resourceId"": ""TestRtpMessageA1B2C3D4E5F6G7H8"",
+              ""AsynchronousSepaRequestToPayResponse"": {
+                ""resourceId"": ""TestRtpMessageA1B2C3D4E5F6G7H8"",
+                ""Document"": {
+                  ""CdtrPmtActvtnReqStsRpt"": {
+                    ""GrpHdr"": {
+                      ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
+                      ""CreDtTm"": ""2026-02-11T14:00:00Z"",
+                      ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+                    },
+                    ""OrgnlGrpInfAndSts"": {
+                      ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
+                      ""OrgnlMsgNmId"": ""pain.013.001.07"",
+                      ""OrgnlCreDtTm"": ""2026-02-12T09:30:00Z""
+                    },
+                    ""OrgnlPmtInfAndSts"": [
+                      {
+                        ""OrgnlPmtInfId"": ""f47ac10b-58cc-4372-a567-0e02b2c3d479"",
+                        ""TxInfAndSts"": {
+                          ""StsId"": ""550e8400-e29b-41d4-a716-446655440000"",
+                          ""OrgnlInstrId"": ""TestRtpMessagePL098765432109876543"",
+                          ""OrgnlEndToEndId"": ""123456789012345678"",
+                          ""TxSts"": ""ACTC"",
+                          ""StsRsnInf"": {
+                            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+                          },
+                          ""OrgnlTxRef"": {
+                            ""PmtTpInf"": {
+                              ""SvcLvl"": { ""Cd"": ""SRTP"" },
+                              ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
+                            },
+                            ""RmtInf"": { ""Ustrd"": ""Payment for invoice 12345."" },
+                            ""Cdtr"": {
+                              ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-ID-112233"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
+                              ""Nm"": ""Azienda Creditrice S.p.A.""
+                            },
+                            ""Dbtr"": {
+                              ""Id"": { ""PrvtId"": { ""Othr"": { ""Id"": ""TRX-ID-112233"", ""SchmeNm"": { ""Cd"": ""POID"" } } } }
+                            },
+                            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+                            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+                            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
+                            ""Amt"": { ""InstdAmt"": 450.75 },
+                            ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
+                            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" }
                           }
                         }
                       }
-                    }
-                  },
-                  ""OrgnlGrpInfAndSts"": {
-                    ""OrgnlMsgId"": ""MSG-REQ-ORIG-98765"",
-                    ""OrgnlMsgNmId"": ""pain.013.001.10"",
-                    ""GrpSts"": ""ACTC""
-                  },
-                  ""OrgnlPmtInfAndSts"": {
-                    ""OrgnlPmtInfId"": ""PMT-INF-001"",
-                    ""TxInfAndSts"": {
-                      ""OrgnlInstrId"": ""INSTR-ID-123456789"",
-                      ""OrgnlEndToEndId"": ""E2E-REF-2023-XYZ"",
-                      ""TxSts"": ""ACTC""
-                    }
+                    ]
                   }
                 }
               }
@@ -44,6 +66,7 @@
           }</set-body>
                 </return-response>
             </when>
+
             <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;LSSUDV05L25B272V&quot;))">
                 <return-response>
                     <set-status code="400" reason="Bad Request" />
@@ -52,49 +75,55 @@
                     </set-header>
                     <set-body>@{
             return @"{
-              ""Document"": {
-                ""CdtrPmtActvtnReqStsRpt"": {
-                  ""GrpHdr"": {
-                    ""MsgId"": ""MSG-REJ-20231027-X01"",
-                    ""CreDtTm"": ""2023-10-27T14:30:00Z"",
-                    ""InitgPty"": {
-                      ""Id"": {
-                        ""OrgId"": {
-                          ""Othr"": {
-                            ""Id"": ""PSP-PAYEE-ID-123""
+              ""resourceId"": ""TestRtpMessageREJ1234567890XYZ"",
+              ""AsynchronousSepaRequestToPayResponse"": {
+                ""resourceId"": ""TestRtpMessageREJ1234567890XYZ"",
+                ""Document"": {
+                  ""CdtrPmtActvtnReqStsRpt"": {
+                    ""GrpHdr"": {
+                      ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
+                      ""CreDtTm"": ""2026-02-11T14:05:00Z"",
+                      ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+                    },
+                    ""OrgnlGrpInfAndSts"": {
+                      ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
+                      ""OrgnlMsgNmId"": ""pain.013.001.07"",
+                      ""OrgnlCreDtTm"": ""2026-02-12T10:00:00Z""
+                    },
+                    ""OrgnlPmtInfAndSts"": [
+                      {
+                        ""OrgnlPmtInfId"": ""a1b2c3d4-e5f6-4789-8901-23456789abcd"",
+                        ""TxInfAndSts"": {
+                          ""StsId"": ""990e8400-e29b-41d4-a716-446655449999"",
+                          ""OrgnlInstrId"": ""TestRtpMessageINSTR-REJECTED"",
+                          ""OrgnlEndToEndId"": ""987654321098765432"",
+                          ""TxSts"": ""RJCT"",
+                          ""StsRsnInf"": {
+                            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+                          },
+                          ""OrgnlTxRef"": {
+                            ""PmtTpInf"": {
+                              ""SvcLvl"": { ""Cd"": ""SRTP"" },
+                              ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
+                            },
+                            ""RmtInf"": { ""Ustrd"": ""Rifiuto tecnico transazione."" },
+                            ""Cdtr"": {
+                              ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
+                              ""Nm"": ""Azienda Creditrice S.p.A.""
+                            },
+                            ""Dbtr"": {
+                              ""Id"": { ""PrvtId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""POID"" } } } }
+                            },
+                            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+                            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+                            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } },
+                            ""Amt"": { ""InstdAmt"": 120.00 },
+                            ""ReqdExctnDt"": { ""Dt"": ""2026-02-15Z"" },
+                            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" }
                           }
                         }
                       }
-                    }
-                  },
-                  ""OrgnlGrpInfAndSts"": {
-                    ""OrgnlMsgId"": ""RTP-REQ-ORIG-001"",
-                    ""OrgnlMsgNmId"": ""pain.013.001.10"",
-                    ""GrpSts"": ""RJCT""
-                  },
-                  ""OrgnlPmtInfAndSts"": {
-                    ""OrgnlPmtInfId"": ""PMT-INF-001"",
-                    ""TxInfAndSts"": {
-                      ""OrgnlEndToEndId"": ""E2E-123456789"",
-                      ""TxSts"": ""RJCT"",
-                      ""StsRsnInf"": {
-                        ""Orgtr"": {
-                          ""Id"": {
-                            ""OrgId"": {
-                              ""Othr"": {
-                                ""Id"": ""PSP-PAYEE-ID-123""
-                              }
-                            }
-                          }
-                        },
-                        ""Rsn"": {
-                          ""Cd"": ""BE16""
-                        },
-                        ""AddtlInf"": [
-                          ""Fiscal Code LSSUDV05L25B272V invalid or unknown""
-                        ]
-                      }
-                    }
+                    ]
                   }
                 }
               }
@@ -102,6 +131,7 @@
           }</set-body>
                 </return-response>
             </when>
+
             <otherwise>
                 <return-response>
                     <set-status code="201" reason="Created" />
@@ -113,13 +143,4 @@
             </otherwise>
         </choose>
     </inbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound>
-        <base />
-    </outbound>
-    <on-error>
-        <base />
-    </on-error>
 </policies>
