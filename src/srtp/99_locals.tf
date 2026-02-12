@@ -115,12 +115,6 @@ locals {
         content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
       }
 
-      api_policy = {
-        xml_content = templatefile("./api/pagopa/activation_base_policy.xml", {
-          fragment_id = "rtp-validate-token-mcshared-v2"
-        })
-      }
-
       api_diagnostic = {
         name                      = "applicationinsights"
         sampling_percentage       = 100.0
@@ -154,11 +148,6 @@ locals {
         version_header_name = "Version"
       }
 
-      api_policy = {
-        xml_content = templatefile("./api/pagopa/activation_base_policy.xml", {
-          fragment_id = "rtp-validate-token-mcshared-v2"
-        })
-      }
       api_diagnostic = {
         name                      = "applicationinsights"
         sampling_percentage       = 100.0
