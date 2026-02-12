@@ -482,39 +482,12 @@ paths:
           required: false
           schema:
             type: string
-        - name: startPeriod
-          in: query
-          description: start date of the reference period
-          required: true
-          schema:
-            type: string
-            format: date-time
-        - name: endPeriod
-          in: query
-          description: end date of the reference period
-          required: true
-          schema:
-            type: string
-            format: date-time
-        - name: reportType
-          in: query
-          description: type of the report
-          required: true
-          schema:
-            type: string
-            enum:
-              - MERCHANT_TRANSACTIONS
-          default: MERCHANT_TRANSACTIONS
-        - name: rewardBatchAssignee
-          in: query
-          description: Invitalia operator level
-          required: false
-          schema:
-            type: string
-            enum:
-              - L1
-              - L2
-              - L3
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportRequest"
       responses:
         "200":
           $ref: "#/components/responses/POST_generate_transactions_report_200_Response"
@@ -2615,6 +2588,25 @@ components:
           description: >
             ENG: Total number of available pages. <br>
             IT: Numero totale delle pagine disponibili.
+    ReportRequest:
+      type: object
+      properties:
+        startPeriod:
+          type: string
+          format: date-time
+          description: "ENG: Start date of the reference period <br> IT: Data di inizio del periodo di riferimento"
+        endPeriod:
+          type: string
+          format: date-time
+          description: "ENG: End date of the reference period <br> IT: Data di fine del periodo di riferimento"
+        reportType:
+          type: string
+          enum:
+            - MERCHANT_TRANSACTIONS
+      required:
+        - startPeriod
+        - endPeriod
+        - reportType
   securitySchemes:
     Bearer:
       type: apiKey
