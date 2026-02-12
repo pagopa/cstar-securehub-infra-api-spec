@@ -23,6 +23,6 @@
         </choose>
 
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaytransactions" />
-        <rewrite-uri template="@("/idpay/merchant/portal/initiatives/{initiativeId}/transactions/report")" />
+        <rewrite-uri template="@("/idpay/merchant/portal/initiatives/{initiativeId}/report")" />
     </inbound>
     </policies>
