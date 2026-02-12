@@ -96,7 +96,7 @@ locals {
         log_client_ip             = true
         verbosity                 = "information"
         http_correlation_protocol = "W3C"
-        headers_to_log            = ["RequestId"]
+        headers_to_log            = ["RequestId", "X-JWT-Subject"]
       }
     }
 
@@ -113,6 +113,22 @@ locals {
       import_descriptor = {
         content_format = "openapi"
         content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
+      }
+
+      api_policy = {
+        xml_content = templatefile("./api/pagopa/payees_registry_base_policy.xml", {
+          fragment_id = "rtp-validate-blob-storage-payees-token-mcshared-v2"
+        })
+      }
+
+      api_diagnostic = {
+        name                      = "applicationinsights"
+        sampling_percentage       = 100.0
+        always_log_errors         = true
+        log_client_ip             = true
+        verbosity                 = "information"
+        http_correlation_protocol = "W3C"
+        headers_to_log            = ["RequestId", "X-JWT-Subject"]
       }
     }
 
@@ -136,6 +152,21 @@ locals {
         display_name        = "RTP ITN Service Provider API"
         versioning_scheme   = "Header"
         version_header_name = "Version"
+      }
+
+      api_policy = {
+        xml_content = templatefile("./api/pagopa/service_providers_registry_base_policy.xml", {
+          fragment_id = "rtp-validate-blob-storage-service-providers-token-mcshared-v2"
+        })
+      }
+      api_diagnostic = {
+        name                      = "applicationinsights"
+        sampling_percentage       = 100.0
+        always_log_errors         = true
+        log_client_ip             = true
+        verbosity                 = "information"
+        http_correlation_protocol = "W3C"
+        headers_to_log            = ["RequestId", "X-JWT-Subject"]
       }
     }
 
@@ -171,7 +202,7 @@ locals {
         log_client_ip             = true
         verbosity                 = "information"
         http_correlation_protocol = "W3C"
-        headers_to_log            = ["RequestId"]
+        headers_to_log            = ["RequestId", "X-JWT-Subject"]
       }
     }
     },
