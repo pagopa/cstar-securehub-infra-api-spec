@@ -468,7 +468,7 @@ paths:
         - merchant-report
       summary: Generates a report with all transactions associated with a merchant and a reference period and returns the data from the created file
       description: "ENG: Generates a report with all transactions associated with a merchant and a reference period and returns the data from the created file <br> IT: Genera un report con tutte le transazioni associate ad un esercente e ad un periodo di riferimento e ritorna i dati del file creato"
-      operationId: generateMerchantTransactionsReport
+      operationId: generateReport
       parameters:
         - name: initiativeId
           in: path
@@ -496,6 +496,15 @@ paths:
           schema:
             type: string
             format: date-time
+        - name: reportType
+          in: query
+          description: type of the report
+          required: true
+          schema:
+            type: string
+            enum:
+              - MERCHANT_TRANSACTIONS
+          default: MERCHANT_TRANSACTIONS
         - name: rewardBatchAssignee
           in: query
           description: Invitalia operator level
@@ -1341,7 +1350,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/MerchantReportDTO"
+            $ref: "#/components/schemas/ReportDTO"
     POST_generate_transactions_report_400_Response:
       description: Bad request
       headers:
@@ -1431,7 +1440,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/MerchantReportPageDTO"
+            $ref: "#/components/schemas/ReportListDTO"
     GET_list_transactions_reports_400_Response:
       description: Bad request
       headers:
@@ -2491,7 +2500,7 @@ components:
           type: integer
           format: int32
           description: "ENG: The total number of the pages <br> IT: Il numero totale delle pagine"
-    MerchantReportDTO:
+    ReportDTO:
       type: object
       properties:
         id:
@@ -2535,13 +2544,17 @@ components:
         businessName:
           type: string
           description: "ENG: The name of the merchant <br> IT: La ragione sociale dell'esercente"
-        rewardBatchAssignee:
+        operatorLevel:
           type: string
           enum:
             - L1
             - L2
             - L3
           description: "ENG: Invitalia operator level <br> IT: Livello dell'operatore Invitalia"
+        reportType:
+          type: string
+          enum:
+            - MERCHANT_TRANSACTIONS
     PointOfSaleErrorDTO:
       type: object
       required:
@@ -2571,7 +2584,7 @@ components:
           description: "ENG: URL to download the approved batch file - IT: URL per scaricare il file del lotto approvato"
       required:
         - approvedBatchUrl
-    MerchantReportPageDTO:
+    ReportListDTO:
       type: object
       description: "ENG: Paginated list of generated transaction reports. <br> IT: Lista paginata dei report di transazioni generati."
       properties:
@@ -2581,7 +2594,7 @@ components:
             ENG: List of generated reports for the requested page. <br>
             IT: Elenco dei report generati per la pagina richiesta.
           items:
-            $ref: "#/components/schemas/MerchantReportDTO"
+            $ref: "#/components/schemas/ReportDTO"
         page:
           type: integer
           description: >
