@@ -114,16 +114,6 @@ locals {
         content_format = "openapi"
         content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
       }
-
-      api_diagnostic = {
-        name                      = "applicationinsights"
-        sampling_percentage       = 100.0
-        always_log_errors         = true
-        log_client_ip             = true
-        verbosity                 = "information"
-        http_correlation_protocol = "W3C"
-        headers_to_log            = ["RequestId", "X-JWT-Subject"]
-      }
     }
 
     # RTP Service Provider
@@ -146,16 +136,6 @@ locals {
         display_name        = "RTP ITN Service Provider API"
         versioning_scheme   = "Header"
         version_header_name = "Version"
-      }
-
-      api_diagnostic = {
-        name                      = "applicationinsights"
-        sampling_percentage       = 100.0
-        always_log_errors         = true
-        log_client_ip             = true
-        verbosity                 = "information"
-        http_correlation_protocol = "W3C"
-        headers_to_log            = ["RequestId", "X-JWT-Subject"]
       }
     }
 
