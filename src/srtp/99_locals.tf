@@ -116,8 +116,8 @@ locals {
       }
 
       api_policy = {
-        xml_content = templatefile("./api/pagopa/payees_registry_base_policy.xml", {
-          fragment_id = "rtp-validate-blob-storage-payees-token-mcshared-v2"
+        xml_content = templatefile("./api/pagopa/activation_base_policy.xml", {
+          fragment_id = "rtp-validate-token-mcshared-v2"
         })
       }
 
@@ -155,8 +155,8 @@ locals {
       }
 
       api_policy = {
-        xml_content = templatefile("./api/pagopa/service_providers_registry_base_policy.xml", {
-          fragment_id = "rtp-validate-blob-storage-service-providers-token-mcshared-v2"
+        xml_content = templatefile("./api/pagopa/activation_base_policy.xml", {
+          fragment_id = "rtp-validate-token-mcshared-v2"
         })
       }
       api_diagnostic = {
