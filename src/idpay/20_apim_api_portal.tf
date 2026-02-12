@@ -570,6 +570,13 @@ module "idpay_itn_merchant_portal" {
       })
     },
     {
+      operation_id = "generateReport"
+
+      xml_content = templatefile("./apim/api/idpay_merchants_portal/generate-report-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
       operation_id = "getRewardBatches"
 
       xml_content = templatefile("./apim/api/idpay_merchant/get-reward-batches-policy.xml.tpl", {
