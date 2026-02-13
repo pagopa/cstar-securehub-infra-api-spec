@@ -17,7 +17,7 @@
         <choose>
             <when condition="@(!context.Request.Headers.ContainsKey("x-merchant-id"))">
                 <set-header name="x-merchant-id" exists-action="override">
-                    <value>@(context.Request.MatchedParameters["merchantId"])</value>
+                    <value>@(context.Request.Url.Query.GetValueOrDefault("merchantId",""))</value>
                 </set-header>
             </when>
         </choose>
