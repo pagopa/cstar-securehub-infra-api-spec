@@ -2590,7 +2590,7 @@ components:
       required:
         - startPeriod
         - endPeriod
-        - required
+        - reportType
   securitySchemes:
     Bearer:
       type: apiKey
