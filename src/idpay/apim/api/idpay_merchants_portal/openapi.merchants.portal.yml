@@ -554,12 +554,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: merchantId
-          in: query
-          description: The merchant ID
-          required: false
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -590,12 +584,6 @@ paths:
           in: path
           description: The initiative ID
           required: true
-          schema:
-            type: string
-        - name: merchantId
-          in: query
-          description: The merchant ID
-          required: false
           schema:
             type: string
         - name: page
@@ -3643,7 +3631,7 @@ components:
       required:
         - startPeriod
         - endPeriod
-        - required
+        - reportType
   securitySchemes:
     Bearer:
       type: apiKey
