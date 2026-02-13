@@ -561,12 +561,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: merchantId
-          in: query
-          description: The merchant ID
-          required: false
-          schema:
-            type: string
         - name: reportId
           in: path
           required: true
@@ -2593,10 +2587,10 @@ components:
           type: string
           enum:
             - MERCHANT_TRANSACTIONS
-          default: MERCHANT_TRANSACTIONS
       required:
         - startPeriod
         - endPeriod
+        - required
   securitySchemes:
     Bearer:
       type: apiKey
