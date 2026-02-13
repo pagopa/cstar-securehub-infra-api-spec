@@ -15,7 +15,7 @@
         <base />
         <choose>
             <when condition="@(((string)context.Variables["groups"]).Contains("emd-tpp"))">
-              <set-backend-service base-url="https://${ingress_load_balancer_hostname}/emdcitizen" />
+              <set-backend-service base-url="${ingress_load_balancer_hostname}/emdcitizen" />
               <rewrite-uri template="@("/emd/citizen/{tppId}")" />
             </when>
             <otherwise>

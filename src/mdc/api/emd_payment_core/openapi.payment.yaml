@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  title: EMD Payment API
+  title: EMD Payment API ITN
   version: '1.0'
   description: |-
     EMD Payment

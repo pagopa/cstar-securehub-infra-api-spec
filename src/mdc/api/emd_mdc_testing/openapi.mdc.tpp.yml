@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  title: EMD TPP NETWORK TESTING API
+  title: EMD TPP NETWORK TESTING API ITN
   version: '1.0'
   description: |-
     EMD TPP NETWORK TESTING

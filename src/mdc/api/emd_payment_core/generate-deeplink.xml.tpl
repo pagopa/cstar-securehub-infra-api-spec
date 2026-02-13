@@ -13,7 +13,7 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/emdpaymentcore" />
+        <set-backend-service base-url="${ingress_load_balancer_hostname}/emdpaymentcore" />
         <rewrite-uri template="@("/emd/payment/token")" />
     </inbound>
     <backend>

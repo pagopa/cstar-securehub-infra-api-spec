@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: EMD CITIZEN CONSENT API
+  title: EMD CITIZEN CONSENT API ITN
   version: '1.0'
   description: |-
     EMD CITIZEN CONSENT

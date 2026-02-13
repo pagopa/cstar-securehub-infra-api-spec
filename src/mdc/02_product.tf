@@ -21,6 +21,10 @@ resource "azurerm_api_management_product_policy" "this" {
   api_management_name = local.apim_name
 
   xml_content = each.value.policy
+
+  depends_on = [
+    azurerm_api_management_policy_fragment.this
+  ]
 }
 
 resource "azurerm_api_management_product_group" "this" {

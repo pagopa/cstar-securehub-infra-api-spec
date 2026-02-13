@@ -47,11 +47,6 @@ variable "location_short" {
 
 # MDC specific
 
-variable "ingress_load_balancer_hostname" {
-  type        = string
-  description = "Ingress hostname used by APIM to reach EMD backends."
-}
-
 variable "rate_limit_emd_product" {
   type        = number
   description = "Rate limit for MDC and TPP products."

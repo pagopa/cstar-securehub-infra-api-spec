@@ -1,23 +1,12 @@
 openapi: 3.0.3
 
 info:
-  title: Messages dispatcher
+  title: Messages dispatcher ITN
   version: 1.0.0
   description: Service which acts as dispatcher for messages to end-users through 3rd-party application
   contact:
     name: PagoPA S.p.A.
     email: cstar@pagopa.it
-
-servers:
-  - description: Development Test
-    url: https://api-emd.dev.cstar.pagopa.it/emd/message-core
-    x-internal: true
-  - description: User Acceptance Test
-    url: https://api-emd.uat.cstar.pagopa.it/emd/message-core
-    x-internal: true
-  - description: Prod
-    url: https://api-emd.cstar.pagopa.it/emd/message-core
-    x-internal: false
 
 tags:
   - name: submit
