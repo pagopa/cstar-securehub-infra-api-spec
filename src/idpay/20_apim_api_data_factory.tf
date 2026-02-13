@@ -24,7 +24,12 @@ resource "azurerm_api_management_api_operation" "idpay_df_report_patch" {
   resource_group_name = data.azurerm_resource_group.apim_rg.name
   display_name        = "IDPAY DF Report Patch"
   method              = "PATCH"
-  url_template        = "/report/{reportId}"
+  url_template        = "/initiatives/{initiativeId}/reports/{reportId}"
+  template_parameter {
+    name     = "initiativeId"
+    type     = "string"
+    required = true
+  }
   template_parameter {
     name     = "reportId"
     type     = "string"
