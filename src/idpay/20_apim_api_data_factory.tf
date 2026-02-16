@@ -65,4 +65,3 @@ resource "azurerm_key_vault_secret" "idpay_df_subscription_key" {
 
   depends_on = [azurerm_api_management_subscription.idpay_df_sub]
 }
-
