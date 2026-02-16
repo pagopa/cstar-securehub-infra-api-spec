@@ -49,12 +49,24 @@ resource "azurerm_api_management_api_operation_policy" "idpay_df_report_patch_po
   })
 }
 
+resource "azurerm_api_management_user" "idpay_df_user" {
+  user_id             = "idpay-df"
+  api_management_name = data.azurerm_api_management.apim_core.name
+  resource_group_name = data.azurerm_resource_group.apim_rg.name
+
+  first_name = "DataFactory"
+  last_name  = "IdPay"
+  email      = "${var.env_short}-idpay-df@pagopa.it"
+  state      = "active"
+}
+
 resource "azurerm_api_management_subscription" "idpay_df_sub" {
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
   display_name = "${var.env_short}-idpay-df-sub"
   state        = "active"
+  user_id      = azurerm_api_management_user.idpay_df_user.id
   api_id       = azurerm_api_management_api.idpay_data_factory.id
 }
 
