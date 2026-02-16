@@ -11,7 +11,7 @@ resource "azurerm_api_management_api" "idpay_data_factory" {
   revision              = "1"
   display_name          = "IDPAY ITN Data Factory"
   path                  = "idpay-itn/df"
-  subscription_required = false
+  subscription_required = true
   #service_url           = ""
   protocols = ["https"]
 
@@ -48,3 +48,21 @@ resource "azurerm_api_management_api_operation_policy" "idpay_df_report_patch_po
     ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
   })
 }
+
+resource "azurerm_api_management_subscription" "idpay_df_sub" {
+  api_management_name = data.azurerm_api_management.apim_core.name
+  resource_group_name = data.azurerm_resource_group.apim_rg.name
+
+  display_name = "${var.env_short}-idpay-df-sub"
+  state        = "active"
+  api_id       = azurerm_api_management_api.idpay_data_factory.id
+}
+
+resource "azurerm_key_vault_secret" "idpay_df_subscription_key" {
+  name         = "idpay-df-subscription-key"
+  value        = azurerm_api_management_subscription.idpay_df_sub.primary_key
+  key_vault_id = data.azurerm_key_vault.key_vault_domain.id
+
+  depends_on = [azurerm_api_management_subscription.idpay_df_sub]
+}
+
