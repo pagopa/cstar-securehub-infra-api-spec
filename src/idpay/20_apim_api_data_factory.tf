@@ -1,4 +1,23 @@
 # #
+# # IDPAY PRODUCT for internal use from data factory
+# #
+#
+module "idpay_data_factory_product" {
+  source = "./.terraform/modules/__v4__/api_management_product"
+
+  product_id   = "idpay-itn-data-factory"
+  display_name = "IDPAY ITN Data Factory"
+  description  = "IDPAY ITN Data Factory"
+
+  api_management_name = data.azurerm_api_management.apim_core.name
+  resource_group_name = data.azurerm_resource_group.apim_rg.name
+
+  published             = false
+  subscription_required = true
+  approval_required     = false
+}
+
+# #
 # # IDPAY API for internal use from data factory
 # #
 #
@@ -24,7 +43,8 @@ resource "azurerm_api_management_api_operation" "idpay_df_report_patch" {
   resource_group_name = data.azurerm_resource_group.apim_rg.name
   display_name        = "IDPAY DF Report Patch"
   method              = "PATCH"
-  url_template        = "/initiatives/{initiativeId}/reports/{reportId}"
+
+  url_template = "/initiatives/{initiativeId}/reports/{reportId}"
   template_parameter {
     name     = "initiativeId"
     type     = "string"
@@ -49,15 +69,17 @@ resource "azurerm_api_management_api_operation_policy" "idpay_df_report_patch_po
   })
 }
 
-resource "azurerm_api_management_user" "idpay_df_user" {
-  user_id             = "idpay-df"
+resource "azurerm_api_management_product_api" "idpay_df_product_api" {
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  first_name = "DataFactory"
-  last_name  = "IdPay"
-  email      = "${var.env_short}-idpay-df@pagopa.it"
-  state      = "active"
+  product_id = module.idpay_data_factory_product.product_id
+  api_name   = azurerm_api_management_api.idpay_data_factory.name
+
+  depends_on = [
+    module.idpay_data_factory_product,
+    azurerm_api_management_api.idpay_data_factory
+  ]
 }
 
 resource "azurerm_api_management_subscription" "idpay_df_sub" {
@@ -66,8 +88,8 @@ resource "azurerm_api_management_subscription" "idpay_df_sub" {
 
   display_name = "${var.env_short}-idpay-df-sub"
   state        = "active"
-  user_id      = azurerm_api_management_user.idpay_df_user.id
-  api_id       = azurerm_api_management_api.idpay_data_factory.id
+  product_id   = module.idpay_data_factory_product.id
+  depends_on   = [module.idpay_data_factory_product, azurerm_api_management_product_api.idpay_df_product_api]
 }
 
 resource "azurerm_key_vault_secret" "idpay_df_subscription_key" {
