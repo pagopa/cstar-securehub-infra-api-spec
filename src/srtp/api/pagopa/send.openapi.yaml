@@ -15,6 +15,39 @@ tags:
       Endpoints for ingesting GPD messages and converting them into Request To Pay (RTP)
       lifecycle operations.
 paths:
+  /rtps/delivery-status:
+    get:
+      operationId: getDeliveryStatus
+      summary: Check PD delivery status to RTP
+      description: Returns the delivery outcome for a debt position (PD) identified by notice number (NAV) and payeeId, based on DB records. The endpoint always responds with 200 and reports the outcome in the payload. If a record with status SENT is found, the PD is considered “PD_RTP_DELIVERED”. If the status is ERROR_SEND or ERROR_SENT, the PD is considered “PD_NOT_DELIVERED”. When available, the response also includes the RTP processing or sending date.
+      tags: [ rtps ]
+      security:
+        - oAuth2: [ admin_rtp_send, payee_read_rtp ]
+      parameters:
+        - $ref: '#/components/parameters/NoticeNumber'
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/Version'
+        - $ref: '#/components/parameters/payeeId'
+
+      responses:
+        "200":
+          $ref: '#/components/responses/RtpDeliveryStatus'
+        "401":
+          #description: Wrong credentials.
+          $ref: '#/components/responses/Error'
+        "403":
+          #description: Forbidden.
+          $ref: '#/components/responses/Error'
+        "429":
+          #description: Too many requests
+          $ref: '#/components/responses/Error'
+        "500":
+          #description: Server error.
+          $ref: '#/components/responses/Error'
+        "504":
+          #description: Timeout communicating with Debtor Service Provider.
+          $ref: '#/components/responses/Error'
+
   /rtps:
     get:
       operationId: findRtpByNoticeNumber
@@ -541,6 +574,25 @@ components:
       items:
         $ref: "#/components/schemas/Rtp"
 
+    RtpDeliveryResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - PD_RTP_DELIVERED
+            - PD_RTP_NOT_DELIVERED
+          example: PD_RTP_DELIVERED
+        processingDate:
+          type: string
+          format: date-time
+          minLength: 10
+          maxLength: 30
+          pattern: '^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
+          example: "2025-06-06T08:40:16.781Z"
+
     Rtp:
       type: object
       properties:
@@ -892,6 +944,37 @@ components:
       example: "v1"
 
   responses:
+    RtpDeliveryStatus:
+      description: RTP successfully retrieved by NoticeNumber and PayeeId.
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RtpDeliveryResponse'
+
     NoContent:
       description: Response returned when there isn't a content to return.
       headers:
@@ -1211,6 +1294,14 @@ components:
         $ref: '#/components/schemas/RequestId'
       example: "4632ef6e-3c72-4b50-9e2f-09bc57fd544c"
 
+    payeeId:
+      name: payeeId
+      in: query
+      description: The payee id (e.g. EC fiscal code)
+      required: true
+      schema:
+        $ref: "#/components/schemas/PayeeId"
+
   securitySchemes:
     oAuth2:
       type: oauth2
@@ -1226,6 +1317,7 @@ components:
             read_rtp_send: Permission to read RTP data
             write_rtp_send: Permission to write/manage RTP data
             process_rtp_send: Permission to process GPD messages into RTP operations
+            payee_read_rtp: Allows payee to read RTP delivery status for its own debt positions
 
     oauth2:
       type: oauth2
