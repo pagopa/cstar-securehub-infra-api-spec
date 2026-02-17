@@ -1,44 +1,146 @@
-<!--
-    IMPORTANT:
-    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.
-    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.
-    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.
-    - To add a policy, place the cursor at the desired insertion point and select a policy from the sidebar.
-    - To remove a policy, delete the corresponding policy statement from the policy document.
-    - Position the <base> element within a section element to inherit all policies from the corresponding section element in the enclosing scope.
-    - Remove the <base> element to prevent inheriting policies from the corresponding section element in the enclosing scope.
-    - Policies are applied in the order of their appearance, from the top down.
-    - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.
--->
 <policies>
-  <inbound>
-    <base/>
-    <choose>
-      <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;RSSMRA85T10X000D&quot;))">
-        <return-response>
-          <set-status code="502" reason="Bad Gateway"/>
-          <set-header name="Content-Type" exists-action="override">
-            <value>application/json</value>
-          </set-header>
-        </return-response>
-      </when>
-      <otherwise>
-        <return-response>
-          <set-status code="201" reason="OK"/>
-          <set-header name="Content-Type" exists-action="override">
-            <value>application/json</value>
-          </set-header>
-        </return-response>
-      </otherwise>
-    </choose>
-  </inbound>
-  <backend>
-    <base/>
-  </backend>
-  <outbound>
-    <base/>
-  </outbound>
-  <on-error>
-    <base/>
-  </on-error>
+    <inbound>
+        <base />
+        <choose>
+            <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;QBICLE31R41A110G&quot;))">
+                <return-response>
+                    <set-status code="201" reason="Created" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@{
+            return @"{
+              ""resourceId"": ""TestRtpMessageA1B2C3D4E5F6G7H8"",
+              ""AsynchronousSepaRequestToPayResponse"": {
+                ""resourceId"": ""TestRtpMessageA1B2C3D4E5F6G7H8"",
+                ""Document"": {
+                  ""CdtrPmtActvtnReqStsRpt"": {
+                    ""GrpHdr"": {
+                      ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
+                      ""CreDtTm"": ""2026-02-11T14:00:00Z"",
+                      ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+                    },
+                    ""OrgnlGrpInfAndSts"": {
+                      ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
+                      ""OrgnlMsgNmId"": ""pain.013.001.07"",
+                      ""OrgnlCreDtTm"": ""2026-02-12T09:30:00Z""
+                    },
+                    ""OrgnlPmtInfAndSts"": [
+                      {
+                        ""OrgnlPmtInfId"": ""f47ac10b-58cc-4372-a567-0e02b2c3d479"",
+                        ""TxInfAndSts"": {
+                          ""StsId"": ""550e8400-e29b-41d4-a716-446655440000"",
+                          ""OrgnlInstrId"": ""TestRtpMessagePL098765432109876543"",
+                          ""OrgnlEndToEndId"": ""123456789012345678"",
+                          ""TxSts"": ""ACTC"",
+                          ""StsRsnInf"": {
+                            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+                          },
+                          ""OrgnlTxRef"": {
+                            ""PmtTpInf"": {
+                              ""SvcLvl"": { ""Cd"": ""SRTP"" },
+                              ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
+                            },
+                            ""RmtInf"": { ""Ustrd"": ""Payment for invoice 12345."" },
+                            ""Cdtr"": {
+                              ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-ID-112233"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
+                              ""Nm"": ""Azienda Creditrice S.p.A.""
+                            },
+                            ""Dbtr"": {
+                              ""Id"": { ""PrvtId"": { ""Othr"": { ""Id"": ""TRX-ID-112233"", ""SchmeNm"": { ""Cd"": ""POID"" } } } }
+                            },
+                            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+                            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+                            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
+                            ""Amt"": { ""InstdAmt"": 450.75 },
+                            ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
+                            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }";
+          }</set-body>
+                </return-response>
+            </when>
+
+            <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;LSSUDV05L25B272V&quot;))">
+                <return-response>
+                    <set-status code="400" reason="Bad Request" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@{
+            return @"{
+              ""resourceId"": ""TestRtpMessageREJ1234567890XYZ"",
+              ""AsynchronousSepaRequestToPayResponse"": {
+                ""resourceId"": ""TestRtpMessageREJ1234567890XYZ"",
+                ""Document"": {
+                  ""CdtrPmtActvtnReqStsRpt"": {
+                    ""GrpHdr"": {
+                      ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
+                      ""CreDtTm"": ""2026-02-11T14:05:00Z"",
+                      ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+                    },
+                    ""OrgnlGrpInfAndSts"": {
+                      ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
+                      ""OrgnlMsgNmId"": ""pain.013.001.07"",
+                      ""OrgnlCreDtTm"": ""2026-02-12T10:00:00Z""
+                    },
+                    ""OrgnlPmtInfAndSts"": [
+                      {
+                        ""OrgnlPmtInfId"": ""a1b2c3d4-e5f6-4789-8901-23456789abcd"",
+                        ""TxInfAndSts"": {
+                          ""StsId"": ""990e8400-e29b-41d4-a716-446655449999"",
+                          ""OrgnlInstrId"": ""TestRtpMessageINSTR-REJECTED"",
+                          ""OrgnlEndToEndId"": ""987654321098765432"",
+                          ""TxSts"": ""RJCT"",
+                          ""StsRsnInf"": {
+                            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+                          },
+                          ""OrgnlTxRef"": {
+                            ""PmtTpInf"": {
+                              ""SvcLvl"": { ""Cd"": ""SRTP"" },
+                              ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
+                            },
+                            ""RmtInf"": { ""Ustrd"": ""Rifiuto tecnico transazione."" },
+                            ""Cdtr"": {
+                              ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
+                              ""Nm"": ""Azienda Creditrice S.p.A.""
+                            },
+                            ""Dbtr"": {
+                              ""Id"": { ""PrvtId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""POID"" } } } }
+                            },
+                            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+                            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+                            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } },
+                            ""Amt"": { ""InstdAmt"": 120.00 },
+                            ""ReqdExctnDt"": { ""Dt"": ""2026-02-15Z"" },
+                            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }";
+          }</set-body>
+                </return-response>
+            </when>
+
+            <otherwise>
+                <return-response>
+                    <set-status code="201" reason="Created" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@("{}")</set-body>
+                </return-response>
+            </otherwise>
+        </choose>
+    </inbound>
 </policies>
