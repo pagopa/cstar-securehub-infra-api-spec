@@ -29,7 +29,7 @@ module "idpay_itn_ab_assistance_api" {
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY ITN AB ASSISTANCE"
+  description  = "IDPAY ITN AB ASSISTANCE API"
   display_name = "IDPAY ITN AB ASSISTANCE API"
   path         = "idpay-itn/ab/assistance"
   protocols    = ["https"]
