@@ -142,7 +142,7 @@ locals {
       name                  = "${var.env_short}-emd-mdc-citizen-itn"
       description           = "EMD CITIZEN OPERATION ITN"
       display_name          = "EMD CITIZEN OPERATION ITALY API"
-      path                  = "emd-itn/mdc/citizen"
+      path                  = "emd-itn/mil/citizen"
       protocols             = ["https"]
       revision              = "1"
       subscription_required = false
