@@ -4,7 +4,9 @@ info:
   description: API ITN for assistance
   version: '1.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/assistance
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/assistance
+    x-internal: true
 paths:
   '/organizations':
     get:

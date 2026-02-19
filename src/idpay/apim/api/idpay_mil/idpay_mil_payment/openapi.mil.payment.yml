@@ -4,7 +4,9 @@ info:
   description: IDPAY ITN MIL PAYMENT API
   version: '1.0.1'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/mil/payment
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/mil/payment
+    x-internal: true
 paths:
   /:
     post:

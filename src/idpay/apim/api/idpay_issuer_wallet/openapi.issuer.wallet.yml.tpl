@@ -4,7 +4,9 @@ info:
   description: IDPAY ITN Wallet Issuer
   version: '1.0'
 servers:
- - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/hb/wallet
+ - description: Development Test
+   url: https://api-io.dev.cstar.pagopa.it/idpay-itn/hb/wallet
+   x-internal: true
 paths:
   /{initiativeId}:
     get:

@@ -4,7 +4,9 @@ info:
   description: IDPAY ITN mock citizen data
   version: '1.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/mock/citizen
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/mock/citizen
+    x-internal: true
 paths:
   /isee:
     post:

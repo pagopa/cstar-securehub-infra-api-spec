@@ -4,7 +4,9 @@ info:
   description: IDPAY ITN MIL WALLET
   version: '1.0.1'
 servers:
-  - url: 'https://api-io.dev.cstar.pagopa.it/idpay-itn/mil/wallet'
+  - description: Development Test
+    url: 'https://api-io.dev.cstar.pagopa.it/idpay-itn/mil/wallet'
+    x-internal: true
 security:
   - bearerAuth: []
 paths:

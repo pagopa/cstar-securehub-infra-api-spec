@@ -4,7 +4,9 @@ info:
   description: IDPAY ITN Email Notification Manager
   version: '1.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/email-notification
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/email-notification
+    x-internal: true
 tags:
 - name: email-notification-manager
   description: Email Notification Manager operations

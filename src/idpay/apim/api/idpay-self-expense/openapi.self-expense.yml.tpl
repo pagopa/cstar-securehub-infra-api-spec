@@ -5,7 +5,9 @@ info:
   version: '2.0'
 
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/self-expense
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/self-expense
+    x-internal: true
 
 tags:
   - name: WebView

@@ -4,7 +4,9 @@ info:
   description: IDPAY ITN MIL ONBOARDING
   version: '1.0.1'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/mil/onboarding
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/mil/onboarding
+    x-internal: true
 paths:
   /initiative:
     put:
