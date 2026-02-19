@@ -1,10 +1,12 @@
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: IDPAY ITN Welfare Portal File Group API
   description: IDPAY ITN Welfare Portal File Group
   version: '1.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/group
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/group
+    x-internal: true
 paths:
   /initiative/{initiativeId}/upload:
     put:

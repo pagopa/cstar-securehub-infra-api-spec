@@ -1,10 +1,12 @@
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: IDPAY ITN Wallet Issuer API v1
   description: IDPAY ITN Wallet Issuer
   version: '1.0'
 servers:
- - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/hb/wallet
+ - description: Development Test
+   url: https://api-io.dev.cstar.pagopa.it/idpay-itn/hb/wallet
+   x-internal: true
 paths:
   /{initiativeId}:
     get:
