@@ -13,8 +13,17 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="${ingress_load_balancer_hostname}/emdcitizen" />
-        <rewrite-uri template="@("/emd/citizen/list/{fiscalCode}")" />
+        <choose>
+            <when condition="@(((string)context.Variables["groups"]).Contains("emd-pagopa"))">
+                <set-backend-service base-url="${ingress_load_balancer_hostname}/emdcitizen" />
+                <rewrite-uri template="@("/emd/citizen/list/{fiscalCode}")" />
+            </when>
+            <otherwise>
+                <return-response>
+                    <set-status code="401" reason="Operation Unauthorized" />
+                </return-response>
+            </otherwise>
+        </choose>
     </inbound>
     <backend>
         <base />
