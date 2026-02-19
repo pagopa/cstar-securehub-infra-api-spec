@@ -146,7 +146,7 @@ locals {
       protocols             = ["https"]
       revision              = "1"
       subscription_required = false
-      product               = "emd_itn_api_product"
+      product               = "emd_itn_mdc_api_product"
       service_url           = "${local.ingress_load_balancer_https}/emdcitizen/emd/citizen"
       import_descriptor = {
         content_format = "openapi"
@@ -164,7 +164,7 @@ locals {
       protocols             = ["https"]
       revision              = "1"
       subscription_required = false
-      product               = "emd_itn_api_product"
+      product               = "emd_itn_mdc_api_product"
       service_url           = "${local.ingress_load_balancer_https}/emdtpp/emd/tpp"
       import_descriptor = {
         content_format = "openapi"
