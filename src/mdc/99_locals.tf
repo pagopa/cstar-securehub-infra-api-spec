@@ -10,43 +10,33 @@ locals {
   ingress_load_balancer_https = "https://${var.domain}.${var.location_short}.internal${var.env == "prod" ? "" : ".${var.env}"}.${var.prefix}.pagopa.it"
 
   products = {
-    emd_itn_api_product = {
-      display_name          = "EMD-PRODUCT-ITN"
-      description           = "EMD PRODUCT Italy"
+    emd_itn_api_send_product = {
+      display_name          = "EMD-ITN-SEND-PRODUCT"
+      description           = "EMD Product for message sending and citizen consent management (Italy)"
       subscription_required = false
       published             = true
-      policy = templatefile("./api_product/emd/policy_emd.xml", {
+      policy = templatefile("./api_product/emd/policy_send.xml", {
         rate_limit_emd = var.rate_limit_emd_message
       })
       groups = ["developers"]
       group  = true
     }
-    emd_itn_mdc_api_product = {
-      display_name          = "EMD-MDC-PRODUCT-ITN"
-      description           = "Service which acts as dispatcher for messages to end-users through 3rd-party application"
+    emd_itn_api_tpp_product = {
+      display_name          = "EMD-ITN-TPP-PRODUCT"
+      description           = "EMD Product dedicated to Third Party Providers (TPP) integration"
       subscription_required = false
       published             = true
-      policy = templatefile("./api_product/emd/mdc/policy_mdc.xml", {
+      policy = templatefile("./api_product/emd/policy_tpp.xml", {
         rate_limit_emd = var.rate_limit_emd_product
       })
       groups = ["developers"]
     }
-    emd_itn_tpp_product = {
-      display_name          = "EMD-TPP-PRODUCT-ITN"
-      description           = "EMD TPP PRODUCT Italy"
+    emd_itn_api_pagopa_product = {
+      display_name          = "EMD-ITN-PAGOPA-PRODUCT"
+      description           = "EMD Product for PagoPA internal services and institutional operations"
       subscription_required = false
       published             = true
-      policy = templatefile("./api_product/emd/tpp/policy_emd.xml", {
-        rate_limit_emd = var.rate_limit_emd_product
-      })
-      groups = ["developers"]
-    }
-    emd_itn_retrieval_api_product = {
-      display_name          = "EMD-RETRIEVAL-PRODUCT-ITN"
-      description           = "EMD RETRIEVAL PRODUCT Italy"
-      subscription_required = false
-      published             = true
-      policy = templatefile("./api_product/emd/retrieval/policy_emd.xml", {
+      policy = templatefile("./api_product/emd/policy_pagopa.xml", {
         rate_limit_emd = var.rate_limit_emd_product
       })
       groups = ["developers"]
@@ -74,7 +64,7 @@ locals {
       protocols             = ["https"]
       revision              = "1"
       subscription_required = false
-      product               = "emd_itn_tpp_product"
+      products              = ["emd_itn_api_pagopa_product"]
       service_url           = "${local.ingress_load_balancer_https}/emdtpp/emd/tpp"
       import_descriptor = {
         content_format = "openapi"
@@ -86,13 +76,13 @@ locals {
     }
     emd_citizen = {
       name                  = "${var.env_short}-emd-citizen-itn"
-      description           = "EMD CITIZEN CONSENT ITN"
-      display_name          = "EMD CITIZEN CONSENT ITALY API"
+      description           = "EMD CITIZEN INTERNAL (for PPA) ITN"
+      display_name          = "EMD CITIZEN INTERNAL (for PPA) ITALY API"
       path                  = "emd-itn/citizen"
       protocols             = ["https"]
       revision              = "1"
       subscription_required = false
-      product               = "emd_itn_api_product"
+      products              = ["emd_itn_api_pagopa_product"]
       service_url           = "${local.ingress_load_balancer_https}/emdcitizen/emd/citizen"
       import_descriptor = {
         content_format = "openapi"
@@ -110,7 +100,7 @@ locals {
       protocols             = ["https"]
       revision              = "1"
       subscription_required = false
-      product               = "emd_itn_api_product"
+      products              = ["emd_itn_api_send_product"]
       service_url           = "${local.ingress_load_balancer_https}/emdmessagecore/emd/message-core"
       import_descriptor = {
         content_format = "openapi"
@@ -121,14 +111,14 @@ locals {
       }
     }
     emd_payment_core = {
-      name                  = "${var.env_short}-emd_payment_core-itn"
+      name                  = "${var.env_short}-emd-payment-core-itn"
       description           = "EMD PAYMENT CORE ITN"
       display_name          = "EMD PAYMENT CORE ITALY API"
       path                  = "emd-itn/payment"
       protocols             = ["https"]
       revision              = "1"
       subscription_required = false
-      product               = "emd_itn_retrieval_api_product"
+      products              = ["emd_itn_api_send_product", "emd_itn_api_tpp_product"]
       service_url           = "${local.ingress_load_balancer_https}/emdpaymentcore/emd/payment"
       import_descriptor = {
         content_format = "openapi"
@@ -138,15 +128,15 @@ locals {
         xml_content = file("./api/base_policy.xml")
       }
     }
-    emd_mdc_citizen = {
-      name                  = "${var.env_short}-emd-mdc-citizen-itn"
-      description           = "EMD CITIZEN OPERATION ITN"
-      display_name          = "EMD CITIZEN OPERATION ITALY API"
+    emd_citizen_for_tpp = {
+      name                  = "${var.env_short}-emd-citizen-for-tpp-itn"
+      description           = "EMD CITIZEN OP. FOR TPP ITN"
+      display_name          = "EMD CITIZEN OP. FOR TPP ITALY API"
       path                  = "emd-itn/mil/citizen"
       protocols             = ["https"]
       revision              = "1"
       subscription_required = false
-      product               = "emd_itn_mdc_api_product"
+      products              = ["emd_itn_api_tpp_product"]
       service_url           = "${local.ingress_load_balancer_https}/emdcitizen/emd/citizen"
       import_descriptor = {
         content_format = "openapi"
@@ -156,15 +146,15 @@ locals {
         xml_content = file("./api/base_policy.xml")
       }
     }
-    emd_mdc_tpp_testing = {
-      name                  = "${var.env_short}-emd-mdc-tpp-testing-itn"
+    emd_tpp_testing = {
+      name                  = "${var.env_short}-emd-tpp-testing-itn"
       description           = "EMD TPP NETWORK TESTING ITN"
       display_name          = "EMD TPP NETWORK TESTING ITALY API"
-      path                  = "emd-itn/mdc/tpp"
+      path                  = "emd-itn/mil/tpp"
       protocols             = ["https"]
       revision              = "1"
       subscription_required = false
-      product               = "emd_itn_mdc_api_product"
+      products              = ["emd_itn_api_tpp_product"]
       service_url           = "${local.ingress_load_balancer_https}/emdtpp/emd/tpp"
       import_descriptor = {
         content_format = "openapi"
@@ -307,36 +297,36 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
-    emd_mdc_citizen_saveCitizenConsent = {
-      api_name     = "emd_mdc_citizen"
+    emd_citizen_for_tpp_saveCitizenConsent = {
+      api_name     = "emd_citizen_for_tpp"
       operation_id = "saveCitizenConsent"
       xml_content = templatefile("./api/emd_mdc_citizen/post-insert-citizen-consent-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
-    emd_mdc_citizen_stateSwitch = {
-      api_name     = "emd_mdc_citizen"
+    emd_citizen_for_tpp_stateSwitch = {
+      api_name     = "emd_citizen_for_tpp"
       operation_id = "stateSwitch"
       xml_content = templatefile("./api/emd_mdc_citizen/put-update-citizen-consent-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
-    emd_mdc_citizen_getCitizenConsentStatus = {
-      api_name     = "emd_mdc_citizen"
+    emd_citizen_for_tpp_getCitizenConsentStatus = {
+      api_name     = "emd_citizen_for_tpp"
       operation_id = "getCitizenConsentStatus"
       xml_content = templatefile("./api/emd_mdc_citizen/get-citizen-consent-status-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
-    emd_mdc_citizen_getCitizenEnabled = {
-      api_name     = "emd_mdc_citizen"
+    emd_citizen_for_tpp_getCitizenEnabled = {
+      api_name     = "emd_citizen_for_tpp"
       operation_id = "getCitizenEnabled"
       xml_content = templatefile("./api/emd_mdc_citizen/get-citizen-consent-enabled-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
-    emd_mdc_tpp_testing_getNetworkConnection = {
-      api_name     = "emd_mdc_tpp_testing"
+    emd_tpp_testing_getNetworkConnection = {
+      api_name     = "emd_tpp_testing"
       operation_id = "getNetworkConnection"
       xml_content = templatefile("./api/emd_mdc_testing/get-network-connection.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https

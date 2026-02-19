@@ -28,10 +28,19 @@ resource "azurerm_api_management_api" "this" {
 }
 
 resource "azurerm_api_management_product_api" "this" {
-  for_each = local.apis
+  for_each = {
+    for pair in flatten([
+      for api_key, api in local.apis : [
+        for product_key in api.products : {
+          api_key     = api_key
+          product_key = product_key
+        }
+      ]
+    ]) : "${pair.api_key}-${pair.product_key}" => pair
+  }
 
-  product_id          = azurerm_api_management_product.this[each.value.product].product_id
-  api_name            = azurerm_api_management_api.this[each.key].name
+  api_name            = azurerm_api_management_api.this[each.value.api_key].name
+  product_id          = azurerm_api_management_product.this[each.value.product_key].product_id 
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
 }
