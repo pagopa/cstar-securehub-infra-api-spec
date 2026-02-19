@@ -474,6 +474,7 @@ paths:
         - $ref: "#/components/parameters/sort_trx_processed_query"
         - $ref: "#/components/parameters/fiscalCode_query"
         - $ref: "#/components/parameters/status_trx_processed_query"
+        - $ref: "#/components/parameters/trx_code_query"
         - $ref: "#/components/parameters/productGtin_query"
         - $ref: "#/components/parameters/initiativeId_path"
         - $ref: "#/components/parameters/pointOfSaleId_path"
@@ -503,6 +504,7 @@ paths:
         - $ref: "#/components/parameters/sort_trx_in_progress_query"
         - $ref: "#/components/parameters/fiscalCode_query"
         - $ref: "#/components/parameters/status_trx_in_progress_query"
+        - $ref: "#/components/parameters/trx_code_query"
         - $ref: "#/components/parameters/productGtin_query"
         - $ref: "#/components/parameters/initiativeId_path"
         - $ref: "#/components/parameters/pointOfSaleId_path"
@@ -1418,7 +1420,6 @@ paths:
               $ref: '#/components/headers/X-RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-
 components:
   headers:
     X-RateLimit-Limit:
@@ -1826,6 +1827,11 @@ components:
           format: date-time
           description: "ENG: Payment authorization date - IT: La data di autorizzazione del pagamento"
           maxLength: 255
+        trxCode:
+          type: string
+          description: "ENG: Transaction code - IT: Il codice della transazione"
+          maxLength: 100
+          pattern: "^[a-zA-Z0-9]+$"
         updateDate:
           type: string
           format: date-time
@@ -1839,6 +1845,16 @@ components:
             - CANCELLED
             - REFUNDED
             - INVOICED
+        rewardBatchTrxStatus:
+          type: string
+          nullable: true
+          description: "ENG: The status of batch-transaction - IT: Lo stato della transazione-lotto"
+          enum:
+            - TO_CHECK
+            - CONSULTABLE
+            - SUSPENDED
+            - APPROVED
+            - REJECTED
         channel:
           type: string
           description: "ENG: Channel from which the transaction takes place - IT: Canale da cui avviene la transazione"
@@ -2810,6 +2826,15 @@ components:
           - trxChargeDate, asc
           - status, asc
           - productName, asc
+    trx_code_query:
+      name: trxCode
+      in: query
+      description: "ENG: The transaction's code - IT: Codice della transazione"
+      required: false
+      schema:
+        type: string
+        maxLength: 100
+        pattern: '^[A-Z0-9]+$'
     initiativeId_path:
       name: initiativeId
       in: path

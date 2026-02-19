@@ -1,0 +1,848 @@
+openapi: 3.0.3
+info:
+  title: pagoPa RTP API
+  description: >
+    API for receiving GPD messages and translating them into Request To Pay (RTP)
+    operations, including creation, update, and cancellation.
+  version: 0.0.1
+  contact:
+    email: cstar@pagopa.it
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: gpd-messages
+    description: >
+      Endpoints for ingesting GPD messages and converting them into Request To Pay (RTP)
+      lifecycle operations.
+paths:
+  /gpd/message:
+    post:
+      tags:
+        - gpd-messages
+      operationId: processGpdMessage
+      summary: Process a GPD message into an RTP operation
+      description: >
+        Accepts a GPD message and translates it into a corresponding Request To Pay (RTP)
+        operation. Depending on the message content and operation type, this may result
+        in the creation, update, or cancellation of an RTP.
+      parameters:
+        - $ref: '#/components/parameters/Version'
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/Idempotency-Key'
+      security:
+        - oauth2: [ admin_rtp_send, process_rtp_send ]
+      requestBody:
+        description: >
+          GPD message payload containing the operation type, identifiers, and payment
+          information required to process a Request To Pay (RTP).
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GpdMessage"
+      responses:
+        "200":
+          $ref: '#/components/responses/RtpResponse'
+        "400":
+          #description: Bad request.
+          $ref: '#/components/responses/ErrorResponse'
+        "401":
+          #description: Wrong credentials.
+          $ref: '#/components/responses/UnauthorizedError'
+        "403":
+          #description: Forbidden
+          $ref: '#/components/responses/ForbiddenError'
+        "406":
+          #description: Not acceptable. Did you require application/json?
+          $ref: '#/components/responses/GenericError'
+        "409":
+          #description: Conflict.
+          $ref: '#/components/responses/ConflictError'
+        "415":
+          #description: Unsupported media type. Did you provide application/json?
+          $ref: '#/components/responses/GenericError'
+        "429":
+          #description: Too many requests.
+          $ref: '#/components/responses/GenericError'
+        "500":
+          #description: Server error.
+          $ref: '#/components/responses/GenericError'
+        default:
+          #description: Unexpected error.
+          $ref: '#/components/responses/GenericError'
+
+components:
+  schemas:
+    AccessControlAllowOrigin:
+      description: |
+        Indicates whether the response can be shared with requesting code from
+        the given origin.
+      type: string
+      pattern: '^[ -~]{1,2048}$'
+      minLength: 1
+      maxLength: 2048
+
+    WWWAuthenticate:
+      description: |
+        Indicates the authentication scheme(s) and parameters required to access a protected resource.
+      type: string
+      pattern: '^[ -~]{1,2048}$'
+      minLength: 1
+      maxLength: 2048
+
+    RateLimitLimit:
+      description: The number of allowed requests in the current period.
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 240
+
+    RateLimitReset:
+      description: The number of seconds left in the current period.
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 60
+
+    RetryAfter:
+      description: |
+        The number of seconds to wait before allowing a follow-up request.
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 240
+
+    ErrorCode:
+      description: Error code.
+      type: string
+      pattern: '^[A-F0-9]{9}$'
+      minLength: 9
+      maxLength: 9
+      example: "01000000F"
+
+    ErrorDescription:
+      description: Error description.
+      type: string
+      pattern: '^[ -~]{0,256}$'
+      minLength: 0
+      maxLength: 256
+      example: "Wrong party identifier"
+
+    StatusCode:
+      description: HTTP status code.
+      type: integer
+      format: int32
+      minimum: 0
+      maximum: 999
+      example: 401
+
+    GenericError:
+      description: Generic error.
+      type: object
+      additionalProperties: false
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: The time the error occurred.
+        path:
+          type: string
+          description: The API path where the error occurred.
+        status:
+          type: integer
+          description: HTTP status code of the error.
+        statusCode:
+          type: integer
+          description: HTTP status code of the error.
+        error:
+          type: string
+          description: Description of the error.
+        message:
+          type: string
+          description: Description of the error.
+        requestId:
+          type: string
+          description: Unique identifier for the request.
+      example:
+        timestamp: "2024-12-31T09:54:01.763+00:00"
+        path: "/activations"
+        status: 415
+        error: "Unsupported Media Type"
+        requestId: "74039ba5-7040-42b4-ab86-b9ad88e4114c"
+
+    ErrorSchema:
+      description: Error details.
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        description:
+          $ref: '#/components/schemas/ErrorDescription'
+      required:
+        - code
+        - description
+      example:
+        code: "01000000F"
+        description: "Wrong party identifier"
+
+    Errors:
+      description: >
+        Error response wrapper. The concrete error structure depends on the
+        component or layer that generated the error.
+      oneOf:
+        - $ref: '#/components/schemas/Type1Error'
+        - $ref: '#/components/schemas/Type2Error'
+        - $ref: '#/components/schemas/Type3Error'
+
+    Type1Error:
+      description: List of errors returned by the application.
+      type: object
+      additionalProperties: false
+      properties:
+        errors:
+          type: array
+          minItems: 1
+          maxItems: 32
+          items:
+            $ref: '#/components/schemas/ErrorSchema'
+      required:
+        - errors
+      example:
+        errors:
+          - code: "01000000F"
+            description: "Wrong party identifier"
+
+    Type2Error:
+      description: Error details returned by the APIM.
+      type: object
+      additionalProperties: false
+      properties:
+        statusCode:
+          $ref: '#/components/schemas/StatusCode'
+        message:
+          $ref: '#/components/schemas/ErrorDescription'
+      required:
+        - statusCode
+        - message
+      example:
+        statusCode: 401
+        message: "Invalid JWT."
+
+    Type3Error:
+      description: Error details returned by the framework.
+      type: object
+      additionalProperties: false
+      properties:
+        timestamp:
+          description: Timestamp the error occurred.
+          type: string
+          format: date-time
+          minLength: 19
+          maxLength: 29
+          pattern: '^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
+        path:
+          description: API path where the error occurred.
+          type: string
+          pattern: '^[ -~]{1,1024}$'
+          minLength: 1
+          maxLength: 1024
+        status:
+          $ref: '#/components/schemas/StatusCode'
+        error:
+          $ref: '#/components/schemas/ErrorDescription'
+        requestId:
+          description: ID of the request.
+          type: string
+          pattern: '^[ -~]{1,128}$'
+          minLength: 1
+          maxLength: 128
+      required:
+        - timestamp
+        - path
+        - status
+        - error
+        - requestId
+      example:
+        timestamp: "2024-12-31T09:54:01.763+00:00"
+        path: "/activations"
+        status: 415
+        error: "Unsupported Media Type"
+        requestId: "896f5ed1-e0f6-4a17-8539-555d890a7e83"
+
+    AmountEuroCents:
+      description: Amount for payments, in euro cents
+      type: integer
+      format: int64
+      minimum: 0
+      maximum: 99999999999
+      example: 105000
+
+    NoticeNumber:
+      type: string
+      minLength: 15
+      maxLength: 21
+      pattern: '^\d{15,21}$'
+      description: "pagoPa notice's code"
+      example: "311111111112222222"
+      externalDocs:
+        description: "See noticeNumber field"
+        url: "https://docs.pagopa.it/sanp/appendici/primitive#verifypaymentnotice-1"
+
+    RtpId:
+      type: string
+      format: uuid
+      description: "Request to pay unique id"
+
+    GpdMessage:
+      type: object
+      description: >
+        GPD message representing an event related to a payment position.
+        The message drives the creation, update, or deletion of a Request To Pay (RTP).
+      required:
+        - id
+        - operation
+        - timestamp
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Unique identifier of the GPD message
+
+        operation:
+          $ref: '#/components/schemas/GpdOperation'
+
+        timestamp:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Epoch timestamp of the message creation
+
+        iuv:
+          type: string
+          pattern: '^\d{15,17}$'
+          description: IUV identifier (15 to 17 digits)
+
+        subject:
+          type: string
+          maxLength: 140
+
+        description:
+          type: string
+          maxLength: 140
+
+        ec_tax_code:
+          type: string
+          pattern: '^(\d{11}|\d{16})$'
+
+        debtor_tax_code:
+          type: string
+          pattern: '^(([A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z])|(\d{11}))$'
+
+        nav:
+          type: string
+          minLength: 15
+          maxLength: 30
+
+        due_date:
+          type: integer
+          format: int64
+          minimum: 1
+
+        amount:
+          $ref: "#/components/schemas/AmountEuroCents"
+
+        status:
+          $ref: '#/components/schemas/GpdStatus'
+
+        psp_code:
+          type: string
+          maxLength: 50
+
+        psp_tax_code:
+          type: string
+          maxLength: 50
+
+      example:
+        id: 123456
+        operation: CREATE
+        timestamp: 1735689600000
+        iuv: "123456789012345"
+        subject: "TARI 2025"
+        description: "Municipal waste tax payment"
+        ec_tax_code: "77777777777"
+        debtor_tax_code: "RSSMRA85M01H501U"
+        nav: "3123456789012345"
+        due_date: 1767225600000
+        amount: 35000
+        status: VALID
+        psp_code: "PSP01"
+        psp_tax_code: "12345678901"
+
+    GpdOperation:
+      type: string
+      description: >
+        Type of operation requested by the GPD message, defining how the RTP
+        should be processed.
+      enum:
+        - CREATE
+        - UPDATE
+        - DELETE
+      example: CREATE
+
+    GpdStatus:
+      type: string
+      description: >
+        Current business status of the GPD message, reflecting the lifecycle
+        state of the underlying payment position.
+      enum:
+        - VALID
+        - PARTIALLY_PAID
+        - PAID
+        - EXPIRED
+        - INVALID
+        - DRAFT
+        - PUBLISHED
+        - NULL
+      example: VALID
+
+    Rtp:
+      type: object
+      description: >
+        Request To Pay (RTP) resource generated or updated as a result of processing
+        a GPD message.
+      properties:
+        resourceID:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          pattern: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
+          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        noticeNumber:
+          type: string
+          minLength: 15
+          maxLength: 21
+          pattern: '^\d{15,21}$'
+          example: "311111111112222123"
+        amount:
+          type: number
+          format: double
+          example: 1050.75
+        description:
+          type: string
+          minLength: 1
+          maxLength: 255
+          pattern: '^[ -~]{1,255}$'
+          example: "Paga questo avviso"
+        expiryDate:
+          type: string
+          format: date
+          minLength: 10
+          maxLength: 30
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+          example: "2025-12-31"
+        payerName:
+          type: string
+          minLength: 1
+          maxLength: 255
+          pattern: '^[ -~]{1,255}$'
+          example: "Pigrolo"
+        payerId:
+          type: string
+          minLength: 11
+          maxLength: 16
+          pattern: '^(([A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z])|(\d{11}))$'
+          example: "RSSMRA85T10A562S"
+        payeeName:
+          type: string
+          minLength: 1
+          maxLength: 255
+          pattern: '^[ -~]{1,255}$'
+          example: "Comune di Roma"
+        payeeId:
+          type: string
+          minLength: 11
+          maxLength: 16
+          pattern: '^(\d{11}|\d{16})$'
+          example: "77777777777"
+        subject:
+          type: string
+          minLength: 1
+          maxLength: 255
+          pattern: '^[ -~]{1,255}$'
+          example: "TARI 2025"
+        savingDateTime:
+          type: string
+          format: date-time
+          minLength: 10
+          maxLength: 30
+          pattern: '^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
+          example: "2025-06-06T08:40:16.781Z"
+        serviceProviderDebtor:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: '^[ -~]{1,100}$'
+          example: "FAKESP01"
+        iban:
+          type: string
+          minLength: 15
+          maxLength: 34
+          pattern: '^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$'
+          example: "IT60X0542811101000000123456"
+        payTrxRef:
+          type: string
+          minLength: 1
+          maxLength: 64
+          pattern: '^[ -~]{1,64}$'
+          example: "ABC/124"
+        flgConf:
+          type: string
+          minLength: 1
+          maxLength: 10
+          pattern: '^[a-zA-Z_]{1,10}$'
+          example: "flgConf"
+        status:
+          $ref: '#/components/schemas/RtpStatus'
+        serviceProviderCreditor:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: '^[ -~]{1,100}$'
+          example: "PA123456789"
+        events:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/Event'
+          example:
+            - timestamp: "2025-06-06T08:40:16.781Z"
+              precStatus: "CREATED"
+              triggerEvent: "CREATE_RTP"
+
+    Event:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          maxLength: 30
+          pattern: '^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
+        precStatus:
+          $ref: '#/components/schemas/RtpStatus'
+        triggerEvent:
+          $ref: '#/components/schemas/RtpEvent'
+      required:
+        - timestamp
+        - triggerEvent
+
+    RtpStatus:
+      type: string
+      enum:
+        - CREATED
+        - SENT
+        - CANCELLED
+        - ACCEPTED
+        - REJECTED
+        - USER_ACCEPTED
+        - USER_REJECTED
+        - PAYED
+        - ERROR_SEND
+        - CANCELLED_ACCR
+        - CANCELLED_REJECTED
+        - ERROR_CANCEL
+      example: SENT
+
+    RtpEvent:
+      type: string
+      enum:
+        - CREATE_RTP
+        - SEND_RTP
+        - CANCEL_RTP
+        - ACCEPT_RTP
+        - REJECT_RTP
+        - USER_ACCEPT_RTP
+        - USER_REJECT_RTP
+        - PAY_RTP
+        - ERROR_SEND_RTP
+        - ERROR_CANCEL_RTP
+        - CANCEL_RTP_ACCR
+        - CANCEL_RTP_REJECTED
+      example: SEND_RTP
+
+    RequestId:
+      description: Client-generated UUID for tracing or idempotency (reuse for retries).
+      type: string
+      format: uuid
+      pattern: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
+      minLength: 36
+      maxLength: 36
+      example: "bd615b4a-066d-443e-8dd2-a28a39931fef"
+
+    Version:
+      description: Requested API version used for routing and compatibility checks.
+      type: string
+      pattern: '^[ -~]{1,64}$'
+      minLength: 1
+      maxLength: 64
+      example: "v1"
+
+  responses:
+    RtpResponse:
+      description: "RTP resulting from the processed GPD message"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Rtp'
+          example:
+            resourceID: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            noticeNumber: "311111111112222123"
+            amount: 1050.75
+            description: "TARI 2025 payment"
+            expiryDate: "2025-12-31"
+            payerName: "Mario Rossi"
+            payerId: "RSSMRA85T10A562S"
+            payeeName: "Comune di Roma"
+            payeeId: "77777777777"
+            subject: "TARI 2025"
+            savingDateTime: "2025-06-06T08:40:16.781Z"
+            serviceProviderDebtor: "FAKESP01"
+            serviceProviderCreditor: "PA123456789"
+            iban: "IT60X0542811101000000123456"
+            payTrxRef: "ABC/124"
+            flgConf: "flgConf"
+            status: SENT
+            events:
+              - timestamp: "2025-06-06T08:40:16.781Z"
+                precStatus: "CREATED"
+                triggerEvent: "CREATE_RTP"
+
+
+    NoContent:
+      description: Response returned when there isn't a content to return.
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+
+    UnauthorizedError:
+      description: >
+        Returned when the request is missing a valid OAuth2 access token,
+        or when the token is expired or malformed.
+      headers:
+        WWW-Authenticate:
+          description: |
+            Indicates the authentication scheme(s) and parameters required to access a protected resource.
+          required: false
+          schema:
+            $ref: '#/components/schemas/WWWAuthenticate'
+      content:
+        text/*:
+          schema:
+            type: string
+            pattern: '^[ -~]{0,65535}$'
+            maxLength: 65535
+
+    ForbiddenError:
+      description: >
+        Returned when the authenticated client does not have sufficient
+        permissions (OAuth2 scopes) to access this resource.
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+
+    ConflictError:
+      description: >
+        Returned when the requested RTP operation cannot be completed due to a conflict
+        with the current RTP state (for example, an already active payer).
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+
+    GenericError:
+      description: >
+        Standard error response returned by the service when an unexpected
+        or unclassified error occurs.
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericError'
+        text/*:
+          schema:
+            type: string
+            pattern: '^[ -~]{0,65535}$'
+            maxLength: 65535
+
+    ErrorResponse:
+      description: Response returned when an error occurred.
+      headers:
+        Access-Control-Allow-Origin:
+          description: >
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: >
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: '^[ -~]{0,65535}$'
+            maxLength: 65535
+
+  parameters:
+    RequestId:
+      name: RequestId
+      in: header
+      description: Client-generated UUID for tracing/correlation.
+      required: true
+      schema:
+        $ref: '#/components/schemas/RequestId'
+      example: "bd615b4a-066d-443e-8dd2-a28a39931fef"
+
+    Idempotency-Key:
+      name: Idempotency-Key
+      in: header
+      description: Client-generated UUID to ensure idempotent retries.
+      required: true
+      schema:
+        $ref: '#/components/schemas/RequestId'
+      example: "4632ef6e-3c72-4b50-9e2f-09bc57fd544c"
+
+    NoticeNumber:
+      name: noticeNumber
+      in: query
+      description: Notice number associated to a RTP.
+      required: true
+      schema:
+        $ref: '#/components/schemas/NoticeNumber'
+
+    RtpId:
+      name: rtpId
+      in: path
+      description: Identifier of a RTP.
+      required: true
+      schema:
+        $ref: '#/components/schemas/RtpId'
+
+    Version:
+      name: Version
+      in: header
+      description: Version of the required API.
+      required: false
+      schema:
+        $ref: '#/components/schemas/Version'
+      example: "v1"
+
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: >
+        OAuth 2.0 authorization using JWT access tokens.
+        Tokens must include the required scopes to invoke RTP processing APIs.
+      flows:
+        clientCredentials:
+          tokenUrl: /token
+          refreshUrl: /token
+          scopes:
+            admin_rtp_send: Administrative permission to manage RTP lifecycle
+            process_rtp_send: Permission to process GPD messages into RTP operations

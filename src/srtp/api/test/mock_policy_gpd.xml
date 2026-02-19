@@ -1,0 +1,125 @@
+<!--
+    IMPORTANT:
+    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.
+    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.
+    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.
+    - To add a policy, place the cursor at the desired insertion point and select a policy from the sidebar.
+    - To remove a policy, delete the corresponding policy statement from the policy document.
+    - Position the <base> element within a section element to inherit all policies from the corresponding section element in the enclosing scope.
+    - Remove the <base> element to prevent inheriting policies from the corresponding section element in the enclosing scope.
+    - Policies are applied in the order of their appearance, from the top down.
+    - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.
+-->
+<policies>
+    <inbound>
+        <base />
+        <choose>
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;GHIJKL34M56N789O&quot;))">
+                <return-response>
+                    <set-status code="400" reason="Bad Request" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;PQRSTU56V78W901P&quot;))">
+                <return-response>
+                    <set-status code="401" reason="Unauthorized" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;XYZABC78D90E123Q&quot;))">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;DEFXYZ90F12G345R&quot;))">
+                <return-response>
+                    <set-status code="406" reason="Not Acceptable" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;HIJKLM12H34I567S&quot;))">
+                <return-response>
+                    <set-status code="409" reason="Conflict" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;KLMNOP34J56K789T&quot;))">
+                <return-response>
+                    <set-status code="415" reason="Unsupported Media Type" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;OPQRST56L78M901U&quot;))">
+                <return-response>
+                    <set-status code="429" reason="Too Many Requests" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+            <otherwise>
+                <return-response>
+                    <set-status code="200" reason="OK" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>
+                    {
+                        "resourceID": "d5796e16-8da2-46af-a689-658022a124d5",
+                        "noticeNumber": "849244626700453217",
+                        "amount": 6.2898025344E8,
+                        "description": "s0RgZ xjAtn8vdi5kLiMz6HcldaBjFONEF",
+                        "expiryDate": "2026-02-05",
+                        "payerName": "Test Name",
+                        "payerId": "UNIUNI01D01H501W",
+                        "payeeName": "Test payee company name",
+                        "payeeId": "4200526817153229",
+                        "subject": "Test payment notice",
+                        "savingDateTime": "2025-09-16T17:26:57.085",
+                        "serviceProviderDebtor": "UNCRITMM",
+                        "iban": "IT96K999999999900SRTPPAGOPA",
+                        "payTrxRef": "ABC/124",
+                        "flgConf": "flgConf",
+                        "status": "REJECTED",
+                        "serviceProviderCreditor": "15376371009",
+                        "events": [
+                            {
+                                "timestamp": "2025-09-16T15:26:57.085Z",
+                                "precStatus": null,
+                                "triggerEvent": "CREATE_RTP"
+                            },
+                            {
+                                "timestamp": "2025-09-16T15:27:06.421Z",
+                                "precStatus": "CREATED",
+                                "triggerEvent": "REJECT_RTP"
+                            }
+                        ]
+                    }
+                    </set-body>
+                </return-response>
+            </otherwise>
+        </choose>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

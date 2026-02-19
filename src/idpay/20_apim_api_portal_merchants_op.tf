@@ -136,5 +136,6 @@ module "idpay_itn_portal_merchants_op_api" {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
+
   ]
 }

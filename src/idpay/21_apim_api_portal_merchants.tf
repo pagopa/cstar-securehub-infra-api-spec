@@ -179,6 +179,27 @@ module "idpay_itn_merchants_portal" {
       })
     },
     {
+      operation_id = "generateReport"
+
+      xml_content = templatefile("./apim/api/idpay_merchants_portal/post-generate-report-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "getMerchantTransactionsReports"
+
+      xml_content = templatefile("./apim/api/idpay_merchants_portal/get-report-list-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "downloadTransactionsReport"
+
+      xml_content = templatefile("./apim/api/idpay_merchants_portal/get-report-download-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
       operation_id = "getProcessedTransactionStatuses"
       xml_content = templatefile("./apim/api/idpay_merchants_portal/get-merchant-transactions-processed-statuses-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
@@ -243,6 +264,24 @@ module "idpay_itn_merchants_portal" {
     {
       operation_id = "approveDownloadRewardBatch"
       xml_content = templatefile("./apim/api/idpay_merchants_portal/get-approved-reward-batches-download-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "postponeTransaction"
+      xml_content = templatefile("./apim/api/idpay_merchants_portal/post-postpone-transaction-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "getFranchisePointOfSale"
+      xml_content = templatefile("./apim/api/idpay_merchants_portal/get-point-of-sale-by-reward-batch-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "updateInvoiceTransaction"
+      xml_content = templatefile("./apim/api/idpay_merchants_portal/put-invoice-update-transactions-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }

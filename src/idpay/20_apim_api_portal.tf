@@ -530,7 +530,7 @@ module "idpay_itn_merchant_portal" {
     {
       operation_id = "getMerchantList"
 
-      xml_content = templatefile("./apim/api/idpay_merchant/get-merchant-list-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchant/get-merchant-list-by-initiative-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
@@ -566,6 +566,27 @@ module "idpay_itn_merchant_portal" {
       operation_id = "getMerchantTransactionsProcessed"
 
       xml_content = templatefile("./apim/api/idpay_merchant/get-merchant-transactions-processed-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "generateReport"
+
+      xml_content = templatefile("./apim/api/idpay_merchant/post-generate-report-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "getMerchantTransactionsReports"
+
+      xml_content = templatefile("./apim/api/idpay_merchant/get-report-list-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "downloadTransactionsReport"
+
+      xml_content = templatefile("./apim/api/idpay_merchant/get-report-download-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
