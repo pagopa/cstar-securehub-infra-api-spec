@@ -61,6 +61,12 @@
                     ]
                   }
                 }
+              },
+              ""_links"": {
+                ""initialSepaRequestToPayUri"": {
+                  ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
+                  ""templated"": false
+                }
               }
             }";
           }</set-body>
@@ -125,6 +131,12 @@
                       }
                     ]
                   }
+                }
+              },
+              ""_links"": {
+                ""initialSepaRequestToPayUri"": {
+                  ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
+                  ""templated"": false
                 }
               }
             }";
