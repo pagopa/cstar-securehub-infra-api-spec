@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: IDPAY ITN Self Expense IO API v2
   description: IDPAY ITN Self Expense IO

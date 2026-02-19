@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: IDPAY ITN Onboarding Workflow Issuer API v1
   description: IDPAY ITN Onboarding Workflow issuer
