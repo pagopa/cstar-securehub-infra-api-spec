@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  title: EMD TPP API ITN
+  title: EMD TPP API
   version: '1.0'
   description: |-
     EMD TPP

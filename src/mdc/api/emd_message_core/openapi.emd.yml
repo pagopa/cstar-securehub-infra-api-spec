@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  title: Messages dispatcher ITN
+  title: Messages dispatcher
   version: 1.0.0
   description: Service which acts as dispatcher for messages to end-users through 3rd-party application
   contact:

@@ -40,7 +40,7 @@ resource "azurerm_api_management_product_api" "this" {
   }
 
   api_name            = azurerm_api_management_api.this[each.value.api_key].name
-  product_id          = azurerm_api_management_product.this[each.value.product_key].product_id 
+  product_id          = azurerm_api_management_product.this[each.value.product_key].product_id
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
 }
