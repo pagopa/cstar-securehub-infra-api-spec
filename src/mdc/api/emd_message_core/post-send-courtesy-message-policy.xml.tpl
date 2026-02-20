@@ -13,7 +13,7 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/emdmessagecore" />
+        <set-backend-service base-url="${ingress_load_balancer_hostname}/emdmessagecore" />
         <rewrite-uri template="@("/emd/message-core/sendMessage")" />
     </inbound>
     <backend>
