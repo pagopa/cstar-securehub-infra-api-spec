@@ -13,17 +13,8 @@
 <policies>
     <inbound>
         <base />
-        <choose>
-            <when condition="@(((string)context.Variables["groups"]).Contains("emd-tpp"))">
-              <set-backend-service base-url="https://${ingress_load_balancer_hostname}/emdcitizen" />
-              <rewrite-uri template="@("/emd/citizen/{fiscalCode}/{tppId}")" />
-            </when>
-            <otherwise>
-                <return-response>
-                    <set-status code="401" reason="Operation Unauthorized" />
-                </return-response>
-            </otherwise>
-        </choose>
+        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaytransactions" />
+        <rewrite-uri template="@("/idpay/transactions/{transactionId}/invoice/update")" />
     </inbound>
     <backend>
         <base />

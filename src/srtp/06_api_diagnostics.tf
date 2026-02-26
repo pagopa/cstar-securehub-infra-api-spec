@@ -19,4 +19,11 @@ resource "azurerm_api_management_api_diagnostic" "this" {
       headers_to_log = lookup(lookup(each.value, "api_diagnostic", {}), "headers_to_log", [])
     }
   }
+
+  dynamic "backend_request" {
+    for_each = lookup(lookup(each.value, "api_diagnostic", {}), "headers_to_log", []) != [] ? [1] : []
+    content {
+      headers_to_log = lookup(lookup(each.value, "api_diagnostic", {}), "headers_to_log", [])
+    }
+  }
 }

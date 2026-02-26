@@ -60,7 +60,7 @@ locals {
         log_client_ip             = true
         verbosity                 = "information"
         http_correlation_protocol = "W3C"
-        headers_to_log            = ["RequestId"]
+        headers_to_log            = ["RequestId", "X-JWT-Subject"]
       }
     }
 
@@ -96,7 +96,7 @@ locals {
         log_client_ip             = true
         verbosity                 = "information"
         http_correlation_protocol = "W3C"
-        headers_to_log            = ["RequestId"]
+        headers_to_log            = ["RequestId", "X-JWT-Subject"]
       }
     }
 
@@ -171,7 +171,7 @@ locals {
         log_client_ip             = true
         verbosity                 = "information"
         http_correlation_protocol = "W3C"
-        headers_to_log            = ["RequestId"]
+        headers_to_log            = ["RequestId", "X-JWT-Subject"]
       }
     }
     },

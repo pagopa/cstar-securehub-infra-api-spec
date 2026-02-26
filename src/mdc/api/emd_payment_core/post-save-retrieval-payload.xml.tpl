@@ -15,7 +15,7 @@
         <base />
         <choose>
             <when condition="@(((string)context.Variables["groups"]).Contains("emd-tpp"))">
-              <set-backend-service base-url="https://${ingress_load_balancer_hostname}/emdpaymentcore" />
+              <set-backend-service base-url="${ingress_load_balancer_hostname}/emdpaymentcore" />
               <rewrite-uri template="@("/emd/payment/retrievalTokens/"+((Jwt)context.Variables["mdcToken"]).Claims.GetValueOrDefault("sub", ""))" />
             </when>
             <otherwise>

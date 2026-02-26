@@ -1,10 +1,12 @@
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: IDPAY ITN Timeline Home Banking v1
   description: IDPAY ITN Timeline Home Banking
   version: '1.0'
 servers:
- - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/hb/timeline
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/hb/timeline
+    x-internal: true
 paths:
   '/{initiativeId}':
     get:

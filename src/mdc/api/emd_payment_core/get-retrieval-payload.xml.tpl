@@ -15,7 +15,7 @@
         <base />
         <choose>
             <when condition="@(((string)context.Variables["groups"]).Contains("send"))">
-              <set-backend-service base-url="https://${ingress_load_balancer_hostname}/emdpaymentcore" />
+              <set-backend-service base-url="${ingress_load_balancer_hostname}/emdpaymentcore" />
               <rewrite-uri template="@("/emd/payment/retrievalTokens/{retrievalId}")"/>
             </when>
             <otherwise>

@@ -8,17 +8,6 @@ info:
     name: PagoPA S.p.A.
     email: cstar@pagopa.it
 
-servers:
-  - description: Development Test
-    url: https://api-emd.dev.cstar.pagopa.it/emd/message-core
-    x-internal: true
-  - description: User Acceptance Test
-    url: https://api-emd.uat.cstar.pagopa.it/emd/message-core
-    x-internal: true
-  - description: Prod
-    url: https://api-emd.cstar.pagopa.it/emd/message-core
-    x-internal: false
-
 tags:
   - name: submit
     description: Related to 'submit' operations

@@ -15,7 +15,7 @@
         <base />
         <choose>
             <when condition="@(((string)context.Variables["groups"]).Contains("emd-pagopa"))">
-                <set-backend-service base-url="https://${ingress_load_balancer_hostname}/emdtpp" />
+                <set-backend-service base-url="${ingress_load_balancer_hostname}/emdtpp" />
                 <rewrite-uri template="@("/emd/tpp/update")" />
             </when>
             <otherwise>

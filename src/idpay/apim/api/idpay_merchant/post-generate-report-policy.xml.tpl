@@ -13,17 +13,17 @@
 <policies>
     <inbound>
         <base />
+
         <choose>
-            <when condition="@(((string)context.Variables["groups"]).Contains("emd-pagopa"))">
-                <set-backend-service base-url="${ingress_load_balancer_hostname}/emdtpp" />
-                <rewrite-uri template="@("/emd/tpp/{tppId}")" />
+            <when condition="@(!context.Request.Headers.ContainsKey("x-merchant-id"))">
+                <set-header name="x-merchant-id" exists-action="override">
+                    <value>@(context.Request.Url.Query.GetValueOrDefault("merchantId",""))</value>
+                </set-header>
             </when>
-            <otherwise>
-                <return-response>
-                    <set-status code="401" reason="Operation Unauthorized" />
-                </return-response>
-            </otherwise>
         </choose>
+
+        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaytransactions" />
+        <rewrite-uri template="@("/idpay/merchant/portal/initiatives/{initiativeId}/reports")" />
     </inbound>
     <backend>
         <base />

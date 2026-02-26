@@ -14,9 +14,9 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(((string)context.Variables["groups"]).Contains("emd-pagopa"))">
-                <set-backend-service base-url="${ingress_load_balancer_hostname}/emdtpp" />
-                <rewrite-uri template="@("/emd/tpp/{tppId}")" />
+            <when condition="@(((string)context.Variables["groups"]).Contains("emd-tpp"))">
+              <set-backend-service base-url="${ingress_load_balancer_hostname}/emdcitizen" />
+              <rewrite-uri template="@("/emd/citizen/{fiscalCode}/{tppId}")" />
             </when>
             <otherwise>
                 <return-response>

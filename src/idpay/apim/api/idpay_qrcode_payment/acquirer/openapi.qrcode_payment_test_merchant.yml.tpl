@@ -1,10 +1,12 @@
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: IDPAY ITN Payment Merchant API
   description: IDPAY ITN Payment Merchant
   version: '1.0'
 servers:
-  - url: https://api-io.dev.cstar.pagopa.it/idpay-itn/payment/qr-code/merchant
+  - description: Development Test
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/payment/qr-code/merchant
+    x-internal: true
 paths:
   /:
     post:
