@@ -257,6 +257,12 @@ module "idpay_itn_merchants_portal" {
       xml_content = templatefile("./apim/api/idpay_merchants_portal/get-point-of-sale-by-reward-batch-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
+    },
+    {
+      operation_id = "reversalTransactionInvoiced"
+      xml_content = templatefile("./apim/api/idpay_merchants_portal/post-reversal-invoiced-payment-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
     }
   ]
 
