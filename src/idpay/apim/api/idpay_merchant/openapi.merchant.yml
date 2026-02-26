@@ -517,7 +517,7 @@ paths:
         - name: reportType
           in: query
           description: "ENG: Filter by type of reports to return - IT: Filtra in base al tipo di reports da restituire"
-          required: true
+          required: false
           schema:
             type: string
             enum:
