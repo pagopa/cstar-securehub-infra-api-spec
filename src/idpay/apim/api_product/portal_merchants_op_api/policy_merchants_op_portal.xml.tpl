@@ -43,6 +43,10 @@
         <set-header name="x-point-of-sale-id" exists-action="override">
             <value>@((String)context.Variables["pointOfSaleId"])</value>
         </set-header>
+        <set-variable name="merchantRole" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("point_of_sale_id", "") != "" ? "MERCHANT_OP" : "MERCHANT")" />
+        <set-header name="x-merchant-role" exists-action="override">
+            <value>@((String)context.Variables["merchantRole"])</value>
+        </set-header>
         <set-header name="x-acquirer-id" exists-action="override">
             <value>PAGOPA</value>
         </set-header>
