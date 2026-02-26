@@ -66,10 +66,7 @@
         <set-header name="x-user-id" exists-action="override">
             <value>@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("uid", ""))</value>
         </set-header>
-        <set-variable name="merchantRole" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("point_of_sale_id", "") != "" ? "MERCHANT_OP" : "MERCHANT")" />
-        <set-header name="x-merchant-role" exists-action="override">
-            <value>@((String)context.Variables["merchantRole"])</value>
-        </set-header>
+
         <set-header name="x-apim-request-id" exists-action="override">
           <value>@(context.RequestId.ToString())</value>
         </set-header>
