@@ -3739,6 +3739,20 @@ components:
           description: >
             ENG: Total number of available pages. <br>
             IT: Numero totale delle pagine disponibili.
+    ErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          maxLength: 255
+          pattern: .*
+        message:
+          type: string
+          maxLength: 255
+          pattern: .*
     ReportRequest:
       type: object
       properties:
