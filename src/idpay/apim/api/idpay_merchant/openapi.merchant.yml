@@ -465,7 +465,7 @@ paths:
   /initiative/{initiativeId}/reports:
     post:
       tags:
-        - merchant-report
+        - report
       summary: Generates a report with all transactions associated with a merchant and a reference period and returns the data from the created file
       description: "ENG: Generates a report with all transactions associated with a merchant and a reference period and returns the data from the created file <br> IT: Genera un report con tutte le transazioni associate ad un esercente e ad un periodo di riferimento e ritorna i dati del file creato"
       operationId: generateReport
@@ -503,10 +503,10 @@ paths:
           $ref: "#/components/responses/POST_generate_transactions_report_500_Response"
     get:
       tags:
-        - merchant-report
+        - report
       summary: Retrieve the list of generated reports
       description: "ENG: Retrieves the paginated list of reports generated for a merchant or Invitalia operator, ordered by request creation date descending. <br> IT: Recupera la lista paginata dei report generati per un merchant o per un operatore Invitalia, ordinata per data di richiesta in ordine decrescente."
-      operationId: getMerchantTransactionsReports
+      operationId: getReports
       parameters:
         - name: initiativeId
           in: path
@@ -514,6 +514,15 @@ paths:
           required: true
           schema:
             type: string
+        - name: reportType
+          in: query
+          description: "ENG: Filter by type of reports to return - IT: Filtra in base al tipo di reports da restituire"
+          required: false
+          schema:
+            type: string
+            enum:
+              - MERCHANT_TRANSACTIONS
+              - USER_DETAILS
         - name: page
           in: query
           required: false
@@ -545,10 +554,10 @@ paths:
   /initiative/{initiativeId}/reports/{reportId}/download:
     get:
       tags:
-        - merchant-report
+        - report
       summary:  Download the generated transactions report file
       description: "ENG: This service allows downloading the file associated with a previously generated transactions report. <br> IT: Questo servizio consente di scaricare il file associato a un report di transazioni precedentemente generato."
-      operationId: downloadTransactionsReport
+      operationId: downloadReport
       parameters:
         - name: initiativeId
           in: path
@@ -2505,6 +2514,7 @@ components:
           type: string
           enum:
             - MERCHANT_TRANSACTIONS
+            - USER_DETAILS
     PointOfSaleErrorDTO:
       type: object
       required:
@@ -2589,6 +2599,7 @@ components:
           type: string
           enum:
             - MERCHANT_TRANSACTIONS
+            - USER_DETAILS
       required:
         - startPeriod
         - endPeriod
