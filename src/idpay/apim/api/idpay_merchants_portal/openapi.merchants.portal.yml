@@ -1817,18 +1817,21 @@ paths:
           required: false
           schema:
             type: string
+            maxLength: 64
         - name: rewardBatchTrxStatus
           in: query
           description: Reward batch transaction status
           required: false
           schema:
             type: string
+            maxLength: 50
         - name: pointOfSaleId
           in: query
           description: The point of sale ID
           required: false
           schema:
             type: string
+            maxLength: 64
         - name: trxCode
           in: query
           description: "ENG: The transaction's code - IT: Codice della transazione"
