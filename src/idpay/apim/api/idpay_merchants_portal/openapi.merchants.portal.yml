@@ -1651,39 +1651,64 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 64
         - name: page
           in: query
           required: false
           schema:
             type: integer
             format: int32
+            minimum: 0
+            maximum: 10000
         - name: size
           in: query
           required: false
           schema:
             type: integer
             format: int32
+            minimum: 1
+            maximum: 1000
         - name: fiscalCode
           in: query
           description: Fiscal Code
           required: false
           schema:
             type: string
+            maxLength: 16
         - name: status
           in: query
           description: Transaction status
           required: false
           schema:
             type: string
+            maxLength: 50
       responses:
         "200":
           description: Ok
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/MerchantTransactionsListDTO"
         "400":
           description: Bad request
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
           content:
             application/json:
               schema:
@@ -1693,8 +1718,28 @@ paths:
                 message: Something went wrong handling the request
         "401":
           description: Authentication failed
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
         "429":
           description: Too many requests
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            Retry-After:
+              $ref: "#/components/headers/Retry-After"
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
           content:
             application/json:
               schema:
