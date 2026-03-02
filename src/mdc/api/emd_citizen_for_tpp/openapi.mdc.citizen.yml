@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: EMD CITIZEN CONSENT API - TPP Integration
-  version: '1.0.4'
+  version: '1.0.6-SNAPSHOT'
   description: |-
     **ENG:** TPP integration - Citizen consent operations scoped by tppId.
        Manage consents for citizens who authorized your service.
