@@ -237,6 +237,48 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_tpp_updateIsPaymentEnabled = {
+      api_name     = "emd_tpp"
+      operation_id = "updateIsPaymentEnabled"
+      xml_content = templatefile("./api/emd_tpp/put-update-payment-enabled.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_tpp_getAllWhitelistRecipientId = {
+      api_name     = "emd_tpp"
+      operation_id = "getAllWhitelistRecipientId"
+      xml_content = templatefile("./api/emd_tpp/get-whitelists.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_tpp_getTppWhitelistRecipientId = {
+      api_name     = "emd_tpp"
+      operation_id = "getTppWhitelistRecipientId"
+      xml_content = templatefile("./api/emd_tpp/get-whitelist.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_tpp_insertRecipientIdOnWhitelist = {
+      api_name     = "emd_tpp"
+      operation_id = "insertRecipientIdOnWhitelist"
+      xml_content = templatefile("./api/emd_tpp/post-add-recipient-to-whitelist.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_tpp_removeRecipientIdOnWhitelist = {
+      api_name     = "emd_tpp"
+      operation_id = "removeRecipientIdOnWhitelist"
+      xml_content = templatefile("./api/emd_tpp/delete-recipient-from-whitelist.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_tpp_updateRecipientIdOnWhitelist = {
+      api_name     = "emd_tpp"
+      operation_id = "updateRecipientIdOnWhitelist"
+      xml_content = templatefile("./api/emd_tpp/put-update-whitelist.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
     emd_citizen_saveCitizenConsent = {
       api_name     = "emd_citizen"
       operation_id = "saveCitizenConsent"
