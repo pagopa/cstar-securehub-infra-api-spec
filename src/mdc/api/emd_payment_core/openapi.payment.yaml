@@ -265,7 +265,7 @@ paths:
             minLength: 50
             maxLength: 50
             example: "0e4c6629-8753-234s-b0da-1f796999ec2-15038637960920"
-            
+
       responses:
         '200':
           description: Ok

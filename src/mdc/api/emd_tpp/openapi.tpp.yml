@@ -1752,7 +1752,7 @@ paths:
   # ============================================================================
   # WHITELIST ENDPOINTS
   # ============================================================================
-  
+
   '/whitelist':
     get:
       tags:
@@ -2152,7 +2152,7 @@ paths:
               required: false
               schema:
                 $ref: '#/components/schemas/RetryAfter'
-    
+
     post:
       tags:
         - Whitelist
@@ -2398,7 +2398,7 @@ paths:
               required: false
               schema:
                 $ref: '#/components/schemas/RetryAfter'
-    
+
     put:
       tags:
         - Whitelist
@@ -2877,7 +2877,7 @@ components:
     # ============================================================================
     # NEW SCHEMA FOR WHITELIST
     # ============================================================================
-    
+
     RecipientIdOnWhitelistDTO:
       type: object
       required:
