@@ -1,27 +1,33 @@
 openapi: 3.0.3
 info:
-  title: EMD CITIZEN OPERATION API
-  version: '1.0'
+  title: EMD CITIZEN CONSENT API - TPP Integration
+  version: '1.0.6-SNAPSHOT'
   description: |-
-    EMD CITIZEN OPERATION API
+    **ENG:** TPP integration - Citizen consent operations scoped by tppId.
+       Manage consents for citizens who authorized your service.
+
+    **IT:** Integrazione TPP - Operazioni sui consensi limitati dal tppId.
+    Gestione consensi dei cittadini che hanno autorizzato il vostro servizio.
   contact:
     name: PagoPA S.p.A.
     email: cstar@pagopa.it
 
 servers:
   - description: Development Test
-    url: https://api-emd.dev.cstar.pagopa.it/emd/mdc/citizen
+    url: https://api-emd.dev.cstar.pagopa.it/emd/mil/citizen
     x-internal: true
   - description: User Acceptance Test
-    url: https://api-emd.uat.cstar.pagopa.it/emd/mdc/citizen
+    url: https://api-emd.uat.cstar.pagopa.it/emd/mil/citizen
     x-internal: true
   - description: Prod
-    url: https://api-emd.cstar.pagopa.it/emd/mdc/citizen
+    url: https://api-emd.cstar.pagopa.it/emd/mil/citizen
     x-internal: false
 
 tags:
   - name: Citizen operation
-    description: 'Citizen operation'
+    description: |-
+      ENG: TPP integration - Citizen consent operations <br>
+      IT: Integrazione TPP - Operazioni sui consensi del cittadino
 paths:
 
   '/{fiscalCode}/{tppId}':
@@ -166,7 +172,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CitizenConsentErrorDTO'
               example:
-                code: CITIZEN_CONSENT_NOT_ONBOARDED
+                code: CITIZEN_NOT_ONBOARDED
                 message: Citizen consent not inserted
           headers:
             Access-Control-Allow-Origin:
@@ -391,7 +397,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CitizenConsentErrorDTO'
               example:
-                code: CITIZEN_CONSENT_NOT_ONBOARDED
+                code: CITIZEN_NOT_ONBOARDED
                 message: Citizen consent not inserted
           headers:
             Access-Control-Allow-Origin:
@@ -617,7 +623,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CitizenConsentErrorDTO'
               example:
-                code: CITIZEN_CONSENT_NOT_ONBOARDED
+                code: CITIZEN_NOT_ONBOARDED
                 message: Citizen consent not inserted
           headers:
             Access-Control-Allow-Origin:
@@ -840,7 +846,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CitizenConsentErrorDTO'
               example:
-                code: CITIZEN_CONSENT_NOT_ONBOARDED
+                code: CITIZEN_NOT_ONBOARDED
                 message: Citizen consent not inserted
           headers:
             Access-Control-Allow-Origin:
