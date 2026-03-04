@@ -812,15 +812,7 @@ paths:
           description: "ENG: Filter reward batches by status - IT: Filtra lotti per stato"
           required: false
           schema:
-            type: string
-            enum:
-              - CREATED
-              - SENT
-              - EVALUATING
-              - APPROVING
-              - APPROVED
-              - TO_APPROVE
-              - TO_WORK
+            $ref: "#/components/schemas/RewardBatchStatus"
         - name: assigneeLevel
           in: query
           description: "ENG: Filter reward batches by assigned operator - IT: Filtra lotti in base all'operatore assegnato al lotto"
@@ -2352,6 +2344,20 @@ components:
         - SUSPENDED
         - APPROVED
         - REJECTED
+    RewardBatchStatus:
+      type: string
+      description: Status of the reward batch
+      enum:
+        - CREATED
+        - SENT
+        - EVALUATING
+        - APPROVING
+        - APPROVED
+        - TO_APPROVE
+        - TO_WORK
+        - PENDING_REFUND
+        - REFUNDED
+        - NOT_REFUNDED
     DownloadInvoiceResponseDTO:
       type: object
       properties:
