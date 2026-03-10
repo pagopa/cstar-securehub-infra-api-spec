@@ -577,14 +577,14 @@ module "idpay_itn_merchant_portal" {
       })
     },
     {
-      operation_id = "getMerchantTransactionsReports"
+      operation_id = "getReports"
 
       xml_content = templatefile("./apim/api/idpay_merchant/get-report-list-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
-      operation_id = "downloadTransactionsReport"
+      operation_id = "downloadReport"
 
       xml_content = templatefile("./apim/api/idpay_merchant/get-report-download-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
