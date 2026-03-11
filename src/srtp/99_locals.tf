@@ -21,7 +21,7 @@ locals {
   rtp_storage_account_name = "cstar${var.env_short}${var.location_short}srtpsa"
 
   # MC Shared URL
-  mc_shared_base_url = "https://api-mcshared.${local.dns_zone}/auth"
+  mc_shared_base_url = "https://api-mcshared.${local.dns_zone}/auth-itn/realms/srtp"
   api_context_path   = "rtp"
   api_ingress_url    = "${var.domain}.${var.location_short}.${local.internal_domain_suffix}.${var.env}.${var.prefix}.${local.dns_external_domain}"
   api_service_url    = "https://${local.api_ingress_url}"
