@@ -2244,6 +2244,11 @@ components:
           format: date-time
           description: "ENG: Start date of the batch  <br> IT: Data di inizio del periodo del "
           example: "2025-11-01T00:00:00Z"
+        refundErrorMessage:
+          type: string
+          nullable: true
+          description: "ENG: Reason why the batch refund was rejected <br> IT: Motivazione per cui il lotto non è stato rimborsato, valorizzata solo se lo stato è NOT_REFUNDED"
+          example: "Errore sul rimborso"
     RewardBatchErrorDTO:
       type: object
       required:
