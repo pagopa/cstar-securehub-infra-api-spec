@@ -125,6 +125,7 @@
                     var org_name = organization["name"];
                     var org_party_role = organization.Value<JArray>("roles").First().Value<string>("partyRole");
                     var org_role = organization.Value<JArray>("roles").First().Value<string>("role");
+                    var scope = "transaction:invoicelifecycle:full";
                     var payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
                     new {
                     iat,
@@ -141,7 +142,8 @@
                     org_vat,
                     org_name,
                     org_party_role,
-                    org_role
+                    org_role,
+                    scope
                     }
                     ))).Split('=')[0].Replace('+', '-').Replace('/', '_');
 
