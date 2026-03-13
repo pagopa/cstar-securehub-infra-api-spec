@@ -1,0 +1,27 @@
+<!-- Fragment: extract sub from JWT and trace Keycloak token issuance (outbound). -->
+<fragment>
+    <set-variable name="kc_sub" value="@{
+        if (!context.Request.Url.Path.Contains("/realms/srtp/")
+            || !context.Request.Url.Path.Contains("/token")
+            || context.Response.StatusCode != 200) {
+            return "";
+        }
+        var body = context.Response.Body.As<JObject>(preserveContent: true);
+        string accessToken = body["access_token"]?.ToString();
+        if (string.IsNullOrEmpty(accessToken)) { return "unknown"; }
+        var parts = accessToken.Split('.');
+        if (parts.Length < 2) { return "unknown"; }
+        var payload = parts[1].PadRight(parts[1].Length + (4 - parts[1].Length % 4) % 4, '=');
+        var json = JObject.Parse(System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(payload)));
+        return json["sub"]?.ToString() ?? "unknown";
+    }" />
+    <choose>
+        <when condition="@((string)context.Variables.GetValueOrDefault("kc_sub", "") != "")">
+            <trace source="KeycloakTokenIssued" severity="information">
+                <message>@((string)context.Variables.GetValueOrDefault("kc_client_id", "unknown"))</message>
+                <metadata name="client_id" value="@((string)context.Variables.GetValueOrDefault("kc_client_id", "unknown"))" />
+                <metadata name="sub" value="@((string)context.Variables.GetValueOrDefault("kc_sub", "unknown"))" />
+            </trace>
+        </when>
+    </choose>
+</fragment>
