@@ -9,6 +9,7 @@ resource "azurerm_api_management_api_diagnostic" "this" {
   api_name                 = azurerm_api_management_api.this[each.key].name
   api_management_logger_id = local.apim_logger_id
 
-  always_log_errors = each.value.api_diagnostic.always_log_errors
-  verbosity         = each.value.api_diagnostic.verbosity
+  always_log_errors   = each.value.api_diagnostic.always_log_errors
+  verbosity           = each.value.api_diagnostic.verbosity
+  sampling_percentage = each.value.api_diagnostic.sampling_percentage
 }

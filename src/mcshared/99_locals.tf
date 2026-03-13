@@ -54,9 +54,10 @@ locals {
         xml_content = templatefile("./apim/api/base_policy.xml", {})
       }
       api_diagnostic = {
-        name              = "applicationinsights"
-        always_log_errors = true
-        verbosity         = "information"
+        name                = "applicationinsights"
+        always_log_errors   = true
+        verbosity           = "information"
+        sampling_percentage = 100.0
       }
     }
   }
@@ -90,6 +91,16 @@ locals {
       description = "Rate limit by client id value received as form param"
       format      = "rawxml"
       value       = templatefile("policies/fragments/rate-limit-by-clientid-formparam.xml", {})
+    }
+    keycloak-token-inbound = {
+      description = "Capture client_id from Keycloak SRTP token requests"
+      format      = "rawxml"
+      value       = templatefile("policies/fragments/keycloak-token-inbound.xml", {})
+    }
+    keycloak-token-outbound = {
+      description = "Extract sub from JWT and trace Keycloak SRTP token issuance"
+      format      = "rawxml"
+      value       = templatefile("policies/fragments/keycloak-token-outbound.xml", {})
     }
   }
 

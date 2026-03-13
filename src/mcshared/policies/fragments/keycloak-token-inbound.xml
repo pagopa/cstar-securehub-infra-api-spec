@@ -1,0 +1,23 @@
+<!-- Fragment: capture client_id from Keycloak token requests (inbound). -->
+<fragment>
+    <set-variable name="kc_client_id" value="@{
+        if (!context.Request.Url.Path.Contains("/realms/srtp/")
+            || !context.Request.Url.Path.Contains("/token")
+            || context.Request.Method != "POST") {
+            return "";
+        }
+        string contentType = context.Request.Headers.GetValueOrDefault("Content-Type", "");
+        if (contentType.Contains("application/x-www-form-urlencoded")) {
+            IDictionary<string, IList<string>> formParams = context.Request.Body.AsFormUrlEncodedContent(preserveContent: true);
+            if (formParams != null) {
+                IList<string> clientIds = null;
+                if (formParams.TryGetValue("client_id", out clientIds)) {
+                    if (clientIds.Count > 0) {
+                        return clientIds[0];
+                    }
+                }
+            }
+        }
+        return "unknown";
+    }" />
+</fragment>
