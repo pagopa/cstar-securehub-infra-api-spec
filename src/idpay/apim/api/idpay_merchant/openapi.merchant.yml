@@ -821,15 +821,7 @@ paths:
           description: "ENG: Filter reward batches by status - IT: Filtra lotti per stato"
           required: false
           schema:
-            type: string
-            enum:
-              - CREATED
-              - SENT
-              - EVALUATING
-              - APPROVING
-              - APPROVED
-              - TO_APPROVE
-              - TO_WORK
+            $ref: "#/components/schemas/RewardBatchStatus"
         - name: assigneeLevel
           in: query
           description: "ENG: Filter reward batches by assigned operator - IT: Filtra lotti in base all'operatore assegnato al lotto"
@@ -2170,6 +2162,9 @@ components:
             - EVALUATING
             - APPROVING
             - APPROVED
+            - PENDING_REFUND
+            - REFUNDED
+            - NOT_REFUNDED
         partial:
           type: boolean
           description: "ENG: Indicates whether the batch is partial <br> IT: Indica se il lotto è parziale"
@@ -2252,6 +2247,11 @@ components:
           format: date-time
           description: "ENG: Start date of the batch  <br> IT: Data di inizio del periodo del "
           example: "2025-11-01T00:00:00Z"
+        refundErrorMessage:
+          type: string
+          nullable: true
+          description: "ENG: Reason why the batch refund was rejected <br> IT: Motivazione per cui il lotto non è stato rimborsato, valorizzata solo se lo stato è NOT_REFUNDED"
+          example: "Errore sul rimborso"
     RewardBatchErrorDTO:
       type: object
       required:
@@ -2361,6 +2361,20 @@ components:
         - SUSPENDED
         - APPROVED
         - REJECTED
+    RewardBatchStatus:
+      type: string
+      description: Status of the reward batch
+      enum:
+        - CREATED
+        - SENT
+        - EVALUATING
+        - APPROVING
+        - APPROVED
+        - TO_APPROVE
+        - TO_WORK
+        - PENDING_REFUND
+        - REFUNDED
+        - NOT_REFUNDED
     DownloadInvoiceResponseDTO:
       type: object
       properties:
