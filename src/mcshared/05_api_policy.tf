@@ -10,6 +10,7 @@ resource "azurerm_api_management_api_policy" "this" {
   xml_content = templatefile("./apim/api/base_policy.xml", {})
 
   depends_on = [
-    azurerm_api_management_api.this
+    azurerm_api_management_api.this,
+    azurerm_api_management_policy_fragment.this
   ]
 }
