@@ -23,7 +23,7 @@ locals {
   # MC Shared URL
   mc_shared_base_url = "https://api-mcshared.${local.dns_zone}/auth-itn/realms/srtp"
   api_context_path   = "rtp"
-  api_ingress_url    = "${var.domain}.${var.location_short}.${local.internal_domain_suffix}.${var.env}.${var.prefix}.${local.dns_external_domain}"
+  api_ingress_url    = "${var.domain}.${var.location_short}.${local.internal_domain_suffix}.${local.dns_zone}"
   api_service_url    = "https://${local.api_ingress_url}"
 
   apis = merge({
@@ -72,6 +72,7 @@ locals {
       revision              = "1"
       version               = "v1"
       protocols             = ["https"]
+      service_url           = "https://api-rtp.${local.dns_zone}"
       subscription_required = false
       product               = "srtp"
       import_descriptor = {
@@ -147,6 +148,7 @@ locals {
       revision              = "1"
       version               = "v1"
       protocols             = ["https"]
+      service_url           = "https://api-rtp.${local.dns_zone}"
       subscription_required = false
       product               = "srtp"
       import_descriptor = {
