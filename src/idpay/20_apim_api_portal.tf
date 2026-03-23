@@ -652,6 +652,13 @@ module "idpay_itn_merchant_portal" {
       xml_content = templatefile("./apim/api/idpay_merchant/get-approved-reward-batch-download-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
+    },
+    {
+      operation_id = "getRewardBatchById"
+
+      xml_content = templatefile("./apim/api/idpay_merchant/get-reward-batch-by-id-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
     }
   ]
 
