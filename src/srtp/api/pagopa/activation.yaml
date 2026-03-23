@@ -503,6 +503,10 @@ paths:
           #  Possible error codes:
           #  - 01021010F: Unsupported accept header
           $ref: '#/components/responses/Error'
+        "404":
+          #description: |
+          #  Not found.
+          $ref: '#/components/responses/Error'
         "429":
           #description: |
           #  Too many requests.
