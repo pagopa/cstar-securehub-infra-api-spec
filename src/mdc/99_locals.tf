@@ -78,7 +78,7 @@ locals {
       service_url           = "${local.ingress_load_balancer_https}/emdtpp/emd/tpp"
       import_descriptor = {
         content_format = "openapi"
-        content_value  = file("./api/emd_tpp/openapi.tpp.yml")
+        content_value  = file("./api/emd_tpp/openapi.emd.int.tpp.yml")
       }
       api_policy = {
         xml_content = file("./api/base_policy.xml")
@@ -96,7 +96,7 @@ locals {
       service_url           = "${local.ingress_load_balancer_https}/emdcitizen/emd/citizen"
       import_descriptor = {
         content_format = "openapi"
-        content_value  = file("./api/emd_citizen/openapi.citizen.yml")
+        content_value  = file("./api/emd_citizen/openapi.emd.int.citizen.yml")
       }
       api_policy = {
         xml_content = file("./api/base_policy.xml")
@@ -114,7 +114,7 @@ locals {
       service_url           = "${local.ingress_load_balancer_https}/emdmessagecore/emd/message-core"
       import_descriptor = {
         content_format = "openapi"
-        content_value  = file("./api/emd_message_core/openapi.emd.yml")
+        content_value  = file("./api/emd_message_core/openapi.emd.int.message.yml")
       }
       api_policy = {
         xml_content = file("./api/base_policy.xml")
@@ -132,7 +132,7 @@ locals {
       service_url           = "${local.ingress_load_balancer_https}/emdpaymentcore/emd/payment"
       import_descriptor = {
         content_format = "openapi"
-        content_value  = file("./api/emd_payment_core/openapi.payment.yaml")
+        content_value  = file("./api/emd_payment_core/openapi.emd.ext.payment.yml")
       }
       api_policy = {
         xml_content = file("./api/base_policy.xml")
@@ -150,7 +150,7 @@ locals {
       service_url           = "${local.ingress_load_balancer_https}/emdcitizen/emd/citizen"
       import_descriptor = {
         content_format = "openapi"
-        content_value  = file("./api/emd_citizen_for_tpp/openapi.mdc.citizen.yml")
+        content_value  = file("./api/emd_citizen_for_tpp/openapi.emd.ext.citizen.yml")
       }
       api_policy = {
         xml_content = file("./api/base_policy.xml")
@@ -168,7 +168,7 @@ locals {
       service_url           = "${local.ingress_load_balancer_https}/emdtpp/emd/tpp"
       import_descriptor = {
         content_format = "openapi"
-        content_value  = file("./api/emd_tpp_testing/openapi.mdc.tpp.yml")
+        content_value  = file("./api/emd_tpp_testing/openapi.emd.ext.tpp.yml")
       }
       api_policy = {
         xml_content = file("./api/base_policy.xml")
