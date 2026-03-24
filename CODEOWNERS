@@ -5,3 +5,4 @@
 /src/idpay/ @pagopa/idpay-approver-team
 /src/mcshared/ @pagopa/mc-approver-team
 /src/srtp/ @pagopa/rtp-team-admin
+/src/mdc/ @pagopa/emd-team-admin
