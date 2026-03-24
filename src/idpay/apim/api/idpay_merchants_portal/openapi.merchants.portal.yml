@@ -2153,12 +2153,6 @@ paths:
       summary: "ENG: Merchant get reward batch detail - IT: Recupero dettaglio lotto transazioni da parte dell'esercente"
       operationId: getRewardBatchById
       parameters:
-        - name: x-merchant-id
-          in: header
-          description: The merchant ID
-          required: true
-          schema:
-            type: string
         - name: initiativeId
           in: path
           description: The initiative ID
