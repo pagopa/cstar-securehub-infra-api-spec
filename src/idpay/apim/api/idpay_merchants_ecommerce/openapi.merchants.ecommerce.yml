@@ -175,7 +175,16 @@ paths:
       tags:
         - transaction
       summary: "Anteprima pagamento"
-      description: Anteprima pagamento
+      description: |
+        Anteprima pagamento.
+        - Default / V1
+          - non inviare `X-API-Version`
+          - schema request: `PreviewPaymentRequestDTO`
+          - schema response: `PreviewPaymentDTO`
+        - V2
+          - inviare `X-API-Version: 2`
+          - schema request di riferimento: `PreviewPaymentRequestV2DTO`
+          - schema response di riferimento: `PreviewPaymentResponseV2DTO`
       operationId: previewPayment
       parameters:
         - name: trxCode
@@ -195,17 +204,50 @@ paths:
             enum:
               - "2"
       requestBody:
-        description: "Payload della preview. Usa `PreviewPaymentRequestDTO` di default oppure `PreviewPaymentRequestV2DTO` con header `X-API-Version: 2`"
+        description: |
+          Lo schema formale della request e' `PreviewPaymentRequestDTO`.
+          Per V2 inviare `X-API-Version: 2` e usare `PreviewPaymentRequestV2DTO`.
+
+          Esempio V2
+          ```json
+          {
+            "amountCents": 123400,
+            "additionalProperties": {
+              "customField": "customValue"
+            }
+          }
+          ```
         required: true
         content:
           application/json:
             schema:
-              anyOf:
-                - $ref: "#/components/schemas/PreviewPaymentRequestDTO"
-                - $ref: "#/components/schemas/PreviewPaymentRequestV2DTO"
+              $ref: "#/components/schemas/PreviewPaymentRequestDTO"
+            example:
+              productName: "Forno XYZ"
+              productGtin: "OVENS09"
+              amountCents: 123400
       responses:
         "200":
-          description: "Ok. Restituisce `PreviewPaymentDTO` di default oppure `PreviewPaymentResponseV2DTO` con header `X-API-Version: 2`"
+          description: |
+            Risposta di default / V1: `PreviewPaymentDTO`.
+            Per V2, quando viene inviato `X-API-Version: 2`, usare `PreviewPaymentResponseV2DTO`.
+
+            Esempio di risposta V2
+            ```json
+            {
+              "trxCode": "cmhszi7u",
+              "trxDate": "2025-10-24T12:36:00.725+00:00",
+              "status": "AUTHORIZED",
+              "originalAmountCents": 133400,
+              "rewardCents": 10000,
+              "residualAmountCents": 123400,
+              "userId": "RSSMRA85M01H501U",
+              "additionalProperties": {
+                "customField": "validatedCustomValue"
+              },
+              "extendedAuthorization": true
+            }
+            ```
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -218,9 +260,18 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
-                  - $ref: "#/components/schemas/PreviewPaymentDTO"
-                  - $ref: "#/components/schemas/PreviewPaymentResponseV2DTO"
+                $ref: "#/components/schemas/PreviewPaymentDTO"
+              example:
+                trxCode: "cmhszi7u"
+                trxDate: "2025-10-24T12:36:00.725+00:00"
+                status: "AUTHORIZED"
+                originalAmountCents: 133400
+                rewardCents: 10000
+                residualAmountCents: 123400
+                userId: "RSSMRA85M01H501U"
+                productName: "Forno XYZ"
+                productGtin: "OVENS09"
+                extendedAuthorization: true
         "400":
           description: Bad request
           headers:
