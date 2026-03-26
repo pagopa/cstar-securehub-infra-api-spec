@@ -205,49 +205,36 @@ paths:
               - "2"
       requestBody:
         description: |
-          Lo schema formale della request e' `PreviewPaymentRequestDTO`.
-          Per V2 inviare `X-API-Version: 2` e usare `PreviewPaymentRequestV2DTO`.
-
-          Esempio V2
-          ```json
-          {
-            "amountCents": 123400,
-            "additionalProperties": {
-              "customField": "customValue"
-            }
-          }
-          ```
+          Schemi request supportati:
+          - default / V1: `PreviewPaymentRequestDTO`
+          - V2 con `X-API-Version: 2`: `PreviewPaymentRequestV2DTO`
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PreviewPaymentRequestDTO"
-            example:
-              productName: "Forno XYZ"
-              productGtin: "OVENS09"
-              amountCents: 123400
+              anyOf:
+                - $ref: "#/components/schemas/PreviewPaymentRequestDTO"
+                - $ref: "#/components/schemas/PreviewPaymentRequestV2DTO"
+            examples:
+              v1:
+                summary: "Anteprima pagamento V1"
+                value:
+                  productName: "Forno XYZ"
+                  productGtin: "OVENS09"
+                  amountCents: 123400
+              v2:
+                summary: "Anteprima pagamento V2"
+                description: "Richiede `X-API-Version: 2`"
+                value:
+                  amountCents: 123400
+                  additionalProperties:
+                    customField: "customValue"
       responses:
         "200":
           description: |
-            Risposta di default / V1: `PreviewPaymentDTO`.
-            Per V2, quando viene inviato `X-API-Version: 2`, usare `PreviewPaymentResponseV2DTO`.
-
-            Esempio di risposta V2
-            ```json
-            {
-              "trxCode": "cmhszi7u",
-              "trxDate": "2025-10-24T12:36:00.725+00:00",
-              "status": "AUTHORIZED",
-              "originalAmountCents": 133400,
-              "rewardCents": 10000,
-              "residualAmountCents": 123400,
-              "userId": "RSSMRA85M01H501U",
-              "additionalProperties": {
-                "customField": "validatedCustomValue"
-              },
-              "extendedAuthorization": true
-            }
-            ```
+            Schemi response supportati:
+            - default / V1: `PreviewPaymentDTO`
+            - V2 con `X-API-Version: 2`: `PreviewPaymentResponseV2DTO`
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -260,18 +247,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PreviewPaymentDTO"
-              example:
-                trxCode: "cmhszi7u"
-                trxDate: "2025-10-24T12:36:00.725+00:00"
-                status: "AUTHORIZED"
-                originalAmountCents: 133400
-                rewardCents: 10000
-                residualAmountCents: 123400
-                userId: "RSSMRA85M01H501U"
-                productName: "Forno XYZ"
-                productGtin: "OVENS09"
-                extendedAuthorization: true
+                anyOf:
+                  - $ref: "#/components/schemas/PreviewPaymentDTO"
+                  - $ref: "#/components/schemas/PreviewPaymentResponseV2DTO"
+              examples:
+                v1:
+                  summary: "Risposta anteprima pagamento V1"
+                  value:
+                    trxCode: "cmhszi7u"
+                    trxDate: "2025-10-24T12:36:00.725+00:00"
+                    status: "AUTHORIZED"
+                    originalAmountCents: 133400
+                    rewardCents: 10000
+                    residualAmountCents: 123400
+                    userId: "RSSMRA85M01H501U"
+                    productName: "Forno XYZ"
+                    productGtin: "OVENS09"
+                    extendedAuthorization: true
+                v2:
+                  summary: "Risposta anteprima pagamento V2"
+                  description: "Restituita con `X-API-Version: 2`"
+                  value:
+                    trxCode: "cmhszi7u"
+                    trxDate: "2025-10-24T12:36:00.725+00:00"
+                    status: "AUTHORIZED"
+                    originalAmountCents: 133400
+                    rewardCents: 10000
+                    residualAmountCents: 123400
+                    userId: "RSSMRA85M01H501U"
+                    additionalProperties:
+                      customField: "validatedCustomValue"
+                    extendedAuthorization: true
         "400":
           description: Bad request
           headers:
