@@ -181,8 +181,10 @@ locals {
       description = "emd-validate-token-mdc"
       format      = "rawxml"
       value = templatefile("./api_fragment/validate-token-mdc.xml", {
-        openidUrl = var.mdc_openid_url
-        issuerUrl = var.mdc_issuer_url
+        openidUrl         = var.mdc_openid_url
+        issuerUrl         = var.mdc_issuer_url
+        keycloakIssuerUrl = var.keycloak_issuer_url
+        keycloakOpenidUrl = var.keycloak_openid_url
       })
     }
   }
