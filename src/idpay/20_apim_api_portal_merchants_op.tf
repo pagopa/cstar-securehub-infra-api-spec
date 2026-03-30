@@ -1,3 +1,7 @@
+locals {
+  merchant_operator_openapi_data  = yamldecode(file("./apim/api/idpay_merchants_ecommerce/openapi.merchants.ecommerce.yml"))
+}
+
 #
 # IDPAY PRODUCTS
 #
@@ -42,8 +46,8 @@ module "idpay_itn_portal_merchants_op_api" {
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
-  description  = "IDPAY ITN Portal Merchants OP API"
-  display_name = "IDPAY ITN Portal Merchants OP API"
+  display_name = local.merchant_operator_openapi_data.info.title
+  description  = local.merchant_operator_openapi_data.info.description
   path         = "idpay-itn/merchant-op"
   protocols    = ["https"]
 
