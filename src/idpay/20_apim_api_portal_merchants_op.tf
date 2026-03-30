@@ -1,5 +1,5 @@
 locals {
-  merchant_operator_openapi_data  = yamldecode(file("./apim/api/idpay_merchants_ecommerce/openapi.merchants.ecommerce.yml"))
+  merchant_operator_openapi_data = yamldecode(file("./apim/api/idpay_merchants_op_portal/openapi.merchants.op.portal.yml"))
 }
 
 #
@@ -47,7 +47,7 @@ module "idpay_itn_portal_merchants_op_api" {
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
   display_name = local.merchant_operator_openapi_data.info.title
-  description  = local.merchant_operator_openapi_data.info.description
+  description  = local.merchant_operator_openapi_data.info.title
   path         = "idpay-itn/merchant-op"
   protocols    = ["https"]
 
