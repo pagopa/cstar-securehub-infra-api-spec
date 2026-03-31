@@ -1,11 +1,32 @@
 <!--
 This policy validate content and sign of MDC JWT token
+Supports both mil-auth and Keycloak IDPs
 -->
 <fragment>
-  <validate-jwt header-name="Authorization" failed-validation-httpcode="401" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" clock-skew="5" output-token-variable-name="mdcToken">
-    <openid-config url="${openidUrl}" />
-    <issuers>
-      <issuer>${issuerUrl}</issuer>
-    </issuers>
-  </validate-jwt>
+  <set-variable
+    name="iss"
+    value="@(context.Request.Headers.GetValueOrDefault("Authorization","").Split(' ').ElementAtOrDefault(1)?.AsJwt()?.Claims["iss"]?.FirstOrDefault() ?? "")" />
+
+
+  <choose>
+    <!-- Keycloak token -->
+    <when condition="@(context.Variables.GetValueOrDefault("iss", "").Equals("${keycloakIssuerUrl}"))">
+      <validate-jwt header-name="Authorization" failed-validation-httpcode="401" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" clock-skew="5" output-token-variable-name="mdcToken">
+        <openid-config url="${keycloakOpenidUrl}" />
+        <issuers>
+          <issuer>${keycloakIssuerUrl}</issuer>
+        </issuers>
+      </validate-jwt>
+    </when>
+
+    <!-- mil-auth token (default/fallback) -->
+    <otherwise>
+      <validate-jwt header-name="Authorization" failed-validation-httpcode="401" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" clock-skew="5" output-token-variable-name="mdcToken">
+        <openid-config url="${openidUrl}" />
+        <issuers>
+          <issuer>${issuerUrl}</issuer>
+        </issuers>
+      </validate-jwt>
+    </otherwise>
+  </choose>
 </fragment>
