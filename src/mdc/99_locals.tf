@@ -183,13 +183,13 @@ locals {
       revision              = "1"
       subscription_required = false
       products              = ["emd_api_pagopa_product"]
-      service_url           = "${local.ingress_load_balancer_https}/emdbackoffice/emd/backoffice"
+      service_url           = "${local.ingress_load_balancer_https}/emd-ar-backoffice-bff/emd/backoffice"
       import_descriptor = {
         content_format = "openapi"
         content_value  = file("./api/emd_backoffice/openapi.emd.int.backoffice.yml")
       }
       api_policy = {
-        xml_content = file("./api/base_policy.xml")
+        xml_content = file("./api/base_policy_cors.xml")
       }
     }
   }
@@ -401,6 +401,13 @@ locals {
       api_name     = "emd_tpp_testing"
       operation_id = "getNetworkConnection"
       xml_content = templatefile("./api/emd_tpp_testing/get-network-connection.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_getToken = {
+      api_name     = "emd_backoffice"
+      operation_id = "getToken"
+      xml_content = templatefile("./api/emd_backoffice/get-token.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }

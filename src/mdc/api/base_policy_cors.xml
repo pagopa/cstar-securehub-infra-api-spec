@@ -13,17 +13,22 @@
 <policies>
     <inbound>
         <base />
-        <choose>
-            <when condition="@(((string)context.Variables["groups"]).Contains("emd-pagopa"))">
-                <set-backend-service base-url="${ingress_load_balancer_hostname}/emd-ar-backoffice-bff" />
-                <rewrite-uri template="@("/emd/backoffice/auth/api/auth/pagopa")" />
-            </when>
-            <otherwise>
-                <return-response>
-                    <set-status code="401" reason="Operation Unauthorized" />
-                </return-response>
-            </otherwise>
-        </choose>
+        <cors allow-credentials="true">
+            <allowed-origins>
+                <origin>https://mdc.dev.cstar.pagopa.it</origin>
+            </allowed-origins>
+            <allowed-methods>
+                <method>GET</method>
+                <method>POST</method>
+                <method>PUT</method>
+                <method>DELETE</method>
+                <method>PATCH</method>
+                <method>OPTIONS</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>*</header>
+            </allowed-headers>
+        </cors>
     </inbound>
     <backend>
         <base />
