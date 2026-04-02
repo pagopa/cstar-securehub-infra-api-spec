@@ -174,6 +174,24 @@ locals {
         xml_content = file("./api/base_policy.xml")
       }
     }
+    emd_backoffice = {
+      name                  = "${var.env_short}-emd-backoffice"
+      description           = "EMD BACKOFFICE"
+      display_name          = "EMD BACKOFFICE API"
+      path                  = "emd/backoffice"
+      protocols             = ["https"]
+      revision              = "1"
+      subscription_required = false
+      products              = ["emd_api_pagopa_product"]
+      service_url           = "${local.ingress_load_balancer_https}/emdbackoffice/emd/backoffice"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = file("./api/emd_backoffice/openapi.emd.int.backoffice.yml")
+      }
+      api_policy = {
+        xml_content = file("./api/base_policy.xml")
+      }
+    }
   }
 
   policy_fragment = {
