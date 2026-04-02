@@ -16,7 +16,7 @@
         <choose>
             <when condition="@(((string)context.Variables["groups"]).Contains("emd-pagopa"))">
                 <set-backend-service base-url="${ingress_load_balancer_hostname}/emd-ar-backoffice-bff" />
-                <rewrite-uri template="@("/emd/backoffice/auth/api/auth/pagopa")" />
+                <rewrite-uri template="@("/emd/backoffice/api/auth/pagopa")" />
             </when>
             <otherwise>
                 <return-response>
