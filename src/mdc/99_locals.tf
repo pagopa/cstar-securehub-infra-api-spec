@@ -174,6 +174,24 @@ locals {
         xml_content = file("./api/base_policy.xml")
       }
     }
+    emd_backoffice = {
+      name                  = "${var.env_short}-emd-backoffice"
+      description           = "EMD BACKOFFICE"
+      display_name          = "EMD BACKOFFICE API"
+      path                  = "emd/backoffice"
+      protocols             = ["https"]
+      revision              = "1"
+      subscription_required = false
+      products              = ["emd_api_pagopa_product"]
+      service_url           = "${local.ingress_load_balancer_https}/emd-ar-backoffice-bff/emd/backoffice"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = file("./api/emd_backoffice/openapi.emd.int.backoffice.yml")
+      }
+      api_policy = {
+        xml_content = file("./api/base_policy_cors.xml")
+      }
+    }
   }
 
   policy_fragment = {
@@ -181,8 +199,10 @@ locals {
       description = "emd-validate-token-mdc"
       format      = "rawxml"
       value = templatefile("./api_fragment/validate-token-mdc.xml", {
-        openidUrl = var.mdc_openid_url
-        issuerUrl = var.mdc_issuer_url
+        openidUrl         = var.mdc_openid_url
+        issuerUrl         = var.mdc_issuer_url
+        keycloakIssuerUrl = var.keycloak_issuer_url
+        keycloakOpenidUrl = var.keycloak_openid_url
       })
     }
   }
@@ -381,6 +401,13 @@ locals {
       api_name     = "emd_tpp_testing"
       operation_id = "getNetworkConnection"
       xml_content = templatefile("./api/emd_tpp_testing/get-network-connection.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_getToken = {
+      api_name     = "emd_backoffice"
+      operation_id = "getToken"
+      xml_content = templatefile("./api/emd_backoffice/get-token.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
