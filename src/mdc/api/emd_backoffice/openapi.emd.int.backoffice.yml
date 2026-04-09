@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: backoffice-bff-java-repository
   description: Api and Models
-  version: 0.1.0
+  version: v0.6.0
 servers:
 - url: https://api-emd.dev.cstar.pagopa.it/emd/backoffice
   description: Generated server url
@@ -13,12 +13,12 @@ paths:
       tags:
       - backoffice-controller-impl
       operationId: getToken
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RequestDTO"
+      parameters:
+      - name: Authorization
+        in: header
         required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -28,11 +28,6 @@ paths:
                 $ref: "#/components/schemas/ResponseDTO"
 components:
   schemas:
-    RequestDTO:
-      type: object
-      properties:
-        token:
-          type: string
     ResponseDTO:
       type: object
       properties:
