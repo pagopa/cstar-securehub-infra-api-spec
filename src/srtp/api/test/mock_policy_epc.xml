@@ -168,6 +168,113 @@
           <set-body>{""InvalidResponse"</set-body>
         </return-response>
       </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;BNCLCU85M15F205W&quot;))">
+        <return-response>
+          <set-status code="201" reason="Created" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>@{
+            return @"{
+            ""resourceId"": ""TestRtpMessageA1B2C3D4E5F6G7H8"",
+            ""Document"": {
+            ""CdtrPmtActvtnReqStsRpt"": {
+            ""GrpHdr"": {
+            ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
+            ""CreDtTm"": ""2026-02-11T14:00:00Z"",
+            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            },
+            ""OrgnlGrpInfAndSts"": {
+            ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
+            ""OrgnlMsgNmId"": ""pain.013.001.07"",
+            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00Z""
+            },
+            ""OrgnlPmtInfAndSts"": [
+            {
+            ""OrgnlPmtInfId"": ""f47ac10b-58cc-4372-a567-0e02b2c3d479"",
+            ""TxInfAndSts"": {
+            ""StsId"": ""550e8400-e29b-41d4-a716-446655440000"",
+            ""OrgnlInstrId"": ""TestRtpMessagePL098765432109876543"",
+            ""OrgnlEndToEndId"": ""123456789012345678"",
+            ""TxSts"": ""ACTC"",
+            ""StsRsnInf"": {
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            },
+            ""OrgnlTxRef"": {
+            ""PmtTpInf"": {
+            ""SvcLvl"": { ""Cd"": ""SRTP"" },
+            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
+            },
+            ""RmtInf"": { ""Ustrd"": ""Payment for invoice 12345."" },
+            ""Cdtr"": {
+            ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-ID-112233"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
+            ""Nm"": ""Azienda Creditrice S.p.A.""
+            },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
+            ""Amt"": { ""InstdAmt"": 450.75 },
+            ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
+            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } } } ] } } }";
+            }</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;RSSGNN92P20H501Z&quot;))">
+        <return-response>
+          <set-status code="201" reason="Created" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>@{
+            return @"{
+            ""resourceId"": ""TestRtpMessageA1B2C3D4E5F6G7H8"",
+            ""Document"": {
+            ""CdtrPmtActvtnReqStsRpt"": {
+            ""GrpHdr"": {
+            ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
+            ""CreDtTm"": ""2026-02-11T14:00:00Z"",
+            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            },
+            ""OrgnlGrpInfAndSts"": {
+            ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
+            ""OrgnlMsgNmId"": ""pain.013.001.07"",
+            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00Z""
+            },
+            ""OrgnlPmtInfAndSts"": [
+            {
+            ""OrgnlPmtInfId"": ""f47ac10b-58cc-4372-a567-0e02b2c3d479"",
+            ""TxInfAndSts"": {
+            ""StsId"": ""550e8400-e29b-41d4-a716-446655440000"",
+            ""OrgnlInstrId"": ""TestRtpMessagePL098765432109876543"",
+            ""OrgnlEndToEndId"": ""123456789012345678"",
+            ""TxSts"": ""ACTC"",
+            ""StsRsnInf"": {
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            },
+            ""OrgnlTxRef"": {
+            ""PmtTpInf"": {
+            ""SvcLvl"": { ""Cd"": ""SRTP"" },
+            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
+            },
+            ""RmtInf"": { ""Ustrd"": ""Payment for invoice 12345."" },
+            ""Cdtr"": {
+            ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-ID-112233"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
+            ""Nm"": ""Azienda Creditrice S.p.A.""
+            },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
+            ""Amt"": { ""InstdAmt"": 450.75 },
+            ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
+            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } } } ] } },
+            ""_links"": {
+            ""initialSepaRequestToPayUri"": {
+            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
+            ""templated"": false } },
+            ""invalidField"": ""test"" }";
+            }</set-body>
+        </return-response>
+      </when>
       <otherwise>
         <return-response>
           <set-status code="201" reason="Created" />
