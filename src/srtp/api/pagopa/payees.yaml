@@ -19,7 +19,7 @@ tags:
     description: Read operation.
 
 paths:
-  /rtp/payees/consents:
+  /consents:
     get:
       operationId: getPayeeConsents
       summary: Returns a list of Payee consents.
