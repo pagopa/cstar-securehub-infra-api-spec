@@ -64,6 +64,43 @@ locals {
       }
     }
 
+    # RTP Payees
+    rtp-payees = {
+      display_name          = "RTP ITN Payees API"
+      description           = "RTP ITN Payees API"
+      path                  = "${local.api_context_path}/payees"
+      revision              = "1"
+      version               = "v1"
+      protocols             = ["https"]
+      service_url           = "${local.api_service_url}/rtppayees/"
+      subscription_required = false
+      product               = "srtp"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = templatefile("./api/pagopa/payees.yaml", {})
+      }
+      version_set = {
+        name                = "${var.env_short}-rtp-payees-api-v2"
+        display_name        = "RTP ITN Payees API"
+        versioning_scheme   = "Header"
+        version_header_name = "Version"
+      }
+      api_policy = {
+        xml_content = templatefile("./api/pagopa/payees_base_policy.xml", {
+          fragment_id = "rtp-validate-token-mcshared-v2"
+        })
+      }
+      api_diagnostic = {
+        name                      = "applicationinsights"
+        sampling_percentage       = 100.0
+        always_log_errors         = true
+        log_client_ip             = true
+        verbosity                 = "information"
+        http_correlation_protocol = "W3C"
+        headers_to_log            = ["RequestId", "X-JWT-Subject"]
+      }
+    }
+
     # RTP Payees Registry
     rtp-payees-registry = {
       description           = "RTP ITN Payees Registry API"
@@ -278,6 +315,10 @@ locals {
       activate = {
         api_name    = "rtp-activation"
         xml_content = templatefile("./api/pagopa/activation_policy.xml", {})
+      }
+      getPayeesConsent = {
+        api_name    = "rtp-payees"
+        xml_content = templatefile("./api/pagopa/payees_policy.xml", {})
       }
       getPayees = {
         api_name = "rtp-payees-registry"
