@@ -1,0 +1,39 @@
+openapi: 3.1.0
+info:
+  title: backoffice-bff-java-repository
+  description: Api and Models
+  version: v0.6.0
+servers:
+- url: https://api-emd.dev.cstar.pagopa.it/emd/backoffice
+  description: Generated server url
+  x-internal: true
+paths:
+  '/api/auth/pagopa':
+    post:
+      tags:
+      - backoffice-controller-impl
+      operationId: getToken
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseDTO"
+components:
+  schemas:
+    ResponseDTO:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        token:
+          type: string

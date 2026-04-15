@@ -51,6 +51,16 @@ locals {
       })
       groups = ["developers"]
     }
+    emd_api_backoffice_product = {
+      display_name          = "EMD-BACKOFFICE-PRODUCT"
+      description           = "EMD Product for backoffice operations"
+      subscription_required = false
+      published             = true
+      policy = templatefile("./api_product/emd/policy_backoffice.xml", {
+        rate_limit_emd = var.rate_limit_emd_product
+      })
+      groups = ["developers"]
+    }
   }
 
   product_group_assignments = {
@@ -174,6 +184,26 @@ locals {
         xml_content = file("./api/base_policy.xml")
       }
     }
+    emd_backoffice = {
+      name                  = "${var.env_short}-emd-backoffice"
+      description           = "EMD BACKOFFICE"
+      display_name          = "EMD BACKOFFICE API"
+      path                  = "emd/backoffice"
+      protocols             = ["https"]
+      revision              = "1"
+      subscription_required = false
+      products              = ["emd_api_backoffice_product"]
+      service_url           = "${local.ingress_load_balancer_https}/emd-ar-backoffice-bff/emd/backoffice"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = file("./api/emd_backoffice/openapi.emd.int.backoffice.yml")
+      }
+      api_policy = {
+        xml_content = templatefile("./api/base_policy_cors.xml", {
+          mdcBackofficeUrl = var.mdc_backoffice_url
+        })
+      }
+    }
   }
 
   policy_fragment = {
@@ -181,8 +211,18 @@ locals {
       description = "emd-validate-token-mdc"
       format      = "rawxml"
       value = templatefile("./api_fragment/validate-token-mdc.xml", {
-        openidUrl = var.mdc_openid_url
-        issuerUrl = var.mdc_issuer_url
+        openidUrl         = var.mdc_openid_url
+        issuerUrl         = var.mdc_issuer_url
+        keycloakIssuerUrl = var.keycloak_issuer_url
+        keycloakOpenidUrl = var.keycloak_openid_url
+      })
+    }
+    "emd-validate-token-keycloak" = {
+      description = "emd-validate-token-keycloak"
+      format      = "rawxml"
+      value = templatefile("./api_fragment/validate-token-keycloak.xml", {
+        keycloakOpenidUrl = var.keycloak_openid_url
+        keycloakIssuerUrl = var.keycloak_issuer_url
       })
     }
   }
@@ -381,6 +421,13 @@ locals {
       api_name     = "emd_tpp_testing"
       operation_id = "getNetworkConnection"
       xml_content = templatefile("./api/emd_tpp_testing/get-network-connection.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_getToken = {
+      api_name     = "emd_backoffice"
+      operation_id = "getToken"
+      xml_content = templatefile("./api/emd_backoffice/get-token.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
