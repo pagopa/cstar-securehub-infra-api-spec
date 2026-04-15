@@ -1,0 +1,42 @@
+<policies>
+  <inbound>
+    <base />
+    <rate-limit calls="${rate_limit_emd}" renewal-period="60" />
+
+    <!-- Controlla groups per tutte le API tranne per quella di recupero del token -->
+    <choose>
+      <when condition="@(context.Operation.Id.Equals("getToken"))">
+      </when>
+      <otherwise>
+        <include-fragment fragment-id="emd-validate-token-keycloak" />
+        <choose>
+        <when condition="@(((Jwt)context.Variables["mdcToken"]).Claims.GetValueOrDefault("groups", "") == "emd-backoffice")">
+        <set-variable name="groups" value="@(((Jwt)context.Variables["mdcToken"]).Claims.GetValueOrDefault("groups", ""))" />
+        </when>
+        <otherwise>
+          <return-response>
+            <set-status code="401" reason="Unauthorized" />
+            <set-body>
+              @{
+              var responseJson = new JObject();
+              responseJson["statusCode"] = 401;
+              responseJson["message"] = "Access denied: User does not have required permissions.";
+              return responseJson.ToString();
+              }
+            </set-body>
+          </return-response>
+        </otherwise>
+      </choose>
+    </otherwise>
+  </choose>
+</inbound>
+<backend>
+<base />
+</backend>
+<outbound>
+<base />
+</outbound>
+<on-error>
+<base />
+</on-error>
+</policies>

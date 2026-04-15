@@ -76,3 +76,18 @@ variable "keycloak_issuer_url" {
   type        = string
   description = "Issuer identifier for Keycloak token validation."
 }
+
+variable "mdc_backoffice_url" {
+  type        = string
+  description = "URL for the MDC backoffice application."
+}
+
+variable "ar_openid_url"{
+  type = string
+  description = "OpenID discovery endpoint used for AR validation."
+}
+
+variable "ar_issuer_url"{
+  type = string
+  description = "Issuer identifier for AR token validation."
+}

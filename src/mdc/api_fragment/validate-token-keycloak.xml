@@ -1,0 +1,11 @@
+<!-- api_fragment/validate-token-keycloak.xml -->
+<fragment>
+  <!-- Keycloak token -->
+  <validate-jwt header-name="Authorization" failed-validation-httpcode="401" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" clock-skew="5" output-token-variable-name="mdcToken">
+    <openid-config url="${keycloakOpenidUrl}" />
+    <issuers>
+      <issuer>${keycloakIssuerUrl}</issuer>
+    </issuers>
+  </validate-jwt>
+  <set-variable name="tokenSource" value="mdc" />
+</fragment>

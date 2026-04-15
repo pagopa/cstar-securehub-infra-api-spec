@@ -15,7 +15,7 @@
         <base />
         <cors allow-credentials="true">
             <allowed-origins>
-                <origin>https://mdc.dev.cstar.pagopa.it</origin>
+                <origin>${mdcBackofficeUrl}</origin>
             </allowed-origins>
             <allowed-methods>
                 <method>GET</method>

@@ -12,3 +12,8 @@ mdc_issuer_url = "https://api-mcshared.uat.cstar.pagopa.it/auth"
 
 keycloak_openid_url = "https://api-mcshared.uat.cstar.pagopa.it/auth-itn/realms/mdc/.well-known/openid-configuration"
 keycloak_issuer_url = "https://api-mcshared.uat.cstar.pagopa.it/auth-itn/realms/mdc"
+
+mdc_backoffice_url = "https://mdc.uat.cstar.pagopa.it"
+
+ar_openid_url   = "https://welfare.uat.cstar.pagopa.it/selfcare/openid-configuration.json"
+ar_issuer_url   = "https://uat.selfcare.pagopa.it"

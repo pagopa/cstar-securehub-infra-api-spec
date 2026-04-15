@@ -51,6 +51,16 @@ locals {
       })
       groups = ["developers"]
     }
+    emd_api_backoffice_product = {
+      display_name          = "EMD-BACKOFFICE-PRODUCT"
+      description           = "EMD Product for backoffice operations"
+      subscription_required = false
+      published             = true
+      policy = templatefile("./api_product/emd/policy_backoffice.xml", {
+        rate_limit_emd = var.rate_limit_emd_product
+      })
+      groups = ["developers"]
+    }
   }
 
   product_group_assignments = {
@@ -182,14 +192,16 @@ locals {
       protocols             = ["https"]
       revision              = "1"
       subscription_required = false
-      products              = ["emd_api_pagopa_product"]
+      products              = ["emd_api_backoffice_product"]
       service_url           = "${local.ingress_load_balancer_https}/emd-ar-backoffice-bff/emd/backoffice"
       import_descriptor = {
         content_format = "openapi"
         content_value  = file("./api/emd_backoffice/openapi.emd.int.backoffice.yml")
       }
       api_policy = {
-        xml_content = file("./api/base_policy_cors.xml")
+        xml_content = templatefile("./api/base_policy_cors.xml", {
+        mdcBackofficeUrl = var.mdc_backoffice_url
+      })
       }
     }
   }
@@ -203,6 +215,16 @@ locals {
         issuerUrl         = var.mdc_issuer_url
         keycloakIssuerUrl = var.keycloak_issuer_url
         keycloakOpenidUrl = var.keycloak_openid_url
+      })
+    }
+    "emd-validate-token-keycloak" = {
+      description = "emd-validate-token-keycloak"
+      format      = "rawxml"
+      value = templatefile("./api_fragment/validate-token-keycloak.xml", {
+        arOpenidUrl       = var.ar_openid_url
+        arIssuerUrl       = var.ar_issuer_url
+        keycloakOpenidUrl = var.keycloak_openid_url
+        keycloakIssuerUrl = var.keycloak_issuer_url
       })
     }
   }

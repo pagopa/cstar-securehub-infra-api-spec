@@ -13,17 +13,8 @@
 <policies>
     <inbound>
         <base />
-        <choose>
-            <when condition="@(((string)context.Variables["groups"]).Contains("emd-pagopa"))">
-                <set-backend-service base-url="${ingress_load_balancer_hostname}/emd-ar-backoffice-bff" />
-                <rewrite-uri template="@("/emd/backoffice/api/auth/pagopa")" />
-            </when>
-            <otherwise>
-                <return-response>
-                    <set-status code="401" reason="Operation Unauthorized" />
-                </return-response>
-            </otherwise>
-        </choose>
+            <set-backend-service base-url="${ingress_load_balancer_hostname}/emd-ar-backoffice-bff" />
+            <rewrite-uri template="@("/emd/backoffice/api/auth/pagopa")" />
     </inbound>
     <backend>
         <base />
