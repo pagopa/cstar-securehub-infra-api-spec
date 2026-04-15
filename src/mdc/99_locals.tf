@@ -221,8 +221,6 @@ locals {
       description = "emd-validate-token-keycloak"
       format      = "rawxml"
       value = templatefile("./api_fragment/validate-token-keycloak.xml", {
-        arOpenidUrl       = var.ar_openid_url
-        arIssuerUrl       = var.ar_issuer_url
         keycloakOpenidUrl = var.keycloak_openid_url
         keycloakIssuerUrl = var.keycloak_issuer_url
       })
