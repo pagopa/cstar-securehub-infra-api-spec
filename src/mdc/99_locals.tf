@@ -200,8 +200,8 @@ locals {
       }
       api_policy = {
         xml_content = templatefile("./api/base_policy_cors.xml", {
-        mdcBackofficeUrl = var.mdc_backoffice_url
-      })
+          mdcBackofficeUrl = var.mdc_backoffice_url
+        })
       }
     }
   }
