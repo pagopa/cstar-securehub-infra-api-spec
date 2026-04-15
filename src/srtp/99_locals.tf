@@ -68,7 +68,7 @@ locals {
     rtp-payees = {
       display_name          = "RTP ITN Payees API"
       description           = "RTP ITN Payees API"
-      path                  = "${local.api_context_path}/payees"
+      path                  = "${local.api_context_path}/payees/consents"
       revision              = "1"
       version               = "v1"
       protocols             = ["https"]
@@ -316,7 +316,7 @@ locals {
         api_name    = "rtp-activation"
         xml_content = templatefile("./api/pagopa/activation_policy.xml", {})
       }
-      getPayeesConsent = {
+      getPayeesConsents = {
         api_name    = "rtp-payees"
         xml_content = templatefile("./api/pagopa/payees_policy.xml", {})
       }
