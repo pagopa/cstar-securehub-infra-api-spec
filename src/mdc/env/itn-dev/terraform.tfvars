@@ -10,3 +10,6 @@ rate_limit_emd_message = 60
 
 mdc_openid_url = "https://api-mcshared.dev.cstar.pagopa.it/auth/.well-known/openid-configuration"
 mdc_issuer_url = "https://api-mcshared.dev.cstar.pagopa.it/auth"
+
+keycloak_openid_url = "https://api-mcshared.dev.cstar.pagopa.it/auth-itn/realms/mdc/.well-known/openid-configuration"
+keycloak_issuer_url = "https://api-mcshared.dev.cstar.pagopa.it/auth-itn/realms/mdc"
