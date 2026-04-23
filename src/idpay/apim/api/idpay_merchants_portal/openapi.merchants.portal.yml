@@ -921,14 +921,6 @@ paths:
       summary: "ENG: Postpone a transaction to the next reward batch - IT: Sposta una transazione al lotto successivo"
       operationId: postponeTransaction
       parameters:
-        - name: x-merchant-id
-          in: header
-          description: Merchant ID
-          required: false
-          schema:
-            type: string
-            maxLength: 64
-            pattern: '^[A-Z0-9\-_]+$'
         - name: initiativeId
           in: path
           description: The initiative ID
