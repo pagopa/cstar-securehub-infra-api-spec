@@ -275,6 +275,119 @@
             }</set-body>
         </return-response>
       </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;DWQJHC32M47H159O&quot;))">
+        <return-response>
+          <set-status code="400" reason="Bad Request" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>@{
+            return @"{
+            ""resourceId"": ""TestRtpMessageREJ1234567890XYZ"",
+            ""Document"": {
+            ""CdtrPmtActvtnReqStsRpt"": {
+            ""GrpHdr"": {
+            ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
+            ""CreDtTm"": ""2026-02-11T14:05:00Z"",
+            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            },
+            ""OrgnlGrpInfAndSts"": {
+            ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
+            ""OrgnlMsgNmId"": ""pain.013.001.07"",
+            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00Z""
+            },
+            ""OrgnlPmtInfAndSts"": [
+            {
+            ""OrgnlPmtInfId"": ""a1b2c3d4-e5f6-4789-8901-23456789abcd"",
+            ""TxInfAndSts"": {
+            ""StsId"": ""990e8400-e29b-41d4-a716-446655449999"",
+            ""OrgnlInstrId"": ""TestRtpMessageINSTR-REJECTED"",
+            ""OrgnlEndToEndId"": ""987654321098765432"",
+            ""TxSts"": ""RJCT"",
+            ""StsRsnInf"": {
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            },
+            ""OrgnlTxRef"": {
+            ""PmtTpInf"": {
+            ""SvcLvl"": { ""Cd"": ""SRTP"" },
+            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
+            },
+            ""RmtInf"": { ""Ustrd"": ""Rifiuto tecnico transazione."" },
+            ""Cdtr"": {
+            ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
+            ""Nm"": ""Azienda Creditrice S.p.A.""
+            },
+            ""Dbtr"": {
+            ""Id"": { ""PrvtId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""POID"" } } } }
+            },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } },
+            ""Amt"": { ""InstdAmt"": 120.0 },
+            ""ReqdExctnDt"": { ""Dt"": ""2026-02-15Z"" },
+            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" } } } } ] } },
+            ""_links"": {
+            ""initialSepaRequestToPayUri"": {
+            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
+            ""templated"": false } } }",
+            ""invalidField"": ""test"" }";
+            }</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;RQLJNO71B11M676J&quot;))">
+        <return-response>
+          <set-status code="400" reason="Bad Request" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>@{
+            return @"{
+            ""resourceId"": ""TestRtpMessageREJ1234567890XYZ"",
+            ""Document"": {
+            ""CdtrPmtActvtnReqStsRpt"": {
+            ""GrpHdr"": {
+            ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
+            ""CreDtTm"": ""2026-02-11T14:05:00Z"",
+            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            },
+            ""OrgnlGrpInfAndSts"": {
+            ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
+            ""OrgnlMsgNmId"": ""pain.013.001.07"",
+            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00Z""
+            },
+            ""OrgnlPmtInfAndSts"": [
+            {
+            ""OrgnlPmtInfId"": ""a1b2c3d4-e5f6-4789-8901-23456789abcd"",
+            ""TxInfAndSts"": {
+            ""StsId"": ""990e8400-e29b-41d4-a716-446655449999"",
+            ""OrgnlInstrId"": ""TestRtpMessageINSTR-REJECTED"",
+            ""OrgnlEndToEndId"": ""987654321098765432"",
+            ""TxSts"": ""RJCT"",
+            ""StsRsnInf"": {
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            },
+            ""OrgnlTxRef"": {
+            ""PmtTpInf"": {
+            ""SvcLvl"": { ""Cd"": ""SRTP"" },
+            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
+            },
+            ""RmtInf"": { ""Ustrd"": ""Rifiuto tecnico transazione."" },
+            ""Cdtr"": {
+            ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
+            ""Nm"": ""Azienda Creditrice S.p.A.""
+            },
+            ""Dbtr"": {
+            ""Id"": { ""PrvtId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""POID"" } } } }
+            },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } },
+            ""Amt"": { ""InstdAmt"": 120.0 },
+            ""ReqdExctnDt"": { ""Dt"": ""2026-02-15Z"" },
+            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" } } } } ] } };
+            }</set-body>
+        </return-response>
+      </when>
       <otherwise>
         <return-response>
           <set-status code="201" reason="Created" />
