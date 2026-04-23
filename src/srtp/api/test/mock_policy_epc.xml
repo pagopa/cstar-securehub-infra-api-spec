@@ -329,7 +329,7 @@
             ""_links"": {
             ""initialSepaRequestToPayUri"": {
             ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
-            ""templated"": false } } }",
+            ""templated"": false } },
             ""invalidField"": ""test"" }";
             }</set-body>
         </return-response>
