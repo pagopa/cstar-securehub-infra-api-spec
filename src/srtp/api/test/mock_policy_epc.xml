@@ -334,7 +334,7 @@
             }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;RQLJNO71B11M676J&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;NDRSCC78T31H304R&quot;))">
         <return-response>
           <set-status code="400" reason="Bad Request" />
           <set-header name="Content-Type" exists-action="override">
@@ -384,7 +384,7 @@
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 120.0 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-15Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" } } } ] } } };
+            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" } } } } ] } } };
             }</set-body>
         </return-response>
       </when>
