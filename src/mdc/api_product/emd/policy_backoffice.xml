@@ -5,21 +5,19 @@
 
     <!-- Controlla groups per tutte le API tranne per quella di recupero del token -->
     <choose>
-      <when condition="@(context.Operation.Id.Equals("getToken"))">
-      </when>
+      <when condition='@(context.Operation.Id.Equals("getToken"))' />
       <otherwise>
         <include-fragment fragment-id="emd-validate-token-keycloak" />
-      </choose>
-    </otherwise>
-  </choose>
-</inbound>
-<backend>
-<base />
-</backend>
-<outbound>
-<base />
-</outbound>
-<on-error>
-<base />
-</on-error>
+      </otherwise>
+    </choose>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
 </policies>
