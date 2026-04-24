@@ -431,5 +431,12 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_testTpp = {
+      api_name     = "emd_backoffice"
+      operation_id = "testTpp"
+      xml_content = templatefile("./api/emd_backoffice/get-test-tpp.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
   }
 }

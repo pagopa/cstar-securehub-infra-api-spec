@@ -9,23 +9,6 @@
       </when>
       <otherwise>
         <include-fragment fragment-id="emd-validate-token-keycloak" />
-        <choose>
-        <when condition="@(((Jwt)context.Variables["mdcToken"]).Claims.GetValueOrDefault("groups", "") == "emd-backoffice")">
-        <set-variable name="groups" value="@(((Jwt)context.Variables["mdcToken"]).Claims.GetValueOrDefault("groups", ""))" />
-        </when>
-        <otherwise>
-          <return-response>
-            <set-status code="401" reason="Unauthorized" />
-            <set-body>
-              @{
-              var responseJson = new JObject();
-              responseJson["statusCode"] = 401;
-              responseJson["message"] = "Access denied: User does not have required permissions.";
-              return responseJson.ToString();
-              }
-            </set-body>
-          </return-response>
-        </otherwise>
       </choose>
     </otherwise>
   </choose>
