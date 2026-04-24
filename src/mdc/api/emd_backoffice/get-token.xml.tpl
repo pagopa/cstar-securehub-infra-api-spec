@@ -14,7 +14,7 @@
     <inbound>
         <base />
             <set-backend-service base-url="${ingress_load_balancer_hostname}/emd-ar-backoffice-bff" />
-            <rewrite-uri template="@("/emd/backoffice/api/auth/pagopa")" />
+            <rewrite-uri template="@("/emd/backoffice/api/v1/auth/exchange")" />
     </inbound>
     <backend>
         <base />
