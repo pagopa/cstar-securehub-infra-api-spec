@@ -231,7 +231,7 @@ components:
           type: string
 
     # ------------------------------------------------------
-    # Domain specific complex types (backoffice proxy).
+    # Domain specific complex types.
     # ------------------------------------------------------
     ConsentInfo:
       description: Consent information expressed by an institution.
