@@ -23,7 +23,8 @@
             )">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
-                    <set-header name="Content-Type" exists-action="overriden</value>
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
                     </set-header>
                 </return-response>
             </when>
