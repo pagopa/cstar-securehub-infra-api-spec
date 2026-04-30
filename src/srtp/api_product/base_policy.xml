@@ -28,12 +28,7 @@
     </cors>
   </inbound>
   <backend>
-    <retry condition="@(context.LastError?.Reason == &quot;BackendConnectionFailure&quot;)"
-      count="3"
-      interval="1"
-      first-fast-retry="true">
-      <forward-request buffer-request-body="true" />
-    </retry>
+    <base />
   </backend>
   <outbound>
     <base />

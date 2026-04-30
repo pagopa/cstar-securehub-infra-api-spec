@@ -1,0 +1,14 @@
+<policies>
+  <inbound>
+    <base />
+  </inbound>
+  <backend>
+    <include-fragment fragment-id="${backend_fragment_id}" />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
