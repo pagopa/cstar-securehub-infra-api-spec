@@ -152,6 +152,12 @@ module "idpay_itn_register_portal_api" {
       xml_content = templatefile("./apim/api/idpay_asset_register/post-products-update-status-rejected.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
+    },
+    {
+      operation_id = "getInitiatives"
+      xml_content = templatefile("./apim/api/idpay_asset_register/get-initiatives.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
     }
   ]
 }
