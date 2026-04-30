@@ -50,7 +50,7 @@ locals {
       }
       api_policy = {
         xml_content = templatefile("./api/pagopa/activation_base_policy.xml", {
-          fragment_id = "rtp-validate-token-mcshared-v2"
+          fragment_id         = "rtp-validate-token-mcshared-v2"
           backend_fragment_id = "backend-retry"
         })
       }
@@ -88,7 +88,7 @@ locals {
       }
       api_policy = {
         xml_content = templatefile("./api/pagopa/payees_base_policy.xml", {
-          fragment_id = "rtp-validate-token-mcshared-v2"
+          fragment_id         = "rtp-validate-token-mcshared-v2"
           backend_fragment_id = "backend-retry"
         })
       }
