@@ -10,6 +10,7 @@ resource "azurerm_api_management_api_policy" "this" {
   xml_content = each.value.api_policy.xml_content
 
   depends_on = [
-    azurerm_api_management_api.this
+    azurerm_api_management_api.this,
+    azurerm_api_management_policy_fragment.this
   ]
 }

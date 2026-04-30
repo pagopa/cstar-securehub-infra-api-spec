@@ -16,7 +16,7 @@
         <include-fragment fragment-id="${fragment_id}" />
     </inbound>
     <backend>
-        <base />
+      <include-fragment fragment-id="${backend_fragment_id}" />
     </backend>
     <outbound>
         <base />
