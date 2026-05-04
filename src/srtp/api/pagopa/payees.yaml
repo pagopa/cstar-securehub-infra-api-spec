@@ -11,11 +11,11 @@ info:
 
 servers:
   - description: Development/Test
-    url: localhost:8080
+    url: localhost:8080/payees/consents
     x-internal: true
 
 tags:
-  - name: read
+  - name: Payees
     description: Read operation.
 
 paths:
@@ -30,7 +30,7 @@ paths:
         When the operation is used by not-admin subject, the system returns
         the RTP consents which have the Payee's ID that matches the subject
         claim of the access token.
-      tags: [read]
+      tags: [Payees]
       security:
         - oAuth2: [read_rtp_payees]
       parameters:
@@ -43,7 +43,7 @@ paths:
         - $ref: '#/components/parameters/ToDate'
       responses:
         "200":
-          $ref: '#/components/responses/PageOfPayeeConsents'
+          $ref: '#/components/responses/InstitutionsServicesConsentResponse'
         "400":
           $ref: '#/components/responses/Error'
         "401":
@@ -169,15 +169,6 @@ components:
     # --------------------------------------------------------------------------
     # Domain specific basic types.
     # --------------------------------------------------------------------------
-    FiscalCode:
-      description: |
-        Fiscal code.
-      type: string
-      pattern: "^(([A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z])|(\\d{11}))$"
-      minLength: 11
-      maxLength: 16
-      example: "RSSMRA85T10A562S"
-
     ConsentStatus:
       description: Status of the consent.
       type: string
@@ -188,30 +179,7 @@ components:
       description: Date in YYYY-MM-DD format.
       type: string
       format: date
-      pattern: "^\\d{4}-\\d{2}-\\d{2}$"
       example: "2024-01-01"
-
-    # --------------------------------------------------------------------------
-    # Complex types for paging.
-    # --------------------------------------------------------------------------
-    PageMetadata:
-      description: Metadata of a page of data.
-      type: object
-      additionalProperties: false
-      properties:
-        pageNumber:
-          $ref: '#/components/schemas/PageNumber'
-        pageSize:
-          $ref: '#/components/schemas/PageSize'
-        totalElements:
-          type: integer
-          example: 100
-        totalPages:
-          type: integer
-          example: 5
-      required:
-        - pageNumber
-        - pageSize
 
     # --------------------------------------------------------------------------
     # Complex type for error handling.
@@ -265,44 +233,68 @@ components:
     # ------------------------------------------------------
     # Domain specific complex types.
     # ------------------------------------------------------
-    PayeeConsent:
+    ConsentInfo:
+      description: Consent information expressed by an institution.
       type: object
       additionalProperties: false
       properties:
-        payee:
-          $ref: '#/components/schemas/Payee'
         consent:
           $ref: '#/components/schemas/ConsentStatus'
-        lastUpdate:
+        date:
           type: string
           format: date-time
+          description: The date when consent was expressed.
+          example: "2024-04-01T13:00:00+02:00"
       required:
-        - payee
         - consent
+        - date
 
-    Payee:
+    InstitutionInfo:
+      description: Basic information about an institution.
       type: object
       additionalProperties: false
       properties:
-        fiscalCode:
-          $ref: '#/components/schemas/FiscalCode'
+        name:
+          type: string
+          description: Institution name.
+          example: "EC name"
+        taxCode:
+          type: string
+          description: Institution tax code.
+          example: "77777777777"
       required:
-        - fiscalCode
+        - name
+        - taxCode
 
-    PageOfPayeeConsents:
-      description: Page of Payee consents.
+    InstitutionServiceConsent:
+      description: Consent record for a single institution.
       type: object
       additionalProperties: false
       properties:
-        consents:
+        consentInfo:
+          $ref: '#/components/schemas/ConsentInfo'
+        institutionInfo:
+          $ref: '#/components/schemas/InstitutionInfo'
+      required:
+        - consentInfo
+        - institutionInfo
+
+    InstitutionsServicesConsentResponse:
+      description: Paginated list of institution service consents.
+      type: object
+      additionalProperties: false
+      properties:
+        hasNext:
+          type: boolean
+          description: Indicates whether there are more records for the input query.
+          example: true
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/PayeeConsent'
-        metadata:
-          $ref: '#/components/schemas/PageMetadata'
+            $ref: '#/components/schemas/InstitutionServiceConsent'
       required:
-        - consents
-        - metadata
+        - hasNext
+        - results
 
   # ============================================================================
   # Parameters.
@@ -325,21 +317,21 @@ components:
     PageNumber:
       name: pageNumber
       in: query
-      required: false
+      required: true
       schema:
         $ref: '#/components/schemas/PageNumber'
 
     PageSize:
       name: pageSize
       in: query
-      required: false
+      required: true
       schema:
         $ref: '#/components/schemas/PageSize'
 
     ConsentFilter:
       name: consent
       in: query
-      required: false
+      required: true
       schema:
         $ref: '#/components/schemas/ConsentStatus'
 
@@ -353,7 +345,7 @@ components:
     ToDate:
       name: toDate
       in: query
-      required: false
+      required: true
       schema:
         $ref: '#/components/schemas/ConsentDate'
 
@@ -361,7 +353,7 @@ components:
   # Responses
   # ============================================================================
   responses:
-    PageOfPayeeConsents:
+    InstitutionsServicesConsentResponse:
       description: Response returned when a page of consents is requested.
       headers:
         Access-Control-Allow-Origin:
@@ -379,7 +371,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PageOfPayeeConsents'
+            $ref: '#/components/schemas/InstitutionsServicesConsentResponse'
 
     UnauthorizedError:
       description: Access token is missing or invalid.

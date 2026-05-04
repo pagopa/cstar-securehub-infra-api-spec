@@ -1256,8 +1256,8 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: /token
-          refreshUrl: /token
+          tokenUrl: https://api-mcshared.cstar.pagopa.it/auth-itn/realms/srtp/protocol/openid-connect/token
+          refreshUrl: https://api-mcshared.cstar.pagopa.it/auth-itn/realms/srtp/protocol/openid-connect/token
           scopes:
             admin_rtp_activations: Grants full administrative access to all activations.
             write_rtp_activations: Grants permission to create, update, or delete activations.
