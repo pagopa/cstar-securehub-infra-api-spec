@@ -50,7 +50,8 @@ locals {
       }
       api_policy = {
         xml_content = templatefile("./api/pagopa/activation_base_policy.xml", {
-          fragment_id = "rtp-validate-token-mcshared-v2"
+          fragment_id         = "rtp-validate-token-mcshared-v2"
+          backend_fragment_id = "backend-retry"
         })
       }
       api_diagnostic = {
@@ -87,7 +88,8 @@ locals {
       }
       api_policy = {
         xml_content = templatefile("./api/pagopa/payees_base_policy.xml", {
-          fragment_id = "rtp-validate-token-mcshared-v2"
+          fragment_id         = "rtp-validate-token-mcshared-v2"
+          backend_fragment_id = "backend-retry"
         })
       }
       api_diagnostic = {
@@ -174,6 +176,11 @@ locals {
         display_name        = "RTP ITN Service Provider API"
         versioning_scheme   = "Header"
         version_header_name = "Version"
+      }
+      api_policy = {
+        xml_content = templatefile("./api/pagopa/send_base_policy.xml", {
+          backend_fragment_id = "backend-retry"
+        })
       }
     }
 
@@ -307,6 +314,11 @@ locals {
         mc_shared_base_url = local.mc_shared_base_url,
         apim_logger_name   = "${local.project}-apim-logger"
       })
+    },
+    backend-retry = {
+      description = "Retry on backend connection failure"
+      format      = "xml"
+      value       = file("./api_fragment/backend-retry.xml")
     }
   }
 
