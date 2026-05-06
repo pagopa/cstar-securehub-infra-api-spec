@@ -14,157 +14,148 @@ servers:
     url: https://api-io.uat.cstar.pagopa.it/idpay-itn/it-wallet
     x-internal: true
 paths:
-/payment/initiatives/{initiativeId}/bar-code:
-  get:
-    tags:
-      - itWallet
-    summary: 'ENG: Retrieve the active transaction - IT: Recupera la transazione attiva'
-    description: >-
-      Retrieve a transaction.
-
-      Il codice fiscale dell'utente deve essere passato nell'header
-      `X-Codice-Fiscale` (es. RSSMRA80A01H501U). Vedere l'estensione `x-curl-example`
-      per un esempio di chiamata.
-    x-curl-example: |-
-      curl -X GET "https://api-io.dev.cstar.pagopa.it/idpay-itn/it-wallet/payment/initiatives/{initiativeId}/bar-code" \
-        -H "Authorization: Bearer <JWT>" \
-        -H "X-Api-Version: v1" \
-        -H "X-Codice-Fiscale: RSSMRA80A01H501U"
-    operationId: retrieveActiveBarCodeTransaction
-    parameters:
-      - $ref: '#/components/parameters/ApiVersionHeader'
-      - $ref: '#/components/parameters/InitiativeIdPath'
-      - $ref: '#/components/parameters/CodiceFiscaleHeader'
-    responses:
-      '200':
-        description: OK
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TransactionBarCodeResponse'
-            examples:
-              example-200:
-                value:
-                  id: 5baf1cab-6b5c-4bd7-a957-c9df9c2c9c3d_BARCODE_1759482361234
-                  trxCode: TRX123456
-                  initiativeId: INIT123
-                  initiativeName: "Bonus Elettrodomestici"
-                  trxDate: '2026-05-01T12:00:00Z'
-                  trxExpirationSeconds: 3600
-                  residualBudgetCents: 500000
-                  status: CREATED
-        headers:
-          Access-Control-Allow-Origin:
-            $ref: '#/components/headers/Access-Control-Allow-Origin'
-          RateLimit-Limit:
-            $ref: '#/components/headers/RateLimit-Limit'
-          RateLimit-Reset:
-            $ref: '#/components/headers/RateLimit-Reset'
-          Retry-After:
-            $ref: '#/components/headers/Retry-After'
-      '400':
-        description: Bad request
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TransactionErrorDTO'
-            example:
-              code: PAYMENT_INVALID_REQUEST
-              message: Required initiativeId is not present
-        headers:
-          Access-Control-Allow-Origin:
-            $ref: '#/components/headers/Access-Control-Allow-Origin'
-          RateLimit-Limit:
-            $ref: '#/components/headers/RateLimit-Limit'
-          RateLimit-Reset:
-            $ref: '#/components/headers/RateLimit-Reset'
-          Retry-After:
-            $ref: '#/components/headers/Retry-After'
-      '401':
-        description: Authentication failed
-        content:
-          application/json: {}
-        headers:
-          Access-Control-Allow-Origin:
-            $ref: '#/components/headers/Access-Control-Allow-Origin'
-          RateLimit-Limit:
-            $ref: '#/components/headers/RateLimit-Limit'
-          RateLimit-Reset:
-            $ref: '#/components/headers/RateLimit-Reset'
-          Retry-After:
-            $ref: '#/components/headers/Retry-After'
-      '403':
-        description: User not onboarded
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TransactionErrorDTO'
-            example:
-              code: PAYMENT_USER_NOT_ONBOARDED
-              message: User not onboarded
-        headers:
-          Access-Control-Allow-Origin:
-            $ref: '#/components/headers/Access-Control-Allow-Origin'
-          RateLimit-Limit:
-            $ref: '#/components/headers/RateLimit-Limit'
-          RateLimit-Reset:
-            $ref: '#/components/headers/RateLimit-Reset'
-          Retry-After:
-            $ref: '#/components/headers/Retry-After'
-      '404':
-        description: Transaction not found
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TransactionErrorDTO'
-            example:
-              code: PAYMENT_NOT_FOUND_OR_EXPIRED
-              message: Cannot find transaction with trxCode trxCode
-        headers:
-          Access-Control-Allow-Origin:
-            $ref: '#/components/headers/Access-Control-Allow-Origin'
-          RateLimit-Limit:
-            $ref: '#/components/headers/RateLimit-Limit'
-          RateLimit-Reset:
-            $ref: '#/components/headers/RateLimit-Reset'
-          Retry-After:
-            $ref: '#/components/headers/Retry-After'
-      '429':
-        description: Too many Request
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TransactionErrorDTO'
-            example:
-              code: PAYMENT_TOO_MANY_REQUESTS
-              message: Too many requests
-        headers:
-          Access-Control-Allow-Origin:
-            $ref: '#/components/headers/Access-Control-Allow-Origin'
-          RateLimit-Limit:
-            $ref: '#/components/headers/RateLimit-Limit'
-          RateLimit-Reset:
-            $ref: '#/components/headers/RateLimit-Reset'
-          Retry-After:
-            $ref: '#/components/headers/Retry-After'
-      '500':
-        description: Generic error
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TransactionErrorDTO'
-            example:
-              code: PAYMENT_GENERIC_ERROR
-              message: application error connection microservice error
-        headers:
-          Access-Control-Allow-Origin:
-            $ref: '#/components/headers/Access-Control-Allow-Origin'
-          RateLimit-Limit:
-            $ref: '#/components/headers/RateLimit-Limit'
-          RateLimit-Reset:
-            $ref: '#/components/headers/RateLimit-Reset'
-          Retry-After:
-            $ref: '#/components/headers/Retry-After'
+  /payment/initiatives/{initiativeId}/bar-code:
+    get:
+      tags:
+        - itWallet
+      summary: 'ENG: Retrieve the active transaction - IT: Recupera la transazione attiva'
+      description: >-
+        Retrieve a transaction.
+      operationId: retrieveActiveBarCodeTransaction
+      parameters:
+        - $ref: '#/components/parameters/ApiVersionHeader'
+        - $ref: '#/components/parameters/InitiativeIdPath'
+        - $ref: '#/components/parameters/CodiceFiscaleHeader'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionBarCodeResponse'
+              examples:
+                example-200:
+                  value:
+                    id: "5baf1cab-6b5c-4bd7-a957-c9df9c2c9c3d_BARCODE_1759482361234"
+                    trxCode: "TRX123456"
+                    initiativeId: "INIT123"
+                    initiativeName: "Bonus Elettrodomestici"
+                    trxDate: "2026-05-01T12:00:00Z"
+                    trxExpirationSeconds: 3600
+                    residualBudgetCents: 500000
+                    status: "CREATED"
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
+              example:
+                code: PAYMENT_INVALID_REQUEST
+                message: Required initiativeId is not present
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '401':
+          description: Authentication failed
+          content:
+            application/json: {}
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '403':
+          description: User not onboarded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
+              example:
+                code: PAYMENT_USER_NOT_ONBOARDED
+                message: User not onboarded
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '404':
+          description: Transaction not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
+              example:
+                code: PAYMENT_NOT_FOUND_OR_EXPIRED
+                message: Cannot find transaction with trxCode trxCode
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
+              example:
+                code: PAYMENT_TOO_MANY_REQUESTS
+                message: Too many requests
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+        '500':
+          description: Generic error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionErrorDTO'
+              example:
+                code: PAYMENT_GENERIC_ERROR
+                message: application error connection microservice error
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
 components:
   parameters:
     ApiVersionHeader:
@@ -189,7 +180,7 @@ components:
     CodiceFiscaleHeader:
       name: X-Codice-Fiscale
       in: header
-      description: 'ENG: User fiscal code - IT: Codice fiscale dell\'utente (usare maiuscole, senza spazi)'
+      description: 'ENG: User fiscal code - IT: Codice fiscale dell''utente (usare maiuscole, senza spazi)'
       required: true
       schema:
         type: string
