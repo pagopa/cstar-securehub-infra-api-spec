@@ -141,6 +141,13 @@ paths:
         - $ref: '#/components/parameters/RequestId'
         - $ref: '#/components/parameters/Version'
         - $ref: '#/components/parameters/RtpId'
+      requestBody:
+        description: "Cancel request details including resource ID and cancellation reason"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelRtpRequest"
       responses:
         "204":
           #description: No content
@@ -568,6 +575,32 @@ components:
         - paymentNotice
         - payer
         - payee
+
+    CancelReason:
+      type: string
+      description: "Reason for cancelling the RTP"
+      enum:
+        - MODT
+        - PAID
+      example: "MODT"
+
+    CancelRtpRequest:
+      type: object
+      description: "Request body for cancelling a Request To Pay (RTP)"
+      properties:
+        resourceId:
+          type: string
+          format: uuid
+          description: "The UUID identifier of the RTP resource to cancel"
+          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+          minLength: 36
+          maxLength: 36
+          example: "00000000-0000-0000-0000-000000000000"
+        reason:
+          $ref: "#/components/schemas/CancelReason"
+      required:
+        - resourceId
+        - reason
 
     RtpList:
       type: array
