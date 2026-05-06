@@ -30,7 +30,7 @@
             </expose-headers>
         </cors>
         <!-- Extract Token from Authorization header parameter -->
-        <set-variable name="pii" value="@(context.Request.Headers.GetValueOrDefault("X-Codice-Fiscale","scheme param").Split(' ').Last())" />
+        <set-variable name="pii" value="@(context.Request.Headers.GetValueOrDefault("X-Fiscal-Code","scheme param").Split(' ').Last())" />
         <!-- The variable present in cache is the pii of the user obtaind with PDV  /-->
         <cache-lookup-value key="@((string)context.Variables["pii"]+"-itwallet-idpay")" variable-name="tokenPDV" />
         <set-variable name="bypassCacheStorage" value="false" />

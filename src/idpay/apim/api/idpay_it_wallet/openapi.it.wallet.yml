@@ -178,7 +178,7 @@ components:
         maxLength: 24
         pattern: '^[a-zA-Z0-9]+$'
     CodiceFiscaleHeader:
-      name: X-Codice-Fiscale
+      name: X-Fiscal-Code
       in: header
       description: 'ENG: User fiscal code - IT: Codice fiscale dell''utente (usare maiuscole, senza spazi)'
       required: true
