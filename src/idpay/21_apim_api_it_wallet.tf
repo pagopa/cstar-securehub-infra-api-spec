@@ -20,10 +20,10 @@ module "idpay_itn_api_portal_it_wallet_product" {
   subscriptions_limit = 0
 
   policy_xml = templatefile("./apim/api_product/it_wallet/policy_it_wallet.xml.tpl", {
-    origins                   = local.origins_bonus_elettrodomestici.base
-    rate_limit_it_wallet_portal   = var.rate_limit_it_wallet_portal_product
-    keycloak_timeout_sec      = var.keycloak_timeout_sec
-    env_short                 = var.env_short
+    origins                     = local.origins_bonus_elettrodomestici.base
+    rate_limit_it_wallet_portal = var.rate_limit_it_wallet_portal_product
+    keycloak_timeout_sec        = var.keycloak_timeout_sec
+    env_short                   = var.env_short
   })
 
   groups = ["developers"]
