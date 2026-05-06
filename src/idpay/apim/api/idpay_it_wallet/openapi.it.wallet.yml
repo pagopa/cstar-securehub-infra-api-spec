@@ -18,7 +18,7 @@ paths:
     get:
       tags:
         - itWallet
-      summary: 'ENG: Retrieve the active transaction - IT: Recupera la transazione attiva'
+      summary: 'ENG: Retrieve the active voucher - IT: Recupera il voucher attivo'
       description: >-
         Retrieve a transaction.
       operationId: retrieveActiveBarCodeTransaction
