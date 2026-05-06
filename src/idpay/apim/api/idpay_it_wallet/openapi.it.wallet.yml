@@ -185,16 +185,10 @@ components:
       schema:
         type: string
         pattern: '^[A-Z0-9]{11,16}$'
+        minLength: 11
+        maxLength: 16
         example: RSSMRA80A01H501U
-    TrxCodePath:
-      name: trxCode
-      in: path
-      description: 'ENG: The transaction''s code - IT: Codice della transazione'
-      required: true
-      schema:
-        type: string
-        maxLength: 24
-        pattern: '^[a-zA-Z0-9]+$'
+
   headers:
     Access-Control-Allow-Origin:
       description: Indicates whether the response can be shared with requesting code from the given origin
@@ -357,6 +351,7 @@ components:
         trxDate:
           type: string
           format: date-time
+          maxLength: 30
           description: 'ENG: Transaction date - IT: Data della transazione'
         trxExpirationSeconds:
           type: number
