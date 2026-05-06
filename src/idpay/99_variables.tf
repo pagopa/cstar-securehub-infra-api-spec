@@ -323,6 +323,11 @@ variable "rate_limit_users_portal_product" {
   description = "Rate limit for user portal product"
 }
 
+variable "rate_limit_it_wallet_portal_product" {
+  type        = number
+  description = "Rate limit for it wallet portal product"
+}
+
 #
 # IO
 #

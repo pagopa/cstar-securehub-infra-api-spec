@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  title: IDPAY IT Wallet API
-  description: IDPAY IT Wallet API specification
+  title: IDPAY ITN It Wallet API
+  description: IDPAY ITN It Wallet API specification
   version: '2.0'
   contact:
     name: PagoPA S.p.A.
