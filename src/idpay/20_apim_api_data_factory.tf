@@ -69,6 +69,28 @@ resource "azurerm_api_management_api_operation_policy" "idpay_df_report_patch_po
   })
 }
 
+resource "azurerm_api_management_api_operation" "idpay_df_import_producers" {
+  operation_id        = "idpay-df-import-producers"
+  api_name            = azurerm_api_management_api.idpay_data_factory.name
+  api_management_name = data.azurerm_api_management.apim_core.name
+  resource_group_name = data.azurerm_resource_group.apim_rg.name
+  display_name        = "IDPAY DF Import Producers"
+  method              = "POST"
+  url_template        = "/producers"
+  description         = "Endpoint for DF in order to import producers"
+}
+
+resource "azurerm_api_management_api_operation_policy" "idpay_df_import_producers_policy" {
+  api_name            = azurerm_api_management_api_operation.idpay_df_import_producers.api_name
+  api_management_name = azurerm_api_management_api_operation.idpay_df_import_producers.api_management_name
+  resource_group_name = azurerm_api_management_api_operation.idpay_df_import_producers.resource_group_name
+  operation_id        = azurerm_api_management_api_operation.idpay_df_import_producers.operation_id
+
+  xml_content = templatefile("./apim/api/idpay_data_factory/post-import-producers-policy.xml.tpl", {
+    ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+  })
+}
+
 resource "azurerm_api_management_product_api" "idpay_df_product_api" {
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
