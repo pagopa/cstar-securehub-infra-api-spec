@@ -8,6 +8,24 @@ servers:
   description: Generated server url
   x-internal: true
 paths:
+  '/api/v1/tpp':
+    post:
+      tags:
+      - tpp-controller-impl-v-1
+      operationId: saveTpp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TppDTOV1"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
   '/api/v1/auth/exchange':
     post:
       tags:
@@ -40,6 +58,103 @@ paths:
                 type: object
 components:
   schemas:
+    AgentLinkV1:
+      type: object
+      properties:
+        fallBackLink:
+          type: string
+        versions:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/VersionDetailsV1"
+    AuthenticationTypeV1:
+      type: string
+      enum:
+      - OAUTH2
+    ContactV1:
+      type: object
+      properties:
+        name:
+          type: string
+        number:
+          type: string
+          pattern: "^\\d{9,10}$"
+        email:
+          type: string
+          format: email
+    TokenSectionV1:
+      type: object
+      properties:
+        contentType:
+          type: string
+        pathAdditionalProperties:
+          type: object
+          additionalProperties:
+            type: string
+        bodyAdditionalProperties:
+          type: object
+          additionalProperties:
+            type: string
+    TppDTOV1:
+      type: object
+      properties:
+        tppId:
+          type: string
+        entityId:
+          type: string
+          minLength: 1
+          pattern: "^(\\d{11}|[A-Za-z0-9]{16})$"
+        idPsp:
+          type: string
+        businessName:
+          type: string
+          minLength: 1
+        legalAddress:
+          type: string
+        messageUrl:
+          type: string
+          pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
+        authenticationUrl:
+          type: string
+          pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
+        authenticationType:
+          $ref: "#/components/schemas/AuthenticationTypeV1"
+        contact:
+          $ref: "#/components/schemas/ContactV1"
+        state:
+          type: boolean
+        creationDate:
+          type: string
+          format: date-time
+        lastUpdateDate:
+          type: string
+          format: date-time
+        tokenSection:
+          $ref: "#/components/schemas/TokenSectionV1"
+        pspDenomination:
+          type: string
+        agentLinks:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/AgentLinkV1"
+        isPaymentEnabled:
+          type: boolean
+        messageTemplate:
+          type: string
+        whitelistRecipient:
+          type: array
+          items:
+            type: string
+      required:
+      - agentLinks
+      - authenticationType
+      - businessName
+      - entityId
+    VersionDetailsV1:
+      type: object
+      properties:
+        link:
+          type: string
     ResponseDTO:
       type: object
       properties:

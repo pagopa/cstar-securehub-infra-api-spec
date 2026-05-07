@@ -431,17 +431,17 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
-    emd_backoffice_getToken = {
-      api_name     = "emd_backoffice"
-      operation_id = "getToken"
-      xml_content = templatefile("./api/emd_backoffice/get-token.xml.tpl", {
-        ingress_load_balancer_hostname = local.ingress_load_balancer_https
-      })
-    }
     emd_backoffice_testTpp = {
       api_name     = "emd_backoffice"
       operation_id = "testTpp"
       xml_content = templatefile("./api/emd_backoffice/get-test-tpp.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_saveTpp = {
+      api_name     = "emd_backoffice"
+      operation_id = "saveTpp"
+      xml_content = templatefile("./api/emd_backoffice/post-save-tpp.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
