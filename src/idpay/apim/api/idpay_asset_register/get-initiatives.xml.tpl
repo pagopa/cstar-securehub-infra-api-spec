@@ -13,14 +13,39 @@
 <policies>
     <inbound>
         <base />
-        <include-fragment fragment-id="${fragment_id}" />
+
+        <!-- Verifica ruolo organizzazione -->
+        <choose>
+            <when condition="@(
+                context.Variables.GetValueOrDefault("organizationRole", "") != "operatore"
+                && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia"
+                && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia_admin"
+            )">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+        </choose>
+
+        <!-- Backend -->
+        <set-backend-service
+            base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
+
+        <!-- Rewrite verso il controller Spring -->
+        <rewrite-uri template="/idpay/register/initiative" />
     </inbound>
+
     <backend>
-      <include-fragment fragment-id="${backend_fragment_id}" />
+        <base />
     </backend>
+
     <outbound>
         <base />
     </outbound>
+
     <on-error>
         <base />
     </on-error>

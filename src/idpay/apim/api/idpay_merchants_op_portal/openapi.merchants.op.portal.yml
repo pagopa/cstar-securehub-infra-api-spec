@@ -147,7 +147,26 @@ paths:
       tags:
         - transaction
       summary: "ENG: Preview Payment - IT: Anteprima pagamento"
-      description: Preview payment
+      description: |
+        ENG: Preview payment.
+        - Default / V1
+          - do not send `X-API-Version`
+          - request schema: `PreviewPaymentRequestDTO`
+          - response schema: `PreviewPaymentDTO`
+        - V2
+          - send `X-API-Version: 2`
+          - request reference schema: `PreviewPaymentRequestV2DTO`
+          - response reference schema: `PreviewPaymentResponseV2DTO`
+
+        IT: Anteprima pagamento.
+        - Default / V1
+          - non inviare `X-API-Version`
+          - schema request: `PreviewPaymentRequestDTO`
+          - schema response: `PreviewPaymentDTO`
+        - V2
+          - inviare `X-API-Version: 2`
+          - schema request di riferimento: `PreviewPaymentRequestV2DTO`
+          - schema response di riferimento: `PreviewPaymentResponseV2DTO`
       operationId: previewPayment
       parameters:
         - name: trxCode
@@ -158,16 +177,54 @@ paths:
             type: string
             maxLength: 24
             pattern: "^[a-zA-Z0-9]+$"
+        - name: X-API-Version
+          in: header
+          description: "ENG: API version. When set to `2`, preview payment uses V2 payloads - IT: Versione dell'API. Se valorizzato a `2`, la preview pagamento usa i payload V2"
+          required: false
+          schema:
+            type: string
+            enum:
+              - "2"
       requestBody:
-        description: "ENG: trxCode - IT: Identificativo della transizione"
+        description: |
+          ENG: Supported request schemas:
+          - default / V1: `PreviewPaymentRequestDTO`
+          - V2 with `X-API-Version: 2`: `PreviewPaymentRequestV2DTO`
+
+          IT: Schemi request supportati:
+          - default / V1: `PreviewPaymentRequestDTO`
+          - V2 con `X-API-Version: 2`: `PreviewPaymentRequestV2DTO`
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PreviewPaymentRequestDTO"
+              anyOf:
+                - $ref: "#/components/schemas/PreviewPaymentRequestDTO"
+                - $ref: "#/components/schemas/PreviewPaymentRequestV2DTO"
+            examples:
+              v1:
+                summary: "ENG: Preview payment V1 - IT: Anteprima pagamento V1"
+                value:
+                  productName: "Forno XYZ"
+                  productGtin: "OVENS09"
+                  amountCents: 123400
+              v2:
+                summary: "ENG: Preview payment V2 - IT: Anteprima pagamento V2"
+                description: "ENG: Requires `X-API-Version: 2` - IT: Richiede `X-API-Version: 2`"
+                value:
+                  amountCents: 123400
+                  additionalProperties:
+                    customField: "customValue"
       responses:
         "200":
-          description: Ok
+          description: |
+            ENG: Supported response schemas:
+            - default / V1: `PreviewPaymentDTO`
+            - V2 with `X-API-Version: 2`: `PreviewPaymentResponseV2DTO`
+
+            IT: Schemi response supportati:
+            - default / V1: `PreviewPaymentDTO`
+            - V2 con `X-API-Version: 2`: `PreviewPaymentResponseV2DTO`
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -180,7 +237,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PreviewPaymentDTO"
+                anyOf:
+                  - $ref: "#/components/schemas/PreviewPaymentDTO"
+                  - $ref: "#/components/schemas/PreviewPaymentResponseV2DTO"
+              examples:
+                v1:
+                  summary: "ENG: Preview payment V1 response - IT: Risposta anteprima pagamento V1"
+                  value:
+                    trxCode: "cmhszi7u"
+                    trxDate: "2025-10-24T12:36:00.725+00:00"
+                    status: "AUTHORIZED"
+                    originalAmountCents: 133400
+                    rewardCents: 10000
+                    residualAmountCents: 123400
+                    userId: "RSSMRA85M01H501U"
+                    productName: "Forno XYZ"
+                    productGtin: "OVENS09"
+                    extendedAuthorization: true
+                v2:
+                  summary: "ENG: Preview payment V2 response - IT: Risposta anteprima pagamento V2"
+                  description: "ENG: Returned with `X-API-Version: 2` - IT: Restituita con `X-API-Version: 2`"
+                  value:
+                    trxCode: "cmhszi7u"
+                    trxDate: "2025-10-24T12:36:00.725+00:00"
+                    status: "AUTHORIZED"
+                    originalAmountCents: 133400
+                    rewardCents: 10000
+                    residualAmountCents: 123400
+                    userId: "RSSMRA85M01H501U"
+                    additionalProperties:
+                      customField: "validatedCustomValue"
+                    extendedAuthorization: true
         "400":
           description: Bad request
           headers:
@@ -1594,6 +1681,83 @@ components:
           description: "ENG: prodcut GTIN - IT: il codice GTIN del prodotto"
           maxLength: 14
           pattern: ^[a-zA-Z0-9]{1,14}$
+        extendedAuthorization:
+          type: boolean
+          description: "ENG: True, if extended authorization - IT: True, se l'autorizzazione è estesa"
+    PreviewPaymentRequestV2DTO:
+      type: object
+      properties:
+        amountCents:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 1000000000
+          description: "ENG: amount in cents - IT: importo totale della spesa in centesimi"
+        additionalProperties:
+          type: object
+          description: "ENG: Additional fields used for product preview - IT: Campi aggiuntivi usati per la preview del prodotto"
+          additionalProperties:
+            type: string
+            maxLength: 255
+            pattern: ".*"
+      required:
+        - amountCents
+    PreviewPaymentResponseV2DTO:
+      type: object
+      properties:
+        trxCode:
+          type: string
+          description: "ENG: Transaction code - IT: Codice della transazione (codice sconto)"
+          maxLength: 24
+          pattern: "^[a-zA-Z0-9]+$"
+        trxDate:
+          type: string
+          format: date-time
+          description: "ENG: Transaction date - IT: Data della transazione"
+          maxLength: 255
+        status:
+          type: string
+          enum:
+            - CREATED
+            - IDENTIFIED
+            - AUTHORIZATION_REQUESTED
+            - AUTHORIZED
+          description: >-
+            ENG: Status of the payment [CREATED: Created, IDENTIFIED: User
+            related, AUTHORIZATION_REQUESTED: Authorization Requested,
+            AUTHORIZED: authorized] - IT: Stato del pagamento [CREATED: Creato,
+            IDENTIFIED: Utente associato, AUTHORIZATION_REQUESTED:
+            autorizzazione richiesta, AUTHORIZED: autorizzato]
+        originalAmountCents:
+          type: integer
+          format: int64
+          description: "ENG: Original amount cents - IT: Importo originale da pagare in centesimi"
+          minimum: 0
+          maximum: 1000000000
+        rewardCents:
+          type: integer
+          format: int64
+          description: "ENG: Reward - IT: sconto generato"
+          minimum: 0
+          maximum: 1000000000
+        residualAmountCents:
+          type: integer
+          format: int64
+          description: "ENG: Residual amount to pay - IT: Importo residuo da pagare dopo lo sconto"
+          minimum: 0
+          maximum: 1000000000
+        userId:
+          type: string
+          description: "ENG: user fiscal code - IT: codice fiscale utente"
+          maxLength: 16
+          pattern: .*
+        additionalProperties:
+          type: object
+          description: "ENG: Additional fields returned by preview - IT: Campi aggiuntivi restituiti dalla preview"
+          additionalProperties:
+            type: string
+            maxLength: 255
+            pattern: ".*"
         extendedAuthorization:
           type: boolean
           description: "ENG: True, if extended authorization - IT: True, se l'autorizzazione è estesa"

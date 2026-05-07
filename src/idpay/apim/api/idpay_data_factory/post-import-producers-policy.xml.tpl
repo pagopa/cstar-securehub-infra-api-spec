@@ -13,10 +13,11 @@
 <policies>
     <inbound>
         <base />
-        <include-fragment fragment-id="${fragment_id}" />
+        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
+        <rewrite-uri template="/idpay/register/producers" />
     </inbound>
     <backend>
-      <include-fragment fragment-id="${backend_fragment_id}" />
+        <base />
     </backend>
     <outbound>
         <base />

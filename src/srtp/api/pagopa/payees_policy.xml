@@ -13,10 +13,9 @@
 <policies>
     <inbound>
         <base />
-        <include-fragment fragment-id="${fragment_id}" />
     </inbound>
     <backend>
-      <include-fragment fragment-id="${backend_fragment_id}" />
+        <base />
     </backend>
     <outbound>
         <base />
