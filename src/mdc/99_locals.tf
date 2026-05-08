@@ -431,10 +431,10 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
-    emd_backoffice_testTpp = {
+    emd_backoffice_getTppByEntityId = {
       api_name     = "emd_backoffice"
-      operation_id = "testTpp"
-      xml_content = templatefile("./api/emd_backoffice/get-test-tpp.xml.tpl", {
+      operation_id = "getTppByEntityId"
+      xml_content = templatefile("./api/emd_backoffice/get-tpp-by-entity-id.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
