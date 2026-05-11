@@ -589,13 +589,7 @@ components:
       description: "Request body for cancelling a Request To Pay (RTP)"
       properties:
         resourceId:
-          type: string
-          format: uuid
-          description: "The UUID identifier of the RTP resource to cancel"
-          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-          minLength: 36
-          maxLength: 36
-          example: "00000000-0000-0000-0000-000000000000"
+          $ref: '#/components/schemas/ResourceId'
         reason:
           $ref: "#/components/schemas/CancelReason"
       required:
@@ -629,13 +623,8 @@ components:
     Rtp:
       type: object
       properties:
-        resourceID:
-          type: string
-          format: uuid
-          minLength: 36
-          maxLength: 36
-          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        resourceId:
+          $ref: '#/components/schemas/ResourceId'
         noticeNumber:
           type: string
           minLength: 15
@@ -967,6 +956,15 @@ components:
       minLength: 36
       maxLength: 36
       example: "bd615b4a-066d-443e-8dd2-a28a39931fef"
+
+    ResourceId:
+      description: The UUID identifier of the RTP resource.
+      type: string
+      format: uuid
+      pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+      minLength: 36
+      maxLength: 36
+      example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 
     Version:
       description: Version of the required API.
