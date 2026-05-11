@@ -445,6 +445,13 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_getTppCredentials = {
+      api_name     = "emd_backoffice"
+      operation_id = "getTppCredentials"
+      xml_content = templatefile("./api/emd_backoffice/get-tpp-credentials.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
     emd_backoffice_getTppCredentialsPagopa = {
       api_name     = "emd_backoffice"
       operation_id = "getTppCredentialsPagopa"
