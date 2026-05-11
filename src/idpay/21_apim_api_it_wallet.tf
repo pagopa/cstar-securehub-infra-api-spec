@@ -14,7 +14,7 @@ module "idpay_itn_api_portal_it_wallet_product" {
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
   published             = false
-  subscription_required = false
+  subscription_required = true
   approval_required     = false
 
   subscriptions_limit = 0
