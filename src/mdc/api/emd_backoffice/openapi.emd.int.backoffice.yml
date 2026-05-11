@@ -42,6 +42,23 @@ paths:
           description: Unauthorized
         "404":
           description: Not Found
+  '/api/v1/tpp/credentials/pagopa':
+    get:
+      tags:
+      - tpp-controller-impl-v-1
+      operationId: getTppCredentialsPagopa
+      summary: Retrieve TPP PagoPA credentials using entityId extracted from token
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
   '/api/v1/auth/exchange':
     post:
       tags:

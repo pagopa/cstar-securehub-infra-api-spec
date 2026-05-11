@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <set-backend-service base-url="${ingress_load_balancer_hostname}/emd-ar-backoffice-bff" />
-        <rewrite-uri template="@("/emd/backoffice/api/v1/tpp?entityId=" + ((Jwt)context.Variables["mdcToken"]).Claims.GetValueOrDefault("orgFiscalCode", ""))" />
+        <rewrite-uri template="@("/emd/backoffice/api/v1/tpp/" + ((Jwt)context.Variables["mdcToken"]).Claims.GetValueOrDefault("orgFiscalCode", ""))" />
     </inbound>
     <backend>
         <base />
