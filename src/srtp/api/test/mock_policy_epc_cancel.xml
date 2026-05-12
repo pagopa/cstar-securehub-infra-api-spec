@@ -1,0 +1,283 @@
+<policies>
+  <inbound>
+    <base />
+    <choose>
+      <when condition="@(context.Request.Body.As&lt;string&gt;(preserveContent: true).Contains(&quot;QBICLE31R41A110G&quot;))">
+        <return-response>
+          <set-status code="201" reason="Created" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>@{
+            return @"{
+            ""resourceId"": ""TestRtpMessageA1B2C3D4E5F6G7H8"",
+            ""SepaRequestToPayCancellationResponse"": {
+            ""Document"": {
+            ""RsltnOfInvstgtn"": {
+            ""Assgnmt"": {
+            ""Id"": ""550e8400-e29b-41d4-a716-446655440000"",
+            ""Assgnr"": { ""Pty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } } },
+            ""Assgne"": { ""Pty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } } },
+            ""CreDtTm"": ""2026-02-11T14:00:00Z""
+            },
+            ""Sts"": { ""Conf"": ""CNCL"" },
+            ""CxlDtls"": {
+            ""TxInfAndSts"": [
+            {
+            ""CxlStsId"": ""550e8400-e29b-41d4-a716-446655440000"",
+            ""OrgnlGrpInf"": {
+            ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
+            ""OrgnlMsgNmId"": ""pain.013.001.07"",
+            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00Z""
+            },
+            ""OrgnlInstrId"": ""TestRtpMessagePL098765432109876543"",
+            ""OrgnlEndToEndId"": ""123456789012345678"",
+            ""TxCxlSts"": ""ACCR"",
+            ""CxlStsRsnInf"": {
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""AddtlInf"": [""Cancellation accepted""]
+            },
+            ""OrgnlTxRef"": {
+            ""Amt"": { ""InstdAmt"": 450.75 },
+            ""ReqdExctnDt"": { ""Dt"": ""2026-02-20"" },
+            ""PmtTpInf"": {
+            ""SvcLvl"": { ""Cd"": ""SRTP"" },
+            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
+            },
+            ""RmtInf"": { ""Ustrd"": ""Payment for invoice 12345."" },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""Cdtr"": {
+            ""Pty"": {
+            ""Nm"": ""Azienda Creditrice S.p.A."",
+            ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } }
+            }
+            },
+            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } }
+            }
+            }
+            ]
+            }
+            }
+            }
+            },
+            ""_links"": {
+            ""initialSepaRequestToPayUri"": {
+            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
+            ""templated"": false
+            }
+            }
+            }";
+            }</set-body>
+        </return-response>
+      </when>
+
+      <when condition="@(context.Request.Body.As&lt;string&gt;(preserveContent: true).Contains(&quot;LSSUDV05L25B272V&quot;))">
+        <return-response>
+          <set-status code="400" reason="Bad Request" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{"timestamp":"2026-02-11T14:05:00Z","status":400,"error":"Bad Request","message":"Rifiuto tecnico transazione.","path":"/sepa-request-to-pay-requests/cancellation-requests","details":[{"location":"query","name":"resourceId","message":"Invalid cancellation request payload"}]}</set-body>
+        </return-response>
+      </when>
+
+      <when condition="@(context.Request.Body.As&lt;string&gt;(preserveContent: true).Contains(&quot;RSSMRA85T10X000D&quot;))">
+        <return-response>
+          <set-status code="502" reason="Bad Gateway"/>
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+        </return-response>
+      </when>
+
+      <when condition="@(context.Request.Body.As&lt;string&gt;(preserveContent: true).Contains(&quot;RSSMRA80A01H501W&quot;))">
+        <return-response>
+          <set-status code="201" reason="Created" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>@{
+            return @"{
+            ""resourceId"": ""TestRtpMessageA1B2C3D4E5F6G7H8"",
+            ""SepaRequestToPayCancellationResponse"": {
+            ""Document"": {
+            ""RsltnOfInvstgtn"": {
+            ""Assgnmt"": {
+            ""Id"": ""550e8400-e29b-41d4-a716-446655440000"",
+            ""Assgnr"": { ""Pty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } } },
+            ""Assgne"": { ""Pty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } } },
+            ""CreDtTm"": ""2026-02-11T14:00:00Z""
+            },
+            ""Sts"": { ""Conf"": ""CNCL"" },
+            ""CxlDtls"": {
+            ""TxInfAndSts"": [
+            {
+            ""CxlStsId"": ""550e8400-e29b-41d4-a716-446655440000"",
+            ""OrgnlGrpInf"": {
+            ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
+            ""OrgnlMsgNmId"": ""pain.013.001.07"",
+            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00Z""
+            },
+            ""OrgnlInstrId"": ""TestRtpMessagePL098765432109876543"",
+            ""OrgnlEndToEndId"": ""123456789012345678"",
+            ""TxCxlSts"": ""ACCR"",
+            ""CxlStsRsnInf"": {
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""AddtlInf"": [""Cancellation accepted""]
+            },
+            ""OrgnlTxRef"": {
+            ""Amt"": { ""InstdAmt"": 450.75 },
+            ""ReqdExctnDt"": { ""Dt"": ""2026-02-20"" },
+            ""PmtTpInf"": {
+            ""SvcLvl"": { ""Cd"": ""SRTP"" },
+            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
+            },
+            ""RmtInf"": { ""Ustrd"": ""Payment for invoice 12345."" },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""Cdtr"": {
+            ""Pty"": {
+            ""Nm"": ""Azienda Creditrice S.p.A."",
+            ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } }
+            }
+            },
+            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } }
+            }
+            }
+            ]
+            }
+            }
+            }
+            },
+            ""_links"": {
+            ""initialSepaRequestToPayUri"": {
+            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
+            ""templated"": false
+            }
+            }
+            }";
+            }</set-body>
+        </return-response>
+      </when>
+
+      <when condition="@(context.Request.Body.As&lt;string&gt;(preserveContent: true).Contains(&quot;NLTJEU11T67X000L&quot;))">
+        <return-response>
+          <set-status code="201" reason="Created" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{"VoidResponse":"6180e0d9-4d6d-4617-9dc6-a6c786395617 processed correctly"}</set-body>
+        </return-response>
+      </when>
+
+      <when condition="@(context.Request.Body.As&lt;string&gt;(preserveContent: true).Contains(&quot;RSSGNN92P20H501Z&quot;))">
+        <return-response>
+          <set-status code="201" reason="Created" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>@{
+            return @"{
+            ""resourceId"": ""TestRtpMessageREJ1234567890XYZ"",
+            ""SepaRequestToPayCancellationResponse"": {
+            ""Document"": {
+            ""RsltnOfInvstgtn"": {
+            ""Assgnmt"": {
+            ""Id"": ""990e8400-e29b-41d4-a716-446655449999"",
+            ""Assgnr"": { ""Pty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } } },
+            ""Assgne"": { ""Pty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } } },
+            ""CreDtTm"": ""2026-02-11T14:05:00Z""
+            },
+            ""Sts"": { ""Conf"": ""RJCR"" },
+            ""CxlDtls"": {
+            ""TxInfAndSts"": {
+            ""CxlStsId"": ""990e8400-e29b-41d4-a716-446655449999"",
+            ""OrgnlGrpInf"": {
+            ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
+            ""OrgnlMsgNmId"": ""pain.013.001.07"",
+            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00Z""
+            },
+            ""OrgnlInstrId"": ""TestRtpMessageINSTR-REJECTED"",
+            ""OrgnlEndToEndId"": ""987654321098765432"",
+            ""TxCxlSts"": ""RJCR"",
+            ""CxlStsRsnInf"": {
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Rsn"": { ""Cd"": ""AEXR"" },
+            ""AddtlInf"": [""Rifiuto tecnico transazione."" ]
+            },
+            ""OrgnlTxRef"": {
+            ""Amt"": { ""InstdAmt"": 120.0 },
+            ""ReqdExctnDt"": { ""Dt"": ""2026-02-15"" },
+            ""PmtTpInf"": {
+            ""SvcLvl"": { ""Cd"": ""SRTP"" },
+            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
+            },
+            ""RmtInf"": { ""Ustrd"": ""Rifiuto tecnico transazione."" },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""Cdtr"": {
+            ""Pty"": {
+            ""Nm"": ""Azienda Creditrice S.p.A."",
+            ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } }
+            }
+            },
+            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } }
+            }
+            }
+            }
+            }
+            }
+            },
+            ""_links"": {
+            ""initialSepaRequestToPayUri"": {
+            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
+            ""templated"": false
+            }
+            }
+            }";
+            }</set-body>
+        </return-response>
+      </when>
+
+      <when condition="@(context.Request.Body.As&lt;string&gt;(preserveContent: true).Contains(&quot;DWQJHC32M47H159O&quot;))">
+        <return-response>
+          <set-status code="400" reason="Bad Request" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{"timestamp":"2026-02-11T14:05:00Z","status":400,"error":"Bad Request","message":"Rifiuto tecnico transazione.","path":"/sepa-request-to-pay-requests/cancellation-requests","details":[{"location":"header","name":"Correlation","message":"Missing or invalid correlation id"}]}</set-body>
+        </return-response>
+      </when>
+
+      <when condition="@(context.Request.Body.As&lt;string&gt;(preserveContent: true).Contains(&quot;NDRSCC78T31H304R&quot;))">
+        <return-response>
+          <set-status code="400" reason="Bad Request" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{"timestamp":"2026-02-11T14:05:00Z","status":400,"error":"Bad Request","message":"Unable to process cancellation request","path":"/sepa-request-to-pay-requests/cancellation-requests"}</set-body>
+        </return-response>
+      </when>
+
+      <otherwise>
+        <return-response>
+          <set-status code="201" reason="Created" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">"generic-cancellation-response"</set-body>
+        </return-response>
+      </otherwise>
+    </choose>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
