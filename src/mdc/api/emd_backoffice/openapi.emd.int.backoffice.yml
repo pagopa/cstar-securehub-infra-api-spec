@@ -25,7 +25,7 @@ paths:
           content:
             '*/*':
               schema:
-                type: string
+                $ref: "#/components/schemas/TppResponseDTOV1"
     get:
       tags:
       - tpp-controller-impl-v-1
