@@ -42,6 +42,28 @@ paths:
           description: Unauthorized
         "404":
           description: Not Found
+    patch:
+      tags:
+      - tpp-controller-impl-v-1
+      operationId: patchTpp
+      summary: Partially update TPP using entityId extracted from token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TppPatchDTOV1"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TppDTOV1"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
   '/api/v1/tpp/credentials':
     get:
       tags:
@@ -158,19 +180,9 @@ components:
     TppDTOV1:
       type: object
       properties:
-        tppId:
-          type: string
-        entityId:
-          type: string
-          minLength: 1
-          pattern: "^(\\d{11}|[A-Za-z0-9]{16})$"
-        idPsp:
-          type: string
         businessName:
           type: string
           minLength: 1
-        legalAddress:
-          type: string
         messageUrl:
           type: string
           pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
@@ -181,14 +193,6 @@ components:
           $ref: "#/components/schemas/AuthenticationTypeV1"
         contact:
           $ref: "#/components/schemas/ContactV1"
-        state:
-          type: boolean
-        creationDate:
-          type: string
-          format: date-time
-        lastUpdateDate:
-          type: string
-          format: date-time
         tokenSection:
           $ref: "#/components/schemas/TokenSectionV1"
         pspDenomination:
@@ -197,24 +201,37 @@ components:
           type: object
           additionalProperties:
             $ref: "#/components/schemas/AgentLinkV1"
-        isPaymentEnabled:
-          type: boolean
-        messageTemplate:
-          type: string
-        whitelistRecipient:
-          type: array
-          items:
-            type: string
       required:
       - agentLinks
       - authenticationType
       - businessName
-      - entityId
     VersionDetailsV1:
       type: object
       properties:
         link:
           type: string
+    TppPatchDTOV1:
+      type: object
+      properties:
+        businessName:
+          type: string
+          minLength: 1
+        messageUrl:
+          type: string
+          pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
+        authenticationUrl:
+          type: string
+          pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
+        authenticationType:
+          $ref: "#/components/schemas/AuthenticationTypeV1"
+        contact:
+          $ref: "#/components/schemas/ContactV1"
+        pspDenomination:
+          type: string
+        agentLinks:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/AgentLinkV1"
     ResponseDTO:
       type: object
       properties:
