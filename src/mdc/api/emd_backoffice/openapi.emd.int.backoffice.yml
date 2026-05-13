@@ -37,7 +37,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/TppDTOV1"
+                $ref: "#/components/schemas/TppResponseDTOV1"
         "401":
           description: Unauthorized
         "404":
@@ -59,7 +59,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/TppDTOV1"
+                $ref: "#/components/schemas/TppResponseDTOV1"
         "401":
           description: Unauthorized
         "404":
@@ -180,6 +180,36 @@ components:
     TppDTOV1:
       type: object
       properties:
+        businessName:
+          type: string
+          minLength: 1
+        messageUrl:
+          type: string
+          pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
+        authenticationUrl:
+          type: string
+          pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
+        authenticationType:
+          $ref: "#/components/schemas/AuthenticationTypeV1"
+        contact:
+          $ref: "#/components/schemas/ContactV1"
+        tokenSection:
+          $ref: "#/components/schemas/TokenSectionV1"
+        pspDenomination:
+          type: string
+        agentLinks:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/AgentLinkV1"
+      required:
+      - agentLinks
+      - authenticationType
+      - businessName
+    TppResponseDTOV1:
+      type: object
+      properties:
+        tppId:
+          type: string
         businessName:
           type: string
           minLength: 1
