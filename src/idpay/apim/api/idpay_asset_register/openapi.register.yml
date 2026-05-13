@@ -102,7 +102,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/initiativeId_path'
         - $ref: '#/components/parameters/category_query'
-        - $ref: '#/components/parameters/initiativeId_query'
       requestBody:
         content:
           multipart/form-data:
@@ -151,7 +150,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/initiativeId_path'
         - $ref: '#/components/parameters/category_query'
-        - $ref: '#/components/parameters/initiativeId_query'
       requestBody:
         content:
           multipart/form-data:
@@ -2220,14 +2218,6 @@ components:
         type: string
         maxLength: 36
         pattern: ^$|^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$
-    initiativeId_query:
-      name: initiativeId
-      in: query
-      required: true
-      schema:
-        type: string
-        maxLength: 24
-        pattern: ^[a-fA-F0-9]{24}$
     sort_query:
       name: sort
       in: query
