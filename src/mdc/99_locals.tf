@@ -242,6 +242,13 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_tpp_patchTppDetails = {
+      api_name     = "emd_tpp"
+      operation_id = "patchTppDetails"
+      xml_content = templatefile("./api/emd_tpp/patch-update-tpp-detail-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
     emd_tpp_updateTokenSection = {
       api_name     = "emd_tpp"
       operation_id = "updateTokenSection"
