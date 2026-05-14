@@ -850,7 +850,7 @@ components:
         code: "01000000F"
         description: "Wrong party identifier"
         rtp:
-          resourceID: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+          resourceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
           noticeNumber: "311111111112222123"
           amount: 1050.75
           description: "TARI 2025 payment"
