@@ -37,6 +37,12 @@
         <base />
     </outbound>
     <on-error>
-        <base />
+      <base />
+      <set-header name="Access-Control-Allow-Origin" exists-action="override">
+        <value>${mdcBackofficeUrl}</value>
+      </set-header>
+      <set-header name="Access-Control-Allow-Credentials" exists-action="override">
+        <value>true</value>
+      </set-header>
     </on-error>
 </policies>
