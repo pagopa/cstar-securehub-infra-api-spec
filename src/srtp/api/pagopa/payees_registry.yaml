@@ -45,22 +45,19 @@ paths:
           $ref: '#/components/responses/PageOfPayees'
         "400":
           # description: Bad Request. The request was malformed, for example due to invalid pagination parameters.
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequestError'
         "401":
           # description: Unauthorized. The access token is missing, expired, or invalid.
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/UnauthorizedError'
         "403":
           # description: Forbidden. The client is authenticated but does not have the required permissions to access this resource.
-          $ref: '#/components/responses/Error'
-        "406":
-          # description: Not Acceptable. The server cannot produce a response matching the `Accept` header. Ensure you accept `application/json`.
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/ForbiddenError'
         "429":
           # description: Too Many Requests. The client has exceeded the rate limit.
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/TooManyRequestsError'
         "500":
           # description: Internal Server Error. An unexpected error occurred on the server.
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/InternalServerError'
         default:
           # description: Unexpected Error. An error occurred that is not covered by other status codes.
           $ref: '#/components/responses/Error'
@@ -434,6 +431,181 @@ components:
   responses:
     Error:
       description: A generic error response returned by the API.
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
+    BadRequestError:
+      description: Bad request. The request was malformed or contained invalid parameters (e.g. invalid pagination values).
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
+    UnauthorizedError:
+      description: Unauthorized. The access token is missing, expired, or invalid.
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
+    ForbiddenError:
+      description: Forbidden. The client is authenticated but does not have the required permissions to access this resource.
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
+    TooManyRequestsError:
+      description: Too many requests. The client has exceeded the rate limit or quota.
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
+    InternalServerError:
+      description: Internal server error. An unexpected error occurred on the server side.
       headers:
         Access-Control-Allow-Origin:
           description: |
