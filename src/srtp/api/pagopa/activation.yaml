@@ -94,12 +94,6 @@ paths:
           #  - 01011005E: Invalid scope
           #  - 01011006F: Mismatch between Payer's RTP Service Provider ID and token subject
           $ref: '#/components/responses/ForbiddenError'
-        "406":
-          # The 'Accept' header is not supported.
-
-          #  Possible error codes:
-          #  - 01021010E: Unsupported accept header
-          $ref: '#/components/responses/NotAcceptableError'
         "409":
           # A conflict occurred. An activation for this Payer already exists. The `Location` header
           # in the response points to the existing, conflicting resource.
@@ -179,13 +173,6 @@ paths:
           #  - 01011004E: Insufficient permissions
           #  - 01011005E: Invalid scope
           $ref: '#/components/responses/ForbiddenError'
-        "406":
-          #description: |
-          #  Not acceptable. Did you require application/json?
-
-          #  Possible error codes:
-          #  - 01021010E: Unsupported accept header
-          $ref: '#/components/responses/NotAcceptableError'
         "429":
           #description: |
           #  Too many requests.
@@ -258,13 +245,6 @@ paths:
           #  - 01041000E: Activation not found
           #  - 01041001E: Activation not visible to non-admin
           $ref: '#/components/responses/NotFoundError'
-        "406":
-          #description: |
-          #  Not acceptable. Did you require application/json?
-
-          #  Possible error codes:
-          #  - 01021010E: Unsupported accept header
-          $ref: '#/components/responses/NotAcceptableError'
         "429":
           #description: |
           #  Too many requests.
@@ -337,13 +317,6 @@ paths:
           #  - 01041000E: Activation not found
           #  - 01041001E: Activation not visible to non-admin
           $ref: '#/components/responses/NotFoundError'
-        "406":
-          #description: |
-          #  Not acceptable. Did you require application/json?
-
-          #  Possible error codes:
-          #  - 01021010E: Unsupported accept header
-          $ref: '#/components/responses/NotAcceptableError'
         "429":
           #description: |
           #  Too many requests
@@ -415,21 +388,6 @@ paths:
           #  Possible error codes:
           #  - 01041000E: Activation not found
           $ref: '#/components/responses/NotFoundError'
-        "406":
-          #description: |
-          #  Not acceptable. Did you require application/json?
-
-          #  Possible error codes:
-          #  - 01021010E: Unsupported accept header
-          $ref: '#/components/responses/NotAcceptableError'
-        "415":
-          #description: |
-          #  Unsupported media type. Did you provide application/json?
-
-          #  Possible error codes:
-          #  - 01021011E: Unsupported content type
-          #  - 01021012E: Invalid content encoding
-          $ref: '#/components/responses/UnsupportedMediaTypeError'
         "429":
           #description: |
           #  Too many requests
@@ -500,13 +458,6 @@ paths:
           #description: |
           #  Not found.
           $ref: '#/components/responses/NotFoundError'
-        "406":
-          #description: |
-          #  Not acceptable. Did you require application/json?
-
-          #  Possible error codes:
-          #  - 01021010F: Unsupported accept header
-          $ref: '#/components/responses/NotAcceptableError'
         "429":
           #description: |
           #  Too many requests.
@@ -1307,42 +1258,6 @@ components:
 
     NotFoundError:
       description: Not found. The requested activation does not exist or is not visible to the caller.
-      headers:
-        Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
-        RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
-        RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
-        Retry-After:
-          description: |
-            The number of seconds to wait before allowing a follow-up request.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RetryAfter'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Errors'
-        text/*:
-          schema:
-            type: string
-            pattern: "^[ -~]{0,65535}$"
-            maxLength: 65535
-
-    NotAcceptableError:
-      description: Not acceptable. The Accept header specifies a media type not supported by this API.
       headers:
         Access-Control-Allow-Origin:
           description: |
