@@ -62,6 +62,10 @@ paths:
           $ref: '#/components/responses/BadRequest'
         "403":
           $ref: '#/components/responses/Forbidden'
+        "415":
+          $ref: '#/components/responses/UnsupportedMediaType'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
 
   /cancel:
     post:
@@ -84,6 +88,10 @@ paths:
           $ref: '#/components/responses/BadRequest'
         "403":
           $ref: '#/components/responses/Forbidden'
+        "415":
+          $ref: '#/components/responses/UnsupportedMediaType'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
 
 components:
   schemas:
@@ -3597,6 +3605,17 @@ components:
               - $ref: '#/components/schemas/ErrorModelType2'
     TooManyRequests:
       description: The client has sent too many requests in a given amount of time (“rate limiting”) (HTTP429)
+      headers:
+        Correlation:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/ErrorModel'
+              - $ref: '#/components/schemas/ErrorModelType2'
+    InternalServerError:
+      description: An unexpected error occurred on the server side (HTTP500).
       headers:
         Correlation:
           $ref: '#/components/headers/X-Request-ID'
