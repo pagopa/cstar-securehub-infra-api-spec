@@ -210,7 +210,7 @@ paths:
           $ref: '#/components/responses/GET_product-files_batch-list_429_Response'
         '500':
           $ref: '#/components/responses/GET_product-files_batch-list_500_Response'
-  /initiative/{initiativeId}/products/update-status/approved:
+  /initiatives/{initiativeId}/products/update-status/approved:
     post:
       tags:
         - products
@@ -235,7 +235,7 @@ paths:
           $ref: '#/components/responses/POST_products_update-status_429_Response'
         '500':
           $ref: '#/components/responses/POST_products_update-status_500_Response'
-  /initiative/{initiativeId}/products/update-status/wait-approved:
+  /initiatives/{initiativeId}/products/update-status/wait-approved:
     post:
       tags:
         - products
@@ -260,7 +260,7 @@ paths:
           $ref: '#/components/responses/POST_products_update-status_429_Response'
         '500':
           $ref: '#/components/responses/POST_products_update-status_500_Response'
-  /initiative/{initiativeId}/products/update-status/supervised:
+  /initiatives/{initiativeId}/products/update-status/supervised:
     post:
       tags:
         - products
@@ -285,7 +285,7 @@ paths:
           $ref: '#/components/responses/POST_products_update-status_429_Response'
         '500':
           $ref: '#/components/responses/POST_products_update-status_500_Response'
-  /initiative/{initiativeId}/products/update-status/rejected:
+  /initiatives/{initiativeId}/products/update-status/rejected:
     post:
       tags:
         - products
@@ -310,7 +310,7 @@ paths:
           $ref: '#/components/responses/POST_products_update-status_429_Response'
         '500':
           $ref: '#/components/responses/POST_products_update-status_500_Response'
-  /initiative/{initiativeId}/products/update-status/restored:
+  /initiatives/{initiativeId}/products/update-status/restored:
     post:
       tags:
         - products

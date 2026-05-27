@@ -31,6 +31,6 @@
         }" />
         <set-body template="none">@((string)context.Variables["modifiedBody"])</set-body>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
-        <rewrite-uri template="@("/idpay/register/initiative/{initiativeId}/products/update-status")" />
+        <rewrite-uri template="@("/idpay/register/initiatives/{initiativeId}/products/update-status")" />
     </inbound>
 </policies>
