@@ -2177,6 +2177,11 @@ components:
           - TUMBLEDRYERS
           - REFRIGERATINGAPPL
           - COOKINGHOBS
+          - DS
+          - DT
+          - DTS
+          - DTC
+          - DTSC
     page_query:
       name: page
       in: query
