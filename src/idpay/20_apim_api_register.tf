@@ -158,6 +158,12 @@ module "idpay_itn_register_portal_api" {
       xml_content = templatefile("./apim/api/idpay_asset_register/get-initiatives.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
+    },
+    {
+      operation_id = "updateOperativeEmail"
+      xml_content = templatefile("./apim/api/idpay_asset_register/put-update-email.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
     }
   ]
 }
