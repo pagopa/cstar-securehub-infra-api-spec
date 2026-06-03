@@ -1064,6 +1064,11 @@ components:
       title: ProducerDTO
       type: object
       properties:
+        producerId:
+          type: string
+          description: 'ENG: Producer id <br> IT: Id del produttore'
+          maxLength: 255
+          pattern: .*
         producerName:
           type: string
           description: 'ENG: Producer name <br> IT: Nome del produttore'
