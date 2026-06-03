@@ -1035,22 +1035,11 @@ components:
       description: Response returned when RTP activation data is requested.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
       content:
         application/json:
           schema:
@@ -1060,22 +1049,11 @@ components:
       description: Response returned when a RTP activation is requested.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Location:
           description: URL of the activation resource.
           required: true
@@ -1086,22 +1064,11 @@ components:
       description: Conflict. An activation for this Payer already exists. The Location header points to the existing resource.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Location:
           description: URL to do a takeover on an existing activation user.
           required: true
@@ -1116,28 +1083,13 @@ components:
       description: Response returned when an unexpected error occurred.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Retry-After:
-          description: |
-            The number of seconds to wait before allowing a follow-up request.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RetryAfter'
+          $ref: '#/components/headers/RetryAfter'
       content:
         application/json:
           schema:
@@ -1152,28 +1104,13 @@ components:
       description: Bad request. The request was malformed or contained invalid parameters.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Retry-After:
-          description: |
-            The number of seconds to wait before allowing a follow-up request.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RetryAfter'
+          $ref: '#/components/headers/RetryAfter'
       content:
         application/json:
           schema:
@@ -1188,28 +1125,13 @@ components:
       description: Unauthorized. Access token is missing or invalid.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Retry-After:
-          description: |
-            The number of seconds to wait before allowing a follow-up request.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RetryAfter'
+          $ref: '#/components/headers/RetryAfter'
       content:
         application/json:
           schema:
@@ -1224,28 +1146,13 @@ components:
       description: Forbidden. The caller has insufficient permissions or the provided identity does not match the token subject.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Retry-After:
-          description: |
-            The number of seconds to wait before allowing a follow-up request.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RetryAfter'
+          $ref: '#/components/headers/RetryAfter'
       content:
         application/json:
           schema:
@@ -1260,28 +1167,13 @@ components:
       description: Not found. The requested activation does not exist or is not visible to the caller.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Retry-After:
-          description: |
-            The number of seconds to wait before allowing a follow-up request.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RetryAfter'
+          $ref: '#/components/headers/RetryAfter'
       content:
         application/json:
           schema:
@@ -1296,28 +1188,13 @@ components:
       description: Unsupported media type. The Content-Type header specifies a format not supported by this API.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Retry-After:
-          description: |
-            The number of seconds to wait before allowing a follow-up request.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RetryAfter'
+          $ref: '#/components/headers/RetryAfter'
       content:
         application/json:
           schema:
@@ -1332,28 +1209,13 @@ components:
       description: Too many requests. The client has exceeded the rate limit or quota.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Retry-After:
-          description: |
-            The number of seconds to wait before allowing a follow-up request.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RetryAfter'
+          $ref: '#/components/headers/RetryAfter'
       content:
         application/json:
           schema:
@@ -1368,28 +1230,13 @@ components:
       description: Internal server error. An unexpected error occurred on the server side.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Retry-After:
-          description: |
-            The number of seconds to wait before allowing a follow-up request.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RetryAfter'
+          $ref: '#/components/headers/RetryAfter'
       content:
         application/json:
           schema:
@@ -1404,47 +1251,53 @@ components:
       description: No content response.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
 
     PageOfActivations:
       description: Response to the request to get RTP activations.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PageOfActivations'
+
+  # ============================================================================
+  # Headers.
+  # ============================================================================
+  headers:
+    AccessControlAllowOrigin:
+      description: |
+        Indicates whether the response can be shared with requesting code
+        from the given origin.
+      required: false
+      schema:
+        $ref: '#/components/schemas/AccessControlAllowOrigin'
+    RateLimitLimit:
+      description: The number of allowed requests in the current period.
+      required: false
+      schema:
+        $ref: '#/components/schemas/RateLimitLimit'
+    RateLimitReset:
+      description: The number of seconds left in the current period.
+      required: false
+      schema:
+        $ref: '#/components/schemas/RateLimitReset'
+    RetryAfter:
+      description: |
+        The number of seconds to wait before allowing a follow-up request.
+      required: false
+      schema:
+        $ref: '#/components/schemas/RetryAfter'
 
   # ============================================================================
   # Security schemes.

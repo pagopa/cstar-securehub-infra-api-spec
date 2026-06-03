@@ -186,10 +186,6 @@ components:
           type: string
           format: date-time
           example: "2026-05-26T08:51:22.506+00:00"
-        path:
-          type: string
-          maxLength: 140
-          example: "/send"
         status:
           type: integer
           format: int32
@@ -198,6 +194,26 @@ components:
           type: string
           maxLength: 140
           example: "Bad Request"
+        exception:
+          type: string
+          maxLength: 140
+          description: The class name of the root exception (if configured).
+        message:
+          type: string
+          maxLength: 140
+          description: The exception message (if configured).
+        errors:
+          type: array
+          description: Any ObjectErrors from a BindingResult or MethodValidationResult exception (if configured).
+          items:
+            type: object
+        trace:
+          type: string
+          description: The exception stack trace (if configured).
+        path:
+          type: string
+          maxLength: 140
+          example: "/send"
         requestId:
           type: string
           maxLength: 140
