@@ -757,6 +757,7 @@ components:
             - LOADED
         dateUpload:
           type: string
+          format: date
           description: 'ENG: The date of upload. Example format: "2025-10-07T07:34:30.163+00:00" (ISO 8601 MongoDB string) <br> IT: La data di caricamento. Esempio formato: "2025-10-07T07:34:30.163+00:00" (stringa ISO 8601 MongoDB)'
           maxLength: 255
         findedProductsNumber:
@@ -841,6 +842,7 @@ components:
           type: string
           description: 'ENG: Timestamps of insert (after EPREL checks). Example format: "2025-10-07T07:34:30.163+00:00" (ISO 8601 MongoDB string) <br> IT: Data caricamento prodotto (dopo la verifica EPREL). Esempio formato: "2025-10-07T07:34:30.163+00:00" (stringa ISO 8601 MongoDB)'
           maxLength: 255
+          format: date
         status:
           $ref: '#/components/schemas/ProductStatus'
         model:
@@ -1078,12 +1080,12 @@ components:
           type: string
           description: 'ENG: Producer creation date <br> IT: Data creazione del produttore'
           maxLength: 255
-          format: date-time
+          format: date
         updatedAt:
           type: string
           description: 'ENG: Producer update date <br> IT: Data aggiornamento del produttore'
           maxLength: 255
-          format: date-time
+          format: date
     BatchList:
       title: BatchList
       type: array
@@ -1243,10 +1245,12 @@ components:
         startDate:
           type: string
           format: date
+          maxLength: 255
           description: Initiative start date
         endDate:
           type: string
           format: date
+          maxLength: 255
           nullable: true
           description: Initiative end date
         enabled:
@@ -2308,6 +2312,7 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/InitiativeDTO'
+            maxItems: 25
     GET_initiatives_400_Response:
       description: Bad request
       headers:
@@ -2378,9 +2383,7 @@ components:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/UpdatedOperativeEmailResultDTO'
+            $ref: '#/components/schemas/UpdatedOperativeEmailResultDTO'
     PUT_update_email_400_Response:
       description: Bad request
       headers:
