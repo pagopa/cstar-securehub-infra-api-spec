@@ -452,6 +452,11 @@ paths:
       operationId: updateOperativeEmail
       parameters:
         - $ref: '#/components/parameters/initiativeId_path'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOperativeEmailDTO'
       security:
         - Bearer: []
       responses:
@@ -503,6 +508,14 @@ components:
         minimum: 0
         maximum: 86400
   schemas:
+    UpdateOperativeEmailDTO:
+      title: UpdateOperativeEmailDTO
+      type: object
+      properties:
+        operativeEmail:
+          type: string
+          format: email
+          maxLength: 255
     UserPermissionDTO:
       title: UserPermissionDTO
       type: object
