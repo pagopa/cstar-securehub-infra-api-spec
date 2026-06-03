@@ -110,9 +110,9 @@
 
                     if (inputRole == "support")
                     {
-                      /*  org_role = "support";
-                        org_party_role = inputPartyRole ?? "PRODUCT"; */
-                                                    org_role = "operatore";                    }
+                        org_role = "support";
+                        org_party_role = inputPartyRole ?? "PRODUCT"; 
+                    }
                     else if (fiscalCode == "${invitalia_fc}")
                     {
                         if (roles != null && roles.Any(r => r["role"]?.ToString() == "operator2"))
