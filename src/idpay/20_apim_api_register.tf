@@ -102,6 +102,12 @@ module "idpay_itn_register_portal_api" {
       })
     },
     {
+      operation_id = "getProducersByInitiative"
+      xml_content = templatefile("./apim/api/idpay_asset_register/get-producers.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
       operation_id = "getBatchNameList"
       xml_content = templatefile("./apim/api/idpay_asset_register/get-product-files-batch-name.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
