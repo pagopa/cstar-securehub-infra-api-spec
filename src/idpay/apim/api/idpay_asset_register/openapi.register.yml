@@ -1038,25 +1038,25 @@ components:
           maxItems: 1000
         pageNo:
           type: integer
-          format: int32
+          format: int64
           description: 'ENG: The number of the page <br> IT: Il numero della pagina'
           minimum: 0
           maximum: 1000000
         pageSize:
           type: integer
-          format: int32
+          format: int64
           description: 'ENG: The element size for page <br> IT: Il numero di elementi per pagina'
           minimum: 0
           maximum: 1000000
         totalElements:
           type: integer
-          format: int32
+          format: int64
           description: 'ENG: The total number of the elements <br> IT: Il numero totale degli elementi'
           minimum: 0
           maximum: 1000000
         totalPages:
           type: integer
-          format: int32
+          format: int64
           description: 'ENG: The total number of the pages <br> IT: Il numero totale delle pagine'
           minimum: 0
           maximum: 1000000
@@ -1064,21 +1064,21 @@ components:
       title: ProducerDTO
       type: object
       properties:
-        organizationId:
+        producerName:
           type: string
-          description: 'ENG: Producer organization id <br> IT: Id organizzazione del produttore'
-          maxLength: 36
-          pattern: ^$|^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$
-        organizationName:
-          type: string
-          description: 'ENG: Producer organization name <br> IT: Nome organizzazione del produttore'
+          description: 'ENG: Producer name <br> IT: Nome del produttore'
           maxLength: 255
           pattern: .*
-        operativeEmail:
+        createdAt:
           type: string
-          description: 'ENG: Producer operative email <br> IT: Email operativa del produttore'
+          description: 'ENG: Producer creation date <br> IT: Data creazione del produttore'
           maxLength: 255
-          format: email
+          format: date-time
+        updatedAt:
+          type: string
+          description: 'ENG: Producer update date <br> IT: Data aggiornamento del produttore'
+          maxLength: 255
+          format: date-time
     BatchList:
       title: BatchList
       type: array
