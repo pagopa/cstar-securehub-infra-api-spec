@@ -1195,6 +1195,11 @@ components:
           description: Organization name
           maxLength: 255
           pattern: '.+'
+        organizationEmail:
+          type: string
+          description: Organization email
+          maxLength: 255
+          format: email
         serviceId:
           type: string
           description: Service id
