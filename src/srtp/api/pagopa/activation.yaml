@@ -75,7 +75,7 @@ paths:
           #  - 01021003E: Invalid RTP Service Provider ID format
           #  - 01021004E: Invalid request payload structure
           #  - 01021009E: Required header missing
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequestError'
         "401":
           # Authentication failed (e.g., invalid or expired token).
 
@@ -84,7 +84,7 @@ paths:
           #  - 01011001E: Invalid token format
           #  - 01011002E: Expired token
           #  - 01011003E: Invalid signature
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/UnauthorizedError'
         "403":
           # Authorization failed. The caller has insufficient permissions or the Service Provider ID in the
           # request does not match the identity in the authentication token.
@@ -93,13 +93,7 @@ paths:
           #  - 01011004E: Insufficient permissions
           #  - 01011005E: Invalid scope
           #  - 01011006F: Mismatch between Payer's RTP Service Provider ID and token subject
-          $ref: '#/components/responses/Error'
-        "406":
-          # The 'Accept' header is not supported.
-
-          #  Possible error codes:
-          #  - 01021010E: Unsupported accept header
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/ForbiddenError'
         "409":
           # A conflict occurred. An activation for this Payer already exists. The `Location` header
           # in the response points to the existing, conflicting resource.
@@ -114,21 +108,21 @@ paths:
           #  Possible error codes:
           #  - 01021011E: Unsupported content type
           #  - 01021012E: Invalid content encoding
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/UnsupportedMediaTypeError'
         "429":
           # The client has sent too many requests.
 
           #  Possible error codes:
           #  - 01051000E: Rate limit exceeded
           #  - 01051001E: Quota exceeded
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/TooManyRequestsError'
         "500":
           # An unexpected internal server error occurred.
 
           #  Possible error codes:
           #  - 01091000F: Internal server error
           #  - 01091001F: Database error
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/InternalServerError'
         default:
           #description: Unexpected error.
           $ref: '#/components/responses/Error'
@@ -160,7 +154,7 @@ paths:
           #  - 01021005E: Invalid page parameter
           #  - 01021006E: Invalid size parameter
           #  - 01021009E: Required header missing
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequestError'
         "401":
           #description: |
           #  Access token is missing or invalid.
@@ -170,7 +164,7 @@ paths:
           #  - 01011001E: Invalid token format
           #  - 01011002E: Expired token
           #  - 01011003F: Invalid signature
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/UnauthorizedError'
         "403":
           #description: |
           #  Forbidden.
@@ -178,14 +172,7 @@ paths:
           #  Possible error codes:
           #  - 01011004E: Insufficient permissions
           #  - 01011005E: Invalid scope
-          $ref: '#/components/responses/Error'
-        "406":
-          #description: |
-          #  Not acceptable. Did you require application/json?
-
-          #  Possible error codes:
-          #  - 01021010E: Unsupported accept header
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/ForbiddenError'
         "429":
           #description: |
           #  Too many requests.
@@ -193,7 +180,7 @@ paths:
           #  Possible error codes:
           #  - 01051000E: Rate limit exceeded
           #  - 01051001E: Quota exceeded
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/TooManyRequestsError'
         "500":
           #description: |
           # Server error.
@@ -201,7 +188,7 @@ paths:
           #  Possible error codes:
           #  - 01091000F: Internal server error
           #  - 01091001F: Database error
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/InternalServerError'
         default:
           #description: Unexpected error.
           $ref: '#/components/responses/Error'
@@ -232,7 +219,7 @@ paths:
           #    Possible error codes:
           #    - 01021007E: Invalid activation ID format
           #    - 01021009E: Required header missing
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequestError'
         "401":
           #description: |
           #  Access token is missing or invalid.
@@ -241,7 +228,7 @@ paths:
           #  - 01011000E: Missing authentication token
           #  - 01011001E: Invalid token format
           #  - 01011002E: Expired token
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/UnauthorizedError'
         "403":
           #description: |
           #  Forbidden.
@@ -249,7 +236,7 @@ paths:
           #  Possible error codes:
           #  - 01011004E: Insufficient permissions
           #  - 01011005E: Invalid scope
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/ForbiddenError'
         "404":
           #description: |
           #  Not found.
@@ -257,28 +244,21 @@ paths:
           #  Possible error codes:
           #  - 01041000E: Activation not found
           #  - 01041001E: Activation not visible to non-admin
-          $ref: '#/components/responses/Error'
-        "406":
-          #description: |
-          #  Not acceptable. Did you require application/json?
-
-          #  Possible error codes:
-          #  - 01021010E: Unsupported accept header
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFoundError'
         "429":
           #description: |
           #  Too many requests.
 
           #  Possible error codes:
           #  - 01051000E: Rate limit exceeded
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/TooManyRequestsError'
         "500":
           #description: |
           #  Server error.
 
           #  Possible error codes:
           #  - 01091000F: Internal server error
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/InternalServerError'
         default:
           #description: Unexpected error.
           $ref: '#/components/responses/Error'
@@ -311,7 +291,7 @@ paths:
           #  Possible error codes:
           #  - 01021007E: Invalid activation ID format
           #  - 01021009E: Required header missing
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequestError'
         "401":
           #description: |
           #  Access token is missing or invalid
@@ -320,7 +300,7 @@ paths:
           #  - 01011000E: Missing authentication token
           #  - 01011001E: Invalid token format
           #  - 01011002E: Expired token
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/UnauthorizedError'
         "403":
           #description: |
           #  Forbidden
@@ -328,7 +308,7 @@ paths:
           #  Possible error codes:
           #  - 01011004E: Insufficient permissions
           #  - 01011006E: Invalid scope
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/ForbiddenError'
         "404":
           #description: |
           #  Not found
@@ -336,28 +316,21 @@ paths:
           #  Possible error codes:
           #  - 01041000E: Activation not found
           #  - 01041001E: Activation not visible to non-admin
-          $ref: '#/components/responses/Error'
-        "406":
-          #description: |
-          #  Not acceptable. Did you require application/json?
-
-          #  Possible error codes:
-          #  - 01021010E: Unsupported accept header
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFoundError'
         "429":
           #description: |
           #  Too many requests
 
           #  Possible error codes:
           #  - 01051000E: Rate limit exceeded
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/TooManyRequestsError'
         "500":
           #description: |
           #  Server error
 
           #  Possible error codes:
           #  - 01091000F: Internal server error
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/InternalServerError'
         default:
           #description: Unexpected error
           $ref: '#/components/responses/Error'
@@ -390,7 +363,7 @@ paths:
           #  - 01021007E: Invalid activation ID format
           #  - 01021003E: Invalid RTP Service Provider ID format
           #  - 01021009E: Required header missing
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequestError'
         "401":
           #description: |
           #  Wrong credentials
@@ -399,7 +372,7 @@ paths:
           #  - 01011000E: Missing authentication token
           #  - 01011001E: Invalid token format
           #  - 01011002E: Expired token
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/UnauthorizedError'
         "403":
           #description: |
           #  Forbidden
@@ -407,43 +380,28 @@ paths:
           #  Possible error codes:
           #  - 01011004E: Insufficient permissions
           #  - 01011006E: Invalid scope
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/ForbiddenError'
         "404":
           #description: |
           #  Not found
 
           #  Possible error codes:
           #  - 01041000E: Activation not found
-          $ref: '#/components/responses/Error'
-        "406":
-          #description: |
-          #  Not acceptable. Did you require application/json?
-
-          #  Possible error codes:
-          #  - 01021010E: Unsupported accept header
-          $ref: '#/components/responses/Error'
-        "415":
-          #description: |
-          #  Unsupported media type. Did you provide application/json?
-
-          #  Possible error codes:
-          #  - 01021011E: Unsupported content type
-          #  - 01021012E: Invalid content encoding
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFoundError'
         "429":
           #description: |
           #  Too many requests
 
           #  Possible error codes:
           #  - 01051000E: Rate limit exceeded
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/TooManyRequestsError'
         "500":
           #description: |
           #  Server error
 
           #  Possible error codes:
           #  - 01091000F: Internal server error
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/InternalServerError'
         default:
           #description: Unexpected error
           $ref: '#/components/responses/Error'
@@ -478,7 +436,7 @@ paths:
           #  - 01021008F: Missing Payer ID
           #  - 01021013F: Invalid Payer ID format
           #  - 01021009F: Required header missing
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/BadRequestError'
         "401":
           #description: |
           #  Access token is missing or invalid.
@@ -487,7 +445,7 @@ paths:
           #  - 01011000F: Missing authentication token
           #  - 01011001F: Invalid token format
           #  - 01011002F: Expired token
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/UnauthorizedError'
         "403":
           #description: |
           #  Forbidden.
@@ -495,32 +453,25 @@ paths:
           #  Possible error codes:
           #  - 01011004F: Insufficient permissions
           #  - 01011005F: Invalid scope
-          $ref: '#/components/responses/Error'
-        "406":
-          #description: |
-          #  Not acceptable. Did you require application/json?
-
-          #  Possible error codes:
-          #  - 01021010F: Unsupported accept header
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/ForbiddenError'
         "404":
           #description: |
           #  Not found.
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/NotFoundError'
         "429":
           #description: |
           #  Too many requests.
 
           #  Possible error codes:
           #  - 01051000F: Rate limit exceeded
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/TooManyRequestsError'
         "500":
           #description: |
           #  Server error.
 
           #  Possible error codes:
           #  - 01091000F: Internal server error
-          $ref: '#/components/responses/Error'
+          $ref: '#/components/responses/InternalServerError'
         default:
           #description: Unexpected error.
           $ref: '#/components/responses/Error'
@@ -1084,22 +1035,11 @@ components:
       description: Response returned when RTP activation data is requested.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
       content:
         application/json:
           schema:
@@ -1109,22 +1049,11 @@ components:
       description: Response returned when a RTP activation is requested.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Location:
           description: URL of the activation resource.
           required: true
@@ -1132,25 +1061,14 @@ components:
             $ref: '#/components/schemas/ActivationLocation'
 
     ConflictError:
-      description: Response returned when a RTP payer is already active.
+      description: Conflict. An activation for this Payer already exists. The Location header points to the existing resource.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Location:
           description: URL to do a takeover on an existing activation user.
           required: true
@@ -1162,31 +1080,163 @@ components:
             $ref: '#/components/schemas/Errors'
 
     Error:
-      description: Response returned when an error occured.
+      description: Response returned when an unexpected error occurred.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
         Retry-After:
-          description: |
-            The number of seconds to wait before allowing a follow-up request.
-          required: false
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/json:
           schema:
-            $ref: '#/components/schemas/RetryAfter'
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
+    BadRequestError:
+      description: Bad request. The request was malformed or contained invalid parameters.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          $ref: '#/components/headers/RateLimitLimit'
+        RateLimit-Reset:
+          $ref: '#/components/headers/RateLimitReset'
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
+    UnauthorizedError:
+      description: Unauthorized. Access token is missing or invalid.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          $ref: '#/components/headers/RateLimitLimit'
+        RateLimit-Reset:
+          $ref: '#/components/headers/RateLimitReset'
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
+    ForbiddenError:
+      description: Forbidden. The caller has insufficient permissions or the provided identity does not match the token subject.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          $ref: '#/components/headers/RateLimitLimit'
+        RateLimit-Reset:
+          $ref: '#/components/headers/RateLimitReset'
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
+    NotFoundError:
+      description: Not found. The requested activation does not exist or is not visible to the caller.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          $ref: '#/components/headers/RateLimitLimit'
+        RateLimit-Reset:
+          $ref: '#/components/headers/RateLimitReset'
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
+    UnsupportedMediaTypeError:
+      description: Unsupported media type. The Content-Type header specifies a format not supported by this API.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          $ref: '#/components/headers/RateLimitLimit'
+        RateLimit-Reset:
+          $ref: '#/components/headers/RateLimitReset'
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
+    TooManyRequestsError:
+      description: Too many requests. The client has exceeded the rate limit or quota.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          $ref: '#/components/headers/RateLimitLimit'
+        RateLimit-Reset:
+          $ref: '#/components/headers/RateLimitReset'
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
+    InternalServerError:
+      description: Internal server error. An unexpected error occurred on the server side.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          $ref: '#/components/headers/RateLimitLimit'
+        RateLimit-Reset:
+          $ref: '#/components/headers/RateLimitReset'
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
       content:
         application/json:
           schema:
@@ -1201,47 +1251,53 @@ components:
       description: No content response.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
 
     PageOfActivations:
       description: Response to the request to get RTP activations.
       headers:
         Access-Control-Allow-Origin:
-          description: |
-            Indicates whether the response can be shared with requesting code
-            from the given origin.
-          required: false
-          schema:
-            $ref: '#/components/schemas/AccessControlAllowOrigin'
+          $ref: '#/components/headers/AccessControlAllowOrigin'
         RateLimit-Limit:
-          description: The number of allowed requests in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitLimit'
+          $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
-          description: The number of seconds left in the current period.
-          required: false
-          schema:
-            $ref: '#/components/schemas/RateLimitReset'
+          $ref: '#/components/headers/RateLimitReset'
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PageOfActivations'
+
+  # ============================================================================
+  # Headers.
+  # ============================================================================
+  headers:
+    AccessControlAllowOrigin:
+      description: |
+        Indicates whether the response can be shared with requesting code
+        from the given origin.
+      required: false
+      schema:
+        $ref: '#/components/schemas/AccessControlAllowOrigin'
+    RateLimitLimit:
+      description: The number of allowed requests in the current period.
+      required: false
+      schema:
+        $ref: '#/components/schemas/RateLimitLimit'
+    RateLimitReset:
+      description: The number of seconds left in the current period.
+      required: false
+      schema:
+        $ref: '#/components/schemas/RateLimitReset'
+    RetryAfter:
+      description: |
+        The number of seconds to wait before allowing a follow-up request.
+      required: false
+      schema:
+        $ref: '#/components/schemas/RetryAfter'
 
   # ============================================================================
   # Security schemes.

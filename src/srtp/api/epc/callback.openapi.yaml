@@ -58,12 +58,14 @@ paths:
       responses:
         "200":
           description: OK - Our server has received and accepted the client's notification.
-        "403":
-          description: Forbidden - The client is not authorized to call this endpoint.
-          $ref: '#/components/responses/Unauthorized'
         "400":
-          description: Bad Request - The request sent by the client is invalid.
           $ref: '#/components/responses/BadRequest'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "415":
+          $ref: '#/components/responses/UnsupportedMediaType'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
 
   /cancel:
     post:
@@ -82,12 +84,14 @@ paths:
       responses:
         "200":
           description: OK - the callback server accepts the callback.
-        "403":
-          description: Forbidden - The client is not authorized to call this endpoint.
-          $ref: '#/components/responses/Unauthorized'
         "400":
-          description: Bad Request - The request sent by the client is invalid.
           $ref: '#/components/responses/BadRequest'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "415":
+          $ref: '#/components/responses/UnsupportedMediaType'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
 
 components:
   schemas:
@@ -174,6 +178,52 @@ components:
       required:
       - status
       - message
+    ErrorModelType2:
+      type: object
+      description: Error response format returned by the Spring WebFlux gateway layer.
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-05-26T08:51:22.506+00:00"
+        status:
+          type: integer
+          format: int32
+          example: 400
+        error:
+          type: string
+          maxLength: 140
+          example: "Bad Request"
+        exception:
+          type: string
+          maxLength: 140
+          description: The class name of the root exception (if configured).
+        message:
+          type: string
+          maxLength: 140
+          description: The exception message (if configured).
+        errors:
+          type: array
+          description: Any ObjectErrors from a BindingResult or MethodValidationResult exception (if configured).
+          items:
+            type: object
+        trace:
+          type: string
+          description: The exception stack trace (if configured).
+        path:
+          type: string
+          maxLength: 140
+          example: "/send"
+        requestId:
+          type: string
+          maxLength: 140
+          example: "b280c067-21973"
+      required:
+      - timestamp
+      - path
+      - status
+      - error
+      - requestId
     ResourceId:
       type: string
     GenericHalLink:
@@ -3482,7 +3532,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorModel'
+            oneOf:
+              - $ref: '#/components/schemas/ErrorModel'
+              - $ref: '#/components/schemas/ErrorModelType2'
     Unauthorized:
       description: Indicates that the request requires user authentication information. The client MAY repeat the request with a suitable Authorization header field (HTTP401).
       headers:
@@ -3491,7 +3543,20 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorModel'
+            oneOf:
+              - $ref: '#/components/schemas/ErrorModel'
+              - $ref: '#/components/schemas/ErrorModelType2'
+    Forbidden:
+      description: The client is not authorized to call this endpoint (HTTP403).
+      headers:
+        Correlation:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/ErrorModel'
+              - $ref: '#/components/schemas/ErrorModelType2'
     NotFound:
       description: The requested resource was not found (HTTP404).
       headers:
@@ -3500,7 +3565,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorModel'
+            oneOf:
+              - $ref: '#/components/schemas/ErrorModel'
+              - $ref: '#/components/schemas/ErrorModelType2'
     NotAcceptable:
       description: The server doesn’t find any content that conforms to the criteria given by the user agent in the Accept header sent in the request. (HTTP406).
       headers:
@@ -3509,7 +3576,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorModel'
+            oneOf:
+              - $ref: '#/components/schemas/ErrorModel'
+              - $ref: '#/components/schemas/ErrorModelType2'
     Conflict:
       description: |
         The request could not be completed due to a conflict with the current state of the resource (e.g. pre-existing resource). (HTTP409)
@@ -3523,7 +3592,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorModel'
+            oneOf:
+              - $ref: '#/components/schemas/ErrorModel'
+              - $ref: '#/components/schemas/ErrorModelType2'
     Gone:
       description: |
         The requested resource is no longer available at the server. (HTTP410)
@@ -3534,7 +3605,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorModel'
+            oneOf:
+              - $ref: '#/components/schemas/ErrorModel'
+              - $ref: '#/components/schemas/ErrorModelType2'
     UnsupportedMediaType:
       description: The media-type in Content-type of the request is not supported by the server. (HTTP415)
       headers:
@@ -3543,7 +3616,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorModel'
+            oneOf:
+              - $ref: '#/components/schemas/ErrorModel'
+              - $ref: '#/components/schemas/ErrorModelType2'
     TooManyRequests:
       description: The client has sent too many requests in a given amount of time (“rate limiting”) (HTTP429)
       headers:
@@ -3552,7 +3627,20 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorModel'
+            oneOf:
+              - $ref: '#/components/schemas/ErrorModel'
+              - $ref: '#/components/schemas/ErrorModelType2'
+    InternalServerError:
+      description: An unexpected error occurred on the server side (HTTP500).
+      headers:
+        Correlation:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/ErrorModel'
+              - $ref: '#/components/schemas/ErrorModelType2'
   parameters:
     Idempotency:
       name: Idempotency-key
