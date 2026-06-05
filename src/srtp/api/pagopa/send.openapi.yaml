@@ -129,7 +129,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/MismatchActivationErrorResponse'
 
-  /rtps/{rtpId}/cancel:
+  /rtps/cancel:
     post:
       operationId: cancelRtp
       summary: Cancels a RTP.
@@ -140,7 +140,13 @@ paths:
       parameters:
         - $ref: '#/components/parameters/RequestId'
         - $ref: '#/components/parameters/Version'
-        - $ref: '#/components/parameters/RtpId'
+      requestBody:
+        description: "Cancel request details including resource ID and cancellation reason"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelRtpRequest"
       responses:
         "204":
           #description: No content
@@ -265,6 +271,9 @@ paths:
         "415":
           #description: Unsupported media type. Did you provide application/json?
           $ref: '#/components/responses/GenericError'
+        "422":
+          #description: Unprocessable Entity - business rules validation failed.
+          $ref: '#/components/responses/GpdErrorWithRtpResponse'
         "429":
           #description: Too many request.
           $ref: '#/components/responses/GenericError'
@@ -526,7 +535,7 @@ components:
     PayerId:
       type: string
       description: "The id of the recipient of the request to pay. The id is the fiscal code"
-      pattern: "^(([A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z])|(\\d{11}))$"
+      pattern: "^(([A-Z]{6}\\d{2}[A-Z]\\d{2}([A-Y]\\d{3}|Z[A-Z0-9]{3})[A-Z])|(\\d{11}))$"
       example: "ABCDEF12G34H567I"
 
     PayeeId:
@@ -569,6 +578,26 @@ components:
         - payer
         - payee
 
+    CancelReason:
+      type: string
+      description: "Reason for cancelling the RTP"
+      enum:
+        - MODT
+        - PAID
+      example: "MODT"
+
+    CancelRtpRequest:
+      type: object
+      description: "Request body for cancelling a Request To Pay (RTP)"
+      properties:
+        resourceId:
+          $ref: '#/components/schemas/ResourceId'
+        reason:
+          $ref: "#/components/schemas/CancelReason"
+      required:
+        - resourceId
+        - reason
+
     RtpList:
       type: array
       items:
@@ -596,13 +625,8 @@ components:
     Rtp:
       type: object
       properties:
-        resourceID:
-          type: string
-          format: uuid
-          minLength: 36
-          maxLength: 36
-          pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        resourceId:
+          $ref: '#/components/schemas/ResourceId'
         noticeNumber:
           type: string
           minLength: 15
@@ -636,7 +660,7 @@ components:
           type: string
           minLength: 11
           maxLength: 16
-          pattern: "^(([A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z])|(\\d{11}))$"
+          pattern: "^(([A-Z]{6}\\d{2}[A-Z]\\d{2}([A-Y]\\d{3}|Z[A-Z0-9]{3})[A-Z])|(\\d{11}))$"
           example: "RSSMRA85T10A562S"
         payeeName:
           type: string
@@ -807,6 +831,47 @@ components:
         code: "01000000F"
         description: "Wrong party identifier"
 
+    GpdErrorWithRtp:
+      type: object
+      description: GPD error response containing both business error context and the associated RTP state.
+      additionalProperties: false
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        description:
+          $ref: '#/components/schemas/ErrorDescription'
+        rtp:
+          $ref: '#/components/schemas/Rtp'
+      required:
+        - code
+        - description
+        - rtp
+      example:
+        code: "01000000F"
+        description: "Wrong party identifier"
+        rtp:
+          resourceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+          noticeNumber: "311111111112222123"
+          amount: 1050.75
+          description: "TARI 2025 payment"
+          expiryDate: "2025-12-31"
+          payerName: "Mario Rossi"
+          payerId: "RSSMRA85T10A562S"
+          payeeName: "Comune di Roma"
+          payeeId: "77777777777"
+          subject: "TARI 2025"
+          savingDateTime: "2025-06-06T08:40:16.781Z"
+          serviceProviderDebtor: "FAKESP01"
+          serviceProviderCreditor: "PA123456789"
+          iban: "IT60X0542811101000000123456"
+          payTrxRef: "ABC/124"
+          flgConf: "flgConf"
+          status: SENT
+          events:
+            - timestamp: "2025-06-06T08:40:16.781Z"
+              precStatus: "CREATED"
+              triggerEvent: "CREATE_RTP"
+
     GpdMessage:
       type: object
       description: >
@@ -844,7 +909,7 @@ components:
           pattern: "^(\\d{11}|\\d{16})$"
         debtor_tax_code:
           type: string
-          pattern: "^(([A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z])|(\\d{11}))$"
+          pattern: "^(([A-Z]{6}\\d{2}[A-Z]\\d{2}([A-Y]\\d{3}|Z[A-Z0-9]{3})[A-Z])|(\\d{11}))$"
         nav:
           type: string
           minLength: 15
@@ -934,6 +999,15 @@ components:
       minLength: 36
       maxLength: 36
       example: "bd615b4a-066d-443e-8dd2-a28a39931fef"
+
+    ResourceId:
+      description: The UUID identifier of the RTP resource.
+      type: string
+      format: uuid
+      pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+      minLength: 36
+      maxLength: 36
+      example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 
     Version:
       description: Version of the required API.
@@ -1248,6 +1322,39 @@ components:
             type: string
             pattern: "^[ -~]{0,65535}$"
             maxLength: 65535
+
+    GpdErrorWithRtpResponse:
+      description: >
+        Unprocessable Entity. Returned when business rules validation fails.
+        The response payload wraps the error code, description, and the active RTP state context.
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GpdErrorWithRtp'
 
 
 
