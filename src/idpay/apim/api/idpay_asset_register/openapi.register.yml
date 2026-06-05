@@ -376,15 +376,14 @@ paths:
       tags:
         - producers
       summary: Returns the producers list for an initiative
-      description: 'ENG: Returns the producers list for the selected initiative. Pagination is disabled by default; page and size are applied only when paged=true. <br> IT: Lista produttori per iniziativa. La paginazione è disabilitata di default; page e size vengono applicati solo quando paged=true.'
+      description: 'ENG: Returns the producers list for the selected initiative <br> IT: Lista produttori per iniziativa'
       operationId: getProducersByInitiative
       parameters:
         - $ref: '#/components/parameters/initiativeId_path'
-        - $ref: '#/components/parameters/paged_query'
         - $ref: '#/components/parameters/page_query'
         - $ref: '#/components/parameters/size_query'
       security:
-        - Bearer: [ ]
+        - Bearer: []
       responses:
         '200':
           $ref: '#/components/responses/GET_producers_200_Response'
@@ -2401,15 +2400,6 @@ components:
         minLength: 24
         maxLength: 24
         pattern: ^[a-fA-F0-9]{24}$
-    paged_query:
-      name: paged
-      in: query
-      required: false
-      description: 'ENG: Enables pagination when true. If false or omitted, all producers are returned and page/size are ignored. <br> IT: Abilita la paginazione quando true. Se false o omesso, vengono restituiti tutti i produttori e page/size sono ignorati.'
-      schema:
-        type: boolean
-        default: false
-        example: true
     x_organization_selected_header:
       name: x-organization-selected
       in: header
