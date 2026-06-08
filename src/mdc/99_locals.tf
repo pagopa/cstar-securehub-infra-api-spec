@@ -224,6 +224,11 @@ locals {
         keycloakOpenidUrl = var.keycloak_openid_url
         keycloakIssuerUrl = var.keycloak_issuer_url
       })
+    },
+    emd-retry-on-backend-connection-failure = {
+      description = "Retry on backend connection failure"
+      format      = "rawxml"
+      value       = file("./api_fragment/retry-on-backend-connection-failure.xml")
     }
   }
 
