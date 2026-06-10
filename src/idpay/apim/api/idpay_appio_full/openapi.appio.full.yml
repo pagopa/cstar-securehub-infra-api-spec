@@ -2392,140 +2392,6 @@ paths:
               $ref: '#/components/headers/RateLimit-Reset'
             Retry-After:
               $ref: '#/components/headers/Retry-After'
-  '/wallet/instrument/{idWallet}/initiatives':
-    get:
-      tags:
-        - wallet
-      summary: >-
-        ENG: Returns the initiatives list associated to a payment instrument -
-        IT: Ritorna la lista di iniziative associate ad uno strumento di
-        pagamento
-      description: Returns the initiatives list associated to a payment instrument
-      operationId: getInitiativesWithInstrument
-      parameters:
-        - $ref: '#/components/parameters/ApiVersionHeader'
-        - name: Accept-Language
-          description: 'ENG: Language - IT: Lingua'
-          in: header
-          schema:
-            type: string
-            pattern: '^[ -~]{2,5}$'
-            minLength: 2
-            maxLength: 5
-            example: it-IT
-            default: it-IT
-          required: true
-        - name: idWallet
-          in: path
-          description: 'ENG: The ID Wallet - IT: Identificativo wallet'
-          required: true
-          schema:
-            type: string
-            maxLength: 24
-            pattern: '^[a-zA-Z0-9]+$'
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InitiativesWithInstrumentDTO'
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: WALLET_INVALID_REQUEST
-                message: Something went wrong handling the request
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
-        '401':
-          description: Authentication failed
-          content:
-            application/json: {}
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
-        '404':
-          description: The requested resource was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: WALLET_INSTRUMENT_NOT_FOUND
-                message: >-
-                  The selected payment instrument has not been found for the
-                  current user
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
-        '429':
-          description: Too many Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: WALLET_TOO_MANY_REQUESTS
-                message: Too many requests
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
-        '500':
-          description: Server ERROR
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WalletErrorDTO'
-              example:
-                code: WALLET_GENERIC_ERROR
-                message: An error occurred in the microservice payment instrument
-          headers:
-            Access-Control-Allow-Origin:
-              $ref: '#/components/headers/Access-Control-Allow-Origin'
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
-            Retry-After:
-              $ref: '#/components/headers/Retry-After'
   /wallet/code/status:
     get:
       tags:
@@ -3912,7 +3778,6 @@ components:
     SelfConsentDTO:
       oneOf:
         - $ref: '#/components/schemas/SelfConsentBoolDTO'
-        - $ref: '#/components/schemas/SelfConsentMultiDTO'
         - $ref: '#/components/schemas/SelfConsentTextDTO'
         - $ref: '#/components/schemas/SelfConsentMultiTypeDTO'
     ListUsersOnboardingStatusDTO:
@@ -4018,6 +3883,38 @@ components:
           description: >-
             ENG: Indicates self-consent values - IT: Indica i valori per gli
             auto consensi
+        verify:
+          type: boolean
+          description: >
+            ENG: Indicates whether the selected option requires an eligibility verification.
+            IT: Indica se l'opzione selezionata richiede una verifica di ammissibilità.
+          example: true
+        thresholdCode:
+          type: string
+          description: >
+            ENG: Threshold identifier used during the eligibility verification.
+            IT: Identificativo della soglia utilizzata durante la verifica di ammissibilità.
+          example: BELET25
+        beneficiaryBudgetCentsMin:
+          type: integer
+          format: int64
+          description: >
+            ENG: Budget assigned if the verification is not successful.
+            IT: Importo assegnato in caso di verifica non superata.
+          example: 10000
+        beneficiaryBudgetCentsMax:
+          type: integer
+          format: int64
+          description: >
+            ENG: Budget assigned if the verification is successful.
+            IT: Importo assegnato in caso di verifica superata.
+          example: 20000
+        blockingVerify:
+          type: boolean
+          description: >
+            ENG: Indicates whether the verification outcome is mandatory to access the initiative.
+            IT: Indica se il superamento della verifica è obbligatorio per accedere all'iniziativa.
+          example: true
     SelfConsentBoolDTO:
       type: object
       required:
@@ -4038,27 +3935,6 @@ components:
           description: >-
             ENG: Indicates whether the self-consent is accepted or not - IT:
             Indica se l'auto consenso è accettato o no
-    SelfConsentMultiDTO:
-      type: object
-      required:
-        - _type
-        - code
-        - value
-      properties:
-        _type:
-          type: string
-          enum:
-            - multi
-          description: 'ENG: Self-consent value type - IT: Auto consenso di tipo multipli'
-        code:
-          type: string
-          description: 'ENG: Self-consent code - IT: Codice dell''auto consenso'
-        value:
-          type: string
-          example: '0, 1'
-          description: >-
-            ENG: Indicates self-consent values - IT: Indica i valori per gli
-            auto consensi
     SelfConsentTextDTO:
       type: object
       required:
@@ -4351,10 +4227,7 @@ components:
           type: string
         beneficiaryKnown:
           type: boolean
-        beneficiaryBudget:
-          type: number
-          example: 10
-        beneficiaryBudgetMax:
+        beneficiaryBudgetFixedCents:
           type: number
           example: 10
         startDate:
@@ -4489,7 +4362,6 @@ components:
       type: object
       anyOf:
         - $ref: '#/components/schemas/SelfCriteriaBoolDTO'
-        - $ref: '#/components/schemas/SelfCriteriaMultiDTO'
         - $ref: '#/components/schemas/SelfCriteriaMultiTypeDTO'
         - $ref: '#/components/schemas/SelfCriteriaTextDTO'
     SelfCriteriaBoolDTO:
@@ -4522,42 +4394,8 @@ components:
         code:
           type: string
           description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
-    SelfCriteriaMultiDTO:
-      title: SelfCriteriaMultiDTO
-      type: object
-      properties:
-        _type:
-          type: string
-          description: >-
-            ENG: Self-declaration value type - IT: Autodichiarazione di tipo
-            multipli
-          enum:
-            - multi
-        description:
-          type: string
-          example: descrizione
-          description: >-
-            ENG: Self-declaration description - IT: Descrizione
-            dell'autodichiarazione
-        subDescription:
-          type: string
-          example: sotto descrizione
-          description: >-
-            ENG: Self-declaration sub-description - IT: Sotto descrizione
-            dell'autodichiarazione
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/RowDataDTO'
-          description: >-
-            ENG: Indicates self-declaration values - IT: Indica i valori per
-            l'autodichiarazione
-          maxItems: 10
-        code:
-          type: string
-          description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
     SelfCriteriaMultiTypeDTO:
-      title: SelfCriteriaMultiDTO
+      title: SelfCriteriaMultiTypeDTO
       type: object
       properties:
         _type:

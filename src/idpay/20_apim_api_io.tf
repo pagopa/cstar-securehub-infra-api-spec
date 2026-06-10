@@ -221,13 +221,6 @@ module "idpay_itn_wallet_io" {
       xml_content = templatefile("./apim/api/idpay_wallet/put-unsuscribe-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
-    },
-    {
-      operation_id = "getInitiativesWithInstrument"
-
-      xml_content = templatefile("./apim/api/idpay_wallet/get-initiative-instrument-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-      })
     }
     /*   ,
     {
