@@ -9,7 +9,7 @@
                         new JProperty("statusCode", context.Response?.StatusCode),
                         new JProperty("errorReason", context.LastError?.Reason),
                         new JProperty("errorMessage", context.LastError?.Message),
-                        new JProperty("responseBody", context.Response?.Body?.As<string>(preserveContent: true))
+                        new JProperty("responseBody", context.Response?.Body?.As&lt;string&gt;(preserveContent: true))
                     ).ToString();
                 }
             </log-to-eventhub>
@@ -17,7 +17,7 @@
         <when condition="@(context.Response != null &amp;&amp; context.Response.StatusCode >= 400)">
             <log-to-eventhub logger-id="your-eventhub-logger">
                 @{
-                    var responseBody = context.Response.Body?.As<string>(preserveContent: true);
+                    var responseBody = context.Response.Body?.As&lt;string&gt;(preserveContent: true);
                     return new JObject(
                         new JProperty("timestamp", DateTime.UtcNow.ToString("o")),
                         new JProperty("requestId", context.RequestId),
