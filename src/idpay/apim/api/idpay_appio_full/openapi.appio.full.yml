@@ -3886,34 +3886,37 @@ components:
         verify:
           type: boolean
           description: >
-            ENG: Indicates whether the selected option requires an eligibility verification.
-            IT: Indica se l'opzione selezionata richiede una verifica di ammissibilità.
+            ENG: Indicates whether the selected option requires an eligibility
+            verification. IT: Indica se l'opzione selezionata richiede una
+            verifica di ammissibilità.
           example: true
         thresholdCode:
           type: string
           description: >
             ENG: Threshold identifier used during the eligibility verification.
-            IT: Identificativo della soglia utilizzata durante la verifica di ammissibilità.
+            IT: Identificativo della soglia utilizzata durante la verifica di
+            ammissibilità.
           example: BELET25
         beneficiaryBudgetCentsMin:
           type: integer
           format: int64
           description: >
-            ENG: Budget assigned if the verification is not successful.
-            IT: Importo assegnato in caso di verifica non superata.
+            ENG: Budget assigned if the verification is not successful. IT:
+            Importo assegnato in caso di verifica non superata.
           example: 10000
         beneficiaryBudgetCentsMax:
           type: integer
           format: int64
           description: >
-            ENG: Budget assigned if the verification is successful.
-            IT: Importo assegnato in caso di verifica superata.
+            ENG: Budget assigned if the verification is successful. IT: Importo
+            assegnato in caso di verifica superata.
           example: 20000
         blockingVerify:
           type: boolean
           description: >
-            ENG: Indicates whether the verification outcome is mandatory to access the initiative.
-            IT: Indica se il superamento della verifica è obbligatorio per accedere all'iniziativa.
+            ENG: Indicates whether the verification outcome is mandatory to
+            access the initiative. IT: Indica se il superamento della verifica è
+            obbligatorio per accedere all'iniziativa.
           example: true
     SelfConsentBoolDTO:
       type: object
