@@ -319,6 +319,11 @@ locals {
       description = "Retry on backend connection failure"
       format      = "xml"
       value       = file("./api_fragment/backend-retry.xml")
+    },
+    log-failed-response = {
+      description = "Log failed response body to EventHub"
+      format      = "xml"
+      value       = file("./api_fragment/log-failed-response.xml")
     }
   }
 
