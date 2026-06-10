@@ -76,3 +76,8 @@ variable "keycloak_issuer_url" {
   type        = string
   description = "Issuer identifier for Keycloak token validation."
 }
+
+variable "mdc_backoffice_url" {
+  type        = string
+  description = "URL for the MDC backoffice application."
+}

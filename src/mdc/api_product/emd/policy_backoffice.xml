@@ -1,0 +1,22 @@
+<policies>
+	<inbound>
+		<base />
+		<rate-limit calls="${rate_limit_emd}" renewal-period="60" />
+		<!-- Controlla groups per tutte le API tranne per quella di recupero del token -->
+		<choose>
+			<when condition='@(context.Operation.Id.Equals("getToken"))' />
+			<otherwise>
+				<include-fragment fragment-id="emd-validate-token-keycloak" />
+			</otherwise>
+		</choose>
+	</inbound>
+	<backend>
+		<include-fragment fragment-id="emd-retry-on-backend-connection-failure" />
+	</backend>
+	<outbound>
+		<base />
+	</outbound>
+	<on-error>
+		<base />
+	</on-error>
+</policies>
