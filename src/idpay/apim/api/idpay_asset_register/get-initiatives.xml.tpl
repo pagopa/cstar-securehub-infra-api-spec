@@ -20,6 +20,7 @@
                 context.Variables.GetValueOrDefault("organizationRole", "") != "operatore"
                 && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia"
                 && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia_admin"
+                && context.Variables.GetValueOrDefault("organizationRole", "") != "support"
             )">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />

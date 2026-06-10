@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia_admin")">
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia_admin") && context.Variables.GetValueOrDefault("organizationRole", "") != "support"">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
                     <set-header name="Content-Type" exists-action="override">
@@ -24,7 +24,8 @@
             </when>
         </choose>
         <choose>
-            <when condition="@(context.Variables.GetValueOrDefault("organizationRole",  "")  == "operatore"
+            <when condition="@((context.Variables.GetValueOrDefault("organizationRole",  "")  == "operatore"
+                    || context.Variables.GetValueOrDefault("organizationRole",  "")  == "support")
                     &&  (string.IsNullOrEmpty(context.Request.Url.Query.GetValueOrDefault("organizationId", ""))
                     ||  context.Request.Headers.GetValueOrDefault("x-organization-id", "")  !=  context.Request.Url.Query.GetValueOrDefault("organizationId", "")))">
                 <return-response>
