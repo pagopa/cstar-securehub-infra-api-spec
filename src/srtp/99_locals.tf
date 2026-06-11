@@ -324,7 +324,7 @@ locals {
     log-failed-response = {
       description = "Log failed response body to EventHub"
       format      = "xml"
-      value       = templatefile("./api_fragment/log-failed-response.xml", {
+      value = templatefile("./api_fragment/log-failed-response.xml", {
         apim_logger_name = "${local.project}-apim-logger"
       })
     }
