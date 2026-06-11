@@ -1,33 +1,33 @@
 <fragment>
-    <choose>
-        <when condition="@(context.LastError != null)">
-            <log-to-eventhub logger-id="${apim_logger_name}">
-                @{
-                    return new JObject(
-                        new JProperty("timestamp", DateTime.UtcNow.ToString("o")),
-                        new JProperty("requestId", context.RequestId),
-                        new JProperty("statusCode", context.Response?.StatusCode),
-                        new JProperty("errorReason", context.LastError?.Reason),
-                        new JProperty("errorMessage", context.LastError?.Message),
-                        new JProperty("responseBody", context.Response?.Body?.As&lt;string&gt;(preserveContent: true))
-                    ).ToString();
-                }
-            </log-to-eventhub>
-        </when>
-        <when condition="@(context.Response != null &amp;&amp; context.Response.StatusCode >= 400)">
-            <log-to-eventhub logger-id="${apim_logger_name}">
-                @{
-                    var responseBody = context.Response.Body?.As&lt;string&gt;(preserveContent: true);
-                    return new JObject(
-                        new JProperty("timestamp", DateTime.UtcNow.ToString("o")),
-                        new JProperty("requestId", context.RequestId),
-                        new JProperty("operationName", context.Operation.Name),
-                        new JProperty("statusCode", context.Response.StatusCode),
-                        new JProperty("reason", context.Response.StatusReason),
-                        new JProperty("responseBody", responseBody)
-                    ).ToString();
-                }
-            </log-to-eventhub>
-        </when>
-    </choose>
+  <choose>
+    <when condition="@(context.LastError != null)">
+      <trace source="RTP Send Failed Response" severity="error">
+        <message>@{
+          return new JObject(
+            new JProperty("timestamp", DateTime.UtcNow.ToString("o")),
+            new JProperty("requestId", context.RequestId),
+            new JProperty("statusCode", context.Response?.StatusCode),
+            new JProperty("errorReason", context.LastError?.Reason),
+            new JProperty("errorMessage", context.LastError?.Message),
+            new JProperty("responseBody", context.Response?.Body?.As&lt;string&gt;(preserveContent: true))
+          ).ToString();
+        }</message>
+      </trace>
+    </when>
+    <when condition="@(context.Response != null &amp;&amp; context.Response.StatusCode >= 400)">
+      <trace source="RTP Send Failed Response" severity="error">
+        <message>@{
+          var responseBody = context.Response.Body?.As&lt;string&gt;(preserveContent: true);
+          return new JObject(
+            new JProperty("timestamp", DateTime.UtcNow.ToString("o")),
+            new JProperty("requestId", context.RequestId),
+            new JProperty("operationName", context.Operation.Name),
+            new JProperty("statusCode", context.Response.StatusCode),
+            new JProperty("reason", context.Response.StatusReason),
+            new JProperty("responseBody", responseBody)
+          ).ToString();
+        }</message>
+      </trace>
+    </when>
+  </choose>
 </fragment>

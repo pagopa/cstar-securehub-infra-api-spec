@@ -179,8 +179,7 @@ locals {
       }
       api_policy = {
         xml_content = templatefile("./api/pagopa/send_base_policy.xml", {
-          backend_fragment_id    = "backend-retry",
-          log_failed_fragment_id = "log-failed-response"
+          backend_fragment_id = "backend-retry"
         })
       }
     }
@@ -322,11 +321,9 @@ locals {
       value       = file("./api_fragment/backend-retry.xml")
     },
     log-failed-response = {
-      description = "Log failed response body to EventHub"
+      description = "Log failed response body to Application Insights"
       format      = "xml"
-      value = templatefile("./api_fragment/log-failed-response.xml", {
-        apim_logger_name = "${local.project}-apim-logger"
-      })
+      value       = file("./api_fragment/log-failed-response.xml")
     }
   }
 

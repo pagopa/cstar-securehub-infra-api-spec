@@ -7,9 +7,10 @@
   </backend>
   <outbound>
     <base />
-    <include-fragment fragment-id="${log_failed_fragment_id}" />
+    <include-fragment fragment-id="log-failed-response" />
   </outbound>
   <on-error>
+    <include-fragment fragment-id="log-failed-response" />
     <base />
   </on-error>
 </policies>
