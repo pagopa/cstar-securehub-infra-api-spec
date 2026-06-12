@@ -14,8 +14,8 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore")
-            && context.Variables.GetValueOrDefault("organizationRole", "") != "support"
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore"
+            && context.Variables.GetValueOrDefault("organizationRole", "") != "support")
             ">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
