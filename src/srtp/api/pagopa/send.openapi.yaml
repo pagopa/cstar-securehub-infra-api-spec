@@ -370,6 +370,31 @@ components:
         - code
         - description
         - rtp
+      example:
+        code: "01000000F"
+        description: "Wrong party identifier"
+        rtp:
+          resourceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+          noticeNumber: "311111111112222123"
+          amount: 1050.75
+          description: "TARI 2025 payment"
+          expiryDate: "2025-12-31"
+          payerName: "Mario Rossi"
+          payerId: "RSSMRA85T10A562S"
+          payeeName: "Comune di Roma"
+          payeeId: "77777777777"
+          subject: "TARI 2025"
+          savingDateTime: "2025-06-06T08:40:16.781Z"
+          serviceProviderDebtor: "FAKESP01"
+          serviceProviderCreditor: "PA123456789"
+          iban: "IT60X0542811101000000123456"
+          payTrxRef: "ABC/124"
+          flgConf: "flgConf"
+          status: SENT
+          events:
+            - timestamp: "2025-06-06T08:40:16.781Z"
+              precStatus: "CREATED"
+              triggerEvent: "CREATE_RTP"
 
     Error:
       description: Error details.
