@@ -35,6 +35,7 @@ rate_limit_portal_product           = 2500
 rate_limit_merchants_portal_product = 2500
 rate_limit_users_portal_product     = 2500
 rate_limit_it_wallet_portal_product = 2500
+rate_limit_it_wallet_payment_portal_product = 2500
 
 
 #
