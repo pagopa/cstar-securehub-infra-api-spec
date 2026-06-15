@@ -147,6 +147,14 @@ paths:
       description: "Returns a paginated list of points of sale for the specified merchant, with optional filters."
       operationId: getPointOfSales
       parameters:
+        - name: initiativeId
+          in: query
+          description: The initiative ID
+          required: false
+          schema:
+            type: string
+            maxLength: 36
+            pattern: .*
         - name: merchantId
           in: path
           description: The merchant ID
@@ -154,6 +162,14 @@ paths:
           schema:
             type: string
             maxLength: 255
+        - name: x-merchant-id
+          in: header
+          description: The merchant ID from the authentication token
+          required: false
+          schema:
+            type: string
+            maxLength: 255
+            pattern: .*
         - name: type
           in: query
           description: Filter by point of sale type
@@ -312,10 +328,18 @@ paths:
     get:
       tags:
         - point-of-sales
-      summary: Retrieve a point of sale
-      description: "Return a point of sale for the specified merchant."
+      summary: Retrieve point of sale detail
+      description: "Returns the detail of a point of sale for this merchant"
       operationId: getPointOfSale
       parameters:
+        - name: initiativeId
+          in: query
+          description: The initiative ID
+          required: false
+          schema:
+            type: string
+            maxLength: 36
+            pattern: .*
         - name: merchantId
           in: path
           description: The merchant ID
@@ -323,6 +347,22 @@ paths:
           schema:
             type: string
             maxLength: 255
+        - name: x-point-of-sale-id
+          in: header
+          description: The point of sale ID from the authentication token
+          required: false
+          schema:
+            type: string
+            maxLength: 255
+            pattern: .*
+        - name: x-merchant-id
+          in: header
+          description: The merchant ID from the authentication token
+          required: false
+          schema:
+            type: string
+            maxLength: 255
+            pattern: .*
         - name: pointOfSaleId
           in: path
           description: The point of sale ID
