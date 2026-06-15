@@ -16,13 +16,13 @@ tags:
     description: Operations on merchant points of sale
 
 paths:
-  /{merchantId}/initiatives/{initiativeId}/point-of-sales:
-    post:
+  /{merchantId}/point-of-sales:
+    put:
       tags:
         - point-of-sales
-      summary: Save a list of points of sale
-      description: Save a list of points of sale for the specified merchant
-      operationId: postPointOfSales
+      summary: Save or update a list of points of sale
+      description: Save or update a list of points of sale for the specified merchant
+      operationId: savePointOfSales
       parameters:
         - name: merchantId
           in: path
@@ -31,14 +31,14 @@ paths:
           schema:
             type: string
             maxLength: 100000
-        - name: initiativeId
-          in: path
-          description: The initiative ID
-          required: true
+        - name: x-merchant-id
+          in: header
+          description: The merchant ID from the authentication token
+          required: false
           schema:
             type: string
       requestBody:
-        description: List of points of sale to save
+        description: List of points of sale to save or update
         required: true
         content:
           application/json:
@@ -49,7 +49,7 @@ paths:
                 $ref: "#/components/schemas/PointOfSaleDTO"
       responses:
         "204":
-          description: No Content - Successfully saved
+          description: No Content - Successfully saved or updated
           headers:
             Access-Control-Allow-Origin:
               $ref: "#/components/headers/Access-Control-Allow-Origin"
@@ -139,7 +139,6 @@ paths:
               example:
                 code: POINT_OF_SALE_GENERIC_ERROR
                 message: An internal error occured
-  /{merchantId}/point-of-sales:
     get:
       tags:
         - point-of-sales
