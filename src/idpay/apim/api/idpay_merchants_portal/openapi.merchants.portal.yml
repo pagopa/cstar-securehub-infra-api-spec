@@ -16,7 +16,7 @@ tags:
     description: Operations on merchant points of sale
 
 paths:
-  /{merchantId}/point-of-sales/initiatives/{initiativeId}:
+  /{merchantId}/initiatives/{initiativeId}/point-of-sales:
     post:
       tags:
         - point-of-sales
