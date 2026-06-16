@@ -19,7 +19,7 @@ paths:
     get:
       operationId: getDeliveryStatus
       summary: Check PD delivery status to RTP
-      description: Returns the delivery outcome for a debt position (PD) identified by notice number (NAV) and payeeId, based on DB records. The endpoint always responds with 200 and reports the outcome in the payload. If a record with status SENT is found, the PD is considered “PD_RTP_DELIVERED”. If the status is ERROR_SEND or ERROR_SENT, the PD is considered “PD_NOT_DELIVERED”. When available, the response also includes the RTP processing or sending date.
+      description: Returns the delivery outcome for a debt position (PD) identified by notice number (NAV) and payeeId, based on DB records. The endpoint always responds with 200 and reports the outcome in the payload. If a record with status SENT is found, the PD is considered “PD_RTP_DELIVERED”. If the status is ERROR_SEND or ERROR_SENT, the PD is considered “PD_RTP_NOT_DELIVERED”. When available, the response also includes the RTP processing or sending date.
       tags: [ rtps ]
       security:
         - oAuth2: [ admin_rtp_send, payee_read_rtp ]
@@ -1354,9 +1354,9 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GpdErrorWithRtp'
-
-
+            oneOf:
+              - $ref: '#/components/schemas/GpdErrorWithRtp'
+              - $ref: '#/components/schemas/ErrorSchema'
 
   parameters:
 
