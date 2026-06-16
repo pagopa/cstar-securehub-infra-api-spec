@@ -12,7 +12,10 @@ resource "azurerm_api_management_api" "this" {
   service_url           = lookup(each.value, "service_url", null)
   subscription_required = each.value.subscription_required
   version               = lookup(each.value, "version", null)
-  version_set_id        = try(azurerm_api_management_api_version_set.this[each.key].id, null)
+  version_set_id = (
+    contains(keys(each.value), "version_set") ? azurerm_api_management_api_version_set.this[each.key].id :
+    try(azurerm_api_management_api_version_set.this[each.value.version_set_ref].id, null)
+  )
 
   dynamic "import" {
     for_each = try([each.value.import_descriptor], [])
