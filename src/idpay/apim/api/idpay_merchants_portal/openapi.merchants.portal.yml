@@ -3276,6 +3276,9 @@ components:
         certifiedEmail:
           type: string
           description: "ENG: The certified email address of the merchant <br> IT: L'indirizzo email PEC dell' esercente"
+        operativeEmail:
+          type: string
+          description: "ENG: The certified email address of the merchant <br> IT: L'indirizzo email PEC dell' esercente"
         fiscalCode:
           type: string
           description: "ENG: The fiscal code/vat number of the merchant <br> IT: Il codice fiscale/partita iva dell'esercente"
@@ -3762,6 +3765,9 @@ components:
         ibanHolder:
           type: string
           description: "ENG: The holder of the IBAN <br> IT: L'intestatario dell'IBAN"
+        operativeEmail:
+          type: string
+          description: "ENG: The certified email address of the merchant <br> IT: L'indirizzo email PEC dell' esercente"
     PointOfSaleTransactionsProcessedListDTO:
       type: object
       properties:
