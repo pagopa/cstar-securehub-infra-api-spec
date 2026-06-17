@@ -140,12 +140,13 @@ locals {
       }
     }
 
-    # RTP CALLBACK
+    # RTP CALLBACK v1
     rtp-callback = {
       description           = "RTP ITN CALLBACK API"
       display_name          = "RTP ITN CALLBACK API"
       path                  = "${local.api_context_path}/cb"
       revision              = "1"
+      version               = "v1"
       protocols             = ["https"]
       service_url           = "${local.api_service_url}/rtpsender/"
       subscription_required = false
@@ -154,9 +155,33 @@ locals {
         content_format = "openapi"
         content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
       }
+      version_set = {
+        name                = "${var.env_short}-rtp-callback-v2"
+        display_name        = "RTP ITN CALLBACK API"
+        versioning_scheme   = "Header"
+        version_header_name = "Version"
+      }
     }
 
-    # RTP Service Provider
+    # RTP CALLBACK v2
+    rtp-callback-v2 = {
+      description           = "RTP ITN CALLBACK API v2"
+      display_name          = "RTP ITN CALLBACK API"
+      path                  = "${local.api_context_path}/cb"
+      revision              = "1"
+      version               = "v2"
+      protocols             = ["https"]
+      service_url           = "${local.api_service_url}/rtpsenderv2/"
+      subscription_required = false
+      product               = "srtp"
+      version_set_ref       = "rtp-callback"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
+      }
+    }
+
+    # RTP Service Provider v1
     rtp-service-provider = {
       description           = "RTP ITN Service Provider API"
       display_name          = "RTP ITN Service Provider API"
@@ -181,6 +206,47 @@ locals {
         xml_content = templatefile("./api/pagopa/send_base_policy.xml", {
           backend_fragment_id = "backend-retry"
         })
+      }
+      api_diagnostic = {
+        name                      = "applicationinsights"
+        sampling_percentage       = 100.0
+        always_log_errors         = true
+        log_client_ip             = true
+        verbosity                 = "information"
+        http_correlation_protocol = "W3C"
+        headers_to_log            = ["RequestId", "X-JWT-Subject", "Version"]
+      }
+    }
+
+    # RTP Service Provider v2 — same version_set as v1, APIM routes natively via Version header
+    rtp-service-provider-v2 = {
+      description           = "RTP ITN Service Provider API v2"
+      display_name          = "RTP ITN Service Provider API"
+      path                  = local.api_context_path
+      revision              = "1"
+      version               = "v2"
+      protocols             = ["https"]
+      service_url           = "${local.api_service_url}/rtpsenderv2/"
+      subscription_required = false
+      product               = "srtp"
+      version_set_ref       = "rtp-service-provider"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = templatefile("./api/pagopa/send.openapi.yaml", {})
+      }
+      api_policy = {
+        xml_content = templatefile("./api/pagopa/send_base_policy.xml", {
+          backend_fragment_id = "backend-retry"
+        })
+      }
+      api_diagnostic = {
+        name                      = "applicationinsights"
+        sampling_percentage       = 100.0
+        always_log_errors         = true
+        log_client_ip             = true
+        verbosity                 = "information"
+        http_correlation_protocol = "W3C"
+        headers_to_log            = ["RequestId", "X-JWT-Subject", "Version"]
       }
     }
 
@@ -319,6 +385,11 @@ locals {
       description = "Retry on backend connection failure"
       format      = "xml"
       value       = file("./api_fragment/backend-retry.xml")
+    },
+    log-failed-response = {
+      description = "Log failed response body to Application Insights"
+      format      = "xml"
+      value       = file("./api_fragment/log-failed-response.xml")
     }
   }
 
@@ -340,6 +411,14 @@ locals {
       }
       createRtp = {
         api_name = "rtp-service-provider"
+        xml_content = templatefile("./api/pagopa/send_policy.xml", {
+          fragment_id = "rtp-validate-token-mcshared-v2",
+          enableAuth  = var.enable_auth_send
+        })
+      }
+      createRtp-v2 = {
+        api_name     = "rtp-service-provider-v2"
+        operation_id = "createRtp"
         xml_content = templatefile("./api/pagopa/send_policy.xml", {
           fragment_id = "rtp-validate-token-mcshared-v2",
           enableAuth  = var.enable_auth_send

@@ -4,7 +4,7 @@ resource "azurerm_api_management_api_operation_policy" "this" {
   api_name            = azurerm_api_management_api.this[each.value.api_name].name
   api_management_name = local.apim_name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  operation_id        = each.key
+  operation_id        = lookup(each.value, "operation_id", each.key)
   xml_content         = each.value.xml_content
 
   depends_on = [
