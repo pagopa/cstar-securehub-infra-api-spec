@@ -75,9 +75,6 @@
         </choose>
         <!-- setting userId variable -->
         <set-variable name="userId" value="@((string)context.Variables["tokenPDV"])" />
-        <set-header name="x-user-id" exists-action="override">
-            <value>@((string)context.Variables["userId"])</value>
-        </set-header>
         <set-query-parameter name="operationType">
              <value>TRANSACTION</value>
         </set-query-parameter>
