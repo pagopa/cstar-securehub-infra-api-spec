@@ -58,4 +58,13 @@ module "idpay_itn_it_wallet_payment_api" {
 
   product_ids           = [module.idpay_itn_api_portal_it_wallet_payment_product.product_id]
   subscription_required = false
+
+  api_operation_policies = [
+      {
+        operation_id = "getItWalletPaymentTimeline"
+        xml_content = templatefile("./apim/api/idpay_it_wallet/get-itwallet-payment.timeline-policy.xml.tpl", {
+          ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+        })
+      }
+    ]
 }
