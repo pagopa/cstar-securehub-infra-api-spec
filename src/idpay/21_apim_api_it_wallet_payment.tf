@@ -44,7 +44,7 @@ module "idpay_itn_it_wallet_payment_api" {
 
   description  = "IDPAY ITN IT Wallet Payment API"
   display_name = "IDPAY ITN IT Wallet Payment API"
-  path         = "idpay-itn/it-wallet-payment"
+  path         = "idpay-itn/it-wallet/payment"
   protocols    = ["https"]
 
   # Service URL aligned with the OpenAPI servers in the spec (Development environment)

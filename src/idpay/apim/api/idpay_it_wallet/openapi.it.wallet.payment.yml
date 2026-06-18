@@ -256,9 +256,10 @@ components:
           maximum: 200
           description: 'ENG: Number of total pages - IT: Numero totali di pagine'
     OperationListDTO:
+      type: array
       description: Complex type for items in the operation list
-      oneOf:
-        - $ref: '#/components/schemas/TransactionOperationDTO'
+      items:
+        $ref: '#/components/schemas/TransactionOperationDTO'
     TransactionOperationDTO:
       type: object
       required:
@@ -366,8 +367,6 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-security:
-  - bearerAuth: []
 tags:
   - name: timeline
     description: ''
