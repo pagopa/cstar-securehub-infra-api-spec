@@ -8,10 +8,10 @@ info:
     email: cstar@pagopa.it
 servers:
   - description: Development Test
-    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/it-wallet/payment
+    url: https://api-io.dev.cstar.pagopa.it/idpay-itn/it-wallet-payment
     x-internal: true
   - description: User Acceptance Test
-    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/it-wallet/payment
+    url: https://api-io.uat.cstar.pagopa.it/idpay-itn/it-wallet-payment
     x-internal: true
 paths:
   '/timeline/{initiativeId}':
