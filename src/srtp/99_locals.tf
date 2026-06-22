@@ -288,10 +288,10 @@ locals {
     }
     },
     var.env_short == "p" ? {} : {
-      # RTP Mock v1 (EPC v3.1)
+      # RTP Mock v1 (EPC v3.2)
       rtp-mock = {
-        description           = "RTP ITN MOCK API EPC"
-        display_name          = "RTP ITN MOCK API EPC"
+        description           = "RTP ITN MOCK API EPC V3.2"
+        display_name          = "RTP ITN MOCK API EPC V3.2"
         path                  = "${local.api_context_path}/mock"
         revision              = "1"
         version               = "v1"
@@ -313,7 +313,7 @@ locals {
       # RTP Mock v2 (EPC V4.0)
       rtp-mock-v4 = {
         description           = "RTP ITN MOCK API EPC V4.0"
-        display_name          = "RTP ITN MOCK API EPC"
+        display_name          = "RTP ITN MOCK API EPC V4.0"
         path                  = "${local.api_context_path}/mock"
         revision              = "1"
         version               = "v2"
