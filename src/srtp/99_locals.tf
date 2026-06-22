@@ -287,9 +287,9 @@ locals {
       }
     }
     },
-    var.env_short == "p" ? {} : {
+    { for k, v in {
       # RTP Mock v1 (EPC v3.2)
-      rtp-mock = {
+      rtp-mock = var.env_short == "p" ? null : {
         description           = "RTP ITN MOCK API EPC V3.2"
         display_name          = "RTP ITN MOCK API EPC V3.2"
         path                  = "${local.api_context_path}/mock"
@@ -311,7 +311,7 @@ locals {
       }
 
       # RTP Mock v2 (EPC V4.0)
-      rtp-mock-v4 = {
+      rtp-mock-v4 = var.env_short == "p" ? null : {
         description           = "RTP ITN MOCK API EPC V4.0"
         display_name          = "RTP ITN MOCK API EPC V4.0"
         path                  = "${local.api_context_path}/mock"
@@ -328,7 +328,7 @@ locals {
       }
 
       # RTP GPD Message Processing Mock
-      rtp-gpd-message-mock = {
+      rtp-gpd-message-mock = var.env_short == "p" ? null : {
         description           = "RTP ITN GPD Message Mock API"
         display_name          = "RTP ITN GPD Message Mock API"
         path                  = "${local.api_context_path}/mock/gpd"
@@ -343,7 +343,7 @@ locals {
       }
 
       # RTP Takeover Mock
-      rtp-takeover-mock = {
+      rtp-takeover-mock = var.env_short == "p" ? null : {
         description           = "RTP ITN MOCK API TAKEOVER"
         display_name          = "RTP ITN MOCK API TAKEOVER"
         path                  = "${local.api_context_path}/mock/takeover"
@@ -356,7 +356,7 @@ locals {
           content_value  = templatefile("./api/pagopa/takeover.yaml", {})
         }
       }
-    }
+    } : k => v if v != null }
   )
   products = {
     # SRTP
@@ -455,33 +455,33 @@ locals {
         })
       }
     },
-    var.env_short == "p" ? {} : {
-      postRequestToPayRequests = {
+    { for k, v in {
+      postRequestToPayRequests = var.env_short == "p" ? null : {
         api_name    = "rtp-mock"
         xml_content = file("./api/test/mock_policy_epc.xml")
       }
-      postRequestToPayCancellationRequest = {
+      postRequestToPayCancellationRequest = var.env_short == "p" ? null : {
         api_name    = "rtp-mock"
         xml_content = file("./api/test/mock_policy_epc.xml")
       }
-      postRequestToPayRequests-v4 = {
+      postRequestToPayRequests-v4 = var.env_short == "p" ? null : {
         api_name     = "rtp-mock-v4"
         operation_id = "postRequestToPayRequests"
         xml_content  = file("./api/test/mock_policy_epc_v4.xml")
       }
-      postRequestToPayCancellationRequest-v4 = {
+      postRequestToPayCancellationRequest-v4 = var.env_short == "p" ? null : {
         api_name     = "rtp-mock-v4"
         operation_id = "postRequestToPayCancellationRequest"
         xml_content  = file("./api/test/mock_policy_epc_v4.xml")
       }
-      processGpdMessage = {
+      processGpdMessage = var.env_short == "p" ? null : {
         api_name    = "rtp-gpd-message-mock"
         xml_content = file("./api/test/mock_policy_gpd.xml")
       }
-      notifyUserTakeover = {
+      notifyUserTakeover = var.env_short == "p" ? null : {
         api_name    = "rtp-takeover-mock"
         xml_content = file("./api/test/mock_policy_takeover.xml")
       }
-    }
+    } : k => v if v != null }
   )
 }
