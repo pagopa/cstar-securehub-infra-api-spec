@@ -2199,7 +2199,7 @@ components:
             Additional recommendations:
             - It is recommended to provide as many structured elements as possible.
             - These rules apply equally to Debtor and Creditor addresses.
-            - These rules must be enforced at business layer; JSON Schema cannot enforce conditional branching (Structured vs Hybrid) alone.            
+            - These rules must be enforced at business layer; JSON Schema cannot enforce conditional branching (Structured vs Hybrid) alone.
       properties:
         TwnNm:
           type: string
@@ -2245,7 +2245,7 @@ components:
         - AT-T009 RTP Remittance Information to be inserted in the payment (containing possibly AT-S002 Payee’s end-to-end reference of the RTP and AT-T019 Credit note amount*), mandatory if provided in DS-02.
         - AT-S005 Expiry Date/Time of the RTP.
         - AT-S013 Placeholder for Charges.
-        SEPA Usage Rule: 
+        SEPA Usage Rule:
         - Mandatory.
         - Both ‘Unstructured’ and ‘Structured’ can be present:
         - AT-T009 can be present either in ‘Unstructured’ or ‘Structured’ and may also contain AT-S002, and in 'Structured', also AT-T019.
@@ -2678,12 +2678,12 @@ components:
         Id:
           $ref: '#/components/schemas/Party38Choice_EPC259-22_V4.0_DS15RTP'
       required:
-      - Id    
+      - Id
     PaymentCancellationReason5_EPC259-22_V4.0_DS11:
       type: object
       properties:
         Orgtr:
-          allOf:  
+          allOf:
             - $ref: '#/components/schemas/PartyIdentification135_EPC259-22_V4.0_DS11_3'
             - description: |
                 SEPA Rulebook Reference:
@@ -2870,8 +2870,8 @@ components:
             SEPA Usage Rule:
             - Mandatory.
             - Up to two occurrences are allowed:
-            - A first mandatory occurrence starting with “ATS005/” followed by the Expiry Date/time of the RTP. 
-            - A second optional occurrence starting with “ATS013/” followed by charges related to the processing of the RTP   
+            - A first mandatory occurrence starting with “ATS005/” followed by the Expiry Date/time of the RTP.
+            - A second optional occurrence starting with “ATS013/” followed by charges related to the processing of the RTP
           items:
             $ref: '#/components/schemas/Max140Text'
           maxItems: 2
@@ -2964,7 +2964,7 @@ components:
       - ARJR
       - RR04
       - URTP
-      type: string    
+      type: string
     ExternalProxyAccountType1Code:
       maxLength: 4
       minLength: 1
@@ -3017,7 +3017,7 @@ components:
     ExternalStatusReason1Code_III:
       maxLength: 4
       minLength: 1
-      enum: 
+      enum:
       - AEXR
       - ALAC
       - ARFR
@@ -3133,7 +3133,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/Max140Text_CreditorName_DSXX_2'
             - description: |
-                SEPA Usage Rule: 
+                SEPA Usage Rule:
                 - For a natural person, the first and last name must be provided.
         Id:
           $ref: '#/components/schemas/Party38Choice_EPC259-22_V4.0_DS11_3'
@@ -3194,7 +3194,7 @@ components:
         CdtNoteAmt:
           $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount_EPC259-22_V4.0_DS02_2'
       required:
-      - CdtNoteAmt   
+      - CdtNoteAmt
     RemittanceInformation16:
       type: object
       properties:
@@ -3613,7 +3613,7 @@ components:
         CdtNoteAmt:
           $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount_EPC259-22_V4.0_DS02'
       required:
-      - CdtNoteAmt   
+      - CdtNoteAmt
     AddressType2Code:
       enum:
       - ADDR
@@ -3744,7 +3744,7 @@ components:
     Max35Text_URLN_Reason_DS04b_Prtry:
       type: string
       maxLength: 35
-      minLength: 1 
+      minLength: 1
       enum:
         - "URLN/ATS010"
       description: |
