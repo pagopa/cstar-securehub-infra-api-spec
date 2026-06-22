@@ -15,7 +15,7 @@
             ""CdtrPmtActvtnReqStsRpt"": {
             ""GrpHdr"": {
             ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
-            ""CreDtTm"": ""2026-02-11T14:00:00Z"",
+            ""CreDtTm"": ""2026-02-11T14:00:00.000Z"","
             ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
