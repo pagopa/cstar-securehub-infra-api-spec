@@ -229,7 +229,7 @@ components:
           minItems: 1
           maxItems: 10
           items:
-            $ref: '#/components/schemas/OperationListDTO'
+            $ref: '#/components/schemas/TransactionOperationDTO'
           description: 'ENG: The list of transactions and operations of an initiative of a citizen - IT: La lista di transazioni e operazioni di una iniziativa di un cittadino'
         pageNo:
           type: integer
@@ -255,11 +255,6 @@ components:
           minimum: 0
           maximum: 200
           description: 'ENG: Number of total pages - IT: Numero totali di pagine'
-    OperationListDTO:
-      type: array
-      description: Complex type for items in the operation list
-      items:
-        $ref: '#/components/schemas/TransactionOperationDTO'
     TransactionOperationDTO:
       type: object
       required:
