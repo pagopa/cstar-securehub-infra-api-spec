@@ -288,18 +288,42 @@ locals {
     }
     },
     var.env_short == "p" ? {} : {
-      # RTP Mock
+      # RTP Mock v1 (EPC v3.1)
       rtp-mock = {
         description           = "RTP ITN MOCK API EPC"
         display_name          = "RTP ITN MOCK API EPC"
         path                  = "${local.api_context_path}/mock"
         revision              = "1"
+        version               = "v1"
         protocols             = ["https"]
         subscription_required = false
         product               = "srtp"
         import_descriptor = {
           content_format = "openapi"
           content_value  = templatefile("./api/epc/EPC133-22_v3.1_SRTP_spec.openapi.yaml", {})
+        }
+        version_set = {
+          name                = "${var.env_short}-rtp-mock-epc"
+          display_name        = "RTP ITN MOCK API EPC"
+          versioning_scheme   = "Header"
+          version_header_name = "Version"
+        }
+      }
+
+      # RTP Mock v2 (EPC V4.0)
+      rtp-mock-v4 = {
+        description           = "RTP ITN MOCK API EPC V4.0"
+        display_name          = "RTP ITN MOCK API EPC"
+        path                  = "${local.api_context_path}/mock"
+        revision              = "1"
+        version               = "v2"
+        protocols             = ["https"]
+        subscription_required = false
+        product               = "srtp"
+        version_set_ref       = "rtp-mock"
+        import_descriptor = {
+          content_format = "openapi"
+          content_value  = templatefile("./api/epc/EPC133-22 v1.0 SRTP API YAML V4.0.yaml", {})
         }
       }
 
@@ -439,6 +463,16 @@ locals {
       postRequestToPayCancellationRequest = {
         api_name    = "rtp-mock"
         xml_content = file("./api/test/mock_policy_epc.xml")
+      }
+      postRequestToPayRequests-v4 = {
+        api_name     = "rtp-mock-v4"
+        operation_id = "postRequestToPayRequests"
+        xml_content  = file("./api/test/mock_policy_epc_v4.xml")
+      }
+      postRequestToPayCancellationRequest-v4 = {
+        api_name     = "rtp-mock-v4"
+        operation_id = "postRequestToPayCancellationRequest"
+        xml_content  = file("./api/test/mock_policy_epc_v4.xml")
       }
       processGpdMessage = {
         api_name    = "rtp-gpd-message-mock"
