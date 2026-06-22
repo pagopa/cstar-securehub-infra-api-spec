@@ -76,7 +76,7 @@
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
             ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00Z""
+            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00.000Z""
             },
             ""OrgnlPmtInfAndSts"": [
             {
