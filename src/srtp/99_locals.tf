@@ -288,10 +288,10 @@ locals {
     }
     },
     { for k, v in {
-      # RTP Mock v1 (EPC v3.2)
+      # RTP Mock v1 (EPC v3.1)
       rtp-mock = var.env_short == "p" ? null : {
-        description           = "RTP ITN MOCK API EPC V3.2"
-        display_name          = "RTP ITN MOCK API EPC V3.2"
+        description           = "RTP ITN MOCK API EPC V3.1"
+        display_name          = "RTP ITN MOCK API EPC V3.1"
         path                  = "${local.api_context_path}/mock"
         revision              = "1"
         version               = "v1"
