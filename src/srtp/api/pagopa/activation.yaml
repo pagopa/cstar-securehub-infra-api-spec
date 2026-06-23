@@ -406,6 +406,56 @@ paths:
           #description: Unexpected error
           $ref: '#/components/responses/Error'
 
+  /activations/payer/status:
+    get:
+      operationId: getPayerStatus
+      summary: Returns the activation status of a Payer.
+      description: |
+        Returns whether a given Payer is active in the RTP system.
+
+        When the operation is used by a non-admin subject, the system returns
+        the status only for activations whose `serviceProviderDebtor` matches the `sub`
+        claim of the access token.
+      tags: [read]
+      security:
+        - oAuth2: [read_rtp_all, read_rtp_activations]
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/Version'
+        - $ref: '#/components/parameters/PayerId'
+      responses:
+        "200":
+          $ref: '#/components/responses/PayerStatus'
+        "400":
+          #  Possible error codes:
+          #  - 01021008E: Missing Payer ID
+          #  - 01021013E: Invalid Payer ID format
+          $ref: '#/components/responses/BadRequestError'
+        "401":
+          #  Possible error codes:
+          #  - 01011000E: Missing authentication token
+          #  - 01011001E: Invalid token format
+          #  - 01011002E: Expired token
+          #  - 01011003F: Invalid signature
+          $ref: '#/components/responses/UnauthorizedError'
+        "403":
+          #  Possible error codes:
+          #  - 01011004E: Insufficient permissions
+          #  - 01011005E: Invalid scope
+          $ref: '#/components/responses/ForbiddenError'
+        "429":
+          #  Possible error codes:
+          #  - 01051000E: Rate limit exceeded
+          #  - 01051001E: Quota exceeded
+          $ref: '#/components/responses/TooManyRequestsError'
+        "500":
+          #  Possible error codes:
+          #  - 01091000F: Internal server error
+          #  - 01091001F: Database error
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Error'
+
   /activations/payer:
     get:
       operationId: findActivationByPayerId
