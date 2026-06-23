@@ -1272,6 +1272,20 @@ components:
         RateLimit-Reset:
           $ref: '#/components/headers/RateLimitReset'
 
+    PayerStatus:
+      description: Response with the activation status of a Payer.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          $ref: '#/components/headers/RateLimitLimit'
+        RateLimit-Reset:
+          $ref: '#/components/headers/RateLimitReset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PayerStatus'
+
     PageOfActivations:
       description: Response to the request to get RTP activations.
       headers:
