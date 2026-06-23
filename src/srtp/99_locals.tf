@@ -287,14 +287,13 @@ locals {
       }
     }
     },
-    { for k, v in {
-      # RTP Mock v1 (EPC v3.1)
-      rtp-mock = var.env_short == "p" ? null : {
+      var.env_short == "p" ? {} : {
+      # RTP Mock v1 (EPC V3.1)
+      rtp-mock = {
         description           = "RTP ITN MOCK API EPC V3.1"
         display_name          = "RTP ITN MOCK API EPC V3.1"
-        path                  = "${local.api_context_path}/mock"
+        path                  = "${local.api_context_path}/mock/v1"
         revision              = "1"
-        version               = "v1"
         protocols             = ["https"]
         subscription_required = false
         product               = "srtp"
@@ -302,25 +301,17 @@ locals {
           content_format = "openapi"
           content_value  = templatefile("./api/epc/EPC133-22_v3.1_SRTP_spec.openapi.yaml", {})
         }
-        version_set = {
-          name                = "${var.env_short}-rtp-mock-epc"
-          display_name        = "RTP ITN MOCK API EPC"
-          versioning_scheme   = "Header"
-          version_header_name = "Version"
-        }
       }
 
       # RTP Mock v2 (EPC V4.0)
-      rtp-mock-v4 = var.env_short == "p" ? null : {
+      rtp-mock-v4 = {
         description           = "RTP ITN MOCK API EPC V4.0"
         display_name          = "RTP ITN MOCK API EPC V4.0"
-        path                  = "${local.api_context_path}/mock"
+        path                  = "${local.api_context_path}/mock/v2"
         revision              = "1"
-        version               = "v2"
         protocols             = ["https"]
         subscription_required = false
         product               = "srtp"
-        version_set_ref       = "rtp-mock"
         import_descriptor = {
           content_format = "openapi"
           content_value  = templatefile("./api/epc/EPC133-22 v1.0 SRTP API YAML V4.0.yaml", {})
@@ -328,7 +319,7 @@ locals {
       }
 
       # RTP GPD Message Processing Mock
-      rtp-gpd-message-mock = var.env_short == "p" ? null : {
+      rtp-gpd-message-mock = {
         description           = "RTP ITN GPD Message Mock API"
         display_name          = "RTP ITN GPD Message Mock API"
         path                  = "${local.api_context_path}/mock/gpd"
@@ -343,7 +334,7 @@ locals {
       }
 
       # RTP Takeover Mock
-      rtp-takeover-mock = var.env_short == "p" ? null : {
+      rtp-takeover-mock = {
         description           = "RTP ITN MOCK API TAKEOVER"
         display_name          = "RTP ITN MOCK API TAKEOVER"
         path                  = "${local.api_context_path}/mock/takeover"
@@ -356,7 +347,7 @@ locals {
           content_value  = templatefile("./api/pagopa/takeover.yaml", {})
         }
       }
-    } : k => v if v != null }
+    }
   )
   products = {
     # SRTP
