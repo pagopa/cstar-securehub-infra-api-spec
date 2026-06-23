@@ -903,6 +903,21 @@ components:
           nextActivationId: "d0d654e6-97da-4848-b568-99fedccb642b"
           size: 1
 
+    PayerStatus:
+      description: Activation status of a Payer.
+      type: object
+      additionalProperties: false
+      properties:
+        isActive:
+          type: boolean
+          description: >
+            True if the Payer has an active RTP activation visible to the caller.
+            False if no activation exists or the caller is not authorized to see it.
+      required:
+        - isActive
+      example:
+        isActive: true
+
     PartyId:
       description: |
         Unique and unambiguous identification of a party.
