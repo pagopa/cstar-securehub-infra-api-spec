@@ -414,7 +414,7 @@ paths:
         Returns whether a given Payer is active in the RTP system.
 
         When the operation is used by a non-admin subject, the system returns
-        the status only for activations whose `serviceProviderDebtor` matches the `sub`
+        the status only for activations whose Payer RTP Service Provider ID matches the `sub`
         claim of the access token.
       tags: [read]
       security:
