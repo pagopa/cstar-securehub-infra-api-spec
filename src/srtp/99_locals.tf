@@ -287,9 +287,9 @@ locals {
       }
     }
     },
-      var.env_short == "p" ? {} : {
+    { for k, v in {
       # RTP Mock v1 (EPC V3.1)
-      rtp-mock = {
+      rtp-mock = var.env_short == "p" ? null : {
         description           = "RTP ITN MOCK API EPC V3.1"
         display_name          = "RTP ITN MOCK API EPC V3.1"
         path                  = "${local.api_context_path}/mock"
@@ -310,7 +310,7 @@ locals {
       }
 
       # RTP Mock v2 (EPC V4.0)
-      rtp-mock-v4 = {
+      rtp-mock-v4 = var.env_short == "p" ? null : {
         description           = "RTP ITN MOCK API EPC V4.0"
         display_name          = "RTP ITN MOCK API EPC V4.0"
         path                  = "${local.api_context_path}/mock"
@@ -327,7 +327,7 @@ locals {
       }
 
       # RTP GPD Message Processing Mock
-      rtp-gpd-message-mock = {
+      rtp-gpd-message-mock = var.env_short == "p" ? null : {
         description           = "RTP ITN GPD Message Mock API"
         display_name          = "RTP ITN GPD Message Mock API"
         path                  = "${local.api_context_path}/mock/gpd"
@@ -342,7 +342,7 @@ locals {
       }
 
       # RTP Takeover Mock
-      rtp-takeover-mock = {
+      rtp-takeover-mock = var.env_short == "p" ? null : {
         description           = "RTP ITN MOCK API TAKEOVER"
         display_name          = "RTP ITN MOCK API TAKEOVER"
         path                  = "${local.api_context_path}/mock/takeover"
@@ -355,7 +355,7 @@ locals {
           content_value  = templatefile("./api/pagopa/takeover.yaml", {})
         }
       }
-    }
+    } : k => v if v != null }
   )
   products = {
     # SRTP
