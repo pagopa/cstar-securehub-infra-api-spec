@@ -406,7 +406,7 @@ paths:
           #description: Unexpected error
           $ref: '#/components/responses/Error'
 
-  /activations/payer/status:
+  /activations/payer/{payerId}/status:
     get:
       operationId: getPayerStatus
       summary: Returns the activation status of a Payer.
@@ -422,7 +422,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/RequestId'
         - $ref: '#/components/parameters/Version'
-        - $ref: '#/components/parameters/PayerId'
+        - $ref: '#/components/parameters/PayerIdPath'
       responses:
         "200":
           $ref: '#/components/responses/PayerStatus'
@@ -1066,6 +1066,14 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/PageSize'
+
+    PayerIdPath:
+      name: payerId
+      in: path
+      description: Identifier of the Payer.
+      required: true
+      schema:
+        $ref: '#/components/schemas/FiscalCode'
 
     PayerId:
       name: PayerId
