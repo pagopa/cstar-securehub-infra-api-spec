@@ -418,7 +418,7 @@ paths:
         claim of the access token.
       tags: [read]
       security:
-        - oAuth2: [read_rtp_all, read_rtp_activations]
+        - oAuth2: [admin_rtp_activations, read_rtp_activations, read_rtp_all]
       parameters:
         - $ref: '#/components/parameters/RequestId'
         - $ref: '#/components/parameters/Version'
