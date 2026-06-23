@@ -406,6 +406,56 @@ paths:
           #description: Unexpected error
           $ref: '#/components/responses/Error'
 
+  /activations/payer/{payerId}/status:
+    get:
+      operationId: getPayerStatus
+      summary: Returns the activation status of a Payer.
+      description: |
+        Returns whether a given Payer is active in the RTP system.
+
+        When the operation is used by a non-admin subject, the system returns
+        the status only for activations whose Payer RTP Service Provider ID matches the `sub`
+        claim of the access token.
+      tags: [read]
+      security:
+        - oAuth2: [admin_rtp_activations, read_rtp_activations, read_rtp_all]
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/Version'
+        - $ref: '#/components/parameters/PayerIdPath'
+      responses:
+        "200":
+          $ref: '#/components/responses/PayerStatus'
+        "400":
+          #  Possible error codes:
+          #  - 01021008E: Missing Payer ID
+          #  - 01021013E: Invalid Payer ID format
+          $ref: '#/components/responses/BadRequestError'
+        "401":
+          #  Possible error codes:
+          #  - 01011000E: Missing authentication token
+          #  - 01011001E: Invalid token format
+          #  - 01011002E: Expired token
+          #  - 01011003F: Invalid signature
+          $ref: '#/components/responses/UnauthorizedError'
+        "403":
+          #  Possible error codes:
+          #  - 01011004E: Insufficient permissions
+          #  - 01011005E: Invalid scope
+          $ref: '#/components/responses/ForbiddenError'
+        "429":
+          #  Possible error codes:
+          #  - 01051000E: Rate limit exceeded
+          #  - 01051001E: Quota exceeded
+          $ref: '#/components/responses/TooManyRequestsError'
+        "500":
+          #  Possible error codes:
+          #  - 01091000F: Internal server error
+          #  - 01091001F: Database error
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Error'
+
   /activations/payer:
     get:
       operationId: findActivationByPayerId
@@ -903,6 +953,21 @@ components:
           nextActivationId: "d0d654e6-97da-4848-b568-99fedccb642b"
           size: 1
 
+    PayerStatus:
+      description: Activation status of a Payer.
+      type: object
+      additionalProperties: false
+      properties:
+        isActive:
+          type: boolean
+          description: >
+            True if the Payer has an active RTP activation visible to the caller.
+            False if no activation exists or the caller is not authorized to see it.
+      required:
+        - isActive
+      example:
+        isActive: true
+
     PartyId:
       description: |
         Unique and unambiguous identification of a party.
@@ -1001,6 +1066,14 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/PageSize'
+
+    PayerIdPath:
+      name: payerId
+      in: path
+      description: Identifier of the Payer.
+      required: true
+      schema:
+        $ref: '#/components/schemas/FiscalCode'
 
     PayerId:
       name: PayerId
@@ -1256,6 +1329,20 @@ components:
           $ref: '#/components/headers/RateLimitLimit'
         RateLimit-Reset:
           $ref: '#/components/headers/RateLimitReset'
+
+    PayerStatus:
+      description: Response with the activation status of a Payer.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          $ref: '#/components/headers/RateLimitLimit'
+        RateLimit-Reset:
+          $ref: '#/components/headers/RateLimitReset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PayerStatus'
 
     PageOfActivations:
       description: Response to the request to get RTP activations.
