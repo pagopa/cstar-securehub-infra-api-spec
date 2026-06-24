@@ -288,7 +288,7 @@ locals {
     }
     },
     { for k, v in {
-      # RTP Mock v1 (EPC v3.1)
+      # RTP Mock v1 (EPC V3.1)
       rtp-mock = var.env_short == "p" ? null : {
         description           = "RTP ITN MOCK API EPC V3.1"
         display_name          = "RTP ITN MOCK API EPC V3.1"
@@ -303,10 +303,9 @@ locals {
           content_value  = templatefile("./api/epc/EPC133-22_v3.1_SRTP_spec.openapi.yaml", {})
         }
         version_set = {
-          name                = "${var.env_short}-rtp-mock-epc"
-          display_name        = "RTP ITN MOCK API EPC"
-          versioning_scheme   = "Header"
-          version_header_name = "Version"
+          name              = "${var.env_short}-rtp-mock-epc"
+          display_name      = "RTP ITN MOCK API EPC"
+          versioning_scheme = "Segment"
         }
       }
 
@@ -317,10 +316,10 @@ locals {
         path                  = "${local.api_context_path}/mock"
         revision              = "1"
         version               = "v2"
+        version_set_ref       = "rtp-mock"
         protocols             = ["https"]
         subscription_required = false
         product               = "srtp"
-        version_set_ref       = "rtp-mock"
         import_descriptor = {
           content_format = "openapi"
           content_value  = templatefile("./api/epc/EPC133-22 v1.0 SRTP API YAML V4.0.yaml", {})
