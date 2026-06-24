@@ -140,41 +140,16 @@ locals {
       }
     }
 
-    # RTP CALLBACK v1
+    # RTP CALLBACK
     rtp-callback = {
       description           = "RTP ITN CALLBACK API"
       display_name          = "RTP ITN CALLBACK API"
       path                  = "${local.api_context_path}/cb"
       revision              = "1"
-      version               = "v1"
       protocols             = ["https"]
       service_url           = "${local.api_service_url}/rtpsender/"
       subscription_required = false
       product               = "srtp"
-      import_descriptor = {
-        content_format = "openapi"
-        content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
-      }
-      version_set = {
-        name                = "${var.env_short}-rtp-callback-v2"
-        display_name        = "RTP ITN CALLBACK API"
-        versioning_scheme   = "Header"
-        version_header_name = "Version"
-      }
-    }
-
-    # RTP CALLBACK v2
-    rtp-callback-v2 = {
-      description           = "RTP ITN CALLBACK API v2"
-      display_name          = "RTP ITN CALLBACK API"
-      path                  = "${local.api_context_path}/cb"
-      revision              = "1"
-      version               = "v2"
-      protocols             = ["https"]
-      service_url           = "${local.api_service_url}/rtpsenderv2/"
-      subscription_required = false
-      product               = "srtp"
-      version_set_ref       = "rtp-callback"
       import_descriptor = {
         content_format = "openapi"
         content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
