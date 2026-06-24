@@ -163,6 +163,23 @@ locals {
       }
     }
 
+    # RTP CALLBACK original — fallback for requests without Version header, routes to v1 backend
+    rtp-callback-original = {
+      description           = "RTP ITN CALLBACK API"
+      display_name          = "RTP ITN CALLBACK API"
+      path                  = "${local.api_context_path}/cb"
+      revision              = "1"
+      protocols             = ["https"]
+      service_url           = "${local.api_service_url}/rtpsender/"
+      subscription_required = false
+      product               = "srtp"
+      version_set_ref       = "rtp-callback"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
+      }
+    }
+
     # RTP CALLBACK v2
     rtp-callback-v2 = {
       description           = "RTP ITN CALLBACK API v2"
