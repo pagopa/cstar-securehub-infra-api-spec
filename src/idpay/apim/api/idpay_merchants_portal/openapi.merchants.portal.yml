@@ -344,11 +344,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: x-merchant-id
-          in: header
-          required: false
-          schema:
-            type: string
       responses:
         "200":
           description: Successful response with linked initiatives
