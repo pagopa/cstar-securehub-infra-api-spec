@@ -900,10 +900,10 @@ components:
           description: IUV identifier (15 to 17 digits)
         subject:
           type: string
-          maxLength: 140
+          maxLength: 118
         description:
           type: string
-          maxLength: 140
+          maxLength: 133
         ec_tax_code:
           type: string
           pattern: "^(\\d{11}|\\d{16})$"

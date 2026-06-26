@@ -32,7 +32,8 @@
             ""OrgnlEndToEndId"": ""123456789012345678"",
             ""TxSts"": ""ACTC"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""AddtlInf"": ""Redirect pending""
             },
             ""OrgnlTxRef"": {
             ""PmtTpInf"": {
@@ -49,7 +50,7 @@
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 450.75 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } }] } } ] } },
+            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } }] } ] } },
             ""_links"": {
             ""initialSepaRequestToPayUri"": {
             ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
@@ -87,7 +88,8 @@
             ""OrgnlEndToEndId"": ""987654321098765432"",
             ""TxSts"": ""RJCT"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Rsn"": { ""Cd"": ""MS03"" }
             },
             ""OrgnlTxRef"": {
             ""PmtTpInf"": {
@@ -181,13 +183,13 @@
             ""CdtrPmtActvtnReqStsRpt"": {
             ""GrpHdr"": {
             ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
-            ""CreDtTm"": ""2026-02-11T14:00:00Z"",
+            ""CreDtTm"": ""2026-02-11T14:00:00.000Z"",
             ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
             ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00Z""
+            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00.000Z""
             },
             ""OrgnlPmtInfAndSts"": [
             {
@@ -198,7 +200,8 @@
             ""OrgnlEndToEndId"": ""123456789012345678"",
             ""TxSts"": ""ACTC"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""AddtlInf"": ""Redirect pending""
             },
             ""OrgnlTxRef"": {
             ""PmtTpInf"": {
@@ -215,7 +218,7 @@
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 450.75 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } }] } } ] } },
+            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } }] } ] } },
             ""_links"": {
             ""initialSepaRequestToPayUri"": {
             ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
@@ -236,13 +239,13 @@
             ""CdtrPmtActvtnReqStsRpt"": {
             ""GrpHdr"": {
             ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
-            ""CreDtTm"": ""2026-02-11T14:00:00Z"",
+            ""CreDtTm"": ""2026-02-11T14:00:00.000Z"",
             ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
             ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00Z""
+            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00.000Z""
             },
             ""OrgnlPmtInfAndSts"": [
             {
@@ -253,7 +256,8 @@
             ""OrgnlEndToEndId"": ""123456789012345678"",
             ""TxSts"": ""ACTC"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""AddtlInf"": ""Redirect pending""
             },
             ""OrgnlTxRef"": {
             ""PmtTpInf"": {
@@ -270,7 +274,7 @@
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 450.75 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } }] } } ] } },
+            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } }] } ] } },
             ""_links"": {
             ""initialSepaRequestToPayUri"": {
             ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
@@ -292,13 +296,13 @@
             ""CdtrPmtActvtnReqStsRpt"": {
             ""GrpHdr"": {
             ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
-            ""CreDtTm"": ""2026-02-11T14:05:00Z"",
+            ""CreDtTm"": ""2026-02-11T14:05:00.000Z"",
             ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
             ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00Z""
+            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00.000Z""
             },
             ""OrgnlPmtInfAndSts"": [
             {
@@ -309,7 +313,8 @@
             ""OrgnlEndToEndId"": ""987654321098765432"",
             ""TxSts"": ""RJCT"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Rsn"": { ""Cd"": ""MS03"" }
             },
             ""OrgnlTxRef"": {
             ""PmtTpInf"": {
@@ -351,13 +356,13 @@
             ""CdtrPmtActvtnReqStsRpt"": {
             ""GrpHdr"": {
             ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
-            ""CreDtTm"": ""2026-02-11T14:05:00Z"",
+            ""CreDtTm"": ""2026-02-11T14:05:00.000Z"",
             ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
             ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00Z""
+            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00.000Z""
             },
             ""OrgnlPmtInfAndSts"": [
             {
@@ -368,7 +373,8 @@
             ""OrgnlEndToEndId"": ""987654321098765432"",
             ""TxSts"": ""RJCT"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Rsn"": { ""Cd"": ""MS03"" }
             },
             ""OrgnlTxRef"": {
             ""PmtTpInf"": {
