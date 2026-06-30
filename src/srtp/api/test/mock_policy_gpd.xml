@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;GHIJKL34M56N789O&quot;))">
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;TYJLTY06A11D630J&quot;))">
                 <return-response>
                     <set-status code="400" reason="Bad Request" />
                     <set-header name="Content-Type" exists-action="override">
@@ -22,7 +22,7 @@
                     </set-header>
                 </return-response>
             </when>
-            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;PQRSTU56V78W901P&quot;))">
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;WPOLCQ72E14E278X&quot;))">
                 <return-response>
                     <set-status code="401" reason="Unauthorized" />
                     <set-header name="Content-Type" exists-action="override">
@@ -30,7 +30,7 @@
                     </set-header>
                 </return-response>
             </when>
-            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;XYZABC78D90E123Q&quot;))">
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;MSTHTZ25P19A540T&quot;))">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
                     <set-header name="Content-Type" exists-action="override">
@@ -38,7 +38,7 @@
                     </set-header>
                 </return-response>
             </when>
-            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;DEFXYZ90F12G345R&quot;))">
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;WMCPSJ17L23L318D&quot;))">
                 <return-response>
                     <set-status code="406" reason="Not Acceptable" />
                     <set-header name="Content-Type" exists-action="override">
@@ -46,7 +46,7 @@
                     </set-header>
                 </return-response>
             </when>
-            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;HIJKLM12H34I567S&quot;))">
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;TVTDBY87A24I163F&quot;))">
                 <return-response>
                     <set-status code="409" reason="Conflict" />
                     <set-header name="Content-Type" exists-action="override">
@@ -54,7 +54,7 @@
                     </set-header>
                 </return-response>
             </when>
-            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;KLMNOP34J56K789T&quot;))">
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;CDDXWE97E08K703Y&quot;))">
                 <return-response>
                     <set-status code="415" reason="Unsupported Media Type" />
                     <set-header name="Content-Type" exists-action="override">
@@ -62,7 +62,7 @@
                     </set-header>
                 </return-response>
             </when>
-            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;OPQRST56L78M901U&quot;))">
+            <when condition="@(context.Request.Body.As<String>(preserveContent: true).Contains(&quot;DRBHYD07M13E835B&quot;))">
                 <return-response>
                     <set-status code="429" reason="Too Many Requests" />
                     <set-header name="Content-Type" exists-action="override">
