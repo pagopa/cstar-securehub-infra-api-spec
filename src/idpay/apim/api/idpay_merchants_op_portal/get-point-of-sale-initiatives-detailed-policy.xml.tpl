@@ -11,34 +11,18 @@
     - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.
 -->
 <policies>
-  <inbound>
-    <base />
-
-    <set-variable name="pii"
-      value="@(context.Request.MatchedParameters.ContainsKey("userFiscalCode")
-       ? (string)context.Request.MatchedParameters["userFiscalCode"]
-       : null)" />
-
-    <include-fragment fragment-id="idpay-datavault-tokenizer" />
-    <choose>
-      <when condition="@(context.Variables["pdv_token"] != null)">
-      <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaymerchant" />
-      <rewrite-uri template="@("/idpay/merchant/portal/initiatives/" + context.Request.MatchedParameters["initiativeId"] + "/reported-user/" + context.Variables["pdv_token"])" />
-    </when>
-    <otherwise>
-      <return-response>
-        <set-status code="401" reason="Unauthorized" />
-      </return-response>
-    </otherwise>
-  </choose>
-</inbound>
-<backend>
-<base />
-</backend>
-<outbound>
-<base />
-</outbound>
-<on-error>
-<base />
-</on-error>
-  </policies>
+    <inbound>
+        <base />
+         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaymerchant" />
+        <rewrite-uri template="@("/idpay/merchant/portal/point-of-sale/initiatives")" />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

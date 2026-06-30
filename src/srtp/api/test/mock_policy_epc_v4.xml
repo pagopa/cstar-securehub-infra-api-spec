@@ -2,7 +2,7 @@
   <inbound>
     <base />
     <choose>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;QBICLE31R41A110G&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;DDSRSC61L26M520O&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -15,24 +15,25 @@
             ""CdtrPmtActvtnReqStsRpt"": {
             ""GrpHdr"": {
             ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
-            ""CreDtTm"": ""2026-02-11T14:00:00Z"",
+            ""CreDtTm"": ""2026-02-11T14:00:00.000Z"",
             ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
             ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00Z""
+            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00.000Z""
             },
             ""OrgnlPmtInfAndSts"": [
             {
             ""OrgnlPmtInfId"": ""f47ac10b-58cc-4372-a567-0e02b2c3d479"",
-            ""TxInfAndSts"": {
+            ""TxInfAndSts"": [{
             ""StsId"": ""550e8400-e29b-41d4-a716-446655440000"",
             ""OrgnlInstrId"": ""TestRtpMessagePL098765432109876543"",
             ""OrgnlEndToEndId"": ""123456789012345678"",
             ""TxSts"": ""ACTC"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""AddtlInf"": ""Redirect pending""
             },
             ""OrgnlTxRef"": {
             ""PmtTpInf"": {
@@ -49,7 +50,7 @@
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 450.75 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } } } ] } },
+            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } }] } ] } },
             ""_links"": {
             ""initialSepaRequestToPayUri"": {
             ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
@@ -57,7 +58,7 @@
             }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;CJHKMM89B16L936J&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;WCZQJA98L17M134D&quot;))">
         <return-response>
           <set-status code="400" reason="Bad Request" />
           <set-header name="Content-Type" exists-action="override">
@@ -70,13 +71,13 @@
             ""CdtrPmtActvtnReqStsRpt"": {
             ""GrpHdr"": {
             ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
-            ""CreDtTm"": ""2026-02-11T14:05:00Z"",
+            ""CreDtTm"": ""2026-02-11T14:05:00.000Z"",
             ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
             ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00Z""
+            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00.000Z""
             },
             ""OrgnlPmtInfAndSts"": [
             {
@@ -87,7 +88,8 @@
             ""OrgnlEndToEndId"": ""987654321098765432"",
             ""TxSts"": ""RJCT"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Rsn"": { ""Cd"": ""MS03"" }
             },
             ""OrgnlTxRef"": {
             ""PmtTpInf"": {
@@ -115,7 +117,7 @@
             }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;GXSHCN92D13E386R&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;JWTGXY60H04A867N&quot;))">
         <return-response>
           <set-status code="502" reason="Bad Gateway"/>
           <set-header name="Content-Type" exists-action="override">
@@ -123,25 +125,25 @@
           </set-header>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;RSSMRA80A01H501W&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;TXUKLK89B19A440L&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body>@("{ \"status\": \"success\", \"message\": \"Mock response for RSSMRA80A01H501W\" }")</set-body>
+          <set-body template="none">"success"</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;PWUZMY64L16L746M&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;DWNVGH98B14J906U&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body template="none">{"VoidResponse":"6180e0d9-4d6d-4617-9dc6-a6c786395617 processed correctly"}</set-body>
+          <set-body template="none">"6180e0d9-4d6d-4617-9dc6-a6c786395617 processed correctly"</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;KCUFWB22H17E127J&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;LBPVHV11P26J985J&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -150,7 +152,7 @@
           <set-body>InvalidResponse</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;KNUPNC21C25E872Z&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;XZLNHT75H27K606T&quot;))">
         <return-response>
           <set-status code="400" reason="Bad request" />
           <set-header name="Content-Type" exists-action="override">
@@ -159,7 +161,7 @@
           <set-body template="none">{"InvalidResponse"</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;TJCCHE55L01J301L&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;GJKJDP02A27D174V&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -168,7 +170,7 @@
           <set-body template="none">{"InvalidResponse"</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;BNCLCU85M15F205W&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MFNCRG01B20B521C&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -181,24 +183,25 @@
             ""CdtrPmtActvtnReqStsRpt"": {
             ""GrpHdr"": {
             ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
-            ""CreDtTm"": ""2026-02-11T14:00:00Z"",
+            ""CreDtTm"": ""2026-02-11T14:00:00.000Z"",
             ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
             ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00Z""
+            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00.000Z""
             },
             ""OrgnlPmtInfAndSts"": [
             {
             ""OrgnlPmtInfId"": ""f47ac10b-58cc-4372-a567-0e02b2c3d479"",
-            ""TxInfAndSts"": {
+            ""TxInfAndSts"": [{
             ""StsId"": ""550e8400-e29b-41d4-a716-446655440000"",
             ""OrgnlInstrId"": ""TestRtpMessagePL098765432109876543"",
             ""OrgnlEndToEndId"": ""123456789012345678"",
             ""TxSts"": ""ACTC"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""AddtlInf"": ""Redirect pending""
             },
             ""OrgnlTxRef"": {
             ""PmtTpInf"": {
@@ -215,11 +218,15 @@
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 450.75 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } } } ] } } }";
+            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } }] } ] } },
+            ""_links"": {
+            ""initialSepaRequestToPayUri"": {
+            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
+            ""templated"": false } } }";
             }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;RSSGNN92P20H501Z&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;CYHBXW83S01M976B&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -232,24 +239,25 @@
             ""CdtrPmtActvtnReqStsRpt"": {
             ""GrpHdr"": {
             ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
-            ""CreDtTm"": ""2026-02-11T14:00:00Z"",
+            ""CreDtTm"": ""2026-02-11T14:00:00.000Z"",
             ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
             ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00Z""
+            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00.000Z""
             },
             ""OrgnlPmtInfAndSts"": [
             {
             ""OrgnlPmtInfId"": ""f47ac10b-58cc-4372-a567-0e02b2c3d479"",
-            ""TxInfAndSts"": {
+            ""TxInfAndSts"": [{
             ""StsId"": ""550e8400-e29b-41d4-a716-446655440000"",
             ""OrgnlInstrId"": ""TestRtpMessagePL098765432109876543"",
             ""OrgnlEndToEndId"": ""123456789012345678"",
             ""TxSts"": ""ACTC"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""AddtlInf"": ""Redirect pending""
             },
             ""OrgnlTxRef"": {
             ""PmtTpInf"": {
@@ -266,7 +274,7 @@
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 450.75 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } } } ] } },
+            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } }] } ] } },
             ""_links"": {
             ""initialSepaRequestToPayUri"": {
             ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
@@ -275,7 +283,7 @@
             }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;DWQJHC32M47H159O&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;LMIMDH38M28I573U&quot;))">
         <return-response>
           <set-status code="400" reason="Bad Request" />
           <set-header name="Content-Type" exists-action="override">
@@ -288,13 +296,13 @@
             ""CdtrPmtActvtnReqStsRpt"": {
             ""GrpHdr"": {
             ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
-            ""CreDtTm"": ""2026-02-11T14:05:00Z"",
+            ""CreDtTm"": ""2026-02-11T14:05:00.000Z"",
             ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
             ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00Z""
+            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00.000Z""
             },
             ""OrgnlPmtInfAndSts"": [
             {
@@ -305,7 +313,8 @@
             ""OrgnlEndToEndId"": ""987654321098765432"",
             ""TxSts"": ""RJCT"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Rsn"": { ""Cd"": ""MS03"" }
             },
             ""OrgnlTxRef"": {
             ""PmtTpInf"": {
@@ -334,7 +343,7 @@
             }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;NDRSCC78T31H304R&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;PCSRFO44D22G286S&quot;))">
         <return-response>
           <set-status code="400" reason="Bad Request" />
           <set-header name="Content-Type" exists-action="override">
@@ -347,13 +356,13 @@
             ""CdtrPmtActvtnReqStsRpt"": {
             ""GrpHdr"": {
             ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
-            ""CreDtTm"": ""2026-02-11T14:05:00Z"",
+            ""CreDtTm"": ""2026-02-11T14:05:00.000Z"",
             ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
             ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00Z""
+            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00.000Z""
             },
             ""OrgnlPmtInfAndSts"": [
             {
@@ -364,7 +373,8 @@
             ""OrgnlEndToEndId"": ""987654321098765432"",
             ""TxSts"": ""RJCT"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Rsn"": { ""Cd"": ""MS03"" }
             },
             ""OrgnlTxRef"": {
             ""PmtTpInf"": {
@@ -384,7 +394,11 @@
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 120.0 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-15Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" } } } } ] } } }";
+            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" } } } } ] } },
+            ""_links"": {
+            ""initialSepaRequestToPayUri"": {
+            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
+            ""templated"": false } } }";
             }</set-body>
         </return-response>
       </when>
