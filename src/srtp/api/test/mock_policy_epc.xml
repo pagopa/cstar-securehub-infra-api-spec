@@ -57,7 +57,7 @@
             }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;LSSUDV05L25B272V&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;CJHKMM89B16L936J&quot;))">
         <return-response>
           <set-status code="400" reason="Bad Request" />
           <set-header name="Content-Type" exists-action="override">
@@ -115,7 +115,7 @@
             }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;RSSMRA85T10X000D&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;GXSHCN92D13E386R&quot;))">
         <return-response>
           <set-status code="502" reason="Bad Gateway"/>
           <set-header name="Content-Type" exists-action="override">
@@ -132,7 +132,7 @@
           <set-body>@("{ \"status\": \"success\", \"message\": \"Mock response for RSSMRA80A01H501W\" }")</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;NLTJEU11T67X000L&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;PWUZMY64L16L746M&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -141,7 +141,7 @@
           <set-body template="none">{"VoidResponse":"6180e0d9-4d6d-4617-9dc6-a6c786395617 processed correctly"}</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;QPRLKI34W21X000N&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;KCUFWB22H17E127J&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -150,7 +150,7 @@
           <set-body>InvalidResponse</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;RPRLKI34W21X000N&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;KNUPNC21C25E872Z&quot;))">
         <return-response>
           <set-status code="400" reason="Bad request" />
           <set-header name="Content-Type" exists-action="override">
@@ -159,7 +159,7 @@
           <set-body template="none">{"InvalidResponse"</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;SPRLKI34W21X000N&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;TJCCHE55L01J301L&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
