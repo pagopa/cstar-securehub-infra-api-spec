@@ -699,7 +699,6 @@ components:
     SelfConsentDTO:
       oneOf:
         - $ref: "#/components/schemas/SelfConsentBoolDTO"
-        - $ref: "#/components/schemas/SelfConsentMultiDTO"
         - $ref: "#/components/schemas/SelfConsentTextDTO"
         - $ref: "#/components/schemas/SelfConsentMultiTypeDTO"
     ListUsersOnboardingStatusDTO:
@@ -786,6 +785,44 @@ components:
           description: >-
             ENG: Self-declaration sub-description - IT: Sotto descrizione
             del record di autodichiarazione
+        value:
+          type: string
+          example: "1, 2"
+          description: >-
+            ENG: Indicates self-consent values - IT: Indica i valori per gli
+            auto consensi
+        verify:
+          type: boolean
+          description: >
+            ENG: Indicates whether the selected option requires an eligibility verification.
+            IT: Indica se l'opzione selezionata richiede una verifica di ammissibilità.
+          example: true
+        thresholdCode:
+          type: string
+          description: >
+            ENG: Threshold identifier used during the eligibility verification.
+            IT: Identificativo della soglia utilizzata durante la verifica di ammissibilità.
+          example: BELET25
+        beneficiaryBudgetCentsMin:
+          type: integer
+          format: int64
+          description: >
+            ENG: Budget assigned if the verification is not successful.
+            IT: Importo assegnato in caso di verifica non superata.
+          example: 10000
+        beneficiaryBudgetCentsMax:
+          type: integer
+          format: int64
+          description: >
+            ENG: Budget assigned if the verification is successful.
+            IT: Importo assegnato in caso di verifica superata.
+          example: 20000
+        blockingVerify:
+          type: boolean
+          description: >
+            ENG: Indicates whether the verification outcome is mandatory to access the initiative.
+            IT: Indica se il superamento della verifica è obbligatorio per accedere all'iniziativa.
+          example: true
     SelfConsentBoolDTO:
       type: object
       required:
@@ -804,25 +841,6 @@ components:
         accepted:
           type: boolean
           description: "ENG: Indicates whether the self-consent is accepted or not - IT: Indica se l'auto consenso è accettato o no"
-    SelfConsentMultiDTO:
-      type: object
-      required:
-        - _type
-        - code
-        - value
-      properties:
-        _type:
-          type: string
-          enum:
-            - multi
-          description: "ENG: Self-consent value type - IT: Auto consenso di tipo multipli"
-        code:
-          type: string
-          description: "ENG: Self-consent code - IT: Codice dell'auto consenso"
-        value:
-          type: string
-          example: "0, 1"
-          description: "ENG: Indicates self-consent values - IT: Indica i valori per gli auto consensi"
     SelfConsentTextDTO:
       type: object
       required:
@@ -1077,7 +1095,7 @@ components:
           type: string
         beneficiaryKnown:
           type: boolean
-        beneficiaryBudget:
+        beneficiaryBudgetFixedCents:
           type: number
           example: 10
         startDate:
@@ -1200,7 +1218,6 @@ components:
       type: object
       anyOf:
         - $ref: "#/components/schemas/SelfCriteriaBoolDTO"
-        - $ref: "#/components/schemas/SelfCriteriaMultiDTO"
         - $ref: "#/components/schemas/SelfCriteriaMultiTypeDTO"
         - $ref: "#/components/schemas/SelfCriteriaTextDTO"
     SelfCriteriaBoolDTO:
@@ -1233,42 +1250,8 @@ components:
         code:
           type: string
           description: "ENG: Self-declaration code - IT: Codice dell'autodichiarazione"
-    SelfCriteriaMultiDTO:
-      title: SelfCriteriaMultiDTO
-      type: object
-      properties:
-        _type:
-          type: string
-          description: >-
-            ENG: Self-declaration value type - IT: Autodichiarazione di tipo
-            multipli
-          enum:
-            - multi
-        description:
-          type: string
-          example: "descrizione"
-          description: >-
-            ENG: Self-declaration description - IT: Descrizione
-            dell'autodichiarazione
-        subDescription:
-          type: string
-          example: "sotto descrizione"
-          description: >-
-            ENG: Self-declaration sub-description - IT: Sotto descrizione
-            dell'autodichiarazione
-        value:
-          type: array
-          items:
-            $ref: "#/components/schemas/RowDataDTO"
-          description: >-
-            ENG: Indicates self-declaration values - IT: Indica i valori per
-            l'autodichiarazione
-          maxItems: 10
-        code:
-          type: string
-          description: "ENG: Self-declaration code - IT: Codice dell'autodichiarazione"
     SelfCriteriaMultiTypeDTO:
-      title: SelfCriteriaMultiDTO
+      title: SelfCriteriaMultiTypeDTO
       type: object
       properties:
         _type:
