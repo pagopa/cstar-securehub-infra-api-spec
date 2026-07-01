@@ -16,7 +16,7 @@
             ""GrpHdr"": {
             ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
             ""CreDtTm"": ""2026-02-11T14:00:00.000Z"",
-            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
@@ -32,7 +32,7 @@
             ""OrgnlEndToEndId"": ""123456789012345678"",
             ""TxSts"": ""ACTC"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } },
             ""AddtlInf"": ""Redirect pending""
             },
             ""OrgnlTxRef"": {
@@ -45,8 +45,8 @@
             ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-ID-112233"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
             ""Nm"": ""Azienda Creditrice S.p.A.""
             },
-            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
-            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 450.75 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
@@ -72,7 +72,7 @@
             ""GrpHdr"": {
             ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
             ""CreDtTm"": ""2026-02-11T14:05:00.000Z"",
-            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
@@ -88,7 +88,7 @@
             ""OrgnlEndToEndId"": ""987654321098765432"",
             ""TxSts"": ""RJCT"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } },
             ""Rsn"": { ""Cd"": ""MS03"" }
             },
             ""OrgnlTxRef"": {
@@ -104,8 +104,8 @@
             ""Dbtr"": {
             ""Id"": { ""PrvtId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""POID"" } } } }
             },
-            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
-            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 120.0 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-15Z"" },
@@ -184,7 +184,7 @@
             ""GrpHdr"": {
             ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
             ""CreDtTm"": ""2026-02-11T14:00:00.000Z"",
-            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
@@ -200,7 +200,7 @@
             ""OrgnlEndToEndId"": ""123456789012345678"",
             ""TxSts"": ""ACTC"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } },
             ""AddtlInf"": ""Redirect pending""
             },
             ""OrgnlTxRef"": {
@@ -213,16 +213,12 @@
             ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-ID-112233"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
             ""Nm"": ""Azienda Creditrice S.p.A.""
             },
-            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
-            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 450.75 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } }] } ] } },
-            ""_links"": {
-            ""initialSepaRequestToPayUri"": {
-            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
-            ""templated"": false } } }";
+            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } }] } ] } } }";
             }</set-body>
         </return-response>
       </when>
@@ -240,7 +236,7 @@
             ""GrpHdr"": {
             ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
             ""CreDtTm"": ""2026-02-11T14:00:00.000Z"",
-            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
@@ -256,7 +252,7 @@
             ""OrgnlEndToEndId"": ""123456789012345678"",
             ""TxSts"": ""ACTC"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } },
             ""AddtlInf"": ""Redirect pending""
             },
             ""OrgnlTxRef"": {
@@ -269,8 +265,8 @@
             ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-ID-112233"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
             ""Nm"": ""Azienda Creditrice S.p.A.""
             },
-            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
-            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 450.75 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
@@ -297,7 +293,7 @@
             ""GrpHdr"": {
             ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
             ""CreDtTm"": ""2026-02-11T14:05:00.000Z"",
-            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
@@ -313,7 +309,7 @@
             ""OrgnlEndToEndId"": ""987654321098765432"",
             ""TxSts"": ""RJCT"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } },
             ""Rsn"": { ""Cd"": ""MS03"" }
             },
             ""OrgnlTxRef"": {
@@ -329,8 +325,8 @@
             ""Dbtr"": {
             ""Id"": { ""PrvtId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""POID"" } } } }
             },
-            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
-            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 120.0 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-15Z"" },
@@ -357,7 +353,7 @@
             ""GrpHdr"": {
             ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
             ""CreDtTm"": ""2026-02-11T14:05:00.000Z"",
-            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } }
+            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } }
             },
             ""OrgnlGrpInfAndSts"": {
             ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
@@ -373,7 +369,7 @@
             ""OrgnlEndToEndId"": ""987654321098765432"",
             ""TxSts"": ""RJCT"",
             ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP04"" } } },
+            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } },
             ""Rsn"": { ""Cd"": ""MS03"" }
             },
             ""OrgnlTxRef"": {
@@ -389,16 +385,12 @@
             ""Dbtr"": {
             ""Id"": { ""PrvtId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""POID"" } } } }
             },
-            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
-            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP04"" } },
+            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
+            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
             ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } },
             ""Amt"": { ""InstdAmt"": 120.0 },
             ""ReqdExctnDt"": { ""Dt"": ""2026-02-15Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" } } } } ] } },
-            ""_links"": {
-            ""initialSepaRequestToPayUri"": {
-            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
-            ""templated"": false } } }";
+            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" } } } } ] } } }";
             }</set-body>
         </return-response>
       </when>
