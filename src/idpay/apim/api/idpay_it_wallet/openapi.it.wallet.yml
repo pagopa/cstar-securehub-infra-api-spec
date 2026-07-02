@@ -322,9 +322,11 @@ components:
         - initiativeId
         - initiativeName
         - trxDate
+        - trxEndDate
         - trxExpirationSeconds
         - residualBudgetCents
         - status
+        - voucherAmountCents
       properties:
         id:
           type: string
@@ -353,6 +355,11 @@ components:
           format: date-time
           maxLength: 30
           description: 'ENG: Transaction date - IT: Data della transazione'
+        trxEndDate:
+          type: string
+          format: date-time
+          maxLength: 30
+          description: 'ENG: Transaction end date - IT: Data di fine della transazione'
         trxExpirationSeconds:
           type: number
           description: "ENG: Expiration time of the transaction, in seconds - IT: Scadenza della transazione, in secondi"
@@ -369,6 +376,12 @@ components:
           description: >-
             ENG: Status of the payment [CREATED: Created] - IT: Stato del pagamento [CREATED:
             Creato]
+        voucherAmountCents:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 999999999999999
+          description: 'ENG: Voucher amount in cents - IT: Importo del voucher in centesimi'
   securitySchemes:
     bearerAuth:
       type: http
