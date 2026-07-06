@@ -35,7 +35,6 @@
             </audiences>
             <issuers>
                 <issuer>${selfcare-issuer}</issuer>
-                <issuer>PAGOPA</issuer>
             </issuers>
         </validate-jwt>
         <set-variable name="institutionId" value="@{
@@ -48,46 +47,22 @@
             return selcToken.Claims.GetValueOrDefault("uid", "{}");
         }" />
 
-        <set-variable name="isSupport" value="@{
-            Jwt selcToken = (Jwt)context.Variables["outputToken"];
-            JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
-            var roles = organization["roles"] as JArray;
-            return roles?.Any(r => r["role"]?.ToString() == "support") ?? false;
-        }" />
-
         <send-request mode="new" response-variable-name="institutionResponse" timeout="10" ignore-error="false">
-            <set-url>@("${selfcare_base_url}"+"/institutions/"+context.Variables["institutionId"])</set-url>
-            <set-method>GET</set-method>
-            <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
-                <value>{{${selfcare_api_key_reference}}}</value>
-            </set-header>
+                    <set-url>@("${selfcare_base_url}"+"/institutions/"+context.Variables["institutionId"])</set-url>
+                    <set-method>GET</set-method>
+                    <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
+                        <value>{{${selfcare_api_key_reference}}}</value>
+                    </set-header>
         </send-request>
-
-        <choose>
-            <when condition="@(!(bool)context.Variables["isSupport"])">
-                <send-request mode="new" response-variable-name="userResponse" timeout="10" ignore-error="false">
+        <send-request mode="new" response-variable-name="userResponse" timeout="10" ignore-error="false">
                     <set-url>@("${selfcare_base_url}/users/"+context.Variables["userId"]+"?institutionId="+context.Variables["institutionId"])</set-url>
                     <set-method>GET</set-method>
                     <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
                         <value>{{${selfcare_api_key_reference}}}</value>
                     </set-header>
-                </send-request>
-            </when>
-        </choose>
-
+        </send-request>
         <choose>
-            <when condition="@{
-                var institutionOk = ((IResponse)context.Variables["institutionResponse"]).StatusCode == 200;
-                var isSupport = (bool)context.Variables["isSupport"];
-
-                var userOk = isSupport ||
-                    (
-                        context.Variables.ContainsKey("userResponse") &&
-                        ((IResponse)context.Variables["userResponse"]).StatusCode == 200
-                    );
-
-                return institutionOk && userOk;
-            }">
+            <when condition="@(((IResponse)context.Variables["institutionResponse"]).StatusCode == 200 && ((IResponse)context.Variables["userResponse"]).StatusCode == 200)">
                 <set-variable name="idpayPortalToken" value="@{
                     Jwt selcToken = (Jwt)context.Variables["outputToken"];
                     var JOSEProtectedHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
@@ -106,21 +81,12 @@
                     JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
                     var org_id = organization["id"];
                     var org_name = organization["name"];
-                    var roles = organization["roles"] as JArray;
-                    var inputRole = roles?.FirstOrDefault()?["role"]?.ToString();
-                    var inputPartyRole = roles?.FirstOrDefault()?["partyRole"]?.ToString();
-
+                    var org_party_role = organization.Value<JArray>("roles")?.FirstOrDefault()?.Value<string>("partyRole");
                     string org_role;
-                    string org_party_role = inputPartyRole;
                     var fiscalCode = organization["fiscal_code"]?.ToString();
-
-                    if (inputRole == "support")
+                    if (fiscalCode == "${invitalia_fc}")
                     {
-                        org_role = "support";
-                        org_party_role = inputPartyRole ?? "PRODUCT";
-                    }
-                    else if (fiscalCode == "${invitalia_fc}")
-                    {
+                        var roles = organization["roles"] as JArray;
                         if (roles != null && roles.Any(r => r["role"]?.ToString() == "operator2"))
                         {
                             org_role = "invitalia_admin";
@@ -138,23 +104,16 @@
                     }
                     var response = (IResponse)context.Variables["institutionResponse"];
                     var body = response.Body.As<JObject>();
-                    var org_address = (string)body["address"] + ", " + (string)body["zipCode"] + " " + (string)body["city"] + " (" + (string)body["county"] + ")";
+                    var org_address = (string)body["address"] +", " + (string)body["zipCode"] +" "+ (string)body["city"] + " ("+(string)body["county"] + ")";
                     var org_pec = (string)body["digitalAddress"];
                     var org_fc = (string)body["taxCode"];
                     var onboardingArray = body["onboarding"] as JArray;
                     var org_vat = onboardingArray?
                         .Children<JObject>()
                         .FirstOrDefault(o => o["billing"] != null)?["billing"]?["vatNumber"]?.ToString() ?? "-";
-
-                    var org_email = "";
-
-                    if (!(bool)context.Variables["isSupport"])
-                    {
-                        response = (IResponse)context.Variables["userResponse"];
-                        body = response.Body.As<JObject>();
-                        org_email = (string)body["email"];
-                    }
-
+                    response = (IResponse)context.Variables["userResponse"];
+                    body = response.Body.As<JObject>();
+                    var org_email =  (string)body["email"];
                     var payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
                         new {
                             iat,
@@ -178,7 +137,7 @@
 
                     var message = ($"{JOSEProtectedHeader}.{payload}");
 
-                    using (RSA rsa = context.Deployment.Certificates["${jwt_cert_signing_thumbprint}"].GetRSAPrivateKey())
+                     using (RSA rsa = context.Deployment.Certificates["${jwt_cert_signing_thumbprint}"].GetRSAPrivateKey())
                     {
                         var signature = rsa.SignData(Encoding.UTF8.GetBytes(message), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                         return message + "." + Convert.ToBase64String(signature).Split('=')[0].Replace('+', '-').Replace('/', '_');

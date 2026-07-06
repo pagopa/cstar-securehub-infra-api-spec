@@ -55,6 +55,7 @@
         </validate-jwt>
         <set-variable name="organizationId" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_id", ""))" />
         <set-variable name="organizationRole" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_role", ""))" />
+        <set-variable name="organizationEmail" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_email", ""))" />
         <set-variable name="organizationName" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_name", ""))" />
         <set-variable name="name" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("name", ""))" />
         <set-variable name="family_name" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("family_name", ""))" />
@@ -64,6 +65,9 @@
         </set-header>
         <set-header name="x-user-id" exists-action="override">
             <value>@((String)context.Variables["userId"])</value>
+        </set-header>
+        <set-header name="x-user-email" exists-action="override">
+            <value>@((String)context.Variables["organizationEmail"])</value>
         </set-header>
         <set-header name="x-user-name" exists-action="override">
             <value>@((String)context.Variables["family_name"]+" "+(String)context.Variables["name"])</value>

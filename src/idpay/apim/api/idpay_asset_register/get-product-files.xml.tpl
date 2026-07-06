@@ -14,9 +14,7 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore"
-            && context.Variables.GetValueOrDefault("organizationRole", "") != "support")
-            ">
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore")">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
                     <set-header name="Content-Type" exists-action="override">
@@ -26,7 +24,7 @@
             </when>
         </choose>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
-        <rewrite-uri template="@("/idpay/register/initiatives/{initiativeId}/product-files")" />
+        <rewrite-uri template="@("/idpay/register/product-files")" />
     </inbound>
     <backend>
         <base />

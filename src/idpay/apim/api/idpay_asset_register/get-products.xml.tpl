@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia_admin" && context.Variables.GetValueOrDefault("organizationRole", "") != "support")">
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "operatore" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia_admin")">
                 <return-response>
                     <set-status code="403" reason="Forbidden" />
                     <set-header name="Content-Type" exists-action="override">
@@ -24,8 +24,7 @@
             </when>
         </choose>
         <choose>
-            <when condition="@((context.Variables.GetValueOrDefault("organizationRole",  "")  == "operatore"
-                    || context.Variables.GetValueOrDefault("organizationRole",  "")  == "support")
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole",  "")  == "operatore"
                     &&  (string.IsNullOrEmpty(context.Request.Url.Query.GetValueOrDefault("organizationId", ""))
                     ||  context.Request.Headers.GetValueOrDefault("x-organization-id", "")  !=  context.Request.Url.Query.GetValueOrDefault("organizationId", "")))">
                 <return-response>
@@ -37,7 +36,7 @@
             </when>
         </choose>
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
-        <rewrite-uri template="@("/idpay/register/initiatives/{initiativeId}/products")" />
+        <rewrite-uri template="@("/idpay/register/products")" />
     </inbound>
     <backend>
         <base />

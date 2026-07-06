@@ -102,15 +102,17 @@ module "idpay_itn_register_portal_api" {
       })
     },
     {
-      operation_id = "getProducersByInitiative"
-      xml_content = templatefile("./apim/api/idpay_asset_register/get-producers.xml.tpl", {
+      operation_id = "getBatchNameList"
+      xml_content = templatefile("./apim/api/idpay_asset_register/get-product-files-batch-name.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
-      operation_id = "getBatchNameList"
-      xml_content = templatefile("./apim/api/idpay_asset_register/get-product-files-batch-name.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      operation_id = "getInstitutionsList"
+      xml_content = templatefile("./apim/api/idpay_asset_register/get-institutions.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname,
+        selc_base_url                  = var.selc_base_url,
+        selfcare_api_key_reference     = azurerm_api_management_named_value.selfcare_api_key.display_name
       })
     },
     {
@@ -154,12 +156,6 @@ module "idpay_itn_register_portal_api" {
     {
       operation_id = "getInitiatives"
       xml_content = templatefile("./apim/api/idpay_asset_register/get-initiatives.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-      })
-    },
-    {
-      operation_id = "updateOperativeEmail"
-      xml_content = templatefile("./apim/api/idpay_asset_register/put-update-email.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     }
