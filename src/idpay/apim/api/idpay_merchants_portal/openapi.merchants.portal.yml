@@ -5135,20 +5135,17 @@ components:
         initiativeName:
           type: string
           example: "Bonus TV"
+        organizationName:
+          type: string
+          example: "Bonus TV"
         status:
           type: string
           example: "PUBLISHED"
-        startDate:
-          type: string
-          format: date
-          example: "2024-01-01"
-        endDate:
-          type: string
-          format: date
-          example: "2024-12-31"
         onboardStatus:
           type: string
-          example: "ONBOARDABLE"
+          enum:
+            - ONBOARDABLE
+            - NOT_ONBOARDABLE
     ErrorDTO:
       type: object
       required:
