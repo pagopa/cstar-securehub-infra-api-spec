@@ -2,7 +2,7 @@
   <inbound>
     <base />
     <choose>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999000&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999000&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -11,7 +11,7 @@
           <set-body template="none">{}</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999001&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999001&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -20,7 +20,7 @@
           <set-body template="none">"Test string"</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999002&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999002&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -29,7 +29,7 @@
           <set-body template="none">{"test": "test_value"}</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999003&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999003&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -239,7 +239,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999004&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999004&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -446,7 +446,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999005&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999005&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -656,7 +656,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999006&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999006&quot;))">
         <return-response>
           <set-status code="400" reason="Bad request" />
           <set-header name="Content-Type" exists-action="override">
@@ -692,7 +692,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999007&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999007&quot;))">
         <return-response>
           <set-status code="401" reason="Unauthorized" />
           <set-header name="Content-Type" exists-action="override">
@@ -728,7 +728,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999008&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999008&quot;))">
         <return-response>
           <set-status code="404" reason="Not Found" />
           <set-header name="Content-Type" exists-action="override">
@@ -764,7 +764,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999009&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999009&quot;))">
         <return-response>
           <set-status code="406" reason="Not Acceptable" />
           <set-header name="Content-Type" exists-action="override">
@@ -800,7 +800,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999010&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999010&quot;))">
         <return-response>
           <set-status code="410" reason="Gone" />
           <set-header name="Content-Type" exists-action="override">
@@ -836,7 +836,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999011&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999011&quot;))">
         <return-response>
           <set-status code="415" reason="Unsupported Media Type" />
           <set-header name="Content-Type" exists-action="override">
@@ -872,7 +872,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999012&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999012&quot;))">
         <return-response>
           <set-status code="422" reason="Unprocessable Entity" />
           <set-header name="Content-Type" exists-action="override">
@@ -908,7 +908,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999013&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999013&quot;))">
         <return-response>
           <set-status code="429" reason="Too Many Requests" />
           <set-header name="Content-Type" exists-action="override">
@@ -944,7 +944,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999014&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999014&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
@@ -1155,7 +1155,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999999015&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999015&quot;))">
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
