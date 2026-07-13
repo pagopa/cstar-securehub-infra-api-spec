@@ -3879,7 +3879,7 @@ components:
             properties:
               pointOfSaleId:
                 type: string
-              pointOfSaleName:
+              franchiseName:
                 type: string
         notAssociated:
           type: array
@@ -3889,7 +3889,7 @@ components:
             properties:
               pointOfSaleId:
                 type: string
-              pointOfSaleName:
+              franchiseName:
                 type: string
               reason:
                 type: string
@@ -5192,8 +5192,6 @@ components:
             $ref: "#/components/schemas/NotExcludedPointOfSaleDTO"
     ExcludedPointOfSaleDetailDTO:
       type: object
-      required:
-        - pointOfSaleId
       properties:
         pointOfSaleId:
           type: string
@@ -5203,9 +5201,22 @@ components:
       type: object
       required:
         - pointOfSaleId
+        - franchiseName
         - reason
       properties:
         pointOfSaleId:
+          type: string
+        franchiseName:
+          type: string
+        type:
+          type: string
+        address:
+          type: string
+        streetNumber:
+          type: string
+        city:
+          type: string
+        website:
           type: string
         reason:
           $ref: "#/components/schemas/PosOnboardingExclusionRejectionReason"
