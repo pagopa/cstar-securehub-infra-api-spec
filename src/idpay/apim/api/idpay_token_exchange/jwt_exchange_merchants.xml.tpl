@@ -36,6 +36,7 @@
             </audiences>
             <issuers>
                 <issuer>${selfcare-issuer}</issuer>
+                <issuer>PAGOPA</issuer>
             </issuers>
         </validate-jwt>
 
@@ -123,8 +124,11 @@
                     var org_id = organization["id"];
                     var org_vat = organization["fiscal_code"];
                     var org_name = organization["name"];
-                    var org_party_role = organization.Value<JArray>("roles").First().Value<string>("partyRole");
-                    var org_role = organization.Value<JArray>("roles").First().Value<string>("role");
+                    var roles = organization.Value<JArray>("roles");
+                    var selectedRole = roles?.FirstOrDefault(role => role.Value<string>("role") == "support")
+                        ?? roles?.FirstOrDefault();
+                    var org_party_role = selectedRole?.Value<string>("partyRole");
+                    var org_role = selectedRole?.Value<string>("role");
                     var scope = "transaction:invoicelifecycle:full";
                     var payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
                     new {
