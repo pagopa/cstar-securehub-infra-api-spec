@@ -8,7 +8,7 @@
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body>{"title":"Invalid request","detail":"Header 'Version' must not be sent for callback APIs."}</set-body>
+          <set-body>{"status":400,"error":"Bad Request","message":"Header 'Version' must not be sent for callback APIs."}</set-body>
         </return-response>
       </when>
     </choose>
