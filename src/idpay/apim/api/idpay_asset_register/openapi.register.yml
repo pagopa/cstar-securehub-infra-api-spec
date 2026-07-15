@@ -1093,6 +1093,14 @@ components:
         enabled:
           type: boolean
           description: Indicates whether the initiative is enabled for the organization
+        createdAt:
+          type: string
+          format: date-time
+          description: Date when the point of sale was linked to the initiative
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update date of the link
   securitySchemes:
     Bearer:
       type: apiKey
