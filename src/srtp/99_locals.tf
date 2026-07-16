@@ -154,6 +154,9 @@ locals {
         content_format = "openapi"
         content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
       }
+      api_policy = {
+        xml_content = file("./api/epc/callback_policy.xml")
+      }
     }
 
     # RTP Service Provider v1
