@@ -444,7 +444,7 @@ components:
       required:
       - OrgnlMsgId
       - OrgnlMsgNmId
-      - OrgnlCreDtTm'
+      - OrgnlCreDtTm
     OriginalPaymentInstruction31_EPC259-22_V4.0_DS08N:
       type: object
       properties:
