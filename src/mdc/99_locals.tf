@@ -485,5 +485,12 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_adminCallback = {
+      api_name     = "emd_backoffice"
+      operation_id = "adminCallback"
+      xml_content = templatefile("./api/emd_backoffice/post-admin-callback.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
   }
 }
