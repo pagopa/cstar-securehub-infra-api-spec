@@ -159,7 +159,6 @@ paths:
       responses:
         "204":
           description: No Content
-          
 components:
   schemas:
     AgentLinkV1:
