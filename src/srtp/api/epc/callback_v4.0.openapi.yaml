@@ -14,8 +14,8 @@ openapi: 3.0.3
 # the /v2 path segment.
 info:
   title: pagoPa RTP - OpenAPI 3.x
-  description: The API is designed for creating and sending payment requests through
-    the pagoPa system, with strict validation to ensure data integrity.
+  description: API for receiving SEPA Request-To-Pay callback (response/cancellation) messages (EPC259-22 V4.0)
+    from Payer SRTP Service Providers.
   version: 0.0.1
   contact:
     email: cstar@pagopa.it
@@ -34,6 +34,8 @@ servers:
 tags:
   - name: callback
     description: API Group aims to get the callback.
+  - name: callback-cancel
+    description: API Group aims to post cancellation callbacks.
 
 paths:
   /send:
@@ -2052,7 +2054,7 @@ components:
     Idempotency:
       name: Idempotency-key
       in: header
-      description: "MANDATORY header for clients calling our POST operations.\nIdempotency key header to be used with every POST operation.\n\nThe API client for one given payload has to generate a UUID (RFC4122) et set the header value with this UUID.\nWhen, for instance in the absence of response to the POST request from the API server, the API client has to retry the request, it must use the same UUID value.\nOn the other side, the API client must not reuse this UUID for posting another payload.\n\nThe API server, when receiving a POST request, must ensure that the idempotency key header is present. If not the API server must respond with a HTTP400 (BAD REQUEST) code.\nWhen present, the idempotency key value must be checked against previously received idempotency key:\n- if the value is not found, the API server shall process the request normally.\n- if the value was already received, different situation can apply:\n  - when there is an attempt to reuse an idempotency key with a different\
+      description: "MANDATORY header for clients calling our POST operations.\nIdempotency key header to be used with every POST operation.\n\nThe API client for one given payload has to generate a UUID (RFC4122) and set the header value with this UUID.\nWhen, for instance in the absence of response to the POST request from the API server, the API client has to retry the request, it must use the same UUID value.\nOn the other side, the API client must not reuse this UUID for posting another payload.\n\nThe API server, when receiving a POST request, must ensure that the idempotency key header is present. If not the API server must respond with a HTTP400 (BAD REQUEST) code.\nWhen present, the idempotency key value must be checked against previously received idempotency key:\n- if the value is not found, the API server shall process the request normally.\n- if the value was already received, different situation can apply:\n  - when there is an attempt to reuse an idempotency key with a different\
         \ payload, the API server must respond with an HTTP422 (UNPROCESSABLE ENTITY) code.\n  - when this is really a retry to post the same request:\n    - if the original one still being processed, the API server must respond with a HTTP409 (CONFLICT) code.\n  - if the original request processing was completed, the API server must answer with the result of this original request processing.\n\nIt is up to the API server to manage the life-cycle of the idempotency key.\n"
       required: true
       deprecated: false
@@ -2100,9 +2102,9 @@ components:
     Location:
       description: 'URI that may point
 
-        * either to the resource that was successfully created by the API server after having been posgted by the API client,
+        * either to the resource that was successfully created by the API server after having been posted by the API client,
 
-        * or to a pre-existing resource that conflicts with the one that was jsut posted by the API client.
+        * or to a pre-existing resource that conflicts with the one that was just posted by the API client.
 
         '
       required: false
