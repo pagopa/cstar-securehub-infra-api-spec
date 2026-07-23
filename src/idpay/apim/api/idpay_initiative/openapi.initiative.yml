@@ -3047,10 +3047,7 @@ components:
           type: string
         beneficiaryKnown:
           type: boolean
-        beneficiaryBudget:
-          type: number
-          example: 10
-        beneficiaryBudgetMax:
+        beneficiaryBudgetFixedCents:
           type: number
           example: 10
         startDate:
@@ -3230,7 +3227,6 @@ components:
       type: object
       anyOf:
         - $ref: '#/components/schemas/SelfCriteriaBoolDTO'
-        - $ref: '#/components/schemas/SelfCriteriaMultiDTO'
         - $ref: '#/components/schemas/SelfCriteriaTextDTO'
         - $ref: '#/components/schemas/SelfCriteriaMultiConsentDTO'
       description: List of possible criteria
@@ -3262,26 +3258,6 @@ components:
           type: boolean
         code:
           type: string
-    SelfCriteriaMultiDTO:
-      title: SelfCriteriaMultiDTO
-      type: object
-      properties:
-        _type:
-          enum:
-            - multi
-          type: string
-        description:
-          type: string
-        value:
-          type: array
-          items:
-            type: string
-          example:
-            - value1
-            - value2
-            - value3
-        code:
-          type: string
     SelfCriteriaTextDTO:
       title: SelfCriteriaTextDTO
       type: object
@@ -3308,8 +3284,6 @@ components:
           type: string
         subDescription:
           type: string
-        thresholdCode:
-          type: string
         value:
           type: array
           items:
@@ -3324,6 +3298,38 @@ components:
           type: string
         subDescription:
           type: string
+        verify:
+          type: boolean
+          description: >
+            ENG: Indicates whether the selected option requires an eligibility verification.
+            IT: Indica se l'opzione selezionata richiede una verifica di ammissibilità.
+          example: true
+        thresholdCode:
+          type: string
+          description: >
+            ENG: Threshold identifier used during the eligibility verification.
+            IT: Identificativo della soglia utilizzata durante la verifica di ammissibilità.
+          example: BELET25
+        beneficiaryBudgetCentsMin:
+          type: integer
+          format: int64
+          description: >
+            ENG: Budget assigned if the verification is not successful.
+            IT: Importo assegnato in caso di verifica non superata.
+          example: 10000
+        beneficiaryBudgetCentsMax:
+          type: integer
+          format: int64
+          description: >
+            ENG: Budget assigned if the verification is successful.
+            IT: Importo assegnato in caso di verifica superata.
+          example: 20000
+        blockingVerify:
+          type: boolean
+          description: >
+            ENG: Indicates whether the verification outcome is mandatory to access the initiative.
+            IT: Indica se il superamento della verifica è obbligatorio per accedere all'iniziativa.
+          example: true
     ConfigBeneficiaryRuleArrayDTO:
       type: array
       items:
