@@ -63,7 +63,8 @@ module "idpay_itn_portal_merchants_ecommerce_api" {
     {
       operation_id = "getProducts"
       xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-rbd-products-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
       })
     },
     {
