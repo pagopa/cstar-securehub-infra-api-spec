@@ -2,7 +2,6 @@ locals {
   idpay_itn_apim_api_diagnostics = [
     # Modules Issuer
     module.idpay_itn_onboarding_workflow_issuer.name,
-    module.idpay_itn_wallet_issuer.name,
     module.idpay_itn_timeline_issuer.name,
 
     # Modules IO

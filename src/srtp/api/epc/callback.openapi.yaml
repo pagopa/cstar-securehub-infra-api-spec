@@ -18,13 +18,13 @@ info:
     email: cstar@pagopa.it
 servers:
   - description: Development/Test
-    url: https://api-rtp-cb.dev.cstar.pagopa.it/rtp/cb
+    url: https://api-rtp-cb.dev.cstar.pagopa.it/rtp/cb/v1
     x-internal: true
   - description: User Acceptance Test
-    url: https://api-rtp-cb.uat.cstar.pagopa.it/rtp/cb
+    url: https://api-rtp-cb.uat.cstar.pagopa.it/rtp/cb/v1
     x-internal: false
   - description: Production
-    url: https://api-rtp-cb.cstar.pagopa.it/rtp/cb
+    url: https://api-rtp-cb.cstar.pagopa.it/rtp/cb/v1
     x-internal: false
 
 
