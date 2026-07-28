@@ -13,8 +13,8 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaypayment" />
-        <rewrite-uri template="@("/idpay/payment/initiatives/{initiativeId}/transactions/{transactionId}")" />
+        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaytransactions" />
+        <rewrite-uri template="@("/idpay/initiatives/${initiative_id_bonus_elettrodomestici}/transactions/{transactionId}/reversal-invoiced")" />
     </inbound>
     <backend>
         <base />
