@@ -9,6 +9,10 @@ locals {
   apim_logger_id    = "${data.azurerm_api_management.apim.id}/loggers/${local.project}-apim-logger"
   api_management_id = data.azurerm_api_management.apim.id
 
+  # KV
+  kv_name = "${local.project}-kv"
+  kv_rg   = "${local.project}-security-rg"
+
   dns_external_domain    = "pagopa.it"
   dns_zone               = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.${local.dns_external_domain}"
   internal_domain_suffix = "internal"
@@ -28,13 +32,14 @@ locals {
       path                  = "${local.api_context_path}/mock-io"
       revision              = "1"
       protocols             = ["https"]
-      service_url           = "${local.api_service_url}/cstarmockbackendio/"
+      service_url           = "${local.api_service_url}/cstarmockbackendio/bpd/pagopa/api/v1"
       subscription_required = true
       product               = "shared-mock"
       import_descriptor = {
         content_format = "openapi"
         content_value = templatefile("./api/mock_io/swagger.json", {
-          host = local.appgw_hostname
+          host      = local.appgw_hostname
+          base_path = "/${local.api_context_path}/mock-io"
         })
       }
     }
@@ -53,4 +58,14 @@ locals {
   }
   policy_fragment      = {}
   api_operation_policy = {}
+
+  subscription_keys = {
+    shared-mock-product = {
+      product      = "shared-mock"
+      display_name = "Shared - Mock IO API Product Subscription Key"
+      state        = "active"
+      kv_name      = local.kv_name
+      kv_rg        = local.kv_rg
+    }
+  }
 }

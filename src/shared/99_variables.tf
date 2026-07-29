@@ -44,9 +44,3 @@ variable "location_short" {
   }
   description = "One of wue, neu"
 }
-
-variable "enable_auth_send" {
-  type        = bool
-  description = "Enable auth on RTP send API"
-  default     = true
-}

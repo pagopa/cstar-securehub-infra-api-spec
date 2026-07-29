@@ -1,12 +1,12 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "Mock IO TEST API",
+        "title": "Shared - Mock IO TEST API",
         "version": "1.0",
-        "description": "Mock IO API server."
+        "description": "Shared - Mock IO API server"
     },
     "host": "${host}",
-    "basePath": "/rtd/mock-io",
+    "basePath": "${base_path}",
     "schemes": ["https"],
     "paths": {
         "/login": {
