@@ -140,12 +140,13 @@ locals {
       }
     }
 
-    # RTP CALLBACK
+    # RTP CALLBACK v1
     rtp-callback = {
       description           = "RTP ITN CALLBACK API"
       display_name          = "RTP ITN CALLBACK API"
       path                  = "${local.api_context_path}/cb"
       revision              = "1"
+      version               = "v1"
       protocols             = ["https"]
       service_url           = "${local.api_service_url}/rtpsender/"
       subscription_required = false
@@ -153,6 +154,32 @@ locals {
       import_descriptor = {
         content_format = "openapi"
         content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
+      }
+      version_set = {
+        name              = "${var.env_short}-rtp-callback-v2"
+        display_name      = "RTP ITN CALLBACK API"
+        versioning_scheme = "Segment"
+      }
+      api_policy = {
+        xml_content = file("./api/epc/callback_policy.xml")
+      }
+    }
+
+    # RTP CALLBACK v2 — same version_set as v1, APIM routes natively via the /v2 path segment
+    rtp-callback-v2 = {
+      description           = "RTP ITN CALLBACK API v2"
+      display_name          = "RTP ITN CALLBACK API"
+      path                  = "${local.api_context_path}/cb"
+      revision              = "1"
+      version               = "v2"
+      version_set_ref       = "rtp-callback"
+      protocols             = ["https"]
+      service_url           = "${local.api_service_url}/rtpsenderv2/"
+      subscription_required = false
+      product               = "srtp"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = templatefile("./api/epc/callback_v4.0.openapi.yaml", {})
       }
       api_policy = {
         xml_content = file("./api/epc/callback_policy.xml")
