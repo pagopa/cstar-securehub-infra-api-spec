@@ -171,9 +171,9 @@ paths:
               example:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
-  /initiatives/{initiativesId}/transactions/bar-code/{trxCode}/capture:
+  /initiatives/{initiativeId}/transactions/bar-code/{trxCode}/capture:
     parameters:
-      - name: initiativesId
+      - name: initiativeId
         in: path
         description: "ENG: The initiative's id - IT: Id dell'iniziativa"
         required: true
@@ -463,9 +463,9 @@ paths:
               example:
                 code: PAYMENT_GENERIC_ERROR
                 message: "A generic error occurred"
-  /initiatives/{initiativesId}/transactions/bar-code/{trxCode}/preview:
+  /initiatives/{initiativeId}/transactions/bar-code/{trxCode}/preview:
     parameters:
-      - name: initiativesId
+      - name: initiativeId
         in: path
         description: "ENG: The initiative's id - IT: Id dell'iniziativa"
         required: true
@@ -664,9 +664,9 @@ paths:
           $ref: "#/components/responses/GET_products_429_Response"
         "500":
           $ref: "#/components/responses/GET_products_500_Response"
-  /initiatives/{initiativesId}/products:
+  /initiatives/{initiativeId}/products:
     parameters:
-      - name: initiativesId
+      - name: initiativeId
         in: path
         description: "ENG: The initiative's id - IT: Id dell'iniziativa"
         required: true
@@ -858,9 +858,9 @@ paths:
               example:
                 code: PAYMENT_GENERIC_ERROR
                 message: A generic error occured
-  /initiatives/{initiativesId}/transactions/bar-code/{trxCode}/authorize:
+  /initiatives/{initiativeId}/transactions/bar-code/{trxCode}/authorize:
     parameters:
-      - name: initiativesId
+      - name: initiativeId
         in: path
         description: "ENG: The initiative's id - IT: Id dell'iniziativa"
         required: true
@@ -1050,9 +1050,9 @@ paths:
           $ref: "#/components/responses/GET_transactions_processed_429_Response"
         "500":
           $ref: "#/components/responses/GET_transactions_processed_500_Response"
-  /initiatives/{initiativesId}/transactions/processed:
+  /initiatives/{initiativeId}/transactions/processed:
     parameters:
-      - name: initiativesId
+      - name: initiativeId
         in: path
         description: "ENG: The initiative's id - IT: Id dell'iniziativa"
         required: true
@@ -1115,9 +1115,9 @@ paths:
           $ref: "#/components/responses/GET_transactions_in_progress_429_Response"
         "500":
           $ref: "#/components/responses/GET_transactions_in_progress_500_Response"
-  /initiatives/{initiativesId}/transactions:
+  /initiatives/{initiativeId}/transactions:
     parameters:
-      - name: initiativesId
+      - name: initiativeId
         in: path
         description: "ENG: The initiative's id - IT: Id dell'iniziativa"
         required: true
@@ -1173,9 +1173,9 @@ paths:
           $ref: "#/components/responses/GET_download_invoice_file_429_Response"
         "500":
           $ref: "#/components/responses/GET_download_invoice_file_500_Response"
-  /initiatives/{initiativesId}/transactions/{transactionId}/download:
+  /initiatives/{initiativeId}/transactions/{transactionId}/download:
     parameters:
-      - name: initiativesId
+      - name: initiativeId
         in: path
         description: "ENG: The initiative's id - IT: Id dell'iniziativa"
         required: true
@@ -1328,9 +1328,9 @@ paths:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
 
-  /initiatives/{initiativesId}/transactions/{transactionId}:
+  /initiatives/{initiativeId}/transactions/{transactionId}:
     parameters:
-      - name: initiativesId
+      - name: initiativeId
         in: path
         description: "ENG: The initiative's id - IT: Id dell'iniziativa"
         required: true
@@ -1591,9 +1591,9 @@ paths:
               example:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
-  /initiatives/{initiativesId}/transactions/{transactionId}/reversal:
+  /initiatives/{initiativeId}/transactions/{transactionId}/reversal:
     parameters:
-      - name: initiativesId
+      - name: initiativeId
         in: path
         description: "ENG: The initiative's id - IT: Id dell'iniziativa"
         required: true
@@ -1860,9 +1860,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorDTO"
-  /initiatives/{initiativesId}/transactions/{transactionId}/reversal-invoiced:
+  /initiatives/{initiativeId}/transactions/{transactionId}/reversal-invoiced:
     parameters:
-      - name: initiativesId
+      - name: initiativeId
         in: path
         description: "ENG: The initiative's id - IT: Id dell'iniziativa"
         required: true
@@ -2129,9 +2129,9 @@ paths:
               example:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
-  /initiatives/{initiativesId}/transactions/{transactionId}/invoice:
+  /initiatives/{initiativeId}/transactions/{transactionId}/invoice:
     parameters:
-      - name: initiativesId
+      - name: initiativeId
         in: path
         description: "ENG: The initiative's id - IT: Id dell'iniziativa"
         required: true
@@ -2395,9 +2395,9 @@ paths:
               example:
                 code: "PAYMENT_GENERIC_ERROR"
                 message: "Application error"
-  /initiatives/{initiativesId}/transactions/{transactionId}/invoice/update:
+  /initiatives/{initiativeId}/transactions/{transactionId}/invoice/update:
     parameters:
-      - name: initiativesId
+      - name: initiativeId
         in: path
         description: "ENG: The initiative's id - IT: Id dell'iniziativa"
         required: true
