@@ -86,65 +86,6 @@ module "idpay_itn_onboarding_workflow_issuer" {
 
 }
 
-## IDPAY Wallet IO API ##
-module "idpay_itn_wallet_issuer" {
-  source = "./.terraform/modules/__v4__/api_management_api"
-
-  name                = "${var.env_short}-idpay-itn-issuer-wallet"
-  api_management_name = data.azurerm_api_management.apim_core.name
-  resource_group_name = data.azurerm_resource_group.apim_rg.name
-
-  description  = "IDPAY ITN Wallet Issuer"
-  display_name = "IDPAY ITN Wallet Issuer API"
-  path         = "idpay-itn/hb/wallet"
-  protocols    = ["https"]
-
-  service_url = "${local.domain_aks_ingress_load_balancer_https}/idpaywallet/idpay/wallet"
-
-  content_format = "openapi"
-  content_value  = templatefile("./apim/api/idpay_issuer_wallet/openapi.issuer.wallet.yml.tpl", {})
-
-  xml_content = file("./apim/api/base_policy.xml")
-
-  product_ids = [module.idpay_itn_api_issuer_product.product_id]
-
-  api_operation_policies = [
-    {
-      operation_id = "getWalletDetail"
-      xml_content = templatefile("./apim/api/idpay_issuer_wallet/get-wallet-detail-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-      })
-    },
-    {
-      operation_id = "enrollIban"
-      xml_content = templatefile("./apim/api/idpay_issuer_wallet/put-enroll-iban-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-      })
-    },
-    {
-      operation_id = "enrollInstrument"
-      xml_content = templatefile("./apim/api/idpay_issuer_wallet/put-enroll-instrument-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-        env_short                      = var.env_short
-        pm-timeout-sec                 = var.pm_timeout_sec
-        pm-backend-url                 = var.pm_backend_url
-      })
-    },
-    {
-      operation_id = "getWalletStatus"
-      xml_content = templatefile("./apim/api/idpay_issuer_wallet/get-wallet-status-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-      })
-    },
-    {
-      operation_id = "getInstrumentList"
-      xml_content = templatefile("./apim/api/idpay_issuer_wallet/get-instrument-list-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-      })
-    }
-  ]
-}
-
 ## IDPAY Timeline IO API ##
 module "idpay_itn_timeline_issuer" {
   source = "./.terraform/modules/__v4__/api_management_api"

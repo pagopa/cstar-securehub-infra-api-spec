@@ -13,8 +13,18 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaypaymentinstrument" />
-        <rewrite-uri template="@("idpay/instrument/{initiativeId}/"+ (string)context.Variables["tokenPDV"] + "/" + (string)context.Variables["senderCode"])" />
+        <choose>
+            <when condition="@(context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia" && context.Variables.GetValueOrDefault("organizationRole", "") != "invitalia_admin")">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                </return-response>
+            </when>
+        </choose>
+        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayassetregisterbackend" />
+        <rewrite-uri template="@("/idpay/register/initiatives/{initiativeId}/producers")" />
     </inbound>
     <backend>
         <base />

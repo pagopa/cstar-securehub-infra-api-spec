@@ -1,0 +1,20 @@
+<fragment>
+  <choose>
+    <when condition="@(context.LastError != null || (context.Response != null &amp;&amp; context.Response.StatusCode >= 400))">
+      <trace source="RTP Send Failed Response" severity="error">
+        <message>@{
+          return new JObject(
+            new JProperty("timestamp", DateTime.UtcNow.ToString("o")),
+            new JProperty("requestId", context.RequestId),
+            new JProperty("operationName", context.Operation?.Name),
+            new JProperty("statusCode", context.Response?.StatusCode),
+            new JProperty("reason", context.Response?.StatusReason),
+            new JProperty("errorReason", context.LastError?.Reason),
+            new JProperty("errorMessage", context.LastError?.Message),
+            new JProperty("responseBody", context.Response?.Body?.As&lt;string&gt;(preserveContent: true))
+          ).ToString();
+        }</message>
+      </trace>
+    </when>
+  </choose>
+</fragment>
