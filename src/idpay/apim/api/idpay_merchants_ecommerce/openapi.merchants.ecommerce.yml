@@ -55,7 +55,7 @@ paths:
         - transaction
       summary: Cattura la transazione
       description: Cattura la transazione
-      operationId: capturePaymentBonusElettrdomestici
+      operationId: capturePaymentBonusElettrodomestici
       deprecated: true
       parameters:
         - name: trxCode
@@ -310,7 +310,7 @@ paths:
         Anteprima pagamento con payload V2.
         - schema request: `PreviewPaymentRequestV2DTO`
         - schema response: `PreviewPaymentResponseV2DTO`
-      operationId: previewPaymentBonusElettrdomestici
+      operationId: previewPaymentBonusElettrodomestici
       deprecated: true
       parameters:
         - name: trxCode
@@ -639,7 +639,7 @@ paths:
         - products
       summary: Restituisce la lista dei prodotti
       description: "Lista prodotti"
-      operationId: getProductsBonusElettrdomestici
+      operationId: getProductsBonusElettrodomestici
 
       deprecated: true
       parameters:
@@ -708,7 +708,7 @@ paths:
         - transaction
       summary: "Autorizzazione pagamento"
       description: "Autorizzazione pagamento"
-      operationId: authPaymentBarCodeBonusElettrdomestici
+      operationId: authPaymentBarCodeBonusElettrodomestici
 
       deprecated: true
       parameters:
@@ -1027,7 +1027,7 @@ paths:
         - transaction
       summary: "Ritorna la lista delle transazioni processate associate ad un punto vendita"
       description: "Ritorna la lista delle transazioni processate associate ad un punto vendita"
-      operationId: getPointOfSaleTransactionsProcessedBonusElettrdomestici
+      operationId: getPointOfSaleTransactionsProcessedBonusElettrodomestici
 
       deprecated: true
       parameters:
@@ -1092,7 +1092,7 @@ paths:
         - transaction
       summary: "Ritorna la lista delle transazioni in corso associate ad un punto vendita"
       description: "Ritorna la lista delle transazioni in corso associate ad un punto vendita"
-      operationId: getPointOfSaleTransactionsBonusElettrdomestici
+      operationId: getPointOfSaleTransactionsBonusElettrodomestici
 
       deprecated: true
       parameters:
@@ -1157,7 +1157,7 @@ paths:
         - transaction
       summary: "Scarica il file della fattura della transazione"
       description: "Scarica il file della fattura della transazione"
-      operationId: downloadInvoiceFileBonusElettrdomestici
+      operationId: downloadInvoiceFileBonusElettrodomestici
 
       deprecated: true
       parameters:
@@ -1207,7 +1207,7 @@ paths:
       tags:
         - transaction
       summary: Elimina una transazione associata ad un punto vendita
-      operationId: deleteTransactionBonusElettrdomestici
+      operationId: deleteTransactionBonusElettrodomestici
 
       deprecated: true
       description: "Elimina una transazione associata ad un punto vendita"
@@ -1467,7 +1467,7 @@ paths:
         - transaction
       summary: Storno di una transazione da parte di un Punto Vendita
       description: "Storno di una transazione da parte di un Punto Vendita"
-      operationId: reversalTransactionBonusElettrdomestici
+      operationId: reversalTransactionBonusElettrodomestici
 
       deprecated: true
       parameters:
@@ -1735,7 +1735,7 @@ paths:
       summary: Reverse an invoiced transaction
       description: >
         Allows the merchant to refound a transaction from a batch.
-      operationId: reversalTransactionInvoicedBonusElettrdomestici
+      operationId: reversalTransactionInvoicedBonusElettrodomestici
 
       deprecated: true
       parameters:
@@ -2005,7 +2005,7 @@ paths:
         - transaction
       summary: Inserimento della fattura in una transazione, da parte di un Punto Vendita
       description: "Inserimento della fattura in una transazione, da parte di un Punto Vendita"
-      operationId: invoiceTransactionBonusElettrdomestici
+      operationId: invoiceTransactionBonusElettrodomestici
 
       deprecated: true
       parameters:
@@ -2272,7 +2272,7 @@ paths:
         - transaction
       summary: Point of sales update invoice transaction
       description: "Aggiornamento del file e del numero fattura per una transazione da parte di un Punto Vendita"
-      operationId: updateInvoiceTransactionBonusElettrdomestici
+      operationId: updateInvoiceTransactionBonusElettrodomestici
 
       deprecated: true
       parameters:
