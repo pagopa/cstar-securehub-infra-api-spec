@@ -113,6 +113,10 @@ locals {
   # domain_aks_hostname                      = var.env == "prod" ? "${var.instance}.${var.domain}.internal.cstar.pagopa.it" : "${var.instance}.${var.domain}.internal.${var.env}.cstar.pagopa.it"
   rtd_domain_aks_hostname                  = var.env == "prod" ? "${var.aks_legacy_instance_name}.rtd.internal.cstar.pagopa.it" : "${var.aks_legacy_instance_name}.rtd.internal.${var.env}.cstar.pagopa.it"
   rtd_ingress_load_balancer_hostname_https = "https://${local.rtd_domain_aks_hostname}"
+
+  shared_domain_aks_hostname                  = var.env == "prod" ? "shared.itn.internal.cstar.pagopa.it" : "shared.itn.internal.${var.env}.cstar.pagopa.it"
+  shared_ingress_load_balancer_hostname_https = "https://${local.shared_domain_aks_hostname}"
+
   # initiative_storage_fqdn                  = "${module.idpay_initiative_storage.name}.blob.core.windows.net"
   # reward_storage_fqdn                      = "${module.idpay_refund_storage.name}.blob.core.windows.net"
   #
