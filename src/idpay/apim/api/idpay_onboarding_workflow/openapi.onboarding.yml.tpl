@@ -791,38 +791,6 @@ components:
           description: >-
             ENG: Indicates self-consent values - IT: Indica i valori per gli
             auto consensi
-        verify:
-          type: boolean
-          description: >
-            ENG: Indicates whether the selected option requires an eligibility verification.
-            IT: Indica se l'opzione selezionata richiede una verifica di ammissibilità.
-          example: true
-        thresholdCode:
-          type: string
-          description: >
-            ENG: Threshold identifier used during the eligibility verification.
-            IT: Identificativo della soglia utilizzata durante la verifica di ammissibilità.
-          example: BELET25
-        beneficiaryBudgetCentsMin:
-          type: integer
-          format: int64
-          description: >
-            ENG: Budget assigned if the verification is not successful.
-            IT: Importo assegnato in caso di verifica non superata.
-          example: 10000
-        beneficiaryBudgetCentsMax:
-          type: integer
-          format: int64
-          description: >
-            ENG: Budget assigned if the verification is successful.
-            IT: Importo assegnato in caso di verifica superata.
-          example: 20000
-        blockingVerify:
-          type: boolean
-          description: >
-            ENG: Indicates whether the verification outcome is mandatory to access the initiative.
-            IT: Indica se il superamento della verifica è obbligatorio per accedere all'iniziativa.
-          example: true
     SelfConsentBoolDTO:
       type: object
       required:
@@ -980,6 +948,7 @@ components:
             - ONBOARDING_WAITING_LIST
             - ONBOARDING_ON_EVALUATION
             - ONBOARDING_ALREADY_ONBOARDED
+            - ONBOARDING_USER_BONUS_ALREADY_USED
           description: >-
             'ENG: Error code:
             ONBOARDING_USER_UNSUBSCRIBED: The user has unsubscribed from initiative,
@@ -1001,7 +970,8 @@ components:
             ONBOARDING_GENERIC_ERROR: Application error,
             ONBOARDING_USER_NOT_ONBOARDED: The current user is not onboarded on initiative,
             ONBOARDING_INITIATIVE_NOT_FOUND: Cannot find initiative,
-            ONBOARDING_TOO_MANY_REQUESTS: Too many requests
+            ONBOARDING_TOO_MANY_REQUESTS: Too many requests,
+            ONBOARDING_USER_BONUS_ALREADY_USED: The user has already participated in the same promotion in the past
             - IT: Codice di errore:
             ONBOARDING_USER_UNSUBSCRIBED: L'utente si è disiscritto dall'iniziativa,
             ONBOARDING_PAGE_SIZE_NOT_ALLOWED: Dimensione pagina non permessa,
@@ -1023,7 +993,8 @@ components:
             ONBOARDING_GENERIC_ERROR: Errore applicativo,
             ONBOARDING_USER_NOT_ONBOARDED: Utente non onboardato all'iniziativa,
             ONBOARDING_INITIATIVE_NOT_FOUND: Iniziativa non trovata,
-            ONBOARDING_TOO_MANY_REQUESTS: Troppe richieste'
+            ONBOARDING_TOO_MANY_REQUESTS: Troppe richieste,
+            ONBOARDING_USER_BONUS_ALREADY_USED: Utente ha già aderito in passato alla stessa iniziativa'
         message:
           type: string
           description: "ENG: Error message- IT: Messaggio di errore"
@@ -1095,9 +1066,6 @@ components:
           type: string
         beneficiaryKnown:
           type: boolean
-        beneficiaryBudgetFixedCents:
-          type: number
-          example: 10
         startDate:
           type: string
           description: Start date
