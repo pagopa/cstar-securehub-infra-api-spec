@@ -4222,7 +4222,7 @@ components:
             initiative, ONBOARDING_INITIATIVE_NOT_FOUND: Cannot find initiative,
             ONBOARDING_TOO_MANY_REQUESTS: Too many requests,
             ONBOARDING_USER_BONUS_ALREADY_USED: The user has already
-            participated in the same promotion in the past- IT: Codice di
+            participated in the same promotion in the past - IT: Codice di
             errore: ONBOARDING_USER_UNSUBSCRIBED: L'utente si è disiscritto
             dall'iniziativa, ONBOARDING_PAGE_SIZE_NOT_ALLOWED: Dimensione pagina
             non permessa, ONBOARDING_PDND_CONSENT_DENIED: Il consenso PDND per
