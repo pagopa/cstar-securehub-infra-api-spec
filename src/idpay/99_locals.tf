@@ -12,6 +12,7 @@ locals {
   #
   # AKS
   #
+  shared_aks_ingress_load_balancer_https = "https://shared.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
   domain_aks_ingress_hostname            = "${var.domain}.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
   domain_aks_ingress_load_balancer_https = "https://${local.domain_aks_ingress_hostname}"
 
