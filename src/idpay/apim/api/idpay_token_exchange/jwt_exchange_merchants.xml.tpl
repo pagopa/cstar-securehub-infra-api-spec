@@ -77,9 +77,13 @@
                         value='@(((JObject)context.Variables["instJson"])
                                         .SelectToken("payment.iban")?.ToString())' />
 
-                        <set-variable name="holder"
+                    <set-variable name="holder"
+                    value='@(((JObject)context.Variables["instJson"])
+                                .SelectToken("payment.holder")?.ToString())' />
+
+                    <set-variable name="merchantVatNumber"
                         value='@(((JObject)context.Variables["instJson"])
-                                    .SelectToken("payment.holder")?.ToString())' />
+                                    .SelectToken("billing.vatNumber")?.ToString())' />
 
                     <set-variable name="activationDate"
                         value='@{
@@ -96,6 +100,7 @@
                 <!-- default/cleanup -->
                 <set-variable name="iban" value="" />
                 <set-variable name="holder" value="" />
+                <set-variable name="merchantVatNumber" value="" />
                 <set-variable name="activationDate" value="" />
             </otherwise>
         </choose>
