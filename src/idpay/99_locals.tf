@@ -126,7 +126,13 @@ locals {
     "bonuselettrodomestici.io",
     "bonuselettrodomestici.net",
     "bonuselettrodomestici.eu",
-    "bonuselettrodomestici.pagopa.it"
+    "bonuselettrodomestici.pagopa.it",
+    "pari.pagopa.it",
+    "pari.pagopa.com",
+    "pari.pagopa.info",
+    "pari.pagopa.io",
+    "pari.pagopa.net",
+    "pari.pagopa.eu"
   ]
 
   bonus_el_env_dns_public_zones = [
