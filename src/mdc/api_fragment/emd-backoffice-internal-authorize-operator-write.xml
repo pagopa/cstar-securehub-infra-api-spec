@@ -1,0 +1,14 @@
+<fragment>
+  <!-- RBAC (backoffice internal): allow operator-write or operator-admin only.
+       The 'roles' variable must be pre-extracted at API level as a comma-separated string.
+       Use this fragment on write/update endpoints that must be forbidden to read-only operators. -->
+  <choose>
+    <when condition="@(new[]{"operator-write","operator-admin"}.Any(r => ((string)context.Variables["roles"]).Split(',').Contains(r)))" />
+    <otherwise>
+      <return-response>
+        <set-status code="403" reason="Forbidden - operator-write or operator-admin required" />
+      </return-response>
+    </otherwise>
+  </choose>
+</fragment>
+

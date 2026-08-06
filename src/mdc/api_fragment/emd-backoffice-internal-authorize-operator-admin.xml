@@ -1,0 +1,14 @@
+<fragment>
+  <!-- RBAC (backoffice internal): allow operator-admin only.
+       The 'roles' variable must be pre-extracted at API level as a comma-separated string.
+       Use this fragment on sensitive administrative endpoints (e.g. delete, hard-reset). -->
+  <choose>
+    <when condition="@(((string)context.Variables["roles"]).Split(',').Contains("operator-admin"))" />
+    <otherwise>
+      <return-response>
+        <set-status code="403" reason="Forbidden - operator-admin required" />
+      </return-response>
+    </otherwise>
+  </choose>
+</fragment>
+

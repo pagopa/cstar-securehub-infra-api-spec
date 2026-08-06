@@ -1,0 +1,14 @@
+<fragment>
+  <!-- RBAC (backoffice internal): allow any operator role (operator-read, operator-write, operator-admin).
+       The 'roles' variable must be pre-extracted at API level as a comma-separated string.
+       Use this fragment on endpoints readable by all operator profiles. -->
+  <choose>
+    <when condition="@(new[]{"operator-read","operator-write","operator-admin"}.Any(r => ((string)context.Variables["roles"]).Split(',').Contains(r)))" />
+    <otherwise>
+      <return-response>
+        <set-status code="403" reason="Forbidden - operator role required" />
+      </return-response>
+    </otherwise>
+  </choose>
+</fragment>
+
