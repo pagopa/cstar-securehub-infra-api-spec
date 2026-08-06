@@ -14,7 +14,15 @@
     <inbound>
         <base />
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayportalwelfarebackendrolepermission" />
-        <rewrite-uri template="@("/idpay/consent?userId=" + ((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("point_of_sale_id", ""))" />
+        <rewrite-uri template="@{
+            var jwt = (Jwt)context.Variables[\"validatedToken\"];
+            var nname = jwt.Claims.GetValueOrDefault(\"nname\", \"\");
+            var posId = jwt.Claims.GetValueOrDefault(\"point_of_sale_id\", \"\");
+            var input = nname + posId;
+            var hashBytes = System.Security.Cryptography.SHA256.Create().ComputeHash(System.Text.Encoding.UTF8.GetBytes(input));
+            var hashHex = BitConverter.ToString(hashBytes).Replace(\"-\", \"\").ToLowerInvariant();
+            return \"/idpay/consent?userId=\" + hashHex;
+        }" />
     </inbound>
     <backend>
         <base />
