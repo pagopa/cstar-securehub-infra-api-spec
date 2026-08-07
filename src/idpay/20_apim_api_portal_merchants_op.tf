@@ -150,3 +150,42 @@ module "idpay_itn_portal_merchants_op_api" {
 
   ]
 }
+
+module "idpay_itn_merchants_op_permission_portal" {
+  source = "./.terraform/modules/__v4__/api_management_api"
+
+  name                = "${var.env_short}-idpay-itn-merchants-operator-portal-permission"
+  api_management_name = data.azurerm_api_management.apim_core.name
+  resource_group_name = data.azurerm_resource_group.apim_rg.name
+
+  description  = "IDPAY ITN Merchants Operator Portal User Permission"
+  display_name = "IDPAY ITN Merchants Operator Portal User Permission API"
+  path         = "idpay-itn/merchant-op/authorization"
+  protocols    = ["https"]
+
+  service_url = "${local.domain_aks_ingress_load_balancer_https}/idpayportalwelfarebackendrolepermission/idpay/welfare"
+
+  content_format = "openapi"
+  content_value  = file("./apim/api/idpay_role_permission/openapi.role-permission.yml")
+
+  xml_content = file("./apim/api/base_policy.xml")
+
+  product_ids           = [module.idpay_itn_api_portal_merchants_op_product.product_id]
+  subscription_required = false
+
+  api_operation_policies = [
+    {
+      operation_id = "savePortalConsent"
+      xml_content = templatefile("./apim/api/idpay_role_permission/consent-op-portal-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "getPortalConsent"
+      xml_content = templatefile("./apim/api/idpay_role_permission/consent-op-portal-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    }
+  ]
+
+}
