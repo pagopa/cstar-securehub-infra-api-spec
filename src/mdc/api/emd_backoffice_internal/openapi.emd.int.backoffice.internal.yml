@@ -8,6 +8,37 @@ servers:
     description: Internal backoffice base URL
     x-internal: true
 paths:
+  '/api/v1/tpp/{entityId}':
+    get:
+      tags:
+        - tpp-backoffice-internal
+      operationId: getTppByEntityId
+      summary: Retrieve TPP details by entityId
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the entity
+        - name: detailed
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+          description: Flag to include detailed fields in response
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TppResponseDTOV1'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
   '/api/v1/tpp/search':
     get:
       tags:
@@ -72,4 +103,69 @@ components:
           type: integer
           minimum: 1
           maximum: 100
-
+    TppResponseDTOV1:
+      type: object
+      description: TPP response data transfer object
+      required:
+        - tppId
+        - businessName
+        - messageUrl
+        - contact
+        - pspDenomination
+        - agentLinks
+      properties:
+        # Base fields
+        tppId:
+          type: string
+        businessName:
+          type: string
+        messageUrl:
+          type: string
+        contact:
+          $ref: '#/components/schemas/ContactV1'
+        pspDenomination:
+          type: string
+        agentLinks:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AgentLinkV1'
+        # Detailed-only fields
+        entityId:
+          type: string
+        clientId:
+          type: string
+        idPsp:
+          type: string
+        legalAddress:
+          type: string
+        state:
+          type: boolean
+        creationDate:
+          type: string
+          format: date-time
+        lastUpdateDate:
+          type: string
+          format: date-time
+        isPaymentEnabled:
+          type: boolean
+        messageTemplate:
+          type: string
+        whitelistRecipient:
+          type: array
+          items:
+            type: string
+    ContactV1:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+    AgentLinkV1:
+      type: object
+      properties:
+        agentId:
+          type: string
+        url:
+          type: string

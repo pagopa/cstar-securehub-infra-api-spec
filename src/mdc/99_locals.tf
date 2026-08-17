@@ -538,5 +538,12 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_getTppByEntityId = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getTppByEntityId"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-tpp-by-entity-id.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
   }
 }
