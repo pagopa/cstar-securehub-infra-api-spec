@@ -95,7 +95,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TppUpdateStateDTOV1'
+              $ref: '#/components/schemas/TppDTOWithoutTokenSectionV1'
       responses:
         '200':
           description: OK
@@ -209,6 +209,52 @@ components:
         lastUpdateDate:
           type: string
           format: date-time
+        isPaymentEnabled:
+          type: boolean
+        messageTemplate:
+          type: string
+        whitelistRecipient:
+          type: array
+          items:
+            type: string
+    TppDTOWithoutTokenSectionV1:
+      type: object
+      description: API-layer representation of a TPP (Token section excluded)
+      properties:
+        tppId:
+          type: string
+        clientId:
+          type: string
+        entityId:
+          type: string
+        idPsp:
+          type: string
+        businessName:
+          type: string
+        legalAddress:
+          type: string
+        messageUrl:
+          type: string
+        authenticationUrl:
+          type: string
+        authenticationType:
+          $ref: '#/components/schemas/AuthenticationTypeV1'
+        contact:
+          $ref: '#/components/schemas/ContactV1'
+        state:
+          type: boolean
+        creationDate:
+          type: string
+          format: date-time
+        lastUpdateDate:
+          type: string
+          format: date-time
+        pspDenomination:
+          type: string
+        agentLinks:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AgentLinkV1'
         isPaymentEnabled:
           type: boolean
         messageTemplate:
