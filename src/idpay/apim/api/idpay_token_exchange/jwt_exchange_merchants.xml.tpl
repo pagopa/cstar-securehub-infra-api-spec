@@ -128,7 +128,9 @@
                     JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
                     var org_id = organization["id"];
                     var org_vat = organization["fiscal_code"];
+                    var org_fc = organization["fiscal_code"];
                     var org_name = organization["name"];
+                    var org_vat = (String)context.Variables["merchantVatNumber"];
                     var org_party_role = organization.Value<JArray>("roles").First().Value<string>("partyRole");
                     var org_role = organization.Value<JArray>("roles").First().Value<string>("role");
                     var scope = "transaction:invoicelifecycle:full";
@@ -145,6 +147,7 @@
                     acquirer_id,
                     merchant_id,
                     org_id,
+                    org_fc,
                     org_vat,
                     org_name,
                     org_party_role,
