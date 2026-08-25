@@ -77,69 +77,6 @@ paths:
           description: Unauthorized - missing or invalid token
         '403':
           description: Forbidden - insufficient operator role
-  '/api/v1/tpp/{tppId}/state':
-    put:
-      tags:
-        - tpp-backoffice-internal
-      operationId: updateTppState
-      summary: Update TPP state
-      parameters:
-        - name: tppId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Unique identifier of the TPP
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TppDTOWithoutTokenSectionV1'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TppResponseDTOV1'
-        '401':
-          description: Unauthorized - missing or invalid token
-        '403':
-          description: Forbidden - insufficient operator role
-        '404':
-          description: TPP Not Found
-  '/api/v1/tpp/{tppId}/payment-enabled':
-    put:
-      tags:
-        - tpp-backoffice-internal
-      operationId: updateTppIsPaymentEnabled
-      summary: Updates the TPP's ability to execute the payment
-      description: This flag determines if the TPP is allowed to perform payment operations.
-      parameters:
-        - name: tppId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Internal identifier of the TPP
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TppUpdateIsPaymentEnabledDTOV1'
-      responses:
-        '204':
-          description: No Content - Success
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: TPP Not Found
-        '502':
-          description: Bad Gateway - Downstream service unreachable
 components:
   schemas:
     TppSearchResponseDTO:
@@ -278,26 +215,3 @@ components:
           type: string
         url:
           type: string
-    TppUpdateStateDTOV1:
-      type: object
-      description: Data Transfer Object for updating the operational state of a TPP
-      required:
-        - state
-      properties:
-        tppId:
-          type: string
-        state:
-          type: boolean
-          description: New state of the TPP
-    TppUpdateIsPaymentEnabledDTOV1:
-      type: object
-      description: Data Transfer Object for updating the payment authorization of a TPP
-      required:
-        - isPaymentEnabled
-      properties:
-        isPaymentEnabled:
-          type: boolean
-          description: Flag to enable or disable payment execution
-    AuthenticationTypeV1:
-      type: string
-      enum: [OAUTH2]

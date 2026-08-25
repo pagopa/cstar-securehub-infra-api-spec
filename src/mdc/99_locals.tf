@@ -545,19 +545,5 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
-    emd_backoffice_internal_updateTppState = {
-      api_name     = "emd_backoffice_internal"
-      operation_id = "updateTppState"
-      xml_content = templatefile("./api/emd_backoffice_internal/put-tpp-state.xml.tpl", {
-        ingress_load_balancer_hostname = local.ingress_load_balancer_https
-      })
-    }
-    emd_backoffice_internal_updateTppIsPaymentEnabled = {
-      api_name     = "emd_backoffice_internal"
-      operation_id = "updateTppIsPaymentEnabled"
-      xml_content = templatefile("./api/emd_backoffice_internal/put-tpp-isPaymentEnabled.xml.tpl", {
-        ingress_load_balancer_hostname = local.ingress_load_balancer_https
-      })
-    }
   }
 }
