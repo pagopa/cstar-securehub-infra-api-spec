@@ -77,6 +77,164 @@ paths:
           description: Unauthorized - missing or invalid token
         '403':
           description: Forbidden - insufficient operator role
+  '/api/v1/tpp/{tppId}/state':
+    put:
+      tags:
+        - tpp-backoffice-internal
+      operationId: updateTppState
+      summary: Update TPP state
+      parameters:
+        - name: tppId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the TPP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TppDTOWithoutTokenSectionV1'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TppResponseDTOV1'
+        '401':
+          description: Unauthorized - missing or invalid token
+        '403':
+          description: Forbidden - insufficient operator role
+        '404':
+          description: TPP Not Found
+  '/api/v1/tpp/{tppId}/payment-enabled':
+    put:
+      tags:
+        - tpp-backoffice-internal
+      operationId: updateTppIsPaymentEnabled
+      summary: Updates the TPP's ability to execute the payment
+      description: This flag determines if the TPP is allowed to perform payment operations.
+      parameters:
+        - name: tppId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Internal identifier of the TPP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TppUpdateIsPaymentEnabledDTOV1'
+      responses:
+        '204':
+          description: No Content - Success
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: TPP Not Found
+        '502':
+          description: Bad Gateway - Downstream service unreachable
+  '/api/v1/tpp/{tppId}/whitelist':
+    post:
+      tags:
+        - tpp-backoffice-internal
+      operationId: insertRecipientIdOnWhitelist
+      summary: Adds a recipient ID to the whitelist of a specific TPP
+      parameters:
+        - name: tppId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the TPP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipientIdOnWhitelistDTOV1'
+      responses:
+        '201':
+          description: Created - Recipient added successfully
+        '401':
+          description: Unauthorized - missing or invalid token
+        '403':
+          description: Forbidden - insufficient operator role
+        '404':
+          description: TPP Not Found
+        '409':
+          description: Conflict - Recipient already present in whitelist
+        '502':
+          description: Bad Gateway - Downstream service unreachable
+    put:
+      tags:
+        - tpp-backoffice-internal
+      operationId: updateRecipientIdOnWhitelist
+      summary: Replace the entire whitelist of a specific TPP
+      description: Destructive operation. All previous whitelist entries will be replaced by the new list.
+      parameters:
+        - name: tppId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the TPP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+              description: List of new recipientIds to set on the whitelist
+      responses:
+        '204':
+          description: No Content - Whitelist replaced successfully
+        '401':
+          description: Unauthorized - missing or invalid token
+        '403':
+          description: Forbidden - insufficient operator role
+        '404':
+          description: TPP Not Found
+        '502':
+          description: Bad Gateway - Downstream service unreachable
+  '/api/v1/tpp/{tppId}/whitelist/{recipientId}':
+    delete:
+      tags:
+        - tpp-backoffice-internal
+      operationId: removeRecipientIdOnWhitelist
+      summary: Removes a recipient ID from the whitelist of a specific TPP
+      parameters:
+        - name: tppId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the TPP
+        - name: recipientId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the recipient to remove
+      responses:
+        '204':
+          description: No Content - Recipient removed successfully
+        '401':
+          description: Unauthorized - missing or invalid token
+        '403':
+          description: Forbidden - insufficient operator role
+        '404':
+          description: TPP or Recipient Not Found
+        '502':
+          description: Bad Gateway - Downstream service unreachable
 components:
   schemas:
     TppSearchResponseDTO:
@@ -169,3 +327,81 @@ components:
           type: string
         url:
           type: string
+    TppUpdateStateDTOV1:
+      type: object
+      description: Data Transfer Object for updating the operational state of a TPP
+      required:
+        - state
+      properties:
+        tppId:
+          type: string
+        state:
+          type: boolean
+          description: New state of the TPP
+    TppDTOWithoutTokenSectionV1:
+      type: object
+      description: API-layer representation of a TPP (Token section excluded)
+      properties:
+        tppId:
+          type: string
+        clientId:
+          type: string
+        entityId:
+          type: string
+        idPsp:
+          type: string
+        businessName:
+          type: string
+        legalAddress:
+          type: string
+        messageUrl:
+          type: string
+        authenticationUrl:
+          type: string
+        authenticationType:
+          $ref: '#/components/schemas/AuthenticationTypeV1'
+        contact:
+          $ref: '#/components/schemas/ContactV1'
+        state:
+          type: boolean
+        creationDate:
+          type: string
+          format: date-time
+        lastUpdateDate:
+          type: string
+          format: date-time
+        pspDenomination:
+          type: string
+        agentLinks:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AgentLinkV1'
+        isPaymentEnabled:
+          type: boolean
+        messageTemplate:
+          type: string
+        whitelistRecipient:
+          type: array
+          items:
+            type: string
+    TppUpdateIsPaymentEnabledDTOV1:
+      type: object
+      description: Data Transfer Object for updating the payment authorization of a TPP
+      required:
+        - isPaymentEnabled
+      properties:
+        isPaymentEnabled:
+          type: boolean
+          description: Flag to enable or disable payment execution
+    RecipientIdOnWhitelistDTOV1:
+      type: object
+      description: Data Transfer Object containing the recipient identifier to be added to the whitelist
+      required:
+        - recipientId
+      properties:
+        recipientId:
+          type: string
+          description: The identifier of the recipient
+    AuthenticationTypeV1:
+      type: string
+      enum: [OAUTH2]
