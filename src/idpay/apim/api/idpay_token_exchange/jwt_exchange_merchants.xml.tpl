@@ -83,7 +83,7 @@
 
                     <set-variable name="merchantVatNumber"
                         value='@(((JObject)context.Variables["instJson"])
-                                    .SelectToken("billing.vatNumber")?.ToString())' />
+                                    .SelectToken("onboarding.billing.vatNumber")?.ToString())' />
 
                     <set-variable name="activationDate"
                         value='@{
@@ -127,7 +127,6 @@
                     var email = selcToken.Claims.GetValueOrDefault("email", "");
                     JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
                     var org_id = organization["id"];
-                    var org_vat = organization["fiscal_code"];
                     var org_fc = organization["fiscal_code"];
                     var org_name = organization["name"];
                     var org_vat = (String)context.Variables["merchantVatNumber"];
