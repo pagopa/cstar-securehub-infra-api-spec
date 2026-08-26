@@ -83,7 +83,7 @@
 
                     <set-variable name="merchantVatNumber"
                         value='@(((JObject)context.Variables["instJson"])
-                                    .SelectToken("onboarding.billing.vatNumber")?.ToString())' />
+                                    .SelectToken("billing.vatNumber")?.ToString())' />
 
                     <set-variable name="activationDate"
                         value='@{
