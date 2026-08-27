@@ -129,7 +129,8 @@
                     var org_id = organization["id"];
                     var org_fc = organization["fiscal_code"];
                     var org_name = organization["name"];
-                    var org_vat = (String)context.Variables["merchantVatNumber"];
+                    var vatVal = (String)context.Variables["merchantVatNumber"];
+                    var org_vat = !string.IsNullOrEmpty(vatVal) ? vatVal : (String)organization["fiscal_code"];
                     var org_party_role = organization.Value<JArray>("roles").First().Value<string>("partyRole");
                     var org_role = organization.Value<JArray>("roles").First().Value<string>("role");
                     var scope = "transaction:invoicelifecycle:full";
