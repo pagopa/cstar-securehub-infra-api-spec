@@ -235,6 +235,35 @@ paths:
           description: TPP or Recipient Not Found
         '502':
           description: Bad Gateway - Downstream service unreachable
+  '/api/v1/tpp/{tppId}/network/connection/test':
+    get:
+      tags:
+        - tpp-backoffice-internal
+      operationId: testAuthConnection
+      summary: Test TPP authentication connectivity
+      description: Triggers a real-time network and authentication check towards the TPP's configured authorization server to verify if the credentials and connectivity are valid.
+      parameters:
+        - name: tppId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the TPP to test
+      responses:
+        '200':
+          description: OK - Test performed successfully (results are in the body)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TppConnectionResponseDTOV1'
+        '401':
+          description: Unauthorized - missing or invalid token
+        '403':
+          description: Forbidden - insufficient operator role
+        '404':
+          description: TPP Not Found
+        '502':
+          description: Bad Gateway - Downstream service unreachable
 components:
   schemas:
     TppSearchResponseDTO:
@@ -405,3 +434,23 @@ components:
     AuthenticationTypeV1:
       type: string
       enum: [OAUTH2]
+    TppConnectionResponseDTOV1:
+      type: object
+      description: Result of the TPP connectivity and authentication test
+      properties:
+        status:
+          type: string
+          description: High-level result of the test (e.g., SUCCESS, FAILURE, ERROR)
+          example: "SUCCESS"
+        errorType:
+          type: string
+          description: Categorization of the error (populated only if status is not SUCCESS)
+          example: "HTTP_ERROR"
+        httpStatus:
+          type: integer
+          description: HTTP status code returned by the external TPP server
+          example: 200
+        description:
+          type: string
+          description: Human-readable description of the test result or error details
+          example: "Connection established successfully"

@@ -580,5 +580,12 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_testAuthConnection = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "testAuthConnection"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-tpp-auth-connection.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
   }
 }
