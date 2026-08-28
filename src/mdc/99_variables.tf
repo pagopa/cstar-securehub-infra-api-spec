@@ -79,5 +79,10 @@ variable "keycloak_issuer_url" {
 
 variable "mdc_backoffice_url" {
   type        = string
-  description = "URL for the MDC backoffice application."
+  description = "URL for the MDC external backoffice application (TPP frontend)."
+}
+
+variable "mdc_backoffice_internal_url" {
+  type        = string
+  description = "URL for the MDC internal backoffice application (PagoPA operator frontend)."
 }

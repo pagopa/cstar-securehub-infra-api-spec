@@ -74,7 +74,7 @@ locals {
         {
           bonus_fe_origins = join(
             "\n",
-            formatlist("    <origin>%s</origin>", local.origins_bonus_elettrodomestici.base)
+            formatlist("    <origin>%s</origin>", local.origins_pari_bonus.base)
           )
         }
       )
@@ -138,25 +138,30 @@ locals {
     }
   }
 
-  # 🔎 DNS - Bonus Elettrodomestici
-  bonus_el_dns_public_zones = [
-    "bonuselettrodomestici.it",
-    "bonuselettrodomestici.com",
-    "bonuselettrodomestici.info",
-    "bonuselettrodomestici.io",
-    "bonuselettrodomestici.net",
-    "bonuselettrodomestici.eu",
-    "bonuselettrodomestici.pagopa.it"
-  ]
+  # 🔎 DNS - Bonus
+  dns_public_pari_zone = "pari.pagopa.it"
 
-  bonus_el_env_dns_public_zones = [
-    for i in local.bonus_el_dns_public_zones :
+  bonus_dns_public_zones = concat(
+    [
+      "bonuselettrodomestici.it",
+      "bonuselettrodomestici.com",
+      "bonuselettrodomestici.info",
+      "bonuselettrodomestici.io",
+      "bonuselettrodomestici.net",
+      "bonuselettrodomestici.eu",
+      "bonuselettrodomestici.pagopa.it"
+    ],
+    [local.dns_public_pari_zone]
+  )
+
+  bonus_env_dns_public_zones = [
+    for i in local.bonus_dns_public_zones :
     var.env_short != "p" ? "https://${var.env}.${i}" : "https://${i}"
   ]
 
-  origins_bonus_elettrodomestici = {
+  origins_pari_bonus = {
     base = concat(
-      local.bonus_el_env_dns_public_zones,
+      local.bonus_env_dns_public_zones,
       var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001", "https://localhost:5173", "http://localhost:5173"] : []
     )
   }

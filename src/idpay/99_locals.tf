@@ -12,6 +12,7 @@ locals {
   #
   # AKS
   #
+  shared_aks_ingress_load_balancer_https = "https://shared.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
   domain_aks_ingress_hostname            = "${var.domain}.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
   domain_aks_ingress_load_balancer_https = "https://${local.domain_aks_ingress_hostname}"
 
@@ -57,9 +58,9 @@ locals {
   #
   # ORIGINS (used for CORS on User and Merchant OP Portals)
   #
-  origins_bonus_elettrodomestici = {
+  origins_pari_bonus = {
     base = concat(
-      local.bonus_el_env_dns_public_zones,
+      local.bonus_env_dns_public_zones,
       var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001", "https://localhost:5173", "http://localhost:5173"] : []
     )
   }
@@ -117,22 +118,26 @@ locals {
   # reward_storage_fqdn                      = "${module.idpay_refund_storage.name}.blob.core.windows.net"
   #
 
-  # 🔎 DNS - Bonus Elettrodomestici
-  bonus_el_dns_public_zones = [
-    "bonuselettrodomestici.it",
-    "bonuselettrodomestici.com",
-    "bonuselettrodomestici.info",
-    "bonuselettrodomestici.io",
-    "bonuselettrodomestici.net",
-    "bonuselettrodomestici.eu",
-    "bonuselettrodomestici.pagopa.it"
-  ]
+  # 🔎 DNS - Bonus
+  dns_public_pari_zone = "pari.pagopa.it"
 
-  bonus_el_env_dns_public_zones = [
-    for i in local.bonus_el_dns_public_zones :
+  bonus_dns_public_zones = concat(
+    [
+      "bonuselettrodomestici.it",
+      "bonuselettrodomestici.com",
+      "bonuselettrodomestici.info",
+      "bonuselettrodomestici.io",
+      "bonuselettrodomestici.net",
+      "bonuselettrodomestici.eu",
+      "bonuselettrodomestici.pagopa.it"
+    ],
+    [local.dns_public_pari_zone]
+  )
+
+  bonus_env_dns_public_zones = [
+    for i in local.bonus_dns_public_zones :
     var.env_short != "p" ? "https://${var.env}.${i}" : "https://${i}"
   ]
-
   # OpenId configuration for Merchant Op
   openid_config_url_merchant_op = "${var.keycloak_url_merchant_op}/.well-known/openid-configuration"
   merchant_op_client_id         = "frontend"
