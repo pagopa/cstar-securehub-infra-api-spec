@@ -446,9 +446,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/WalletErrorDTO'
               example:
-                code: 'WALLET_ENROLL_IBAN_NOT_ALLOWED_FOR_DISCOUNT_INITIATIVE'
-                message: 'It is not possible enroll
-            an iban for a discount type initiative'
+                code: 'WALLET_ENROLL_IBAN_NOT_ALLOWED'
+                message: 'It is not possible to enroll an iban for a discount type initiative'
           headers:
             Access-Control-Allow-Origin:
               $ref: '#/components/headers/Access-Control-Allow-Origin'
