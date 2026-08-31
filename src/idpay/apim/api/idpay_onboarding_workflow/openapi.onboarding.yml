@@ -674,7 +674,6 @@ components:
     SelfConsentDTO:
       oneOf:
         - $ref: "#/components/schemas/SelfConsentBoolDTO"
-        - $ref: "#/components/schemas/SelfConsentMultiDTO"
         - $ref: "#/components/schemas/SelfConsentTextDTO"
         - $ref: "#/components/schemas/SelfConsentMultiTypeDTO"
     ListUsersOnboardingStatusDTO:
@@ -785,25 +784,6 @@ components:
         accepted:
           type: boolean
           description: "ENG: Indicates whether the self-consent is accepted or not - IT: Indica se l'auto consenso è accettato o no"
-    SelfConsentMultiDTO:
-      type: object
-      required:
-        - _type
-        - code
-        - value
-      properties:
-        _type:
-          type: string
-          enum:
-            - multi
-          description: "ENG: Self-consent value type - IT: Auto consenso di tipo multipli"
-        code:
-          type: string
-          description: "ENG: Self-consent code - IT: Codice dell'auto consenso"
-        value:
-          type: string
-          example: "0, 1"
-          description: "ENG: Indicates self-consent values - IT: Indica i valori per gli auto consensi"
     SelfConsentTextDTO:
       type: object
       required:
@@ -943,6 +923,7 @@ components:
             - ONBOARDING_WAITING_LIST
             - ONBOARDING_ON_EVALUATION
             - ONBOARDING_ALREADY_ONBOARDED
+            - ONBOARDING_USER_BONUS_ALREADY_USED
           description: >-
             'ENG: Error code:
             ONBOARDING_USER_UNSUBSCRIBED: The user has unsubscribed from initiative,
@@ -964,7 +945,8 @@ components:
             ONBOARDING_GENERIC_ERROR: Application error,
             ONBOARDING_USER_NOT_ONBOARDED: The current user is not onboarded on initiative,
             ONBOARDING_INITIATIVE_NOT_FOUND: Cannot find initiative,
-            ONBOARDING_TOO_MANY_REQUESTS: Too many requests
+            ONBOARDING_TOO_MANY_REQUESTS: Too many requests,
+            ONBOARDING_USER_BONUS_ALREADY_USED: The user has already participated in the same promotion in the past
             - IT: Codice di errore:
             ONBOARDING_USER_UNSUBSCRIBED: L'utente si è disiscritto dall'iniziativa,
             ONBOARDING_PAGE_SIZE_NOT_ALLOWED: Dimensione pagina non permessa,
@@ -986,7 +968,8 @@ components:
             ONBOARDING_GENERIC_ERROR: Errore applicativo,
             ONBOARDING_USER_NOT_ONBOARDED: Utente non onboardato all'iniziativa,
             ONBOARDING_INITIATIVE_NOT_FOUND: Iniziativa non trovata,
-            ONBOARDING_TOO_MANY_REQUESTS: Troppe richieste'
+            ONBOARDING_TOO_MANY_REQUESTS: Troppe richieste,
+            ONBOARDING_USER_BONUS_ALREADY_USED: Utente ha già aderito in passato alla stessa iniziativa'
         message:
           type: string
           description: "ENG: Error message- IT: Messaggio di errore"
@@ -1058,12 +1041,6 @@ components:
           type: string
         beneficiaryKnown:
           type: boolean
-        beneficiaryBudget:
-          type: number
-          example: 10
-        beneficiaryBudgetMax:
-          type: number
-          example: 10
         startDate:
           type: string
           description: Start date
@@ -1190,7 +1167,6 @@ components:
       type: object
       anyOf:
         - $ref: "#/components/schemas/SelfCriteriaBoolDTO"
-        - $ref: "#/components/schemas/SelfCriteriaMultiDTO"
         - $ref: "#/components/schemas/SelfCriteriaMultiTypeDTO"
         - $ref: "#/components/schemas/SelfCriteriaTextDTO"
     SelfCriteriaBoolDTO:
@@ -1223,42 +1199,8 @@ components:
         code:
           type: string
           description: "ENG: Self-declaration code - IT: Codice dell'autodichiarazione"
-    SelfCriteriaMultiDTO:
-      title: SelfCriteriaMultiDTO
-      type: object
-      properties:
-        _type:
-          type: string
-          description: >-
-            ENG: Self-declaration value type - IT: Autodichiarazione di tipo
-            multipli
-          enum:
-            - multi
-        description:
-          type: string
-          example: "descrizione"
-          description: >-
-            ENG: Self-declaration description - IT: Descrizione
-            dell'autodichiarazione
-        subDescription:
-          type: string
-          example: "sotto descrizione"
-          description: >-
-            ENG: Self-declaration sub-description - IT: Sotto descrizione
-            dell'autodichiarazione
-        value:
-          type: array
-          items:
-            $ref: "#/components/schemas/RowDataDTO"
-          description: >-
-            ENG: Indicates self-declaration values - IT: Indica i valori per
-            l'autodichiarazione
-          maxItems: 10
-        code:
-          type: string
-          description: "ENG: Self-declaration code - IT: Codice dell'autodichiarazione"
     SelfCriteriaMultiTypeDTO:
-      title: SelfCriteriaMultiDTO
+      title: SelfCriteriaMultiTypeDTO
       type: object
       properties:
         _type:
