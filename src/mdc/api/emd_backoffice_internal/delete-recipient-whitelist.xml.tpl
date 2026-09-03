@@ -2,7 +2,7 @@
     <inbound>
         <base />
         <!-- Authorization delegated to fragment: operator-write or operator-admin roles only.
-             Administrative operation to enable/disable payment capabilities. -->
+             Administrative operation to delete a recipientId. -->
         <include-fragment fragment-id="emd-backoffice-internal-authorize-operator-write" />
         <set-backend-service base-url="${ingress_load_balancer_hostname}/emd-ar-backoffice-bff" />
         <!-- Rewriting to the internal BFF endpoint using tppId from path -->
