@@ -46,6 +46,8 @@ parameters:
   - name: 'TIME_OUT'
     type: number
     default: 15
+  - name: 'AZDO_GITHUB_TOKEN'
+    type: string
 
 stages:
   - stage: ${{parameters.ENV}}
@@ -131,3 +133,4 @@ stages:
                 WORKINGDIR: ${{ parameters.WORKING_DIR_MODULE }}
                 AZURE_SERVICE_CONNECTION_NAME: "${{parameters.SC_PLAN_NAME}}"
                 TF_SUMMARIZE: true
+                AZDO_GITHUB_TOKEN: '$(AZDO_GITHUB_TOKEN)'
