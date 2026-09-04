@@ -36,6 +36,7 @@
             </audiences>
             <issuers>
                 <issuer>${selfcare-issuer}</issuer>
+                <issuer>PAGOPA</issuer>
             </issuers>
         </validate-jwt>
 
