@@ -54,6 +54,18 @@
             </required-claims>
         </validate-jwt>
 
+        <choose>
+            <when condition="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("org_role", "") == "support" &amp;&amp; context.Request.Method != "GET")">
+                <return-response>
+                    <set-status code="403" reason="Forbidden" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>{ "statusCode": 403, "message": "The support role can only access GET APIs" }</set-body>
+                </return-response>
+            </when>
+        </choose>
+
         <set-variable name="acquirerId" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("acquirer_id", ""))" />
         <set-variable name="merchantId" value="@(((Jwt)context.Variables["validatedToken"]).Claims.GetValueOrDefault("merchant_id", ""))" />
 

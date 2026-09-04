@@ -13,11 +13,17 @@
 <policies>
     <inbound>
         <base />
-        <set-header name="x-merchant-id" exists-action="override">
-          <value>@(context.Request.MatchedParameters["merchantId"])</value>
-        </set-header>
-        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaypayment" />
-        <rewrite-uri template="@("/idpay/merchant/portal/initiatives/{initiativeId}/transactions/processed")" />
+        <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayportalwelfarebackendrolepermission" />
+        <rewrite-uri template="@{
+            var jwt = (Jwt)context.Variables["validatedToken"];
+            var name = jwt.Claims.GetValueOrDefault("name", "");
+            var posId = jwt.Claims.GetValueOrDefault("point_of_sale_id", "");
+            var input = name + posId;
+            System.Security.Cryptography.SHA256 hasher = System.Security.Cryptography.SHA256.Create();
+            var hashBytes = hasher.ComputeHash(System.Text.Encoding.UTF8.GetBytes(input));
+            var hashHex = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+            return "/idpay/consent?userId=" + hashHex;
+        }" />
     </inbound>
     <backend>
         <base />
