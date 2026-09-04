@@ -23,8 +23,8 @@
                         <value>application/json</value>
                     </set-header>
                     <set-body>{
-                        "code": "REWARD_BATCH_INVALID_REQUEST",
-                        "message": "L' iniziativa è terminata"
+                        "code": "REWARD_BATCH_SENT_NOT_PERMITTED",
+                        "message": "Il termine per l'invio dei rimborsi è scaduto."
                     }</set-body>
                 </return-response>
             </when>
