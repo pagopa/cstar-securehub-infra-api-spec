@@ -264,6 +264,35 @@ paths:
           description: TPP Not Found
         '502':
           description: Bad Gateway - Downstream service unreachable
+  '/api/v1/message-core/{messageId}':
+    get:
+      tags:
+        - message-backoffice-internal
+      operationId: getMessageByMessageId
+      summary: Retrieve a Message by its messageId
+      description: Checks whether a Message with the given messageId exists and returns its details.
+      parameters:
+        - name: messageId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the message to retrieve
+      responses:
+        '200':
+          description: OK - Message details found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageDTOV1'
+        '401':
+          description: Unauthorized - missing or invalid token
+        '403':
+          description: Forbidden - insufficient operator role
+        '404':
+          description: Not Found - No Message exists for the given messageId
+        '502':
+          description: Bad Gateway - Downstream service unreachable
   '/api/v1/message-core/search':
     get:
       tags:

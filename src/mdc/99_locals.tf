@@ -594,5 +594,12 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_getMessageByMessageId = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getMessageByMessageId"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-message-by-message-id.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
   }
 }
