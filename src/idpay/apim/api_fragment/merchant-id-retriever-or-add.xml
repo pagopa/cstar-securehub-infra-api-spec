@@ -19,6 +19,7 @@
 				<set-body>@{
 						return new JObject(
 							new JProperty("fiscalCode", ((String)context.Variables["merchantFiscalCode"])),
+              new JProperty("vatNumber", ((String)context.Variables["merchantVatNumber"])),
 							new JProperty("businessName", ((String)context.Variables["merchantBusinessName"])),
 							new JProperty("acquirerId", ((String)context.Variables["acquirerId"])),
 							new JProperty("iban", ((String)context.Variables["iban"])),
