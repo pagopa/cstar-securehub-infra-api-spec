@@ -264,20 +264,26 @@ paths:
           description: TPP Not Found
         '502':
           description: Bad Gateway - Downstream service unreachable
-  '/api/v1/message-core/{messageId}':
+  '/api/v1/message-core/{entityId}/{messageId}':
     get:
       tags:
         - message-backoffice-internal
-      operationId: getMessageByMessageId
+      operationId: getMessageByEntityIdAndMessageId
       summary: Retrieve a Message by its messageId
       description: Checks whether a Message with the given messageId exists and returns its details.
       parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the tpp
         - name: messageId
           in: path
           required: true
           schema:
             type: string
-          description: The ID of the message to retrieve
+          description: The ID of the message
       responses:
         '200':
           description: OK - Message details found
@@ -291,6 +297,36 @@ paths:
           description: Forbidden - insufficient operator role
         '404':
           description: Not Found - No Message exists for the given messageId
+        '502':
+          description: Bad Gateway - Downstream service unreachable
+    delete:
+      tags:
+        - message-backoffice-internal
+      operationId: deleteMessageByEntityIdAndMessageId
+      summary: Delete a Message by entityId and messageId
+      description: Permanently removes a message associated with a specific entity (TPP) and message ID. Requires operator-write or operator-admin roles.
+      parameters:
+        - name: entityId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the entity (TPP)
+        - name: messageId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the message to delete
+      responses:
+        '204':
+          description: No Content - Message deleted successfully
+        '401':
+          description: Unauthorized - missing or invalid token
+        '403':
+          description: Forbidden - insufficient operator role
+        '404':
+          description: Not Found - No Message exists for the given entityId and messageId
         '502':
           description: Bad Gateway - Downstream service unreachable
   '/api/v1/message-core/search':
