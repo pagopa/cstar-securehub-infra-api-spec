@@ -374,6 +374,7 @@ paths:
           required: false
           schema:
             type: integer
+            minimum: 0
             default: 0
           description: Zero-based page index
         - name: size
@@ -382,6 +383,7 @@ paths:
           schema:
             type: integer
             default: 10
+            minimum: 1
             maximum: 100
           description: Page size (upstream cap 100)
         - name: fields
@@ -405,6 +407,8 @@ paths:
           description: Bad Request - Invalid field name or parameters
         '401':
           description: Unauthorized
+        '403':
+          description: Forbidden - insufficient operator role
         '502':
           description: Bad Gateway - Upstream emd-tpp service is unavailable
 components:
