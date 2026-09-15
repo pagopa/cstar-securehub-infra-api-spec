@@ -845,7 +845,6 @@ components:
       required:
         - code
         - description
-        - rtp
       example:
         code: "01000000F"
         description: "Wrong party identifier"
@@ -1356,7 +1355,6 @@ components:
           schema:
             oneOf:
               - $ref: '#/components/schemas/GpdErrorWithRtp'
-              - $ref: '#/components/schemas/ErrorSchema'
 
   parameters:
 
