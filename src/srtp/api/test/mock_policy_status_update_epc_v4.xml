@@ -1684,6 +1684,179 @@
   },</set-body>
         </return-response>
       </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113221&quot;))">
+        <return-response>
+          <set-status code="200" reason="OK" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "resourceId": "string",
+  "Document": {
+    "CdtrPmtActvtnReqStsRpt": {
+      "GrpHdr": {
+        "MsgId": "string",
+        "CreDtTm": "2026-07-07T12:24:46.224Z",
+        "InitgPty": {
+          "Id": {
+            "OrgId": {
+              "AnyBIC": "G97MXMNJ",
+              "LEI": "EDNKSSR7OJFCK5HGE391",
+              "Othr": {
+                "Id": "string",
+                "SchmeNm": {
+                  "Cd": "BANK"
+                },
+                "Issr": "string"
+              }
+            }
+          }
+        }
+      },
+      "OrgnlGrpInfAndSts": {
+        "OrgnlMsgId": "string",
+        "OrgnlMsgNmId": "string",
+        "OrgnlCreDtTm": "2026-07-07T12:24:46.224Z"
+      },
+      "OrgnlPmtInfAndSts": [
+        {
+          "OrgnlPmtInfId": "string",
+          "TxInfAndSts": [
+            {
+              "StsId": "string",
+              "OrgnlInstrId": "string",
+              "OrgnlEndToEndId": "string",
+              "StsRsnInf": {
+                "Orgtr": {
+                  "Id": {
+                    "OrgId": {
+                      "AnyBIC": "JYSVKCV4529",
+                      "LEI": "LGDFSQ844N6JZIG1JY44",
+                      "Othr": {
+                        "Id": "string",
+                        "SchmeNm": {
+                          "Cd": "BANK"
+                        },
+                        "Issr": "string"
+                      }
+                    }
+                  }
+                },
+                "Rsn": "AEXR"
+              },
+              "ChrgsInf": {
+                "Amt": 0.01,
+                "Agt": {
+                  "FinInstnId": {
+                    "BICFI": "4B57ZXNU",
+                    "LEI": "B74OLVW7LP0P6A4VPE31",
+                    "Othr": {
+                      "Id": "string",
+                      "SchmeNm": {
+                        "Cd": "stri"
+                      },
+                      "Issr": "string"
+                    }
+                  }
+                }
+              },
+              "OrgnlTxRef": {
+                "Amt": {
+                  "InstdAmt": 999999999.99
+                },
+                "ReqdExctnDt": {
+                  "Dt": "string"
+                },
+                "XpryDt": {
+                  "Dt": "string"
+                },
+                "PmtTpInf": {
+                  "SvcLvl": {
+                    "Cd": "SEPA"
+                  },
+                  "LclInstrm": {
+                    "Cd": "string"
+                  }
+                },
+                "RmtInf": {
+                  "Ustrd": "string",
+                  "Strd": {
+                    "RfrdDocAmt": {
+                      "CdtNoteAmt": 999999999.99
+                    },
+                    "CdtrRefInf": {
+                      "Tp": {
+                        "CdOrPrtry": {
+                          "Cd": "SCOR"
+                        },
+                        "Issr": "string"
+                      },
+                      "Ref": "string"
+                    }
+                  }
+                },
+                "DbtrAgt": {
+                  "FinInstnId": {
+                    "BICFI": "22O9XJ9ME5V",
+                    "LEI": "0RP0MY5ZOJSWRKAQPQ30",
+                    "Othr": {
+                      "Id": "string",
+                      "SchmeNm": {
+                        "Cd": "stri"
+                      },
+                      "Issr": "string"
+                    }
+                  }
+                },
+                "CdtrAgt": {
+                  "FinInstnId": {
+                    "BICFI": "MMI1VJUKRS9",
+                    "LEI": "M3OKJHV9NXIYJ45YZL45",
+                    "Othr": {
+                      "Id": "string",
+                      "SchmeNm": {
+                        "Cd": "stri"
+                      },
+                      "Issr": "string"
+                    }
+                  }
+                },
+                "Cdtr": {
+                  "Nm": "string",
+                  "Id": {
+                    "OrgId": {
+                      "AnyBIC": "9RG4IV5X",
+                      "LEI": "MZGAR0ZD0SJXT4ERHT80",
+                      "Othr": {
+                        "Id": "string",
+                        "SchmeNm": {
+                          "Cd": "BANK"
+                        }
+                      }
+                    }
+                  }
+                },
+                "CdtrAcct": {
+                  "Id": {
+                    "IBAN": "EQ33IE"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_links": {
+    "initialSepaRequestToPayUri": {
+      "href": "string",
+      "templated": false
+    }
+  }
+}</set-body>
+        </return-response>
+      </when>
       <otherwise>
         <return-response>
           <set-status code="200" reason="OK" />
