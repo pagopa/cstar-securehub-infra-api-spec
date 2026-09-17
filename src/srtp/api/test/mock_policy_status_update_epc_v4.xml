@@ -2,7 +2,7 @@
   <inbound>
     <base />
     <choose>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;LNMFJI01P21M483I&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113200&quot;))">
         <return-response>
           <set-status code="200" reason="OK" />
           <set-header name="Content-Type" exists-action="override">
@@ -177,7 +177,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;PDOQQH16A21J351Y&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113201&quot;))">
         <return-response>
           <set-status code="200" reason="OK" />
           <set-header name="Content-Type" exists-action="override">
@@ -352,7 +352,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;QRKVHU02T21L230S&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113202&quot;))">
         <return-response>
           <set-status code="200" reason="OK" />
           <set-header name="Content-Type" exists-action="override">
@@ -527,7 +527,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MSFQNH01B01H132F&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113203&quot;))">
         <return-response>
           <set-status code="200" reason="OK" />
           <set-header name="Content-Type" exists-action="override">
@@ -702,7 +702,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;LNVRRO83C15D178G&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113204&quot;))">
         <return-response>
           <set-status code="200" reason="OK" />
           <set-header name="Content-Type" exists-action="override">
@@ -877,7 +877,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;QXJCZA03D20C301U&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113205&quot;))">
         <return-response>
           <set-status code="200" reason="OK" />
           <set-header name="Content-Type" exists-action="override">
@@ -1052,7 +1052,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;DWOCHA34L08D293N&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113206&quot;))">
         <return-response>
           <set-status code="400" reason="Bad Request" />
           <set-header name="Content-Type" exists-action="override">
@@ -1088,7 +1088,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;NBBYGQ52C27J356V&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113207&quot;))">
         <return-response>
           <set-status code="401" reason="Unauthorized" />
           <set-header name="Content-Type" exists-action="override">
@@ -1124,7 +1124,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;NZFKNQ38T21I602H&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113207&quot;))">
         <return-response>
           <set-status code="404" reason="Not Found" />
           <set-header name="Content-Type" exists-action="override">
@@ -1160,7 +1160,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;PYRXWE42D05H868K&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113208&quot;))">
         <return-response>
           <set-status code="406" reason="Not Acceptable" />
           <set-header name="Content-Type" exists-action="override">
@@ -1196,7 +1196,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;GHIRMG23P14B257B&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113209&quot;))">
         <return-response>
           <set-status code="410" reason="Gone" />
           <set-header name="Content-Type" exists-action="override">
@@ -1232,7 +1232,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;CQBPSG42M04A188P&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113210&quot;))">
         <return-response>
           <set-status code="415" reason="Unsupported Media Type" />
           <set-header name="Content-Type" exists-action="override">
@@ -1268,7 +1268,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;XQIVZS42D12C578F&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113210&quot;))">
         <return-response>
           <set-status code="422" reason="Unprocessable Entity" />
           <set-header name="Content-Type" exists-action="override">
@@ -1304,7 +1304,7 @@
 }</set-body>
         </return-response>
       </when>
-      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MLPRHJ30A17I206Z&quot;))">
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;153611186070113211&quot;))">
         <return-response>
           <set-status code="429" reason="Too Many Requests" />
           <set-header name="Content-Type" exists-action="override">
