@@ -26,6 +26,12 @@ locals {
   api_ingress_url    = "${var.domain}.${var.location_short}.${local.internal_domain_suffix}.${local.dns_zone}"
   api_service_url    = "https://${local.api_ingress_url}"
 
+  callback_openapi_v2     = templatefile("./api/epc/callback.openapi.yaml", {})
+  callback_openapi_v2_doc = yamldecode(local.callback_openapi_v2)
+  callback_openapi_v1 = yamlencode(merge(local.callback_openapi_v2_doc, {
+    paths = { for path_key, path_item in lookup(local.callback_openapi_v2_doc, "paths") : path_key => path_item if path_key != "/callbacks/status-update" }
+  }))
+
   apis = merge({
     # RTP Activation
     rtp-activation = {
@@ -153,7 +159,7 @@ locals {
       product               = "srtp"
       import_descriptor = {
         content_format = "openapi"
-        content_value  = templatefile("./api/epc/callback.openapi.yaml", {})
+        content_value  = local.callback_openapi_v1
       }
       version_set = {
         name              = "${var.env_short}-rtp-callback-v2"
@@ -457,6 +463,11 @@ locals {
         xml_content = templatefile("./api/pagopa/service_providers_registry_get_policy.xml", {
           storage_account_name = local.rtp_storage_account_name
         })
+      }
+      statusUpdateCallback-v2 = {
+        api_name     = "rtp-callback-v2"
+        operation_id = "statusUpdateCallback"
+        xml_content  = file("./api/epc/callback_policy.xml")
       }
     },
     { for k, v in {
