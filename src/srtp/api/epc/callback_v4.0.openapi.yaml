@@ -43,14 +43,7 @@ paths:
       operationId: statusUpdateCallback
       summary: EPC 4.0 Status Update asynchronous callback
       description: Webhook endpoint called by the EPC SP to provide asynchronous status-update responses.
-      tags: [ rtps ]
-      parameters:
-        - name: X-Client-Certificate-Serial
-          in: header
-          description: Client certificate serial number
-          required: true
-          schema:
-            type: string
+      tags: [ callback-status-update ]
       requestBody:
         description: EPC 4.0 pacs.028/pacs.002 status-update response payload
         required: true
