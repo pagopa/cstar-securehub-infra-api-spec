@@ -38,7 +38,7 @@ tags:
     description: API Group aims to post cancellation callbacks.
 
 paths:
-  /callbacks/status-update:
+  /status-update:
     post:
       operationId: statusUpdateCallback
       summary: EPC 4.0 Status Update asynchronous callback
