@@ -92,38 +92,6 @@ paths:
           $ref: '#/components/responses/UnsupportedMediaType'
         "500":
           $ref: '#/components/responses/InternalServerError'
-  /callbacks/status-update:
-    post:
-      operationId: statusUpdateCallback
-      summary: EPC 4.0 Status Update asynchronous callback
-      description: Webhook endpoint called by the EPC SP to provide asynchronous status-update responses.
-      tags: [ rtps ]
-      security:
-        - oAuth2: [ admin_rtp_send, write_rtp_send ]
-      parameters:
-        - name: X-Client-Certificate-Serial
-          in: header
-          description: Client certificate serial number
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: EPC 4.0 pacs.028/pacs.002 status-update response payload
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              description: Generic JSON payload mapping to SepaRequestToPayStatusUpdateResponse
-      responses:
-        "200":
-          description: Successfully processed callback
-        "400":
-          #description: Bad request.
-          $ref: '#/components/responses/BadRequest'
-        "500":
-          #description: Server error.
-          $ref: '#/components/responses/InternalServerError'
 
 components:
   schemas:
