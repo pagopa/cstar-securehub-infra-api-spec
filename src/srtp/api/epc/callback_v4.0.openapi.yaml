@@ -40,27 +40,32 @@ tags:
 paths:
   /status-update:
     post:
-      operationId: statusUpdateCallback
       summary: EPC 4.0 Status Update asynchronous callback
-      description: Webhook endpoint called by the EPC SP to provide asynchronous status-update responses.
-      tags: [ callback-status-update ]
+      description: |
+        Webhook endpoint called by the EPC SP to provide asynchronous status-update responses.
+      operationId: statusUpdateCallback
+      tags: [callback]
+      # --- Client's Request Body ---
+      # Describes the payload that a client must send when calling this endpoint.
       requestBody:
         description: EPC 4.0 pacs.028/pacs.002 status-update response payload
-        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SepaRequestToPayStatusUpdateResponseResource'
+        required: true
+      # --- Our Server's Responses ---
+      # Defines the possible HTTP responses our server will return to the calling client.
       responses:
         "200":
-          description: Successfully processed callback
+          description: OK - Our server has received and accepted the client's notification.
         "400":
-          #description: Bad request.
           $ref: '#/components/responses/BadRequest'
         "403":
           $ref: '#/components/responses/Forbidden'
+        "415":
+          $ref: '#/components/responses/UnsupportedMediaType'
         "500":
-          #description: Server error.
           $ref: '#/components/responses/InternalServerError'
 
   /send:
@@ -1958,9 +1963,8 @@ components:
       properties:
         resourceId:
           $ref: '#/components/schemas/ResourceId'
-        Document:
-          type: object
-          description: EPC259-22 V4.0 DS-16 RTP Document
+        SepaRequestToPayStatusUpdateResponse:
+          $ref: '#/components/schemas/SepaRequestToPayStatusUpdateResponse'
         _links:
           type: object
           properties:
@@ -1968,6 +1972,150 @@ components:
               $ref: '#/components/schemas/GenericHalLink'
           required:
           - initialSepaRequestToPayUri
+    SepaRequestToPayStatusUpdateResponse:
+      $ref: '#/components/schemas/Document_EPC259-22_V4.0_DS16RTP'
+    Document_EPC259-22_V4.0_DS16RTP:
+      type: object
+      properties:
+        CdtrPmtActvtnReqStsRpt:
+          $ref: '#/components/schemas/CreditorPaymentActivationRequestStatusReportV07_EPC259-22_V4.0_DS16RTP'
+      required:
+      - CdtrPmtActvtnReqStsRpt
+    CreditorPaymentActivationRequestStatusReportV07_EPC259-22_V4.0_DS16RTP:
+      type: object
+      properties:
+        GrpHdr:
+          $ref: '#/components/schemas/GroupHeader87_EPC259-22_V4.0_DS04b'
+        OrgnlGrpInfAndSts:
+          $ref: '#/components/schemas/OriginalGroupInformation29_EPC259-22_V4.0_DS16RTP'
+        OrgnlPmtInfAndSts:
+          type: array
+          items:
+            $ref: '#/components/schemas/OriginalPaymentInstruction31_EPC259-22_V4.0_DS16RTP'
+          maxItems: 2
+      required:
+      - GrpHdr
+      - OrgnlGrpInfAndSts
+    OriginalPaymentInstruction31_EPC259-22_V4.0_DS16RTP:
+      type: object
+      properties:
+        OrgnlPmtInfId:
+          $ref: '#/components/schemas/Max35Text'
+        TxInfAndSts:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentTransaction104_EPC259-22_V4.0_DS16RTP'
+      required:
+      - OrgnlPmtInfId
+    PaymentTransaction104_EPC259-22_V4.0_DS16RTP:
+      type: object
+      properties:
+        StsId:
+          $ref: '#/components/schemas/Max35Text'
+        OrgnlInstrId:
+          $ref: '#/components/schemas/Max35Text'
+        OrgnlEndToEndId:
+          $ref: '#/components/schemas/Max35Text'
+        StsRsnInf:
+          $ref: '#/components/schemas/StatusReasonInformation12_EPC259-22_V4.0_DS16RTP'
+        ChrgsInf:
+          $ref: '#/components/schemas/Charges7_EPC259-22_V4.0_DS04b'
+        OrgnlTxRef:
+          $ref: '#/components/schemas/OriginalTransactionReference29_EPC259-22_V4.0_DS16RTP'
+      required:
+      - StsId
+      - OrgnlInstrId
+      - OrgnlEndToEndId
+      - StsRsnInf
+      - OrgnlTxRef
+    StatusReasonInformation12_EPC259-22_V4.0_DS16RTP:
+      type: object
+      properties:
+        Orgtr:
+          $ref: '#/components/schemas/PartyIdentification135_EPC259-22_V4.0_DS04b'
+        Rsn:
+          $ref: '#/components/schemas/StatusReason6Choice_EPC259-22_V4.0_DS16RTP'
+      required:
+      - Orgtr
+      - Rsn
+    StatusReason6Choice_EPC259-22_V4.0_DS16RTP:
+      oneOf:
+      - $ref: '#/components/schemas/ExternalStatusReason1Code_III_Wrapper'
+      - $ref: '#/components/schemas/Max35Text_Wrapper'
+    ExternalStatusReason1Code_III_Wrapper:
+      type: object
+      properties:
+        Cd:
+          $ref: '#/components/schemas/ExternalStatusReason1Code_III'
+    ExternalStatusReason1Code_III:
+      maxLength: 4
+      minLength: 1
+      enum:
+      - AEXR
+      - ALAC
+      - ARFR
+      - ARJR
+      - IRNR
+      - REPR
+      type: string
+    OriginalTransactionReference29_EPC259-22_V4.0_DS16RTP:
+      type: object
+      properties:
+        Amt:
+          $ref: '#/components/schemas/AmountType4Choice_EPC259-22_V4.0_DS02'
+        ReqdExctnDt:
+          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+        XpryDt:
+          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+        PmtTpInf:
+          $ref: '#/components/schemas/PaymentTypeInformation26_EPC259-22_V4.0_DS04b'
+        RmtInf:
+          $ref: '#/components/schemas/RemittanceInformation16_EPC259-22_V4.0_DS04b'
+        DbtrAgt:
+          $ref: '#/components/schemas/BranchAndFinancialInstitutionIdentification6_EPC259-22_V4.0_DS02'
+        CdtrAgt:
+          $ref: '#/components/schemas/BranchAndFinancialInstitutionIdentification6_EPC259-22_V4.0_DS02'
+        Cdtr:
+          $ref: '#/components/schemas/PartyIdentification135_EPC259-22_V4.0_DS16RTP'
+        CdtrAcct:
+          $ref: '#/components/schemas/CashAccount38'
+      required:
+      - Amt
+      - ReqdExctnDt
+      - XpryDt
+      - PmtTpInf
+      - DbtrAgt
+      - CdtrAgt
+      - Cdtr
+      - CdtrAcct
+    PartyIdentification135_EPC259-22_V4.0_DS16RTP:
+      type: object
+      properties:
+        Nm:
+          $ref: '#/components/schemas/Max140Text_CreditorName_DSXX_2'
+        Id:
+          $ref: '#/components/schemas/Party38Choice_EPC259-22_V4.0_DS15RTP'
+      required:
+      - Id
+    OriginalGroupInformation29_EPC259-22_V4.0_DS16RTP:
+      type: object
+      properties:
+        OrgnlMsgId:
+          $ref: '#/components/schemas/Max35Text'
+        OrgnlMsgNmId:
+          $ref: '#/components/schemas/Max35Text_OrgnlMsgNmId_DS16RTP'
+        OrgnlCreDtTm:
+          $ref: '#/components/schemas/UtcIsoDateTimeWithMilliseconds'
+      required:
+      - OrgnlMsgId
+      - OrgnlMsgNmId
+      - OrgnlCreDtTm
+    Max35Text_OrgnlMsgNmId_DS16RTP:
+      type: string
+      maxLength: 35
+      minLength: 1
+      description: "SEPA Usage Rule:\n- Must begin with \u2018pacs.028\u2019. The addition\
+        \ of a variant number and version number is optional.\n"
   responses:
     BadRequest:
       description: The request could not be parsed or processed (HTTP400).
