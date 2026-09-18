@@ -44,7 +44,7 @@ paths:
       description: |
         Webhook endpoint called by the EPC SP to provide asynchronous status-update responses.
       operationId: statusUpdateCallback
-      tags: [callback]
+      tags: [callback-status-update]
       # --- Client's Request Body ---
       # Describes the payload that a client must send when calling this endpoint.
       requestBody:
