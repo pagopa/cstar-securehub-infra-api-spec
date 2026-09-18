@@ -26,7 +26,7 @@ locals {
   api_ingress_url    = "${var.domain}.${var.location_short}.${local.internal_domain_suffix}.${local.dns_zone}"
   api_service_url    = "https://${local.api_ingress_url}"
 
-  callback_openapi_v2     = templatefile("./api/epc/callback_v4.0.openapi.yaml", {})
+  callback_openapi_v2 = templatefile("./api/epc/callback_v4.0.openapi.yaml", {})
   callback_openapi_v1 = templatefile("./api/epc/callback.openapi.yaml", {})
 
   apis = merge({
