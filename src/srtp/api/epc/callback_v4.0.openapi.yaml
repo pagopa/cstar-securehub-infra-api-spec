@@ -50,8 +50,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              description: Generic JSON payload mapping to SepaRequestToPayStatusUpdateResponse
+              $ref: '#/components/schemas/SepaRequestToPayStatusUpdateResponseResource'
       responses:
         "200":
           description: Successfully processed callback
@@ -1954,6 +1953,21 @@ components:
         SEPA length updated to 320 (instead of 2048).
 
         '
+    SepaRequestToPayStatusUpdateResponseResource:
+      type: object
+      properties:
+        resourceId:
+          $ref: '#/components/schemas/ResourceId'
+        Document:
+          type: object
+          description: EPC259-22 V4.0 DS-16 RTP Document
+        _links:
+          type: object
+          properties:
+            initialSepaRequestToPayUri:
+              $ref: '#/components/schemas/GenericHalLink'
+          required:
+          - initialSepaRequestToPayUri
   responses:
     BadRequest:
       description: The request could not be parsed or processed (HTTP400).
