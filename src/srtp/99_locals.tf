@@ -185,7 +185,7 @@ locals {
       product               = "srtp"
       import_descriptor = {
         content_format = "openapi"
-        content_value  = templatefile("./api/epc/callback_v4.0.openapi.yaml", {})
+        content_value  = local.callback_openapi_v2
       }
       api_policy = {
         xml_content = file("./api/epc/callback_policy.xml")
