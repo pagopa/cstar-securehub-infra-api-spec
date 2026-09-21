@@ -225,7 +225,7 @@ paths:
           #description: Unexpected error.
           $ref: '#/components/responses/Error'
 
-  /rtps/{rtpId}/status-update:
+  /rtps/status-update:
     post:
       operationId: requestRtpStatusUpdate
       summary: Request a status update for a RTP from the Payer's SRTP-Service Provider
@@ -241,7 +241,13 @@ paths:
       parameters:
         - $ref: '#/components/parameters/RequestId'
         - $ref: '#/components/parameters/Version'
-        - $ref: '#/components/parameters/RtpId'
+      requestBody:
+        description: "Status-update request details including the RTP resource ID"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StatusUpdateRequest"
       responses:
         "200":
           $ref: '#/components/responses/statusUpdateResult'
@@ -662,6 +668,15 @@ components:
       required:
         - resourceId
         - reason
+
+    StatusUpdateRequest:
+      type: object
+      description: "Request body for requesting a status update on a Request To Pay (RTP)"
+      properties:
+        resourceId:
+          $ref: '#/components/schemas/ResourceId'
+      required:
+        - resourceId
 
     RtpList:
       type: array
