@@ -35,8 +35,8 @@ locals {
     paths = { for path_key, path_item in lookup(local.send_openapi_v2_doc, "paths") : path_key => path_item if path_key != "/rtps/status-update" }
   }))
 
- callback_openapi_v2 = templatefile("./api/epc/callback_v4.0.openapi.yaml", {})
- callback_openapi_v1 = templatefile("./api/epc/callback.openapi.yaml", {})
+  callback_openapi_v2 = templatefile("./api/epc/callback_v4.0.openapi.yaml", {})
+  callback_openapi_v1 = templatefile("./api/epc/callback.openapi.yaml", {})
 
   apis = merge({
     # RTP Activation
