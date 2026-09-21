@@ -26,8 +26,17 @@ locals {
   api_ingress_url    = "${var.domain}.${var.location_short}.${local.internal_domain_suffix}.${local.dns_zone}"
   api_service_url    = "https://${local.api_ingress_url}"
 
-  callback_openapi_v2 = templatefile("./api/epc/callback_v4.0.openapi.yaml", {})
-  callback_openapi_v1 = templatefile("./api/epc/callback.openapi.yaml", {})
+  # rtp-service-provider (v1) must not expose /rtps/status-update (EPC 4.0-only), so we
+  # derive its import content by stripping that path from the parsed v2 spec, instead of
+  # templating conditionals into the source YAML.
+  send_openapi_v2     = templatefile("./api/pagopa/send.openapi.yaml", {})
+  send_openapi_v2_doc = yamldecode(local.send_openapi_v2)
+  send_openapi_v1 = yamlencode(merge(local.send_openapi_v2_doc, {
+    paths = { for path_key, path_item in lookup(local.send_openapi_v2_doc, "paths") : path_key => path_item if path_key != "/rtps/status-update" }
+  }))
+
+ callback_openapi_v2 = templatefile("./api/epc/callback_v4.0.openapi.yaml", {})
+ callback_openapi_v1 = templatefile("./api/epc/callback.openapi.yaml", {})
 
   apis = merge({
     # RTP Activation
@@ -202,7 +211,7 @@ locals {
       product               = "srtp"
       import_descriptor = {
         content_format = "openapi"
-        content_value  = templatefile("./api/pagopa/send.openapi.yaml", {})
+        content_value  = local.send_openapi_v1
       }
       version_set = {
         name                = "${var.env_short}-rtp-service-provider-v2"
@@ -240,7 +249,7 @@ locals {
       version_set_ref       = "rtp-service-provider"
       import_descriptor = {
         content_format = "openapi"
-        content_value  = templatefile("./api/pagopa/send.openapi.yaml", {})
+        content_value  = local.send_openapi_v2
       }
       api_policy = {
         xml_content = templatefile("./api/pagopa/send_base_policy.xml", {
@@ -485,6 +494,11 @@ locals {
         api_name     = "rtp-mock-v4"
         operation_id = "postRequestToPayCancellationRequest"
         xml_content  = file("./api/test/mock_policy_cancel_epc_v4.xml")
+      }
+      getRequestToPayStatusUpdate-v4 = var.env_short == "p" ? null : {
+        api_name     = "rtp-mock-v4"
+        operation_id = "getRequestToPayStatusUpdate"
+        xml_content  = file("./api/test/mock_policy_status_update_epc_v4.xml")
       }
       processGpdMessage = var.env_short == "p" ? null : {
         api_name    = "rtp-gpd-message-mock"
