@@ -225,6 +225,63 @@ paths:
           #description: Unexpected error.
           $ref: '#/components/responses/Error'
 
+  /rtps/status-update:
+    post:
+      operationId: requestRtpStatusUpdate
+      summary: Request a status update for a RTP from the Payer's SRTP-Service Provider
+      description: >
+        Triggers an outbound SEPA Request-To-Pay status-update
+        request (EPC 4.0, § 2.9) to the Payer's SRTP-Service Provider for the given RTP,
+        and returns the RTP's resourceId along with the reason code returned by the Payer's
+        SRTP-Service Provider, if any (omitted when the Payer's SRTP-Service Provider deferred
+        to the asynchronous callback instead of answering synchronously).
+      tags: [ rtps ]
+      security:
+        - oAuth2: [ admin_rtp_send, write_rtp_send ]
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/Version'
+      requestBody:
+        description: "Status-update request details including the RTP resource ID"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StatusUpdateRequest"
+      responses:
+        "200":
+          $ref: '#/components/responses/statusUpdateResult'
+        "400":
+          #description: Bad request.
+          $ref: '#/components/responses/Error'
+        "401":
+          #description: Wrong credentials.
+          $ref: '#/components/responses/Error'
+        "403":
+          #description: Forbidden.
+          $ref: '#/components/responses/Error'
+        "404":
+          #description: Not found.
+          $ref: '#/components/responses/Error'
+        "406":
+          #description: Not acceptable. Did you require application/json?
+          $ref: '#/components/responses/Error'
+        "422":
+          #description: Unprocessable entity
+          $ref: '#/components/responses/Error'
+        "429":
+          #description: Too many requests
+          $ref: '#/components/responses/Error'
+        "500":
+          #description: Server error.
+          $ref: '#/components/responses/Error'
+        "504":
+          #description: Timeout communicating with Debtor Service Provider.
+          $ref: '#/components/responses/Error'
+        default:
+          #description: Unexpected error.
+          $ref: '#/components/responses/Error'
+
   /gpd/message:
     post:
       tags:
@@ -586,6 +643,20 @@ components:
         - PAID
       example: "MODT"
 
+    StatusUpdateReason:
+      type: string
+      description: >
+        Reason code returned by the Payer's SRTP-Service Provider for a status-update request
+        (EPC 4.0, § 2.9 — ExternalStatusReason1Code_III).
+      enum:
+        - AEXR
+        - ALAC
+        - ARFR
+        - ARJR
+        - IRNR
+        - REPR
+      example: "ALAC"
+
     CancelRtpRequest:
       type: object
       description: "Request body for cancelling a Request To Pay (RTP)"
@@ -598,10 +669,30 @@ components:
         - resourceId
         - reason
 
+    StatusUpdateRequest:
+      type: object
+      description: "Request body for requesting a status update on a Request To Pay (RTP)"
+      properties:
+        resourceId:
+          $ref: '#/components/schemas/ResourceId'
+      required:
+        - resourceId
+
     RtpList:
       type: array
       items:
         $ref: "#/components/schemas/Rtp"
+
+    RtpStatusUpdateResult:
+      type: object
+      description: Result of a SEPA Request-To-Pay status-update request (EPC 4.0, § 2.9).
+      required:
+        - resourceId
+      properties:
+        resourceId:
+          $ref: '#/components/schemas/ResourceId'
+        reason:
+          $ref: '#/components/schemas/StatusUpdateReason'
 
     RtpDeliveryResponse:
       type: object
@@ -762,6 +853,7 @@ components:
         - CANCELLED_REJECTED
         - ERROR_CANCEL
         - RFC_SENT
+        - EXPIRED
 
     RtpEvent:
       type: string
@@ -780,6 +872,7 @@ components:
         - CANCEL_RTP_REJECTED
         - CONFIRM_RFC
         - CANCEL_RTP_PAID
+        - EXPIRE_RTP
 
     GenericError:
       description: Generic error.
@@ -1136,6 +1229,37 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Rtp'
+
+    statusUpdateResult:
+      description: Result of a SEPA Request-To-Pay status-update request.
+      headers:
+        Access-Control-Allow-Origin:
+          description: |
+            Indicates whether the response can be shared with requesting code
+            from the given origin.
+          required: false
+          schema:
+            $ref: '#/components/schemas/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          description: The number of allowed requests in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitLimit'
+        RateLimit-Reset:
+          description: The number of seconds left in the current period.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RateLimitReset'
+        Retry-After:
+          description: |
+            The number of seconds to wait before allowing a follow-up request.
+          required: false
+          schema:
+            $ref: '#/components/schemas/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RtpStatusUpdateResult'
 
     Error:
       description: Response returned when an error occured.
