@@ -2114,8 +2114,7 @@ components:
       type: string
       maxLength: 35
       minLength: 1
-      description: "SEPA Usage Rule:\n- Must begin with \u2018pacs.028\u2019. The addition\
-        \ of a variant number and version number is optional.\n"
+      description: "SEPA Usage Rule:\n- Must begin with 'pacs.028'. The addition of a variant number and version number is optional.\n"
   responses:
     BadRequest:
       description: The request could not be parsed or processed (HTTP400).
