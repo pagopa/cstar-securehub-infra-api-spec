@@ -4468,6 +4468,7 @@ components:
         - $ref: '#/components/schemas/SelfCriteriaBoolDTO'
         - $ref: '#/components/schemas/SelfCriteriaMultiTypeDTO'
         - $ref: '#/components/schemas/SelfCriteriaTextDTO'
+        - $ref: '#/components/schemas/SelfCriteriaInformativeDTO'   # BND-1885
     SelfCriteriaBoolDTO:
       type: object
       properties:
@@ -4566,6 +4567,46 @@ components:
         code:
           type: string
           description: 'ENG: Self-declaration code - IT: Codice dell''autodichiarazione'
+    SelfCriteriaInformativeDTO:
+      title: SelfCriteriaInformativeDTO
+      type: object
+      required:
+        - _type
+        - code
+        - description
+        - organization
+        - value
+      properties:
+        _type:
+          type: string
+          description: "ENG: Informative self-declaration type - IT: Requisito informativo"
+          enum:
+            - informative
+        code:
+          type: string
+          description: "ENG: Informative requirement code - IT: Codice del requisito informativo"
+          example: "ADE"
+          enum:
+            - ANPR
+            - ADE
+        description:
+          type: string
+          description: "ENG: Short description - IT: Descrizione breve del requisito"
+          example: "Canone TV"
+        organization:
+          type: string
+          description: "ENG: Responsible organization - IT: Ente responsabile"
+          example: "Agenzia delle Entrate"
+        value:
+          type: string
+          description: "ENG: Extended description - IT: Descrizione estesa del requisito"
+          example: "Descrizione estesa del requisito"
+      example:
+        _type: informative
+        code: ADE
+        description: Canone TV
+        organization: Agenzia delle Entrate
+        value: Descrizione estesa del requisito
     AutomatedCriteriaDTO:
       type: object
       properties:
