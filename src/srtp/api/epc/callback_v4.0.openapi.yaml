@@ -1963,7 +1963,7 @@ components:
       properties:
         resourceId:
           $ref: '#/components/schemas/ResourceId'
-        SepaRequestToPayStatusUpdateResponse:
+        Document:
           $ref: '#/components/schemas/SepaRequestToPayStatusUpdateResponse'
         _links:
           type: object
