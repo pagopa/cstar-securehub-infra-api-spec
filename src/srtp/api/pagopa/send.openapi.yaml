@@ -655,6 +655,7 @@ components:
         - ARJR
         - IRNR
         - REPR
+        - RSPR
       example: "ALAC"
 
     CancelRtpRequest:
