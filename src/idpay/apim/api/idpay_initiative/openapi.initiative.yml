@@ -3155,6 +3155,8 @@ components:
           $ref: '#/components/schemas/InitiativeRefundRuleDTO'
         isLogoPresent:
           type: boolean
+        emailFlux:
+          type: string
     DescriptionLanguageMap:
       type: object
       properties:
