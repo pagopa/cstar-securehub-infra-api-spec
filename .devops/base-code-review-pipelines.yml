@@ -46,6 +46,8 @@ parameters:
   - name: 'TIME_OUT'
     type: number
     default: 15
+  - name: 'AZDO_GITHUB_TOKEN'
+    type: string
 
 stages:
   - stage: ${{parameters.ENV}}
@@ -72,6 +74,7 @@ stages:
                WORKINGDIR: ${{ parameters.WORKING_DIR_SECRET }}
                AZURE_SERVICE_CONNECTION_NAME: "${{parameters.SC_PLAN_NAME}}"
                TF_SUMMARIZE: true
+               AZDO_GITHUB_TOKEN: "${{ parameters.AZDO_GITHUB_TOKEN }}"
       - ${{ if ne(parameters.WORKING_DIR_COMMON, '') }}:
         - job: tfplan_common
           strategy:
@@ -93,6 +96,7 @@ stages:
                 AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
                 AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
                 AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
+                AZDO_GITHUB_TOKEN: "${{ parameters.AZDO_GITHUB_TOKEN }}"
       - ${{ if ne(parameters.WORKING_DIR_APP, '') }}:
         - job: tfplan_app
           strategy:
@@ -114,6 +118,7 @@ stages:
                 AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
                 AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
                 AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
+                AZDO_GITHUB_TOKEN: "${{ parameters.AZDO_GITHUB_TOKEN }}"
       - ${{ if ne(parameters.WORKING_DIR_MODULE, '') }}:
         - job: tfplan_module
           strategy:
@@ -131,3 +136,4 @@ stages:
                 WORKINGDIR: ${{ parameters.WORKING_DIR_MODULE }}
                 AZURE_SERVICE_CONNECTION_NAME: "${{parameters.SC_PLAN_NAME}}"
                 TF_SUMMARIZE: true
+                AZDO_GITHUB_TOKEN: "${{ parameters.AZDO_GITHUB_TOKEN }}"

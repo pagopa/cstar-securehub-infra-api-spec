@@ -4,8 +4,8 @@ env            = "uat"
 domain         = "mdc"
 location_short = "itn"
 
-rate_limit_emd_product = 60
-rate_limit_emd_message = 60
+rate_limit_emd_product = 2000
+rate_limit_emd_message = 9000
 
 mdc_openid_url = "https://api-mcshared.uat.cstar.pagopa.it/auth/.well-known/openid-configuration"
 mdc_issuer_url = "https://api-mcshared.uat.cstar.pagopa.it/auth"
@@ -13,4 +13,5 @@ mdc_issuer_url = "https://api-mcshared.uat.cstar.pagopa.it/auth"
 keycloak_openid_url = "https://api-mcshared.uat.cstar.pagopa.it/auth-itn/realms/mdc/.well-known/openid-configuration"
 keycloak_issuer_url = "https://api-mcshared.uat.cstar.pagopa.it/auth-itn/realms/mdc"
 
-mdc_backoffice_url = "https://mdc.uat.cstar.pagopa.it"
+mdc_backoffice_url          = "https://mdc.uat.cstar.pagopa.it"
+mdc_backoffice_internal_url = "https://cstaruitnmdcadmin.z38.web.core.windows.net"

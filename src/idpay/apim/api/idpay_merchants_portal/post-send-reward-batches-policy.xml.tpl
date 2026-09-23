@@ -13,6 +13,23 @@
 <policies>
     <inbound>
         <base />
+        %{ if is_production }
+         <!-- Blocks requests starting at 00:00 Italian time on September 5, 2026 -->
+         <choose>
+            <when condition="@(DateTime.UtcNow >= new DateTime(2026, 9, 4, 22, 0, 0, DateTimeKind.Utc))">
+                <return-response>
+                    <set-status code="410" reason="Gone" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>{
+                        "code": "REWARD_BATCH_SENT_NOT_PERMITTED",
+                        "message": "Il termine per l'invio dei rimborsi è scaduto."
+                    }</set-body>
+                </return-response>
+            </when>
+        </choose>
+        %{ endif }
         <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaytransactions" />
         <rewrite-uri template="@("/idpay/merchant/portal/initiatives/{initiativeId}/reward-batches/{batchId}/send")"/>
     </inbound>

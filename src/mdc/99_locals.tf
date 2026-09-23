@@ -53,10 +53,20 @@ locals {
     }
     emd_api_backoffice_product = {
       display_name          = "EMD-BACKOFFICE-PRODUCT"
-      description           = "EMD Product for backoffice operations"
+      description           = "EMD Product for external backoffice operations (TPP frontend)"
       subscription_required = false
       published             = true
       policy = templatefile("./api_product/emd/policy_backoffice.xml", {
+        rate_limit_emd = var.rate_limit_emd_product
+      })
+      groups = ["developers"]
+    }
+    emd_api_backoffice_internal_product = {
+      display_name          = "EMD-BACKOFFICE-INTERNAL-PRODUCT"
+      description           = "EMD Product for internal backoffice operations (PagoPA operator frontend)"
+      subscription_required = false
+      published             = true
+      policy = templatefile("./api_product/emd/policy_backoffice_internal.xml", {
         rate_limit_emd = var.rate_limit_emd_product
       })
       groups = ["developers"]
@@ -186,7 +196,7 @@ locals {
     }
     emd_backoffice = {
       name                  = "${var.env_short}-emd-backoffice"
-      description           = "EMD BACKOFFICE"
+      description           = "EMD BACKOFFICE (external - TPP frontend)"
       display_name          = "EMD BACKOFFICE API"
       path                  = "emd/backoffice"
       protocols             = ["https"]
@@ -204,6 +214,27 @@ locals {
         })
       }
     }
+    emd_backoffice_internal = {
+      name                  = "${var.env_short}-emd-backoffice-internal"
+      description           = "EMD BACKOFFICE INTERNAL (PagoPA operator frontend)"
+      display_name          = "EMD BACKOFFICE INTERNAL API"
+      path                  = "emd/backoffice-internal"
+      protocols             = ["https"]
+      revision              = "1"
+      subscription_required = false
+      products              = ["emd_api_backoffice_internal_product"]
+      service_url           = "${local.ingress_load_balancer_https}/emd-ar-backoffice-bff/emd/backoffice"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = file("./api/emd_backoffice_internal/openapi.emd.int.backoffice.internal.yml")
+      }
+      api_policy = {
+        # API-level policy: CORS + extract roles from the internal Keycloak token.
+        xml_content = templatefile("./api/emd_backoffice_internal/api-policy.xml.tpl", {
+          mdcBackofficeInternalUrl = var.mdc_backoffice_internal_url
+        })
+      }
+    }
   }
 
   policy_fragment = {
@@ -211,10 +242,8 @@ locals {
       description = "emd-validate-token-mdc"
       format      = "rawxml"
       value = templatefile("./api_fragment/validate-token-mdc.xml", {
-        openidUrl         = var.mdc_openid_url
-        issuerUrl         = var.mdc_issuer_url
-        keycloakIssuerUrl = var.keycloak_issuer_url
         keycloakOpenidUrl = var.keycloak_openid_url
+        keycloakIssuerUrl = var.keycloak_issuer_url
       })
     }
     "emd-validate-token-keycloak" = {
@@ -229,6 +258,21 @@ locals {
       description = "Retry on backend connection failure"
       format      = "rawxml"
       value       = file("./api_fragment/retry-on-backend-connection-failure.xml")
+    }
+    "emd-backoffice-internal-authorize-operator-any" = {
+      description = "RBAC (backoffice internal): authorize any operator role (operator-read, operator-write, operator-admin)"
+      format      = "rawxml"
+      value       = file("./api_fragment/emd-backoffice-internal-authorize-operator-any.xml")
+    }
+    "emd-backoffice-internal-authorize-operator-write" = {
+      description = "RBAC (backoffice internal): authorize operator-write or operator-admin only"
+      format      = "rawxml"
+      value       = file("./api_fragment/emd-backoffice-internal-authorize-operator-write.xml")
+    }
+    "emd-backoffice-internal-authorize-operator-admin" = {
+      description = "RBAC (backoffice internal): authorize operator-admin only"
+      format      = "rawxml"
+      value       = file("./api_fragment/emd-backoffice-internal-authorize-operator-admin.xml")
     }
   }
 
@@ -482,6 +526,62 @@ locals {
       api_name     = "emd_backoffice"
       operation_id = "getTppCredentialsPagopa"
       xml_content = templatefile("./api/emd_backoffice/get-tpp-credentials-pagopa.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_getSearchTpp = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getSearchTpp"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-search-tpp.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_getTppByEntityId = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getTppByEntityId"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-tpp-by-entity-id.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_updateTppState = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "updateTppState"
+      xml_content = templatefile("./api/emd_backoffice_internal/put-tpp-state.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_updateTppIsPaymentEnabled = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "updateTppIsPaymentEnabled"
+      xml_content = templatefile("./api/emd_backoffice_internal/put-tpp-isPaymentEnabled.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_insertRecipientIdOnWhitelist = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "insertRecipientIdOnWhitelist"
+      xml_content = templatefile("./api/emd_backoffice_internal/post-recipient-whitelist.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_removeRecipientIdOnWhitelist = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "removeRecipientIdOnWhitelist"
+      xml_content = templatefile("./api/emd_backoffice_internal/delete-recipient-whitelist.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_updateRecipientIdOnWhitelist = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "updateRecipientIdOnWhitelist"
+      xml_content = templatefile("./api/emd_backoffice_internal/put-tpp-whitelist.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_testAuthConnection = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "testAuthConnection"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-tpp-auth-connection.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }

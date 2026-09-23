@@ -52,6 +52,7 @@
 			var org_name = context.Request.Body.As<JObject>(preserveContent: true)["orgName"];
 			var org_party_role = context.Request.Body.As<JObject>(preserveContent: true)["orgPartyRole"];
 			var org_role = context.Request.Body.As<JObject>(preserveContent: true)["orgRole"];
+			var scope = "transaction:invoicelifecycle:full";
 			var payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(
 			new {
 				iat,
@@ -68,7 +69,8 @@
 				org_vat,
 				org_name,
 				org_party_role,
-				org_role
+				org_role,
+				scope
 			}
 			))).Split('=')[0].Replace('+', '-').Replace('/', '_');
 

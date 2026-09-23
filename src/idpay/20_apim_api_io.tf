@@ -20,7 +20,7 @@ module "idpay_itn_api_io_product" {
 
   policy_xml = templatefile("./apim/api_product/app_io/policy_io.xml.tpl", {
     env_short             = var.env_short
-    ingress_load_balancer = local.rtd_ingress_load_balancer_hostname_https
+    ingress_load_balancer = local.shared_aks_ingress_load_balancer_https
     appio_timeout_sec     = var.appio_timeout_sec
     rate_limit_io         = var.rate_limit_io_product
   })

@@ -20,7 +20,7 @@ module "idpay_itn_api_portal_users_product" {
   subscriptions_limit = 0
 
   policy_xml = templatefile("./apim/api_product/portal_users_api/policy_users_portal.xml.tpl", {
-    origins                   = local.origins_bonus_elettrodomestici.base
+    origins                   = local.origins_pari_bonus.base
     rate_limit_users_portal   = var.rate_limit_users_portal_product
     openid_config_url_user    = local.openid_config_url_user
     user_client_id            = local.user_client_id
@@ -122,7 +122,7 @@ module "idpay_itn_users_portal_api" {
       operation_id = "buildZendeskJwt"
       xml_content = templatefile("./apim/api/idpay_wallet/post-build-jwt-web-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
-        origins                        = local.origins_bonus_elettrodomestici.base
+        origins                        = local.origins_pari_bonus.base
         rate_limit_users_portal        = var.rate_limit_users_portal_product
       })
     }
