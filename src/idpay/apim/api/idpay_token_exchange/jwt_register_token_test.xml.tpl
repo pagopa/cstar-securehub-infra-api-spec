@@ -38,7 +38,19 @@
 				}))).Split('=')[0].Replace('+', '-').Replace('/', '_');
 
 			var iat = DateTimeOffset.Now.ToUnixTimeSeconds();
-			var exp = new DateTimeOffset(DateTime.Now.AddHours(8)).ToUnixTimeSeconds();  // sets the expiration of the token to be 8 hours from now
+			// Read the value from the body
+      var expInput = context.Request.Body.As<JObject>(preserveContent: true)["exp"];
+      long exp;
+
+      // If it is present, use the value from the body, otherwise set the fallback to 8 hours
+      if (expInput != null)
+      {
+          exp = expInput.Value<long>();
+      }
+      else
+      {
+          exp = new DateTimeOffset(DateTime.Now.AddHours(8)).ToUnixTimeSeconds(); // sets the expiration of the token to be 8 hours from now
+      }
 			var aud = context.Request.Body.As<JObject>(preserveContent: true)["aud"];
 			var iss = context.Request.Body.As<JObject>(preserveContent: true)["iss"];
 			var uid = context.Request.Body.As<JObject>(preserveContent: true)["uid"];
