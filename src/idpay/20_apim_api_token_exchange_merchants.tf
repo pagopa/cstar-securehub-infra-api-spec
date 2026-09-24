@@ -80,7 +80,7 @@ resource "azurerm_api_management_api_operation_policy" "idpay_merchants_token_ex
 }
 
 resource "azurerm_api_management_named_value" "selfcare_merchant_api_key" {
-  name                = "${var.env_short}-${local.prefix_api}-selfcare--merchant-api-key"
+  name                = "${var.env_short}-${local.prefix_api}-selfcare-merchant-api-key"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 
