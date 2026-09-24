@@ -36,6 +36,7 @@
             </audiences>
             <issuers>
                 <issuer>${selfcare-issuer}</issuer>
+                <issuer>PAGOPA</issuer>
             </issuers>
         </validate-jwt>
 
@@ -76,9 +77,13 @@
                         value='@(((JObject)context.Variables["instJson"])
                                         .SelectToken("payment.iban")?.ToString())' />
 
-                        <set-variable name="holder"
+                    <set-variable name="holder"
+                    value='@(((JObject)context.Variables["instJson"])
+                                .SelectToken("payment.holder")?.ToString())' />
+
+                    <set-variable name="merchantVatNumber"
                         value='@(((JObject)context.Variables["instJson"])
-                                    .SelectToken("payment.holder")?.ToString())' />
+                                    .SelectToken("billing.vatNumber")?.ToString())' />
 
                     <set-variable name="activationDate"
                         value='@{
@@ -95,6 +100,7 @@
                 <!-- default/cleanup -->
                 <set-variable name="iban" value="" />
                 <set-variable name="holder" value="" />
+                <set-variable name="merchantVatNumber" value="" />
                 <set-variable name="activationDate" value="" />
             </otherwise>
         </choose>
@@ -121,8 +127,10 @@
                     var email = selcToken.Claims.GetValueOrDefault("email", "");
                     JObject organization = JObject.Parse(selcToken.Claims.GetValueOrDefault("organization", "{}"));
                     var org_id = organization["id"];
-                    var org_vat = organization["fiscal_code"];
+                    var org_fc = organization["fiscal_code"];
                     var org_name = organization["name"];
+                    var vatVal = (String)context.Variables["merchantVatNumber"];
+                    var org_vat = !string.IsNullOrEmpty(vatVal) ? vatVal : (String)organization["fiscal_code"];
                     var org_party_role = organization.Value<JArray>("roles").First().Value<string>("partyRole");
                     var org_role = organization.Value<JArray>("roles").First().Value<string>("role");
                     var scope = "transaction:invoicelifecycle:full";
@@ -139,6 +147,7 @@
                     acquirer_id,
                     merchant_id,
                     org_id,
+                    org_fc,
                     org_vat,
                     org_name,
                     org_party_role,
