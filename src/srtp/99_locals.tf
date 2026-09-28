@@ -501,6 +501,11 @@ locals {
         operation_id = "getRequestToPayStatusUpdate"
         xml_content  = file("./api/test/mock_policy_status_update_epc_v4.xml")
       }
+      getRequestToPayCancellationStatusUpdate-v4 = var.env_short == "p" ? null : {
+        api_name     = "rtp-mock-v4"
+        operation_id = "getRequestToPayCancellationStatusUpdate"
+        xml_content  = file("./api/test/mock_policy_cancel_status_update_epc_v4.xml")
+      }
       processGpdMessage = var.env_short == "p" ? null : {
         api_name    = "rtp-gpd-message-mock"
         xml_content = file("./api/test/mock_policy_gpd.xml")
