@@ -1999,6 +1999,59 @@ paths:
           description: Too many requests
         '500':
           description: Server error
+  /organization/{organizationId}/merchant/refund-batches/history:
+    get:
+      tags:
+        - merchant
+      summary: "ENG: Returns merchant refund batches history - IT: Ritorna la storia dei lotti di rimborso dell'esercente"
+      description: "ENG: Returns the refund batches history by merchant fiscal code or vat number <br> IT: Ritorna la storia dei lotti di rimborso per codice fiscale o partita IVA dell'esercente"
+      operationId: getMerchantRefundBatchesHistory
+      parameters:
+        - name: organizationId
+          in: path
+          description: "ENG: The ID of the organization - IT: L'ID dell'organizzazione"
+          required: true
+          schema:
+            type: string
+        - name: merchantFiscalCodeOrVatNumber
+          in: query
+          description: "ENG: Merchant fiscal code or vat number - IT: Codice fiscale o partita IVA dell'esercente"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantRefundBatchHistoryDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantErrorDTO'
+        '401':
+          description: Authentication failed
+        '404':
+          description: Merchant not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantErrorDTO'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantErrorDTO'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantErrorDTO'
 components:
   schemas:
     SasToken:
@@ -3669,6 +3722,74 @@ components:
           type: integer
           format: int32
           description: "ENG: The total number of the pages - IT: Il numero totale delle pagine"
+    MerchantRefundBatchHistoryDTO:
+      type: object
+      properties:
+        merchantId:
+          type: string
+          description: "ENG: Merchant ID - IT: ID dell'esercente"
+        fiscalCode:
+          type: string
+          description: "ENG: Merchant fiscal code - IT: Codice fiscale dell'esercente"
+        vatNumber:
+          type: string
+          description: "ENG: Merchant vat number - IT: Partita IVA dell'esercente"
+        rewardBatches:
+          type: array
+          description: "ENG: Merchant refund batches history - IT: Storico dei lotti rimborso dell'esercente"
+          items:
+            $ref: '#/components/schemas/MerchantRefundBatchDTO'
+    MerchantRefundBatchDTO:
+      type: object
+      properties:
+        rewardBatchId:
+          type: string
+          description: "ENG: Reward batch ID - IT: ID del lotto rimborso"
+        initiativeId:
+          type: string
+          description: "ENG: Initiative ID - IT: ID iniziativa"
+        month:
+          type: string
+          description: "ENG: Reference month in yyyy-MM format - IT: Mese di riferimento in formato yyyy-MM"
+        status:
+          type: string
+          description: "ENG: Reward batch status - IT: Stato del lotto rimborso"
+        approvedAmountCents:
+          type: integer
+          format: int64
+          description: "ENG: Approved amount in cents - IT: Importo approvato in centesimi"
+        suspendedAmountCents:
+          type: integer
+          format: int64
+          description: "ENG: Suspended amount in cents - IT: Importo sospeso in centesimi"
+        initialAmountCents:
+          type: integer
+          format: int64
+          description: "ENG: Initial amount in cents - IT: Importo iniziale in centesimi"
+        currentAmountCents:
+          type: integer
+          format: int64
+          description: "ENG: Current amount in cents - IT: Importo corrente in centesimi"
+        excludedAmountCents:
+          type: integer
+          format: int64
+          description: "ENG: Excluded amount in cents - IT: Importo escluso in centesimi"
+        numberOfTransactions:
+          type: integer
+          format: int64
+          description: "ENG: Number of transactions - IT: Numero di transazioni"
+        numberOfTransactionsSuspended:
+          type: integer
+          format: int64
+          description: "ENG: Number of suspended transactions - IT: Numero di transazioni sospese"
+        numberOfTransactionsRejected:
+          type: integer
+          format: int64
+          description: "ENG: Number of rejected transactions - IT: Numero di transazioni rigettate"
+        numberOfTransactionsElaborated:
+          type: integer
+          format: int64
+          description: "ENG: Number of processed transactions - IT: Numero di transazioni elaborate"
     MerchantTransactionProcessedDTO:
       type: object
       required:
