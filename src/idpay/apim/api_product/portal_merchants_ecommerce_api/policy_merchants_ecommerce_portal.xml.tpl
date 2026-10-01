@@ -12,6 +12,15 @@
 -->
 <policies>
     <inbound>
+        %{ if ecommerce_disabled ~}
+        <return-response>
+            <set-status code="503" reason="Service Unavailable" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>{"code":"ECOMMERCE_DISABLED","message":"E-commerce APIs are disabled."}</set-body>
+        </return-response>
+        %{ endif ~}
             <!-- JWT validation with OpenID Connect -->
             <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid." output-token-variable-name="validatedToken">
                 <openid-config url="${openid_config_url_merchant_op}" />
