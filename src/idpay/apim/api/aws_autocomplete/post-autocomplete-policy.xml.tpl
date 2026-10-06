@@ -28,6 +28,17 @@
     </backend>
     <outbound>
         <base />
+        <choose>
+            <when condition="@(context.Response.StatusCode == 401 || context.Response.StatusCode == 403)">
+                <set-status code="401" reason="Unauthorized - External Geocoding Authorization Failed" />
+                <set-body>@{
+                    return new JObject(
+                        new JProperty("code", "AWS_LOCATION_SERVICE_AUTH_ERROR"),
+                        new JProperty("message", "NotAuthorized")
+                    ).ToString();
+                }</set-body>
+            </when>
+        </choose>
     </outbound>
     <on-error>
         <base />
