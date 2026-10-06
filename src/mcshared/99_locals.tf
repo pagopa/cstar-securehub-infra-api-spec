@@ -21,21 +21,6 @@ locals {
 
 locals {
   apis = {
-    # MIL ITN
-    mil-auth = {
-      display_name          = "MIL ITN Auth API"
-      description           = "Authorization Microservice"
-      path                  = "auth"
-      revision              = "1"
-      protocols             = ["https"]
-      service_url           = "https://${local.project_no_location}-auth-ca.${data.azurerm_container_app_environment.mcshared.default_domain}"
-      subscription_required = false
-      product               = "mcshared"
-      import_descriptor = {
-        content_format = "openapi-link"
-        content_value  = var.mil_auth_openapi_descriptor
-      }
-    }
     # Keycloak ITN
     auth = {
       display_name          = "McShared Keycloak Auth ITN"
@@ -82,16 +67,6 @@ locals {
   }
 
   policy_fragment = {
-    rate-limit-by-clientid-claim = {
-      description = "Rate limit by client id value received as claim of the access token"
-      format      = "rawxml"
-      value       = templatefile("policies/fragments/rate-limit-by-clientid-claim.xml", {})
-    }
-    rate-limit-by-clientid-formparam = {
-      description = "Rate limit by client id value received as form param"
-      format      = "rawxml"
-      value       = templatefile("policies/fragments/rate-limit-by-clientid-formparam.xml", {})
-    }
     keycloak-token-inbound = {
       description = "Capture client_id from Keycloak SRTP token requests"
       format      = "rawxml"
@@ -105,37 +80,6 @@ locals {
   }
 
   api_operation_policy = {
-    getOpenIdConf = {
-      api_name = "mil-auth"
-      xml_content = templatefile("policies/rate-limit-and-cache.xml", {
-        calls  = var.mil_get_open_id_conf_rate_limit.calls
-        period = var.mil_get_open_id_conf_rate_limit.period
-      })
-    }
-    introspect = {
-      api_name = "mil-auth"
-      xml_content = templatefile("policies/introspect.xml", {
-        calls       = var.mil_introspect_rate_limit.calls
-        period      = var.mil_introspect_rate_limit.period
-        fragment_id = "rate-limit-by-clientid-claim"
-      })
-    }
-    getJwks = {
-      api_name = "mil-auth"
-      xml_content = templatefile("policies/rate-limit-and-cache.xml", {
-        calls  = var.mil_get_jwks_rate_limit.calls
-        period = var.mil_get_jwks_rate_limit.period
-      })
-    }
-    getAccessTokens = {
-      api_name = "mil-auth"
-      xml_content = templatefile("policies/getAccessToken.xml", {
-        calls           = var.mil_get_access_token_rate_limit.calls
-        period          = var.mil_get_access_token_rate_limit.period
-        fragment_id     = "rate-limit-by-clientid-formparam"
-        allowed_origins = join("", formatlist("<origin>%s</origin>", var.mil_get_access_token_allowed_origins))
-      })
-    }
   }
 
   # 🔎 DNS - Bonus
