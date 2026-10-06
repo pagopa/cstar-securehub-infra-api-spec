@@ -34,6 +34,7 @@ rate_limit_minint_product = 1000
 rate_limit_portal_product           = 2500
 rate_limit_merchants_portal_product = 2500
 rate_limit_users_portal_product     = 3000000 #3 Million
+rate_limit_it_wallet_portal_product = 3000000
 
 #
 # Register Token Exchange
