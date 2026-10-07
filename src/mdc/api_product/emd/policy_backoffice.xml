@@ -6,7 +6,7 @@
 		<choose>
       <when condition="@(context.Operation.Id.Equals(&quot;getToken&quot;))" />
 			<otherwise>
-				<include-fragment fragment-id="emd-validate-token-keycloak" />
+				<include-fragment fragment-id="emd-validate-token-mdc" />
 			</otherwise>
 		</choose>
 	</inbound>
