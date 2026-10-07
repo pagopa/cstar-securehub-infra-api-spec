@@ -264,6 +264,75 @@ paths:
           description: TPP Not Found
         '502':
           description: Bad Gateway - Downstream service unreachable
+  '/api/v1/citizen/search':
+    get:
+      tags:
+        - citizen-backoffice-internal
+      operationId: getSearchCitizen
+      summary: Search registered citizens by fiscal code using cursor-based pagination
+      description: >
+        Performs keyset/cursor-based pagination; this operation does not use page-number or offset pagination.
+        The BFF normalizes fiscalCode and cursor to uppercase using Locale.ROOT before forwarding them.
+        For subsequent pages, send the previous response's nextCursor as cursor; omit cursor on the first page.
+        totalElements and totalPages describe the full matching result set, not only results after the cursor;
+        totalPages is calculated by Citizen and propagated by the BFF without recalculation.
+      parameters:
+        - name: fiscalCode
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 16
+            pattern: '^[A-Za-z0-9]{3,16}$'
+          description: >
+            Required search value: 3–16 ASCII alphanumeric characters only (A–Z, a–z, 0–9); spaces and symbols
+            are not allowed. If exactly 16 characters, it must additionally match the complete fiscal-code pattern
+            ^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$. Shorter values are not
+            subject to that positional pattern. Invalid values produce 400 Bad Request in the standard BFF error format.
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            minLength: 16
+            maxLength: 16
+            pattern: '^[A-Za-z0-9]{16}$'
+          description: >
+            Omit for the first page. For each subsequent page, pass the previous response's nextCursor unchanged.
+            The BFF requires exactly 16 ASCII alphanumeric characters and a prefix consistent with fiscalCode,
+            case-insensitively. Do not apply the positional fiscal-code pattern to the cursor; the BFF normalizes
+            it to uppercase and does not reconstruct or reinterpret it. Invalid or inconsistent cursors produce
+            400 Bad Request in the standard BFF error format.
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Page size, from 1 to 100 inclusive; defaults to 10. Non-integer or out-of-range values produce 400 Bad Request.
+      responses:
+        '200':
+          description: OK - Citizen search results for the requested page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CitizenSearchResponseDTOV1'
+        '400':
+          description: Bad Request - Invalid fiscalCode, cursor, or size; returned in the standard BFF error format
+        '401':
+          description: Unauthorized - missing or invalid internal Keycloak token
+        '403':
+          description: Forbidden - insufficient operator role
+        '500':
+          description: Internal Server Error
+        '502':
+          description: Bad Gateway - downstream service unavailable
+        '429':
+          description: Too Many Requests - product rate limit exceeded
   '/api/v1/message-core/{entityId}/{messageId}':
     get:
       tags:
@@ -413,6 +482,77 @@ paths:
           description: Bad Gateway - Upstream emd-tpp service is unavailable
 components:
   schemas:
+    CitizenSearchResponseDTOV1:
+      type: object
+      description: Cursor-based page of registered citizens matching the requested fiscal-code search.
+      required:
+        - content
+        - pageSize
+        - totalElements
+        - totalPages
+        - nextCursor
+        - hasNext
+      properties:
+        content:
+          type: array
+          description: Results for this page; may be empty.
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/CitizenSearchResultDTOV1'
+        pageSize:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 100
+          description: Number of results in a page.
+          example: 10
+        totalElements:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9223372036854775807
+          description: Total matching elements for fiscalCode across the entire result set, irrespective of cursor.
+          example: 34
+        totalPages:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 2147483647
+          description: Total pages for the entire result set, calculated by Citizen and propagated unchanged by the BFF.
+          example: 4
+        nextCursor:
+          type: string
+          nullable: true
+          minLength: 16
+          maxLength: 16
+          pattern: '^[A-Za-z0-9]{16}$'
+          description: Cursor value to pass as cursor in the next request; null when there is no next cursor.
+          example: RSS11111L04L741X
+        hasNext:
+          type: boolean
+          description: Indicates whether another page is available.
+          example: true
+    CitizenSearchResultDTOV1:
+      type: object
+      description: A registered fiscal code and its associated consent count.
+      required:
+        - fiscalCode
+        - consentCount
+      properties:
+        fiscalCode:
+          type: string
+          minLength: 16
+          maxLength: 16
+          pattern: '^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$'
+          description: Registered Codice Fiscale.
+          example: RSS11111L04L741X
+        consentCount:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9223372036854775807
+          description: Total number of consents associated with this fiscal code.
+          example: 1
     TppSearchResponseDTO:
       type: object
       description: Paginated list of TPP results
