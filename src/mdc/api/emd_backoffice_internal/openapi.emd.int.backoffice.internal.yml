@@ -402,6 +402,54 @@ paths:
                 code: GENERIC_ERROR
                 message: The request could not be completed
                 traceId: trace-id
+  '/api/v1/citizen/{fiscalCode}/consents/{tppId}':
+    put:
+      tags:
+        - citizen-backoffice-internal
+      operationId: toggleCitizenConsent
+      summary: Toggle a citizen's consent for a TPP
+      description: >
+        Each successful call toggles the existing consent state and updates tcDate. tppState is true when
+        the consent is enabled and false when it is disabled. This operation has no request body and is
+        restricted to operator-write and operator-admin roles.
+      parameters:
+        - name: fiscalCode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Fiscal code of the citizen
+        - name: tppId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Identifier of the TPP whose consent is toggled
+      responses:
+        '200':
+          description: OK - Consent state toggled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CitizenConsentToggleResponseDTOV1'
+              example:
+                fiscalCode: RSSMRA85T10A562S
+                consents:
+                  TPP_XYZ_123:
+                    tppState: true
+                    tcDate: '2025-10-17T13:18:37.313'
+        '401':
+          description: Unauthorized - missing or invalid internal Keycloak token
+        '403':
+          description: Forbidden - operator-write or operator-admin role required
+        '404':
+          description: Not Found - citizen or consent for the specified TPP not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too Many Requests - product rate limit exceeded
   '/api/v1/message-core/{entityId}/{messageId}':
     get:
       tags:
@@ -589,6 +637,27 @@ components:
           type: string
         businessName:
           type: string
+    CitizenConsentToggleResponseDTOV1:
+      type: object
+      description: Consent state returned for the requested citizen and TPP.
+      properties:
+        fiscalCode:
+          type: string
+        consents:
+          type: object
+          description: Map keyed by TPP ID and limited to the requested TPP; an empty map is represented as {}.
+          additionalProperties:
+            $ref: '#/components/schemas/CitizenConsentToggleDTOV1'
+    CitizenConsentToggleDTOV1:
+      type: object
+      properties:
+        tppState:
+          type: boolean
+          description: True when the consent is enabled; false when disabled.
+        tcDate:
+          type: string
+          description: LocalDateTime in ISO-8601 local date-time format, without a Z suffix or UTC offset.
+          example: '2025-10-17T13:18:37.313'
     ErrorDTO:
       type: object
       properties:
