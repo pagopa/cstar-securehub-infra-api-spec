@@ -956,7 +956,7 @@ paths:
           description: The initiative ID
           required: true
           schema:
-          type: string
+            type: string
         - $ref: "#/components/parameters/pointOfSaleId_path"
         - $ref: "#/components/parameters/transactionId_path"
         - name: x-merchant-id
