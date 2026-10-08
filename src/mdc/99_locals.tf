@@ -599,6 +599,13 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_postSearchCitizenConsents = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "postSearchCitizenConsents"
+      xml_content = templatefile("./api/emd_backoffice_internal/post-search-citizen-consents.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
     emd_backoffice_internal_getMessageByEntityIdAndMessageId = {
       api_name     = "emd_backoffice_internal"
       operation_id = "getMessageByEntityIdAndMessageId"
