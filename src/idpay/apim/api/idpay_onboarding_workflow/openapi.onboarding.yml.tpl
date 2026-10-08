@@ -1059,11 +1059,6 @@ components:
             - PG
             - NF
           type: string
-        familyUnitComposition:
-          enum:
-            - INPS
-            - ANPR
-          type: string
         beneficiaryKnown:
           type: boolean
         startDate:
