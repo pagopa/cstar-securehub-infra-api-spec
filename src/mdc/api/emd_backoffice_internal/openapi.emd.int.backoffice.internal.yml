@@ -450,6 +450,63 @@ paths:
                 $ref: '#/components/schemas/ErrorDTO'
         '429':
           description: Too Many Requests - product rate limit exceeded
+  '/api/v1/citizen/{fiscalCode}':
+    delete:
+      tags:
+        - citizen-backoffice-internal
+      operationId: deleteCitizenConsentAggregate
+      summary: Delete a citizen's consent aggregate
+      description: >
+        Deletes the consent aggregate for the citizen identified by fiscalCode. The fiscal code is the only
+        input and is supplied as a path parameter; this operation has no request body or query parameters.
+        On success, the upstream snapshot is returned unchanged.
+      parameters:
+        - name: fiscalCode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Fiscal code identifying the citizen whose consent aggregate is deleted
+      responses:
+        '200':
+          description: OK - Deleted aggregate snapshot returned unchanged
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CitizenConsentAggregateResponseDTOV1'
+              example:
+                fiscalCode: RSSMRA85T10A562S
+                consents:
+                  TPP_XYZ_123:
+                    tppState: true
+                    tcDate: '2026-10-08T12:30:00'
+        '401':
+          description: Unauthorized - missing or invalid internal Keycloak token
+        '403':
+          description: Forbidden - operator-write or operator-admin role required
+        '404':
+          description: Not Found - Citizen consent aggregate not onboarded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: CITIZEN_NOT_ONBOARDED
+                message: Citizen consent not inserted
+        '429':
+          description: Too Many Requests - product rate limit exceeded
+        '500':
+          description: Internal Server Error - upstream error returned according to existing backend behavior
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '502':
+          description: Bad Gateway - backend or network error returned according to existing APIM behavior
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   '/api/v1/message-core/{entityId}/{messageId}':
     get:
       tags:
@@ -658,6 +715,17 @@ components:
           type: string
           description: LocalDateTime in ISO-8601 local date-time format, without a Z suffix or UTC offset.
           example: '2025-10-17T13:18:37.313'
+    CitizenConsentAggregateResponseDTOV1:
+      type: object
+      description: Snapshot of the citizen consent aggregate returned unchanged after deletion.
+      properties:
+        fiscalCode:
+          type: string
+        consents:
+          type: object
+          description: Map keyed by TPP ID; an empty map is represented as {}.
+          additionalProperties:
+            $ref: '#/components/schemas/CitizenConsentToggleDTOV1'
     ErrorDTO:
       type: object
       properties:

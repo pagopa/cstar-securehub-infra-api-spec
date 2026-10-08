@@ -613,6 +613,13 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_deleteCitizenConsentAggregate = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "deleteCitizenConsentAggregate"
+      xml_content = templatefile("./api/emd_backoffice_internal/delete-citizen-consent-aggregate.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
     emd_backoffice_internal_getMessageByEntityIdAndMessageId = {
       api_name     = "emd_backoffice_internal"
       operation_id = "getMessageByEntityIdAndMessageId"
