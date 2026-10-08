@@ -954,6 +954,8 @@ components:
         - CANCEL_RTP_REJECTED
         - CONFIRM_RFC
         - CANCEL_RTP_PAID
+        - CANCEL_RTP_MODT
+        - RFC_NOT_RECEIVED
         - EXPIRE_RTP
 
     GenericError:
