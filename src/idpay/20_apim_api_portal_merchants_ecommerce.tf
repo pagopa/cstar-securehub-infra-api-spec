@@ -24,6 +24,7 @@ module "idpay_itn_api_portal_merchants_ecommerce_product" {
   subscriptions_limit = 0
 
   policy_xml = templatefile("./apim/api_product/portal_merchants_ecommerce_api/policy_merchants_ecommerce_portal.xml.tpl", {
+    ecommerce_disabled            = var.env_short == "p"
     origins                       = local.origins_pari_bonus.base
     rate_limit_merchants_portal   = var.rate_limit_merchants_portal_product
     openid_config_url_merchant_op = local.openid_config_url_merchant_op
@@ -88,15 +89,13 @@ module "idpay_itn_portal_merchants_ecommerce_api" {
     {
       operation_id = "getPointOfSaleTransactionsProcessed"
       xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-pos-transactions-processed-policy.xml.tpl", {
-        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
-        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
       operation_id = "getPointOfSaleTransactions"
       xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-pos-transactions-progress-policy.xml.tpl", {
-        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
-        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
     },
     {
@@ -131,8 +130,92 @@ module "idpay_itn_portal_merchants_ecommerce_api" {
     },
     {
       operation_id = "reversalTransactionInvoiced"
-      xml_content = templatefile("./apim/api/idpay_merchants_op_portal/post-reversal-invoiced-payment-policy.xml.tpl", {
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/post-reversal-invoiced-payment-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
+      operation_id = "getProductsBonusElettrodomestici"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-rbd-products-bonus-elettrodomestici-policy.xml.tpl", {
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+      })
+    },
+    {
+      operation_id = "capturePaymentBonusElettrodomestici"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/put-capture-payment-bonus-elettrodomestici-policy.xml.tpl", {
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+      })
+    },
+    {
+      operation_id = "previewPaymentBonusElettrodomestici"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/put-payment-bar-code-preview-trxcode-bonus-elettrodomestici-policy.xml.tpl", {
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+      })
+    },
+    {
+      operation_id = "authPaymentBarCodeBonusElettrodomestici"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/put-bar-code-authorize-merchant-bonus-elettrodomestici-policy.xml.tpl", {
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+      })
+    },
+    {
+      operation_id = "getPointOfSaleTransactionsProcessedBonusElettrodomestici"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-pos-transactions-processed-bonus-elettrodomestici-policy.xml.tpl", {
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+      })
+    },
+    {
+      operation_id = "getPointOfSaleTransactionsBonusElettrodomestici"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-pos-transactions-progress-bonus-elettrodomestici-policy.xml.tpl", {
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+      })
+    },
+    {
+      operation_id = "deleteTransactionBonusElettrodomestici"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/delete-transactions-bonus-elettrodomestici-policy.xml.tpl", {
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+      })
+    },
+    {
+      operation_id = "invoiceTransactionBonusElettrodomestici"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/post-invoice-payment-bonus-elettrodomestici-policy.xml.tpl", {
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+      })
+    },
+    {
+      operation_id = "updateInvoiceTransactionBonusElettrodomestici"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/put-invoice-update-transactions-bonus-elettrodomestici-policy.xml.tpl", {
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+      })
+    },
+    {
+      operation_id = "reversalTransactionBonusElettrodomestici"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/post-reversal-payment-bonus-elettrodomestici-policy.xml.tpl", {
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+      })
+    },
+    {
+      operation_id = "downloadInvoiceFileBonusElettrodomestici"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/get-invoice-download-bonus-elettrodomestici-policy.xml.tpl", {
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
+      })
+    },
+    {
+      operation_id = "reversalTransactionInvoicedBonusElettrodomestici"
+      xml_content = templatefile("./apim/api/idpay_merchants_ecommerce/post-reversal-invoiced-payment-bonus-elettrodomestici-policy.xml.tpl", {
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
       })
     }
   ]

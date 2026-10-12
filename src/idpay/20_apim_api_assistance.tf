@@ -244,6 +244,13 @@ module "idpay_itn_api_assistance" {
       xml_content = templatefile("./apim/api/idpay_assistance/get-merchant-transactions-processed-policy.xml.tpl", {
         ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
       })
+    },
+    {
+      operation_id = "getMerchantRefundBatchesHistory"
+
+      xml_content = templatefile("./apim/api/idpay_assistance/get-merchant-refund-batches-history-policy.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
     }
   ]
 

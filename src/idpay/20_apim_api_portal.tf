@@ -636,7 +636,8 @@ module "idpay_itn_merchant_portal" {
       operation_id = "downloadInvoiceFile"
 
       xml_content = templatefile("./apim/api/idpay_merchant/get-invoice-download-policy.xml.tpl", {
-        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+        ingress_load_balancer_hostname       = local.domain_aks_ingress_hostname,
+        initiative_id_bonus_elettrodomestici = var.initiative_id_bonus_elettrodomestici
       })
     },
     {

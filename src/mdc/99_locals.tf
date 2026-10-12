@@ -585,5 +585,26 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_getSearchMessage = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getSearchMessage"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-search-message.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_getMessageByEntityIdAndMessageId = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getMessageByEntityIdAndMessageId"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-message-by-entityId-and-messageId.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_deleteMessageByEntityIdAndMessageId = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "deleteMessageByEntityIdAndMessageId"
+      xml_content = templatefile("./api/emd_backoffice_internal/delete-message-by-entityId-and-messageId.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
   }
 }

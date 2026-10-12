@@ -23,7 +23,7 @@
     <choose>
       <when condition="@(context.Variables["pdv_token"] != null)">
       <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpaymerchant" />
-      <rewrite-uri template="@("/idpay/merchant/portal/reported-user/"+(context.Variables["pdv_token"]))" />
+      <rewrite-uri template="@("/idpay/merchant/portal/initiatives/" + context.Request.MatchedParameters["initiativeId"] + "/reported-user/" + context.Variables["pdv_token"])" />
     </when>
     <otherwise>
       <return-response>
