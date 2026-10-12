@@ -592,6 +592,13 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_getSearchPaymentAttempts = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getSearchPaymentAttempts"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-search-payment-attempts.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
     emd_backoffice_internal_getSearchCitizen = {
       api_name     = "emd_backoffice_internal"
       operation_id = "getSearchCitizen"

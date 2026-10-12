@@ -507,6 +507,84 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  '/api/v1/payment-core/attempts/search':
+    get:
+      tags:
+        - payment-backoffice-internal
+      operationId: getSearchPaymentAttempts
+      summary: Search payment attempts with cursor-based pagination
+      description: >
+        Searches payment attempts through the backoffice BFF. Filtering and pagination are handled by the BFF;
+        optional query parameters are forwarded unchanged. At least one of iun or tppId must be provided.
+        To retrieve the next page, pass nextCursor as cursor while retaining at least one of iun or tppId.
+      parameters:
+        - name: iun
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tppId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            pattern: '^[A-Fa-f0-9]{24}$'
+          description: Cursor returned by the preceding page; a 24-character hexadecimal ObjectId.
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Maximum number of payment results to return; defaults to 20.
+      responses:
+        '200':
+          description: >
+            OK - Paginated payment-attempt search results. A valid search with no matches returns an empty
+            payments array, zero counts, and hasMore false.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAttemptSearchResponseDTOV1'
+              examples:
+                results:
+                  summary: Search results with a next page
+                  value:
+                    payments:
+                      - iun: IUN-123
+                        tppId: tpp-456
+                        attemptsCount: 2
+                    returnedCount: 1
+                    attemptsCount: 2
+                    nextCursor: 507f1f77bcf86cd799439011
+                    hasMore: true
+        '400':
+          description: Bad Request - Missing both iun and tppId, invalid cursor, or limit outside 1–100
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: BAD_REQUEST
+                message: Invalid request parameters
+                traceId: trace-id
+        '502':
+          description: Bad Gateway - Payment core is temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: GENERIC_ERROR
+                message: The external service is temporarily unavailable
+                traceId: trace-id
   '/api/v1/message-core/{entityId}/{messageId}':
     get:
       tags:
@@ -735,6 +813,35 @@ components:
           type: string
         traceId:
           type: string
+    PaymentAttemptSearchResponseDTOV1:
+      type: object
+      description: Paginated payment-attempt search response returned by payment-core through the BFF.
+      properties:
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentAttemptDTOV1'
+        returnedCount:
+          type: integer
+          description: Number of payment records returned in this page.
+        attemptsCount:
+          type: integer
+          description: Total number of attempts represented by the search result.
+        nextCursor:
+          type: string
+          description: Cursor to pass in the cursor query parameter to retrieve the next page.
+        hasMore:
+          type: boolean
+          description: Whether more payment results are available.
+    PaymentAttemptDTOV1:
+      type: object
+      properties:
+        iun:
+          type: string
+        tppId:
+          type: string
+        attemptsCount:
+          type: integer
     CitizenSearchResponseDTOV1:
       type: object
       description: Cursor-based page of registered citizens matching the requested fiscal-code search.
