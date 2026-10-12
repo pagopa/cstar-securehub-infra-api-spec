@@ -476,6 +476,11 @@ locals {
         operation_id = "statusUpdateCallback"
         xml_content  = file("./api/epc/callback_policy.xml")
       }
+      statusUpdateCancelCallback-v2 = {
+        api_name     = "rtp-callback-v2"
+        operation_id = "statusUpdateCancelCallback"
+        xml_content  = file("./api/epc/callback_policy.xml")
+      }
     },
     { for k, v in {
       postRequestToPayRequests = var.env_short == "p" ? null : {
