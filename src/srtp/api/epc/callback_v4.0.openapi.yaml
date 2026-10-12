@@ -68,6 +68,38 @@ paths:
         "500":
           $ref: '#/components/responses/InternalServerError'
 
+  /status-update-cancel:
+    post:
+      summary: EPC 4.0 Cancellation Status Update asynchronous callback
+      description: |
+        Webhook endpoint called by the EPC SP to provide asynchronous cancellation status-update responses.
+
+        Section 2.13 in SRTP Implementation guidelines 4.0
+      operationId: statusUpdateCancelCallback
+      tags: [callback-status-update-cancel]
+      # --- Client's Request Body ---
+      # Describes the payload that a client must send when calling this endpoint.
+      requestBody:
+        description: ISO20022 based SEPA Request-To-Pay Cancellation Status Update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SepaRequestToPayCancellationStatusUpdateResponseResource'
+        required: true
+      # --- Our Server's Responses ---
+      # Defines the possible HTTP responses our server will return to the calling client.
+      responses:
+        "200":
+          description: OK - Our server has received and accepted the client's notification.
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "415":
+          $ref: '#/components/responses/UnsupportedMediaType'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
   /send:
     # This operation allows a client system to send us a SEPA RTP callback response.
     post:
@@ -2115,6 +2147,140 @@ components:
       maxLength: 35
       minLength: 1
       description: "SEPA Usage Rule:\n- Must begin with 'pacs.028'. The addition of a variant number and version number is optional.\n"
+    SepaRequestToPayCancellationStatusUpdateResponseResource:
+      type: object
+      properties:
+        resourceId:
+          $ref: '#/components/schemas/ResourceId'
+        Document:
+          $ref: '#/components/schemas/Document_EPC259-22_V4.0_DS16RFC'
+        _links:
+          type: object
+          properties:
+            initialSepaRequestToPayUri:
+              $ref: '#/components/schemas/GenericHalLink'
+          required:
+          - initialSepaRequestToPayUri
+    Document_EPC259-22_V4.0_DS16RFC:
+      type: object
+      properties:
+        RsltnOfInvstgtn:
+          $ref: '#/components/schemas/ResolutionOfInvestigationV09_EPC259-22_V4.0_DS16RFC'
+      required:
+      - RsltnOfInvstgtn
+    ResolutionOfInvestigationV09_EPC259-22_V4.0_DS16RFC:
+      type: object
+      properties:
+        Assgnmt:
+          $ref: '#/components/schemas/CaseAssignment5_EPC259-22_V4.0_DS11'
+        Sts:
+          $ref: '#/components/schemas/InvestigationStatus5Choice_EPC259-22_V4.0_DS16RFC'
+        CxlDtls:
+          $ref: '#/components/schemas/UnderlyingTransaction22_EPC259-22_V4.0_DS16RFC'
+      required:
+      - Assgnmt
+      - Sts
+      - CxlDtls
+    InvestigationStatus5Choice_EPC259-22_V4.0_DS16RFC:
+      oneOf:
+      - $ref: '#/components/schemas/YesNoIndicator_Wrapper'
+    UnderlyingTransaction22_EPC259-22_V4.0_DS16RFC:
+      type: object
+      properties:
+        OrgnlPmtInfAndSts:
+          type: array
+          items:
+            $ref: '#/components/schemas/OriginalPaymentInstruction30_EPC259-22_V4.0_DS16RFC'
+          maxItems: 2
+        TxInfAndSts:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentTransaction102_EPC259-22_V4.0_DS16RFC'
+    PaymentTransaction102_EPC259-22_V4.0_DS16RFC:
+      type: object
+      properties:
+        CxlStsId:
+          $ref: '#/components/schemas/Max35Text'
+        OrgnlGrpInf:
+          $ref: '#/components/schemas/OriginalGroupInformation29_EPC259-22_V4.0_DS15RFC'
+        OrgnlInstrId:
+          $ref: '#/components/schemas/Max35Text'
+        OrgnlEndToEndId:
+          $ref: '#/components/schemas/Max35Text'
+        OrgnlTxId:
+          $ref: '#/components/schemas/Max35Text'
+        CxlStsRsnInf:
+          $ref: '#/components/schemas/CancellationStatusReason4_EPC259-22_V4.0_DS16RFC'
+        RsltnRltdInf:
+          $ref: '#/components/schemas/ResolutionData1_EPC259-22_V4.0_DS16RFC'
+        OrgnlTxRef:
+          $ref: '#/components/schemas/OriginalTransactionReference28_EPC259-22_V4.0_DS16RFC'
+      required:
+      - CxlStsId
+      - OrgnlGrpInf
+      - OrgnlInstrId
+      - OrgnlEndToEndId
+      - CxlStsRsnInf
+      - OrgnlTxRef
+    OriginalGroupInformation29_EPC259-22_V4.0_DS15RFC:
+      type: object
+      properties:
+        OrgnlMsgId:
+          $ref: '#/components/schemas/Max35Text'
+        OrgnlMsgNmId:
+          $ref: '#/components/schemas/Max35Text_OrgnlMsgNmId_DS15RFC'
+        OrgnlCreDtTm:
+          $ref: '#/components/schemas/UtcIsoDateTimeWithMilliseconds'
+      required:
+      - OrgnlMsgId
+      - OrgnlMsgNmId
+      - OrgnlCreDtTm
+    Max35Text_OrgnlMsgNmId_DS15RFC:
+      type: string
+      maxLength: 35
+      minLength: 1
+      description: |
+        SEPA Usage Rule:
+        - Must begin with ‘camt.055’. The addition of a variant number and version number is optional.
+    CancellationStatusReason4_EPC259-22_V4.0_DS16RFC:
+      type: object
+      properties:
+        Orgtr:
+          $ref: '#/components/schemas/PartyIdentification135_EPC259-22_V4.0_DS04b'
+        Rsn:
+          $ref: '#/components/schemas/CancellationStatusReason3Choice_EPC259-22_V4.0_DS16RFC'
+        AddtlInf:
+          type: array
+          items:
+            $ref: '#/components/schemas/Max105Text'
+          maxItems: 4
+      required:
+      - Orgtr
+      - Rsn
+    CancellationStatusReason3Choice_EPC259-22_V4.0_DS16RFC:
+      oneOf:
+      - $ref: '#/components/schemas/ExternalPaymentCancellationRejection1Code_Wrapper'
+    ExternalPaymentCancellationRejection1Code_Wrapper:
+      type: object
+      properties:
+        Cd:
+          $ref: '#/components/schemas/ExternalPaymentCancellationRejection1Code'
+    ExternalPaymentCancellationRejection1Code:
+      maxLength: 4
+      minLength: 1
+      enum:
+      - AEXR
+      - RCAR
+      - RCNR
+      - RCPR
+      type: string
+    YesNoIndicator_Wrapper:
+      type: object
+      properties:
+        AssgnmtCxlConf:
+          $ref: '#/components/schemas/YesNoIndicator'
+    YesNoIndicator:
+      type: boolean
   responses:
     BadRequest:
       description: The request could not be parsed or processed (HTTP400).
