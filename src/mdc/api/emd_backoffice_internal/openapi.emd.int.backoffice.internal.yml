@@ -549,19 +549,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentAttemptSearchResponseDTOV1'
-              examples:
-                results:
-                  summary: Search results with a next page
-                  value:
-                    content:
-                      - iun: IUN-123
-                        tppId: tpp-456
-                        attemptsCount: 2
-                    pageSize: 20
-                    totalElements: 3
-                    totalPages: 1
-                    nextCursor: null
-                    hasNext: false
         '400':
           description: Bad Request - Missing both iun and tppId, invalid cursor, or limit outside 1–100
           content:
