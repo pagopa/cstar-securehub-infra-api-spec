@@ -36,8 +36,8 @@ locals {
     paths = { for path_key, path_item in lookup(local.send_openapi_v2_doc, "paths") : path_key => path_item if !contains(local.send_openapi_v2_only_paths, path_key) }
   }))
 
-  callback_openapi_v2 = templatefile("./api/epc/callback_v4.0.openapi.yaml", {})
   callback_openapi_v1 = templatefile("./api/epc/callback.openapi.yaml", {})
+  callback_openapi_v2 = templatefile("./api/epc/callback_v4.0.openapi.yaml", {})
 
   apis = merge({
     # RTP Activation
@@ -474,6 +474,11 @@ locals {
       statusUpdateCallback-v2 = {
         api_name     = "rtp-callback-v2"
         operation_id = "statusUpdateCallback"
+        xml_content  = file("./api/epc/callback_policy.xml")
+      }
+      statusUpdateCancelCallback-v2 = {
+        api_name     = "rtp-callback-v2"
+        operation_id = "statusUpdateCancelCallback"
         xml_content  = file("./api/epc/callback_policy.xml")
       }
     },
