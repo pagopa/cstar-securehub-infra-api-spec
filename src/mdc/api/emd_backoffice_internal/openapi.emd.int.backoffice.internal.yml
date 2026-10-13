@@ -533,22 +533,18 @@ paths:
           required: false
           schema:
             type: string
-            pattern: '^[A-Fa-f0-9]{24}$'
-          description: Cursor returned by the preceding page; a 24-character hexadecimal ObjectId.
+          description: Optional cursor forwarded unchanged to the BFF; cursor validation is handled by the BFF.
         - name: limit
           in: query
           required: false
           schema:
             type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-          description: Maximum number of payment results to return; defaults to 20.
+          description: Optional page-size limit forwarded unchanged to the BFF; validation and defaults are handled by the BFF.
       responses:
         '200':
           description: >
             OK - Paginated payment-attempt search results. A valid search with no matches returns an empty
-            payments array, zero counts, and hasMore false.
+            content array. Pagination metadata is returned by the BFF unchanged.
           content:
             application/json:
               schema:
@@ -557,14 +553,15 @@ paths:
                 results:
                   summary: Search results with a next page
                   value:
-                    payments:
+                    content:
                       - iun: IUN-123
                         tppId: tpp-456
                         attemptsCount: 2
-                    returnedCount: 1
-                    attemptsCount: 2
-                    nextCursor: 507f1f77bcf86cd799439011
-                    hasMore: true
+                    pageSize: 20
+                    totalElements: 3
+                    totalPages: 1
+                    nextCursor: null
+                    hasNext: false
         '400':
           description: Bad Request - Missing both iun and tppId, invalid cursor, or limit outside 1–100
           content:
@@ -815,26 +812,44 @@ components:
           type: string
     PaymentAttemptSearchResponseDTOV1:
       type: object
-      description: Paginated payment-attempt search response returned by payment-core through the BFF.
+      description: >
+        Paginated payment search response returned by the BFF. APIM forwards this response unchanged and does not
+        reconstruct or recalculate its fields or pagination metadata.
+      required:
+        - content
+        - pageSize
+        - totalElements
+        - totalPages
+        - nextCursor
+        - hasNext
       properties:
-        payments:
+        content:
           type: array
+          description: Payments in this page; may be empty.
           items:
             $ref: '#/components/schemas/PaymentAttemptDTOV1'
-        returnedCount:
+        pageSize:
           type: integer
-          description: Number of payment records returned in this page.
-        attemptsCount:
+          description: Effective page limit used for this response.
+        totalElements:
           type: integer
-          description: Total number of attempts represented by the search result.
+          description: Number of payment_attempt documents matching the filters; independent of per-payment attemptsCount.
+        totalPages:
+          type: integer
+          description: Number of pages, calculated by the core and propagated by the BFF.
         nextCursor:
           type: string
+          nullable: true
           description: Cursor to pass in the cursor query parameter to retrieve the next page.
-        hasMore:
+        hasNext:
           type: boolean
-          description: Whether more payment results are available.
+          description: Whether another page is available.
     PaymentAttemptDTOV1:
       type: object
+      required:
+        - iun
+        - tppId
+        - attemptsCount
       properties:
         iun:
           type: string
@@ -842,6 +857,7 @@ components:
           type: string
         attemptsCount:
           type: integer
+          description: Number of attempts associated with this payment; not the totalElements result count.
     CitizenSearchResponseDTOV1:
       type: object
       description: Cursor-based page of registered citizens matching the requested fiscal-code search.
