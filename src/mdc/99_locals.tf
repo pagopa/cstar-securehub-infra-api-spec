@@ -599,6 +599,13 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_getPaymentAttemptByTppIdAndIun = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getPaymentAttemptByTppIdAndIun"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-payment-attempt-by-tpp-id-and-iun.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
     emd_backoffice_internal_getSearchCitizen = {
       api_name     = "emd_backoffice_internal"
       operation_id = "getSearchCitizen"

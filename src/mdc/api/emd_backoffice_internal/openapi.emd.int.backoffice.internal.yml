@@ -507,6 +507,70 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  '/api/v1/payment-core/attempts/{tppId}/{iun}':
+    get:
+      tags:
+        - payment-backoffice-internal
+      operationId: getPaymentAttemptByTppIdAndIun
+      summary: Retrieve a single payment attempt
+      description: >
+        Retrieves one payment attempt through the configured backoffice BFF. The BFF forwards tppId and iun
+        to payment core as tppId and originId respectively. APIM preserves the response fields and values,
+        including originId, and passes through upstream status codes and response bodies unchanged.
+      parameters:
+        - name: tppId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: TPP identifier, forwarded to the BFF as a URI path segment.
+        - name: iun
+          in: path
+          required: true
+          schema:
+            type: string
+          description: IUN, forwarded to the BFF as a URI path segment and mapped by the BFF to originId for payment core.
+      responses:
+        '200':
+          description: Single payment attempt returned unchanged by the BFF.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAttemptDetailsDTOV1'
+              example:
+                originId: IUN-123
+                tppId: tpp-456
+                attemptDetails:
+                  - noticeNumber: '302000000000000000'
+                    paymentAttemptDate: '2026-10-13T10:15:30.000+00:00'
+                    fiscalCode: RSSMRA80A01H501U
+                    amount: '1000'
+        '401':
+          description: Unauthorized - missing or invalid internal Keycloak token
+        '403':
+          description: Forbidden - insufficient operator role
+        '404':
+          description: Payment attempt not found; the BFF error response is passed through unchanged.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: PAYMENT_ATTEMPT_NOT_FOUND
+                message: Payment attempt not found.
+                traceId: trace-id
+        '502':
+          description: Bad Gateway - downstream service unavailable; BFF error response is passed through unchanged.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: GENERIC_ERROR
+                message: The request could not be completed
+                traceId: trace-id
+        default:
+          description: Other error status and response body returned by the BFF, passed through unchanged.
   '/api/v1/payment-core/attempts/search':
     get:
       tags:
@@ -796,6 +860,39 @@ components:
         message:
           type: string
         traceId:
+          type: string
+    PaymentAttemptDetailsDTOV1:
+      type: object
+      description: Single payment attempt returned by the BFF without renaming or reshaping its fields.
+      required:
+        - originId
+        - tppId
+        - attemptDetails
+      properties:
+        originId:
+          type: string
+        tppId:
+          type: string
+        attemptDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentAttemptDetailDTOV1'
+    PaymentAttemptDetailDTOV1:
+      type: object
+      required:
+        - noticeNumber
+        - paymentAttemptDate
+        - fiscalCode
+        - amount
+      properties:
+        noticeNumber:
+          type: string
+        paymentAttemptDate:
+          type: string
+          format: date-time
+        fiscalCode:
+          type: string
+        amount:
           type: string
     PaymentAttemptSearchResponseDTOV1:
       type: object
