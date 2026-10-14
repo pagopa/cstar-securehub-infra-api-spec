@@ -1014,6 +1014,13 @@ paths:
           schema:
             type: string
             maxLength: 255
+        - name: initiativeId
+          in: query
+          description: Filter by initiative ID
+          required: false
+          schema:
+            type: string
+            maxLength: 255
         - name: contactName
           in: query
           description: Filter by contact person's name
