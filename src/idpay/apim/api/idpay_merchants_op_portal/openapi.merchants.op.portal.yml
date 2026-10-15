@@ -1449,9 +1449,17 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TransactionErrorDTO"
-              example:
-                code: "PAYMENT_NOT_FOUND_OR_EXPIRED"
-                message: "Cannot find transaction with transactionId [%s]"
+              examples:
+                transactionNotFoundOrExpired:
+                  summary: Transaction not found or expired
+                  value:
+                    code: "PAYMENT_NOT_FOUND_OR_EXPIRED"
+                    message: "Cannot find transaction with transactionId [%s]"
+                invoiceNotFound:
+                  summary: Invoice document not found in storage
+                  value:
+                    code: "PAYMENT_INVOICE_NOT_FOUND"
+                    message: "Invoice document not found in storage"
         "429":
           description: Too many requests
           headers:
