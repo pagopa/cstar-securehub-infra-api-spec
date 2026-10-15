@@ -942,7 +942,7 @@ paths:
           $ref: "#/components/responses/GET_download_reward_batch_file_429_Response"
         "500":
           $ref: "#/components/responses/GET_download_reward_batch_file_500_Response"
-  /{pointOfSaleId}/transactions/{transactionId}/download:
+  /initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions/{transactionId}/download:
     get:
       tags:
         - merchant-transactions
@@ -951,6 +951,12 @@ paths:
         IT: Scarica il file della fattura della transazione"
       operationId: downloadInvoiceFile
       parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
         - $ref: "#/components/parameters/pointOfSaleId_path"
         - $ref: "#/components/parameters/transactionId_path"
         - name: x-merchant-id
@@ -1004,6 +1010,13 @@ paths:
         - name: address
           in: query
           description: Filter by full address
+          required: false
+          schema:
+            type: string
+            maxLength: 255
+        - name: initiativeId
+          in: query
+          description: Filter by initiative ID
           required: false
           schema:
             type: string
