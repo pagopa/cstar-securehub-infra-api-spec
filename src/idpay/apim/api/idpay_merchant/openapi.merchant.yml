@@ -604,7 +604,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TransactionActionRequest"
+              $ref: "#/components/schemas/TransactionDecisionRequest"
       responses:
         "200":
           description: Transazioni rifiutate correttamente
@@ -652,7 +652,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TransactionActionRequest"
+              $ref: "#/components/schemas/TransactionDecisionRequest"
       responses:
         "200":
           description: Transazioni sospese correttamente
@@ -1873,7 +1873,12 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ReasonDTO"
-          description: "ENG: Reason associated with TRX status - IT: Motivo associato allo stato della trx"
+          description: "ENG: Internal notes history, visible only to institution operators - IT: Storico delle note interne, visibile solo agli operatori dell'ente"
+        rewardBatchOfficialNotes:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReasonDTO"
+          description: "ENG: Official notes history, visible to institution operators and merchants - IT: Storico delle note ufficiali, visibile agli operatori dell'ente e agli esercenti"
         rewardBatchInclusionDate:
           type: string
           format: date-time
@@ -2316,13 +2321,26 @@ components:
           example:
             - "trx123456"
             - "trx789012"
-        reason:
-          type: string
-          description: "ENG: Reason associated with TRX status - IT: Motivo associato allo stato della trx"
         checksError:
           $ref: "#/components/schemas/ChecksErrorDTO"
       required:
         - transactionIds
+    TransactionDecisionRequest:
+      allOf:
+        - $ref: "#/components/schemas/TransactionActionRequest"
+        - type: object
+          properties:
+            internalNote:
+              type: string
+              minLength: 1
+              description: "ENG: Internal note, visible only to institution operators - IT: Nota interna, visibile solo agli operatori dell'ente"
+            officialNote:
+              type: string
+              minLength: 1
+              description: "ENG: Official note, visible to institution operators and merchants - IT: Nota ufficiale, visibile agli operatori dell'ente e agli esercenti"
+          required:
+            - internalNote
+            - officialNote
     ReasonDTO:
       type: object
       properties:
