@@ -11,7 +11,7 @@ locals {
 
   default_api_diagnostic = {
     name                      = "applicationinsights"
-    sampling_percentage       = 100.0
+    sampling_percentage       = var.apim_sampling_percentage
     always_log_errors         = true
     log_client_ip             = false
     verbosity                 = "information"
