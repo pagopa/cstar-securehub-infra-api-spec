@@ -2148,6 +2148,13 @@ components:
           description: "ENG: Indicates if the initiative type is with ranking or not - IT: Indica se il tipo di iniziativa è con graduatoria oppure no"
         descriptionMap:
           $ref: '#/components/schemas/DescriptionMap'
+        voucherDurationDays:
+          type: integer
+          format: int32
+          minimum: 1
+          nullable: true
+          description: "ENG: Validity in days of the extended-authorization voucher; when absent the payment default applies - IT: Durata in giorni del voucher ad autorizzazione estesa; se assente si applica il default del servizio di pagamento"
+          example: 30
     AutomatedCriteriaDTO:
       type: object
       properties:

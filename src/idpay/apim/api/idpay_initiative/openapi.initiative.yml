@@ -3071,6 +3071,13 @@ components:
           type: boolean
         descriptionMap:
           $ref: '#/components/schemas/DescriptionMap'
+        voucherDurationDays:
+          type: integer
+          format: int32
+          minimum: 1
+          nullable: true
+          description: Validity in days of the extended-authorization voucher; when absent the payment default applies
+          example: 30
     AutomatedCriteriaDTO:
       type: object
       properties:
