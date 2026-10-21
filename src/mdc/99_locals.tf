@@ -592,6 +592,48 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_getSearchPaymentAttempts = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getSearchPaymentAttempts"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-search-payment-attempts.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_getPaymentAttemptByTppIdAndIun = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getPaymentAttemptByTppIdAndIun"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-payment-attempt-by-tpp-id-and-iun.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_getSearchCitizen = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getSearchCitizen"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-search-citizen.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_postSearchCitizenConsents = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "postSearchCitizenConsents"
+      xml_content = templatefile("./api/emd_backoffice_internal/post-search-citizen-consents.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_toggleCitizenConsent = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "toggleCitizenConsent"
+      xml_content = templatefile("./api/emd_backoffice_internal/put-toggle-citizen-consent.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_deleteCitizenConsentAggregate = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "deleteCitizenConsentAggregate"
+      xml_content = templatefile("./api/emd_backoffice_internal/delete-citizen-consent-aggregate.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
     emd_backoffice_internal_getMessageByEntityIdAndMessageId = {
       api_name     = "emd_backoffice_internal"
       operation_id = "getMessageByEntityIdAndMessageId"
