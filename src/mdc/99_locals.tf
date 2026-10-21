@@ -9,6 +9,29 @@ locals {
 
   ingress_load_balancer_https = "https://${var.domain}.${var.location_short}.internal${var.env == "prod" ? "" : ".${var.env}"}.${var.prefix}.pagopa.it"
 
+  default_api_diagnostic = {
+    name                      = "applicationinsights"
+    sampling_percentage       = var.apim_sampling_percentage
+    always_log_errors         = true
+    log_client_ip             = false
+    verbosity                 = "information"
+    http_correlation_protocol = "W3C"
+
+    frontend_request = {
+      headers_to_log = ["RequestId", "X-JWT-Subject"]
+      data_masking = [
+        {
+          query_params = [
+            {
+              mode  = "Hide"
+              value = "*"
+            }
+          ]
+        }
+      ]
+    }
+  }
+
   products = {
     emd_api_send_product = {
       display_name          = "EMD-SEND-PRODUCT"
@@ -103,6 +126,7 @@ locals {
       api_policy = {
         xml_content = file("./api/base_policy.xml")
       }
+      api_diagnostic = local.default_api_diagnostic
     }
     emd_citizen = {
       name                  = "${var.env_short}-emd-citizen"
@@ -121,6 +145,7 @@ locals {
       api_policy = {
         xml_content = file("./api/base_policy.xml")
       }
+      api_diagnostic = local.default_api_diagnostic
     }
     emd_message_core = {
       name                  = "${var.env_short}-emd-message-core"
@@ -139,6 +164,7 @@ locals {
       api_policy = {
         xml_content = file("./api/base_policy.xml")
       }
+      api_diagnostic = local.default_api_diagnostic
     }
     emd_payment_core = {
       name                  = "${var.env_short}-emd-payment-core"
@@ -157,6 +183,7 @@ locals {
       api_policy = {
         xml_content = file("./api/base_policy.xml")
       }
+      api_diagnostic = local.default_api_diagnostic
     }
     emd_citizen_for_tpp = {
       name                  = "${var.env_short}-emd-citizen-for-tpp"
@@ -175,6 +202,7 @@ locals {
       api_policy = {
         xml_content = file("./api/base_policy.xml")
       }
+      api_diagnostic = local.default_api_diagnostic
     }
     emd_tpp_testing = {
       name                  = "${var.env_short}-emd-tpp-testing"
@@ -193,6 +221,7 @@ locals {
       api_policy = {
         xml_content = file("./api/base_policy.xml")
       }
+      api_diagnostic = local.default_api_diagnostic
     }
     emd_backoffice = {
       name                  = "${var.env_short}-emd-backoffice"
@@ -213,6 +242,7 @@ locals {
           mdcBackofficeUrl = var.mdc_backoffice_url
         })
       }
+      api_diagnostic = local.default_api_diagnostic
     }
     emd_backoffice_internal = {
       name                  = "${var.env_short}-emd-backoffice-internal"
@@ -234,6 +264,7 @@ locals {
           mdcBackofficeInternalUrl = var.mdc_backoffice_internal_url
         })
       }
+      api_diagnostic = local.default_api_diagnostic
     }
   }
 
