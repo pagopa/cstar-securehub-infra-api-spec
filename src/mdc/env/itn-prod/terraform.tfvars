@@ -15,3 +15,5 @@ keycloak_issuer_url = "https://api-mcshared.cstar.pagopa.it/auth-itn/realms/mdc"
 
 mdc_backoffice_url          = "https://mdc.cstar.pagopa.it"
 mdc_backoffice_internal_url = "https://cstarpitnmdcadmin.z38.web.core.windows.net"
+
+apim_sampling_percentage = 100
