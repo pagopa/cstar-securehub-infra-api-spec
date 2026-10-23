@@ -523,6 +523,7 @@ paths:
             enum:
               - MERCHANT_TRANSACTIONS
               - USER_DETAILS
+              - MERCHANT_BATCH_CSV
         - name: page
           in: query
           required: false
@@ -1591,8 +1592,8 @@ components:
           schema:
             $ref: "#/components/schemas/RewardBatchErrorDTO"
           example:
-            code: REWARD_BATCH_INVALID_REQUEST
-            message: Something went wrong handling request
+            code: REWARD_BATCH_CSV_NOT_GENERATED
+            message: The reward batch %s CSV is not generated yet and cannot be downloaded
     GET_download_reward_batch_file_401_Response:
       description: Authentication failed
       headers:
@@ -2250,6 +2251,18 @@ components:
           format: date-time
           description: "ENG: Date and time when the merchant sent the batch <br> IT: Data e ora di invio del lotto da parte del merchant"
           example: "2025-11-01T00:00:00Z"
+        csvGenerationStatus:
+          type: string
+          description: "ENG: Reward batch CSV generation status <br> IT: Stato di generazione del CSV del lotto"
+          enum:
+            - INSERTED
+            - IN_PROGRESS
+            - GENERATED
+            - FAILED
+        csvGenerationDate:
+          type: string
+          format: date-time
+          description: "ENG: Date and time when the reward batch CSV was generated <br> IT: Data e ora di generazione del CSV del lotto"
         approvalDate:
           type: string
           format: date-time
@@ -2285,6 +2298,7 @@ components:
             - REWARD_BATCH_TOO_MANY_REQUESTS
             - REWARD_BATCH_GENERIC_ERROR
             - REWARD_BATCH_INVALID_MERCHANT
+            - REWARD_BATCH_CSV_NOT_GENERATED
             - ROLE_NOT_ALLOWED_FOR_L1_PROMOTION
             - ROLE_NOT_ALLOWED_FOR_L2_PROMOTION
             - BATCH_NOT_ELABORATED_15_PERCENT
@@ -2295,6 +2309,7 @@ components:
              REWARD_BATCH_TOO_MANY_REQUESTS: Too many requests,
              REWARD_BATCH_GENERIC_ERROR: Application Error
              REWARD_BATCH_INVALID_MERCHANT: The merchant is not associated with the reward batch
+             REWARD_BATCH_CSV_NOT_GENERATED: The reward batch CSV is not generated yet and cannot be downloaded,
              ROLE_NOT_ALLOWED_FOR_L1_PROMOTION: L1 operator not authorized to promote the batch,
              ROLE_NOT_ALLOWED_FOR_L2_PROMOTION: L2 operator not authorized to promote the batch,
              BATCH_NOT_ELABORATED_15_PERCENT: Processed transactions percentage below 15%,
@@ -2304,6 +2319,7 @@ components:
              REWARD_BATCH_TOO_MANY_REQUESTS: Troppe richieste,
              REWARD_BATCH_GENERIC_ERROR: Errore generico,
              REWARD_BATCH_INVALID_MERCHANT: Il merchant non è associato al lotto",
+             REWARD_BATCH_CSV_NOT_GENERATED: Il CSV del reward batch non è ancora stato generato e non può essere scaricato,
              ROLE_NOT_ALLOWED_FOR_L1_PROMOTION: Operatore L1 non autorizzato alla promozione del lotto,
              ROLE_NOT_ALLOWED_FOR_L2_PROMOTION: Operatore L2 non autorizzato alla promozione del lotto,
              BATCH_NOT_ELABORATED_15_PERCENT: Percentuale di transazioni elaborate inferiore al 15%,
@@ -2560,6 +2576,7 @@ components:
           enum:
             - MERCHANT_TRANSACTIONS
             - USER_DETAILS
+            - MERCHANT_BATCH_CSV
     PointOfSaleErrorDTO:
       type: object
       required:
@@ -2645,6 +2662,7 @@ components:
           enum:
             - MERCHANT_TRANSACTIONS
             - USER_DETAILS
+            - MERCHANT_BATCH_CSV
       required:
         - startPeriod
         - endPeriod
