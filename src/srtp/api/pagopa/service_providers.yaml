@@ -11,12 +11,15 @@ info:
     email: rtp@pagopa.it
 
 servers:
-  - description: Development / Test
+  - description: Development/Test
     url: https://api-rtp.dev.cstar.pagopa.it
+    x-internal: true
   - description: User Acceptance Test
     url: https://api-rtp.uat.cstar.pagopa.it
+    x-internal: false
   - description: Production
     url: https://api-rtp.cstar.pagopa.it
+    x-internal: false
 
 tags:
   - name: selfcare-webhook
@@ -31,7 +34,7 @@ paths:
       summary: Ingest SelfCare delegation webhook event
       description: >
         Receives webhook push notifications dispatched by SelfCare (Area Riservata).
-        Processes SC-Delegations events for Partner Tecnologico (type PT) to add or remove
+        Processes SC-Delegations events for Technological Partner (type PT) to add or remove
         Service Providers within the respective Technical Service Provider (TSP) document in Cosmos DB.
       parameters:
         - $ref: '#/components/parameters/WebhookNotificationId'
@@ -48,18 +51,18 @@ paths:
       responses:
         "200":
           description: Event processed successfully or safely acknowledged.
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/AccessControlAllowOrigin'
         "400":
-          # description: Bad Request. The request was malformed or missing mandatory fields.
+          # description: Bad Request. The request was malformed, missing mandatory fields, or contained unexpected status/eventType.
           $ref: '#/components/responses/BadRequestError'
         "401":
-          # description: Unauthorized. The access token is missing, expired, or invalid.
+          # description: Unauthorized. The API key or JWT token is missing, expired, or invalid.
           $ref: '#/components/responses/UnauthorizedError'
-        "403":
-          # description: Forbidden. The client is authenticated but does not have the required permissions to access this resource.
-          $ref: '#/components/responses/ForbiddenError'
-        "422":
-          # description: Unprocessable Entity. Business validation failed (e.g. target TSP is not configured).
-          $ref: '#/components/responses/UnprocessableEntityError'
+        "404":
+          # description: Not Found. Target TSP is not configured or Service Provider is not found in TSP.
+          $ref: '#/components/responses/NotFoundError'
         "429":
           # description: Too Many Requests. The client has exceeded the rate limit.
           $ref: '#/components/responses/TooManyRequestsError'
@@ -69,6 +72,7 @@ paths:
         default:
           # description: Unexpected Error. An error occurred that is not covered by other status codes.
           $ref: '#/components/responses/Error'
+
 components:
   # ============================================================================
   # Schemas.
@@ -142,7 +146,7 @@ components:
     # Basic types for technical stuff.
     # --------------------------------------------------------------------------
     WebhookNotificationId:
-      description: Unique notification ID assigned by SelfCare. Stable across retries and used as idempotency key.
+      description: Unique notification ID assigned by SelfCare, used as idempotency key.
       type: string
       pattern: "^[ -~]{1,128}$"
       minLength: 1
@@ -277,10 +281,16 @@ components:
         tenantId:
           description: Tenant identifier (e.g. AR for Area Riservata).
           type: string
+          pattern: "^[ -~]{1,64}$"
+          minLength: 1
+          maxLength: 64
           example: "AR"
         productId:
           description: Product identifier to which the event belongs.
           type: string
+          pattern: "^[ -~]{1,64}$"
+          minLength: 1
+          maxLength: 64
           example: "prod-pagopa"
         topic:
           description: Category of the notified event.
@@ -301,10 +311,16 @@ components:
         - delegationId
         - from
         - fromTaxCode
+        - fromType
+        - institutionFromName
         - to
         - toTaxCode
+        - toType
+        - institutionToName
+        - productId
         - type
         - status
+        - createdAt
         - eventType
       properties:
         id:
@@ -313,9 +329,11 @@ components:
           format: uuid
           example: "c3e8b1d0-5f2a-4a67-9b14-7e0d2c9f8a36"
         delegationId:
-          description: Unique identifier of the delegation agreement.
+          description: Unique identifier of the delegation agreement (SelfCare internal ID, typically 24-character hexadecimal ObjectId or UUID).
           type: string
-          format: uuid
+          pattern: "^[a-zA-Z0-9-]{1,64}$"
+          minLength: 1
+          maxLength: 64
           example: "6710b8e1f2a4c07b9d3e5a12"
         from:
           description: Internal institution ID of the delegating Service Provider (SP).
@@ -326,18 +344,28 @@ components:
           description: Fiscal code / Tax code of the delegating Service Provider (psp_tax_code).
           type: string
           pattern: "^[0-9a-zA-Z]{8,16}$"
+          minLength: 8
+          maxLength: 16
           example: "80012345678"
         fromType:
           description: Institution type of the delegator (e.g. PA, PSP).
           type: string
+          pattern: "^[ -~]{1,32}$"
+          minLength: 1
+          maxLength: 32
           example: "PA"
         institutionFromName:
           description: Registered legal name of the delegating Service Provider.
           type: string
+          pattern: "^[ -~]{1,256}$"
+          minLength: 1
+          maxLength: 256
           example: "Comune di Valle Verde"
         institutionFromRootName:
           description: Name of root institution if delegator is an aggregate.
           type: string
+          pattern: "^[ -~]{1,256}$"
+          maxLength: 256
           nullable: true
           example: null
         to:
@@ -349,21 +377,32 @@ components:
           description: Fiscal code / Tax code of the delegated Technical Service Provider (_id in Cosmos DB).
           type: string
           pattern: "^[0-9a-zA-Z]{8,16}$"
+          minLength: 8
+          maxLength: 16
           example: "09876543210"
         toType:
           description: Entity type of the delegated entity (e.g. PT for Partner Tecnologico).
           type: string
+          pattern: "^[ -~]{1,32}$"
+          minLength: 1
+          maxLength: 32
           example: "PT"
         institutionToName:
           description: Registered legal name of the delegated Technical Service Provider.
           type: string
+          pattern: "^[ -~]{1,256}$"
+          minLength: 1
+          maxLength: 256
           example: "Tech Pagamenti S.r.l."
         productId:
           description: Product identifier.
           type: string
+          pattern: "^[ -~]{1,64}$"
+          minLength: 1
+          maxLength: 64
           example: "prod-pagopa"
         type:
-          description: Delegation category type.
+          description: Delegation category type (e.g. PT for Partner Tecnologico).
           type: string
           enum:
             - PT
@@ -397,6 +436,7 @@ components:
         isTest:
           description: Flag indicating test/sandbox delegation.
           type: boolean
+          nullable: true
           example: false
         eventType:
           description: Notification event type.
@@ -405,6 +445,7 @@ components:
             - ADD
             - UPDATE
           example: "ADD"
+
   # ============================================================================
   # Parameters.
   # ============================================================================
@@ -412,7 +453,7 @@ components:
     WebhookNotificationId:
       name: X-Webhook-Notification-Id
       in: header
-      description: Unique notification ID assigned by SelfCare. Stable across retries and used as idempotency key.
+      description: Unique notification ID assigned by SelfCare, used as idempotency key.
       required: true
       schema:
         $ref: '#/components/schemas/WebhookNotificationId'
@@ -430,77 +471,50 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/Version'
+
+  # ============================================================================
+  # Headers.
+  # ============================================================================
+  headers:
+    AccessControlAllowOrigin:
+      description: |
+        Indicates whether the response can be shared with requesting code
+        from the given origin.
+      required: false
+      schema:
+        $ref: '#/components/schemas/AccessControlAllowOrigin'
+    WWWAuthenticate:
+      description: |
+        Indicates the authentication scheme(s) and parameters required to access a protected resource.
+      required: false
+      schema:
+        $ref: '#/components/schemas/WWWAuthenticate'
+    RateLimitLimit:
+      description: The number of allowed requests in the current period.
+      required: false
+      schema:
+        $ref: '#/components/schemas/RateLimitLimit'
+    RateLimitReset:
+      description: The number of seconds left in the current period.
+      required: false
+      schema:
+        $ref: '#/components/schemas/RateLimitReset'
+    RetryAfter:
+      description: |
+        The number of seconds to wait before allowing a follow-up request.
+      required: false
+      schema:
+        $ref: '#/components/schemas/RetryAfter'
+
   # ============================================================================
   # Responses.
   # ============================================================================
   responses:
     BadRequestError:
-      description: Bad Request. The request was malformed or missing mandatory fields.
+      description: Bad Request. The request was malformed, missing mandatory fields, or contained unexpected status/eventType.
       headers:
-        AccessControlAllowOrigin:
-          $ref: '#/components/schemas/AccessControlAllowOrigin'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Errors'
-    UnauthorizedError:
-      description: Unauthorized. The access token is missing, expired, or invalid.
-      headers:
-        WWWAuthenticate:
-          $ref: '#/components/schemas/WWWAuthenticate'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Errors'
-    ForbiddenError:
-      description: Forbidden. The client is authenticated but does not have the required permissions to access this resource.
-      headers:
-        AccessControlAllowOrigin:
-          $ref: '#/components/schemas/AccessControlAllowOrigin'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Errors'
-    UnprocessableEntityError:
-      description: Unprocessable Entity. Business validation failed (e.g. target TSP is not configured).
-      headers:
-        AccessControlAllowOrigin:
-          $ref: '#/components/schemas/AccessControlAllowOrigin'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Errors'
-    TooManyRequestsError:
-      description: Too Many Requests. The client has exceeded the rate limit.
-      headers:
-        AccessControlAllowOrigin:
-          $ref: '#/components/schemas/AccessControlAllowOrigin'
-        RateLimitLimit:
-          $ref: '#/components/schemas/RateLimitLimit'
-        RateLimitReset:
-          $ref: '#/components/schemas/RateLimitReset'
-        RetryAfter:
-          $ref: '#/components/schemas/RetryAfter'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Errors'
-    InternalServerError:
-      description: Internal Server Error. An unexpected error occurred on the server.
-      headers:
-        AccessControlAllowOrigin:
-          $ref: '#/components/schemas/AccessControlAllowOrigin'
-        RetryAfter:
-          $ref: '#/components/schemas/RetryAfter'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Errors'
-    Error:
-      description: Unexpected Error. An error occurred that is not covered by other status codes.
-      headers:
-        AccessControlAllowOrigin:
-          $ref: '#/components/schemas/AccessControlAllowOrigin'
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
       content:
         application/json:
           schema:
@@ -510,6 +524,99 @@ components:
             type: string
             pattern: "^[ -~]{0,65535}$"
             maxLength: 65535
+    UnauthorizedError:
+      description: Unauthorized. The access token is missing, expired, or invalid.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+        WWW-Authenticate:
+          $ref: '#/components/headers/WWWAuthenticate'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+    ForbiddenError:
+      description: Forbidden. The client is authenticated but does not have the required permissions to access this resource.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+    NotFoundError:
+      description: Not Found. The target TSP is not configured or the Service Provider is not found in the TSP.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+    TooManyRequestsError:
+      description: Too Many Requests. The client has exceeded the rate limit.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          $ref: '#/components/headers/RateLimitLimit'
+        RateLimit-Reset:
+          $ref: '#/components/headers/RateLimitReset'
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+    InternalServerError:
+      description: Internal Server Error. An unexpected error occurred on the server.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+    Error:
+      description: Unexpected Error. An error occurred that is not covered by other status codes.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+        text/*:
+          schema:
+            type: string
+            pattern: "^[ -~]{0,65535}$"
+            maxLength: 65535
+
   # ============================================================================
   # Security schemes.
   # ============================================================================
