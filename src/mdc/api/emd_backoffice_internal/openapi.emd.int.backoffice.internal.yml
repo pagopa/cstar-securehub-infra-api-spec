@@ -411,6 +411,51 @@ paths:
           description: Forbidden - insufficient operator role
         '502':
           description: Bad Gateway - Upstream emd-tpp service is unavailable
+  '/api/v1/users':
+    get:
+      tags:
+        - auth-backoffice-internal
+      operationId: getUsers
+      summary: Retrieve a paginated list of users with roles
+      description: Retrieves a paginated list of Keycloak users filtered by MDC IdP, including their realm and client roles.
+      parameters:
+        - name: Authorization
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Bearer token
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Optional search string to filter users by name, email, or username.
+        - name: first
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+          description: Index of the first result to return (pagination offset).
+        - name: max
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+          description: Maximum number of results to return (pagination limit).
+      responses:
+        '200':
+          description: OK - Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageResponseDTOV1'
+        '401':
+          description: Unauthorized - missing or invalid token
+        '500':
+          description: Internal Server Error - failed to fetch users from Keycloak
 components:
   schemas:
     TppSearchResponseDTO:
@@ -665,3 +710,63 @@ components:
       type: string
       enum: [IN_PROCESS, SENT, ERROR]
       description: States of a message in the notifier system.
+    PageResponseDTOV1:
+      type: object
+      description: Paginated response wrapper
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeycloakUserDTOV1'
+          description: List of items for the current page
+        totalElements:
+          type: integer
+          description: Total number of items available across all pages
+        first:
+          type: integer
+          description: The offset used for this page
+        max:
+          type: integer
+          description: The maximum size requested for this page
+    KeycloakUserDTOV1:
+      type: object
+      description: User information retrieved from Keycloak including mapped roles
+      properties:
+        id:
+          type: string
+          description: Keycloak internal user ID
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        emailVerified:
+          type: boolean
+        enabled:
+          type: boolean
+        createdTimestamp:
+          type: integer
+          format: int64
+        attributes:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Custom user attributes (multi-valued)
+        realmRoles:
+          type: array
+          items:
+            type: string
+          description: Roles mapped at the realm level
+        clientRoles:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Roles mapped at the client level, grouped by client ID
