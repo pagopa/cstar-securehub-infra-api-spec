@@ -15,7 +15,9 @@ locals {
   internal_domain_suffix = "internal"
 
   # Default Domain Resource Group
-  compute_rg = "${local.project}-compute-rg"
+  compute_rg        = "${local.project}-compute-rg"
+  domain_kv_name    = "${local.project}-kv"
+  domain_kv_rg_name = "${local.project}-security-rg"
 
   # RTP Storage Account
   rtp_storage_account_name = "cstar${var.env_short}${var.location_short}srtpsa"
@@ -326,8 +328,6 @@ locals {
       }
       api_policy = {
         xml_content = templatefile("./api/pagopa/service_providers_base_policy.xml", {
-          apikey_fragment_id  = "rtp-validate-apikey-selfcare"
-          jwt_fragment_id     = "rtp-validate-token-selfcare"
           backend_fragment_id = "backend-retry"
         })
       }
@@ -524,7 +524,10 @@ locals {
       }
       handleSelfcareWebhook = {
         api_name    = "rtp-service-providers"
-        xml_content = templatefile("./api/pagopa/service_providers_policy.xml", {})
+        xml_content = templatefile("./api/pagopa/service_providers_policy.xml", {
+          apikey_fragment_id = "rtp-validate-apikey-selfcare"
+          jwt_fragment_id    = "rtp-validate-token-selfcare"
+        })
       }
       statusUpdateCallback-v2 = {
         api_name     = "rtp-callback-v2"
@@ -576,4 +579,13 @@ locals {
       }
     } : k => v if v != null }
   )
+
+  subscription_keys = {
+    selfcare-service-providers = {
+      api_name     = "rtp-service-providers"
+      display_name = "SelfCare Webhook Subscription Key"
+      state        = "active"
+      secret_name  = "selfcare-webhook-api-key"
+    }
+  }
 }

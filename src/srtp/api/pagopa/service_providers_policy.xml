@@ -1,10 +1,12 @@
 <!--
     Operation policy for handleSelfcareWebhook.
-    Inherits authentication and validation from base policy.
+    Validates SelfCare API key (x-api-key) and SelfCare JWT token specifically for this webhook operation.
 -->
 <policies>
   <inbound>
     <base />
+    <include-fragment fragment-id="${apikey_fragment_id}" />
+    <include-fragment fragment-id="${jwt_fragment_id}" />
   </inbound>
   <backend>
     <base />
