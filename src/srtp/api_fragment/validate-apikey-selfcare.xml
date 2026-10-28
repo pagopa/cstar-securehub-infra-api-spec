@@ -1,0 +1,9 @@
+<!--
+    This policy fragment validates the custom x-api-key header for SelfCare Webhook push notifications.
+    Checks the header value against the APIM Named Value {{selfcare-webhook-api-key}}.
+-->
+<fragment>
+  <check-header name="x-api-key" failed-check-httpcode="401" failed-check-error-message="Unauthorized: Invalid or missing x-api-key" ignore-case="false">
+    <value>{{selfcare-webhook-api-key}}</value>
+  </check-header>
+</fragment>
