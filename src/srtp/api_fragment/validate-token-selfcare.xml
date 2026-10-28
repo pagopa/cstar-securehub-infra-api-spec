@@ -1,0 +1,46 @@
+<!--
+    This policy fragment validates the RS256 JWT issued by SelfCare for Webhook push notifications:
+    1. Validates JWT signature, expiration, issuer (PAGOPA), and audience (selfcare-webhook).
+    2. Enforces product_id / sub claim match.
+    3. Validates cross-correlation between the X-Webhook-Notification-Id header and JWT notification_id claim.
+    
+    Reference: SelfCare Webhook Documentation (§6 Autenticazione delle notifiche)
+-->
+<fragment>
+  <!-- 1. Validate SelfCare JWT Token -->
+  <validate-jwt header-name="Authorization"
+                failed-validation-httpcode="401"
+                failed-validation-error-message="Unauthorized: Invalid JWT token"
+                require-expiration-time="true"
+                require-scheme="Bearer"
+                require-signed-tokens="true"
+                clock-skew="60"
+                output-token-variable-name="selfcareToken">
+    <openid-config url="${selfcare_openid_config_url}" />
+    <issuers>
+      <issuer>PAGOPA</issuer>
+      <issuer>${selfcare_issuer}</issuer>
+    </issuers>
+    <audiences>
+      <audience>selfcare-webhook</audience>
+    </audiences>
+    <required-claims>
+      <claim name="sub" match="all">
+        <value>${selfcare_product_id}</value>
+      </claim>
+    </required-claims>
+  </validate-jwt>
+
+  <!-- 2. Cross-correlation: X-Webhook-Notification-Id header vs JWT notification_id claim -->
+  <choose>
+    <when condition='@(string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault("X-Webhook-Notification-Id", "")) || context.Request.Headers.GetValueOrDefault("X-Webhook-Notification-Id", "") != ((Jwt)context.Variables["selfcareToken"]).Claims.GetValueOrDefault("notification_id", ""))'>
+      <return-response>
+        <set-status code="401" reason="Unauthorized" />
+        <set-header name="Content-Type" exists-action="override">
+          <value>application/json</value>
+        </set-header>
+        <set-body>{"statusCode": 401, "message": "X-Webhook-Notification-Id header does not match JWT notification_id claim"}</set-body>
+      </return-response>
+    </when>
+  </choose>
+</fragment>
