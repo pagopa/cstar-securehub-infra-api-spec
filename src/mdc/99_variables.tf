@@ -86,3 +86,9 @@ variable "mdc_backoffice_internal_url" {
   type        = string
   description = "URL for the MDC internal backoffice application (PagoPA operator frontend)."
 }
+
+variable "apim_sampling_percentage" {
+  type        = number
+  description = "Percentuale di sampling per i log di Application Insights sull'APIM"
+  default     = 100
+}
