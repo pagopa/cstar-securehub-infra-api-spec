@@ -1,0 +1,20 @@
+<!--
+    Base policy for RTP Service Providers API.
+    Includes SelfCare API Key validation, SelfCare JWT token validation policy fragments, and backend retry.
+-->
+<policies>
+  <inbound>
+    <base />
+    <include-fragment fragment-id="${apikey_fragment_id}" />
+    <include-fragment fragment-id="${jwt_fragment_id}" />
+  </inbound>
+  <backend>
+    <include-fragment fragment-id="${backend_fragment_id}" />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
