@@ -3,7 +3,7 @@
     1. Validates JWT signature, expiration, issuer (PAGOPA), and audience (selfcare-webhook).
     2. Enforces product_id / sub claim match.
     3. Validates cross-correlation between the X-Webhook-Notification-Id header and JWT notification_id claim.
-    
+
     Reference: SelfCare Webhook Documentation (§6 Autenticazione delle notifiche)
 -->
 <fragment>

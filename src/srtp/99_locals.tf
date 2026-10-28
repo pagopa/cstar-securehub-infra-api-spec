@@ -523,7 +523,7 @@ locals {
         })
       }
       handleSelfcareWebhook = {
-        api_name    = "rtp-service-providers"
+        api_name = "rtp-service-providers"
         xml_content = templatefile("./api/pagopa/service_providers_policy.xml", {
           apikey_fragment_id = "rtp-validate-apikey-selfcare"
           jwt_fragment_id    = "rtp-validate-token-selfcare"
