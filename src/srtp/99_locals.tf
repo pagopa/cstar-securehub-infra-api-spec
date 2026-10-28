@@ -26,6 +26,11 @@ locals {
   api_ingress_url    = "${var.domain}.${var.location_short}.${local.internal_domain_suffix}.${local.dns_zone}"
   api_service_url    = "https://${local.api_ingress_url}"
 
+  # SelfCare Webhook
+  selfcare_issuer            = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
+  selfcare_openid_config_url = "https://${local.selfcare_issuer}/.well-known/openid-configuration"
+  selfcare_product_id        = "prod-pagopa"
+
   # rtp-service-provider (v1) must not expose the EPC 4.0-only paths, so we derive its
   # import content by stripping them from the parsed v2 spec, instead of templating
   # conditionals into the source YAML.
@@ -86,7 +91,7 @@ locals {
       revision              = "1"
       version               = "v1"
       protocols             = ["https"]
-      service_url           = "${local.api_service_url}/rtppayees/"
+      service_url           = "${local.api_service_url}/rtpregistry/"
       subscription_required = false
       product               = "srtp"
       import_descriptor = {
@@ -304,6 +309,38 @@ locals {
         headers_to_log            = ["RequestId", "X-JWT-Subject"]
       }
     }
+
+    # RTP Service Providers Webhook
+    rtp-service-providers = {
+      description           = "RTP ITN Service Providers Webhook API"
+      display_name          = "RTP ITN Service Providers Webhook API"
+      path                  = "${local.api_context_path}/service-providers"
+      revision              = "1"
+      protocols             = ["https"]
+      service_url           = "${local.api_service_url}/rtp/registry/"
+      subscription_required = false
+      product               = "srtp"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = templatefile("./api/pagopa/service_providers.yaml", {})
+      }
+      api_policy = {
+        xml_content = templatefile("./api/pagopa/service_providers_base_policy.xml", {
+          apikey_fragment_id  = "rtp-validate-apikey-selfcare"
+          jwt_fragment_id     = "rtp-validate-token-selfcare"
+          backend_fragment_id = "backend-retry"
+        })
+      }
+      api_diagnostic = {
+        name                      = "applicationinsights"
+        sampling_percentage       = 100.0
+        always_log_errors         = true
+        log_client_ip             = true
+        verbosity                 = "information"
+        http_correlation_protocol = "W3C"
+        headers_to_log            = ["X-Webhook-Notification-Id"]
+      }
+    }
     },
     { for k, v in {
       # RTP Mock v1 (EPC V3.1)
@@ -431,6 +468,20 @@ locals {
       description = "Log failed response body to Application Insights"
       format      = "xml"
       value       = file("./api_fragment/log-failed-response.xml")
+    },
+    rtp-validate-apikey-selfcare = {
+      description = "Validates SelfCare Webhook x-api-key header"
+      format      = "xml"
+      value       = file("./api_fragment/validate-apikey-selfcare.xml")
+    },
+    rtp-validate-token-selfcare = {
+      description = "Validates SelfCare RS256 JWT for Webhook"
+      format      = "xml"
+      value = templatefile("./api_fragment/validate-token-selfcare.xml", {
+        selfcare_openid_config_url = local.selfcare_openid_config_url
+        selfcare_issuer            = local.selfcare_issuer
+        selfcare_product_id        = local.selfcare_product_id
+      })
     }
   }
 
@@ -470,6 +521,10 @@ locals {
         xml_content = templatefile("./api/pagopa/service_providers_registry_get_policy.xml", {
           storage_account_name = local.rtp_storage_account_name
         })
+      }
+      handleSelfcareWebhook = {
+        api_name    = "rtp-service-providers"
+        xml_content = templatefile("./api/pagopa/service_providers_policy.xml", {})
       }
       statusUpdateCallback-v2 = {
         api_name     = "rtp-callback-v2"

@@ -160,13 +160,6 @@ components:
       minLength: 36
       maxLength: 36
       example: "bd615b4a-066d-443e-8dd2-a28a39931fef"
-    Version:
-      description: Version of the required API.
-      type: string
-      pattern: "^[ -~]{1,64}$"
-      minLength: 1
-      maxLength: 64
-      example: "v1"
     # --------------------------------------------------------------------------
     # Complex type for error handling.
     # --------------------------------------------------------------------------
@@ -464,13 +457,6 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/RequestId'
-    Version:
-      name: Version
-      in: header
-      description: Version of the required API.
-      required: true
-      schema:
-        $ref: '#/components/schemas/Version'
 
   # ============================================================================
   # Headers.
