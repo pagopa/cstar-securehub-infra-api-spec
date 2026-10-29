@@ -679,5 +679,12 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_getUsers = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getUsers"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-user.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
   }
 }
