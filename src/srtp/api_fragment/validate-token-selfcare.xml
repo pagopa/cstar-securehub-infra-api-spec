@@ -1,7 +1,7 @@
 <!--
     This policy fragment validates the RS256 JWT issued by SelfCare for Webhook push notifications:
     1. Validates JWT signature, expiration, issuer (PAGOPA), and audience (selfcare-webhook).
-    2. Enforces product_id / sub claim match.
+    2. Requires the expected product_id and sub claims.
     3. Validates cross-correlation between the X-Webhook-Notification-Id header and JWT notification_id claim.
 
     Reference: SelfCare Webhook Documentation (§6 Autenticazione delle notifiche)
@@ -26,6 +26,9 @@
     </issuers>
     <required-claims>
       <claim name="sub" match="all">
+        <value>${selfcare_subject}</value>
+      </claim>
+      <claim name="product_id" match="all">
         <value>${selfcare_product_id}</value>
       </claim>
     </required-claims>
