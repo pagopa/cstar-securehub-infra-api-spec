@@ -20,4 +20,3 @@ resource "azurerm_key_vault_secret" "subscription_keys" {
 
   tags = module.tag_config.tags
 }
-

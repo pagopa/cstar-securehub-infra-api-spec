@@ -328,7 +328,7 @@ locals {
         header = "x-api-key"
         query  = "subscription-key"
       }
-      product               = "srtp"
+      product = "srtp"
       import_descriptor = {
         content_format = "openapi"
         content_value  = templatefile("./api/pagopa/service_providers.yaml", {})
