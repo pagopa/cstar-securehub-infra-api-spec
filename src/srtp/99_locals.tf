@@ -489,7 +489,7 @@ locals {
       }
       postRequestToPayCancellationRequest = var.env_short == "p" ? null : {
         api_name    = "rtp-mock"
-        xml_content = file("./api/test/mock_policy_epc.xml")
+        xml_content = file("./api/test/mock_policy_epc_cancel.xml")
       }
       postRequestToPayRequests-v4 = var.env_short == "p" ? null : {
         api_name     = "rtp-mock-v4"
