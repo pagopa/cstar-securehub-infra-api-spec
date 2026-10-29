@@ -1,11 +1,11 @@
 <!--
     Operation policy for handleSelfcareWebhook.
-    Validates SelfCare API key (x-api-key) and SelfCare JWT token specifically for this webhook operation.
+    The x-api-key is validated natively by APIM (subscription_required on the API);
+    here we only validate the SelfCare JWT token.
 -->
 <policies>
   <inbound>
     <base />
-    <include-fragment fragment-id="${apikey_fragment_id}" />
     <include-fragment fragment-id="${jwt_fragment_id}" />
   </inbound>
   <backend>

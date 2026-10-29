@@ -16,11 +16,13 @@ locals {
 
   # Default Domain Resource Group
   compute_rg        = "${local.project}-compute-rg"
+  data_rg_name      = "${local.project}-data-rg"
   domain_kv_name    = "${local.project}-kv"
   domain_kv_rg_name = "${local.project}-security-rg"
 
   # RTP Storage Account
-  rtp_storage_account_name = "cstar${var.env_short}${var.location_short}srtpsa"
+  rtp_storage_account_name       = "cstar${var.env_short}${var.location_short}srtpsa"
+  rtp_share_storage_account_name = replace("${local.project}-share-sa", "-", "")
 
   # MC Shared URL
   mc_shared_base_url = "https://api-mcshared.${local.dns_zone}/auth-itn/realms/srtp"
@@ -30,7 +32,7 @@ locals {
 
   # SelfCare Webhook
   selfcare_issuer            = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
-  selfcare_openid_config_url = "https://${local.selfcare_issuer}/.well-known/openid-configuration"
+  selfcare_openid_config_url = "https://${data.azurerm_storage_account.share_storage.primary_web_host}/selfcare/openid-configuration.json"
   selfcare_product_id        = "prod-pagopa"
 
   # rtp-service-provider (v1) must not expose the EPC 4.0-only paths, so we derive its
@@ -320,7 +322,12 @@ locals {
       revision              = "1"
       protocols             = ["https"]
       service_url           = "${local.api_service_url}/rtp/registry/"
-      subscription_required = false
+      subscription_required = true
+      # SelfCare sends the API key in the x-api-key header (validated natively by APIM)
+      subscription_key_parameter_names = {
+        header = "x-api-key"
+        query  = "subscription-key"
+      }
       product               = "srtp"
       import_descriptor = {
         content_format = "openapi"
@@ -469,11 +476,6 @@ locals {
       format      = "xml"
       value       = file("./api_fragment/log-failed-response.xml")
     },
-    rtp-validate-apikey-selfcare = {
-      description = "Validates SelfCare Webhook x-api-key header"
-      format      = "xml"
-      value       = file("./api_fragment/validate-apikey-selfcare.xml")
-    },
     rtp-validate-token-selfcare = {
       description = "Validates SelfCare RS256 JWT for Webhook"
       format      = "xml"
@@ -525,8 +527,7 @@ locals {
       handleSelfcareWebhook = {
         api_name = "rtp-service-providers"
         xml_content = templatefile("./api/pagopa/service_providers_policy.xml", {
-          apikey_fragment_id = "rtp-validate-apikey-selfcare"
-          jwt_fragment_id    = "rtp-validate-token-selfcare"
+          jwt_fragment_id = "rtp-validate-token-selfcare"
         })
       }
       statusUpdateCallback-v2 = {

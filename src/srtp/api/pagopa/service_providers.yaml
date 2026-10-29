@@ -611,7 +611,7 @@ components:
       type: apiKey
       name: x-api-key
       in: header
-      description: Custom secret API Key provided to SelfCare and validated upstream by APIM policy.
+      description: API Key provided to SelfCare, validated natively by APIM (subscription key).
     bearerAuth:
       type: http
       scheme: bearer

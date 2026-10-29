@@ -17,13 +17,13 @@
                 clock-skew="60"
                 output-token-variable-name="selfcareToken">
     <openid-config url="${selfcare_openid_config_url}" />
+    <audiences>
+      <audience>selfcare-webhook</audience>
+    </audiences>
     <issuers>
       <issuer>PAGOPA</issuer>
       <issuer>${selfcare_issuer}</issuer>
     </issuers>
-    <audiences>
-      <audience>selfcare-webhook</audience>
-    </audiences>
     <required-claims>
       <claim name="sub" match="all">
         <value>${selfcare_product_id}</value>
@@ -33,7 +33,11 @@
 
   <!-- 2. Cross-correlation: X-Webhook-Notification-Id header vs JWT notification_id claim -->
   <choose>
-    <when condition='@(string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault("X-Webhook-Notification-Id", "")) || context.Request.Headers.GetValueOrDefault("X-Webhook-Notification-Id", "") != ((Jwt)context.Variables["selfcareToken"]).Claims.GetValueOrDefault("notification_id", ""))'>
+    <when condition='@{
+        var headerValue = context.Request.Headers.GetValueOrDefault("X-Webhook-Notification-Id", "");
+        var claimValue = ((Jwt)context.Variables["selfcareToken"]).Claims.GetValueOrDefault("notification_id", "");
+        return string.IsNullOrEmpty(headerValue) || headerValue != claimValue;
+    }'>
       <return-response>
         <set-status code="401" reason="Unauthorized" />
         <set-header name="Content-Type" exists-action="override">

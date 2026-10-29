@@ -21,16 +21,3 @@ resource "azurerm_key_vault_secret" "subscription_keys" {
   tags = module.tag_config.tags
 }
 
-resource "azurerm_api_management_named_value" "subscription_keys" {
-  for_each = azurerm_api_management_subscription.this
-
-  name                = local.subscription_keys[each.key].secret_name
-  api_management_name = local.apim_name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  display_name        = local.subscription_keys[each.key].secret_name
-  secret              = true
-
-  value_from_key_vault {
-    secret_id = azurerm_key_vault_secret.subscription_keys[each.key].versionless_id
-  }
-}
