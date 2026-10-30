@@ -15,16 +15,26 @@ locals {
   internal_domain_suffix = "internal"
 
   # Default Domain Resource Group
-  compute_rg = "${local.project}-compute-rg"
+  compute_rg        = "${local.project}-compute-rg"
+  data_rg_name      = "${local.project}-data-rg"
+  domain_kv_name    = "${local.project}-kv"
+  domain_kv_rg_name = "${local.project}-security-rg"
 
   # RTP Storage Account
-  rtp_storage_account_name = "cstar${var.env_short}${var.location_short}srtpsa"
+  rtp_storage_account_name       = "cstar${var.env_short}${var.location_short}srtpsa"
+  rtp_share_storage_account_name = replace("${local.project}-share-sa", "-", "")
 
   # MC Shared URL
   mc_shared_base_url = "https://api-mcshared.${local.dns_zone}/auth-itn/realms/srtp"
   api_context_path   = "rtp"
   api_ingress_url    = "${var.domain}.${var.location_short}.${local.internal_domain_suffix}.${local.dns_zone}"
   api_service_url    = "https://${local.api_ingress_url}"
+
+  # SelfCare Webhook
+  selfcare_issuer            = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
+  selfcare_openid_config_url = "https://${data.azurerm_storage_account.share_storage.primary_web_host}/selfcare/openid-configuration.json"
+  selfcare_product_id        = "all"
+  selfcare_subject           = "all"
 
   # rtp-service-provider (v1) must not expose the EPC 4.0-only paths, so we derive its
   # import content by stripping them from the parsed v2 spec, instead of templating
@@ -86,7 +96,7 @@ locals {
       revision              = "1"
       version               = "v1"
       protocols             = ["https"]
-      service_url           = "${local.api_service_url}/rtppayees/"
+      service_url           = "${local.api_service_url}/rtpregistry/"
       subscription_required = false
       product               = "srtp"
       import_descriptor = {
@@ -304,6 +314,41 @@ locals {
         headers_to_log            = ["RequestId", "X-JWT-Subject"]
       }
     }
+
+    # RTP Service Providers Webhook
+    rtp-service-providers = {
+      description           = "RTP ITN Service Providers Webhook API"
+      display_name          = "RTP ITN Service Providers Webhook API"
+      path                  = "${local.api_context_path}/service-providers"
+      revision              = "1"
+      protocols             = ["https"]
+      service_url           = "${local.api_service_url}/rtpregistry/"
+      subscription_required = true
+      # AzureRM requires both parameter names; the API policy rejects query-string authentication.
+      subscription_key_parameter_names = {
+        header = "x-api-key"
+        query  = "subscription-key"
+      }
+      product = "srtp"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = templatefile("./api/pagopa/service_providers.yaml", {})
+      }
+      api_policy = {
+        xml_content = templatefile("./api/pagopa/service_providers_base_policy.xml", {
+          backend_fragment_id = "backend-retry"
+        })
+      }
+      api_diagnostic = {
+        name                      = "applicationinsights"
+        sampling_percentage       = 100.0
+        always_log_errors         = true
+        log_client_ip             = true
+        verbosity                 = "information"
+        http_correlation_protocol = "W3C"
+        headers_to_log            = ["X-Webhook-Notification-Id"]
+      }
+    }
     },
     { for k, v in {
       # RTP Mock v1 (EPC V3.1)
@@ -431,6 +476,16 @@ locals {
       description = "Log failed response body to Application Insights"
       format      = "xml"
       value       = file("./api_fragment/log-failed-response.xml")
+    },
+    rtp-validate-token-selfcare = {
+      description = "Validates SelfCare RS256 JWT for Webhook"
+      format      = "xml"
+      value = templatefile("./api_fragment/validate-token-selfcare.xml", {
+        selfcare_openid_config_url = local.selfcare_openid_config_url
+        selfcare_issuer            = local.selfcare_issuer
+        selfcare_product_id        = local.selfcare_product_id
+        selfcare_subject           = local.selfcare_subject
+      })
     }
   }
 
@@ -469,6 +524,12 @@ locals {
         api_name = "rtp-service_providers-registry"
         xml_content = templatefile("./api/pagopa/service_providers_registry_get_policy.xml", {
           storage_account_name = local.rtp_storage_account_name
+        })
+      }
+      handleSelfcareWebhook = {
+        api_name = "rtp-service-providers"
+        xml_content = templatefile("./api/pagopa/service_providers_policy.xml", {
+          jwt_fragment_id = "rtp-validate-token-selfcare"
         })
       }
       statusUpdateCallback-v2 = {
@@ -521,4 +582,13 @@ locals {
       }
     } : k => v if v != null }
   )
+
+  subscription_keys = {
+    selfcare-service-providers = {
+      api_name     = "rtp-service-providers"
+      display_name = "SelfCare Webhook Subscription Key"
+      state        = "active"
+      secret_name  = "selfcare-webhook-api-key"
+    }
+  }
 }

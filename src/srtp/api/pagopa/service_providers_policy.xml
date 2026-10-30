@@ -1,0 +1,20 @@
+<!--
+    Operation policy for handleSelfcareWebhook.
+    The inherited API policy requires an x-api-key and an APIM-validated subscription;
+    this operation policy additionally validates the SelfCare JWT token.
+-->
+<policies>
+  <inbound>
+    <base />
+    <include-fragment fragment-id="${jwt_fragment_id}" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

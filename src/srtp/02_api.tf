@@ -12,6 +12,15 @@ resource "azurerm_api_management_api" "this" {
   service_url           = lookup(each.value, "service_url", null)
   subscription_required = each.value.subscription_required
   version               = lookup(each.value, "version", null)
+
+  dynamic "subscription_key_parameter_names" {
+    for_each = try([each.value.subscription_key_parameter_names], [])
+    content {
+      header = subscription_key_parameter_names.value.header
+      query  = subscription_key_parameter_names.value.query
+    }
+  }
+
   version_set_id = (
     contains(keys(each.value), "version_set") ? azurerm_api_management_api_version_set.this[each.key].id :
     try(azurerm_api_management_api_version_set.this[each.value.version_set_ref].id, null)
