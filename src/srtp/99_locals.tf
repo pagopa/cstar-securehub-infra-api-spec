@@ -322,7 +322,7 @@ locals {
       path                  = "${local.api_context_path}/service-providers"
       revision              = "1"
       protocols             = ["https"]
-      service_url           = "${local.api_service_url}/rtp/registry/"
+      service_url           = "${local.api_service_url}/rtpregistry/"
       subscription_required = true
       # AzureRM requires both parameter names; the API policy rejects query-string authentication.
       subscription_key_parameter_names = {
