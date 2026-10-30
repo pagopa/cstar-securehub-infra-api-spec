@@ -324,7 +324,7 @@ locals {
       protocols             = ["https"]
       service_url           = "${local.api_service_url}/rtp/registry/"
       subscription_required = true
-      # SelfCare sends the API key in the x-api-key header (validated natively by APIM)
+      # AzureRM requires both parameter names; the API policy rejects query-string authentication.
       subscription_key_parameter_names = {
         header = "x-api-key"
         query  = "subscription-key"
