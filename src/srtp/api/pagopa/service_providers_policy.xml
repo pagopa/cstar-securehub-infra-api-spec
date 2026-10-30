@@ -1,7 +1,7 @@
 <!--
     Operation policy for handleSelfcareWebhook.
-    The x-api-key is validated natively by APIM (subscription_required on the API);
-    here we only validate the SelfCare JWT token.
+    The inherited API policy requires an x-api-key and an APIM-validated subscription;
+    this operation policy additionally validates the SelfCare JWT token.
 -->
 <policies>
   <inbound>
