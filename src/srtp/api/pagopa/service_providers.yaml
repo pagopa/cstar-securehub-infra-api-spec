@@ -289,9 +289,7 @@ components:
           description: Category of the notified event.
           type: string
           enum:
-            - SC-Contracts
             - SC-Delegations
-            - SC-Users
           example: "SC-Delegations"
         payload:
           $ref: '#/components/schemas/SelfcareDelegationPayload'
