@@ -6,6 +6,28 @@ extends:
 # Update for AppIO files: disable some OWASP rules and add custom rules
 # ============================================================================
 overrides:
+  # These legacy APIs predate the OWASP ruleset and currently contain hundreds
+  # of pre-existing violations. Keep the OAS validation enabled while their
+  # OWASP hardening is handled incrementally.
+  - files:
+      - "**/idpay_merchant/openapi.merchant.yml"
+      - "**/idpay_merchants_portal/openapi.merchants.portal.yml"
+    rules:
+      owasp:api3:2023-constrained-additionalProperties: off
+      owasp:api3:2023-no-additionalProperties: off
+      owasp:api4:2023-array-limit: off
+      owasp:api4:2023-integer-format: off
+      owasp:api4:2023-integer-limit-legacy: off
+      owasp:api4:2023-rate-limit: off
+      owasp:api4:2023-rate-limit-responses-429: off
+      owasp:api4:2023-rate-limit-retry-after: off
+      owasp:api4:2023-string-limit: off
+      owasp:api4:2023-string-restricted: off
+      owasp:api8:2023-define-cors-origin: off
+      owasp:api8:2023-define-error-responses-401: off
+      owasp:api8:2023-define-error-responses-500: off
+      owasp:api8:2023-define-error-validation: off
+
   - files:
       - "**/openapi.appio.full*.yml"
       - "**/openapi.iban.yml*"

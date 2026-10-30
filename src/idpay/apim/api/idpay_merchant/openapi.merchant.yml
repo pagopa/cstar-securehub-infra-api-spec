@@ -280,7 +280,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/StatisticsErrorDTO"
               example:
-                code: "STATISTICS_MANAGER_TOO_MANY_REQUESTS"
+                code: "STATISTICS_TOO_MANY_REQUESTS"
                 message: "Too many requests"
         "500":
           description: Server ERROR
@@ -289,7 +289,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/StatisticsErrorDTO"
               example:
-                code: "STATISTICS_MANAGER_GENERIC_ERROR"
+                code: "STATISTICS_GENERIC_ERROR"
                 message: "Application error"
   /{merchantId}/initiative/{initiativeId}/transactions:
     get:
