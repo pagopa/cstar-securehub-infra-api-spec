@@ -1,0 +1,39 @@
+<!--
+    Base policy for RTP Service Providers API.
+    Requires a validated subscription even when accessed through the open SRTP product,
+    and provides backend retry across all operations in this specification.
+-->
+<policies>
+  <inbound>
+    <base />
+    <choose>
+      <when condition='@(context.Request.Url.Query.ContainsKey("subscription-key"))'>
+        <return-response>
+          <set-status code="401" reason="Unauthorized" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>{"statusCode": 401, "message": "Provide the subscription key in the x-api-key header, not the query string."}</set-body>
+        </return-response>
+      </when>
+      <when condition='@(string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault("x-api-key", "")) || context.Subscription == null)'>
+        <return-response>
+          <set-status code="401" reason="Unauthorized" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>{"statusCode": 401, "message": "A valid subscription key is required in the x-api-key header."}</set-body>
+        </return-response>
+      </when>
+    </choose>
+  </inbound>
+  <backend>
+    <include-fragment fragment-id="${backend_fragment_id}" />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
