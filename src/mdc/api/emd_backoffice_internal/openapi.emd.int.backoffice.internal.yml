@@ -1044,7 +1044,6 @@ components:
         - tppId
         - businessName
         - messageUrl
-        - contact
         - pspDenomination
         - agentLinks
       properties:
@@ -1055,8 +1054,6 @@ components:
           type: string
         messageUrl:
           type: string
-        contact:
-          $ref: '#/components/schemas/ContactV1'
         pspDenomination:
           type: string
         agentLinks:
@@ -1067,10 +1064,6 @@ components:
         entityId:
           type: string
         clientId:
-          type: string
-        idPsp:
-          type: string
-        legalAddress:
           type: string
         state:
           type: boolean
@@ -1088,14 +1081,6 @@ components:
           type: array
           items:
             type: string
-    ContactV1:
-      type: object
-      properties:
-        email:
-          type: string
-          format: email
-        phone:
-          type: string
     AgentLinkV1:
       type: object
       properties:
@@ -1124,11 +1109,7 @@ components:
           type: string
         entityId:
           type: string
-        idPsp:
-          type: string
         businessName:
-          type: string
-        legalAddress:
           type: string
         messageUrl:
           type: string
@@ -1136,8 +1117,6 @@ components:
           type: string
         authenticationType:
           $ref: '#/components/schemas/AuthenticationTypeV1'
-        contact:
-          $ref: '#/components/schemas/ContactV1'
         state:
           type: boolean
         creationDate:
@@ -1247,8 +1226,6 @@ components:
           $ref: '#/components/schemas/ChannelV1'
         workflowType:
           $ref: '#/components/schemas/WorkflowTypeV1'
-        idPsp:
-          type: string
         messageRegistrationDate:
           type: string
         messageState:
