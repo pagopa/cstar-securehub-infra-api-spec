@@ -54,7 +54,7 @@ paths:
           # description: Unauthorized. The access token is missing, expired, or invalid.
           $ref: "#/components/responses/UnauthorizedError"
         "403":
-          # description: Forbidden. The client is authenticated but does not have permission to access this resource. Check the OAuth2 scopes.
+          # description: Forbidden. The client is authenticated but does not have permission to access this resource.
           $ref: "#/components/responses/ForbiddenError"
         "429":
           # description: Too Many Requests. The client has sent too many requests in a given amount of time.
