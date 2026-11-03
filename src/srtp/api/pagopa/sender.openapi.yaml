@@ -673,7 +673,7 @@ components:
     ForbiddenError:
       description: >
         Returned when the authenticated client does not have sufficient
-        permissions (OAuth2 scopes) to access this resource.
+        permissions to access this resource.
       headers:
         Access-Control-Allow-Origin:
           description: |
@@ -843,7 +843,6 @@ components:
       type: oauth2
       description: >
         OAuth 2.0 authorization using JWT access tokens.
-        Tokens must include the required scopes to invoke RTP processing APIs.
       flows:
         clientCredentials:
           tokenUrl: /token
