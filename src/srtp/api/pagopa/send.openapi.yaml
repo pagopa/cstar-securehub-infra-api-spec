@@ -1655,3 +1655,4 @@ components:
         clientCredentials:
           tokenUrl: /token
           refreshUrl: /token
+          scopes: {}
