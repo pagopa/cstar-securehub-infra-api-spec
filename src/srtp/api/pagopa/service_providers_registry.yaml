@@ -636,5 +636,3 @@ components:
         clientCredentials:
           tokenUrl: https://api-mcshared.cstar.pagopa.it/auth-itn/realms/srtp/protocol/openid-connect/token
           refreshUrl: https://api-mcshared.cstar.pagopa.it/auth-itn/realms/srtp/protocol/openid-connect/token
-          scopes:
-            read_rtp_service_providers: Grants permission to read the list of RTP service providers.
