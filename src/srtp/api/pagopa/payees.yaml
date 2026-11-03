@@ -421,5 +421,3 @@ components:
         clientCredentials:
           tokenUrl: /token
           refreshUrl: /token
-          scopes:
-            read_rtp_payees: Read access for Payees RTP data.
