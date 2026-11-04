@@ -355,7 +355,7 @@ paths:
         - $ref: '#/components/parameters/RequestId'
         - $ref: '#/components/parameters/Idempotency-Key'
       security:
-        - oauth2: [ admin_rtp_send, process_rtp_send ]
+        - oAuth2: [ admin_rtp_send, process_rtp_send ]
       requestBody:
         description: >
           GPD message payload containing the operation type, identifiers, and payment
@@ -1648,11 +1648,11 @@ components:
 
   securitySchemes:
     oAuth2:
-      type: oauth2
+      type: oAuth2
       description: >
         OAuth 2.0 authorization using JWT access tokens.
       flows:
         clientCredentials:
           tokenUrl: /token
           refreshUrl: /token
-          scopes: { }
+          scopes: {}
