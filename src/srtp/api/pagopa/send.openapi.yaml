@@ -1440,7 +1440,7 @@ components:
     ForbiddenError:
       description: >
         Returned when the authenticated client does not have sufficient
-        permissions (OAuth2 scopes) to access this resource.
+        permissions to access this resource.
       headers:
         Access-Control-Allow-Origin:
           description: |
@@ -1647,31 +1647,12 @@ components:
         $ref: "#/components/schemas/PayeeId"
 
   securitySchemes:
-    oAuth2:
-      type: oauth2
-      description: >
-        OAuth 2.0 authorization using JWT access tokens.
-        Tokens must include the required scopes to invoke RTP APIs.
-      flows:
-        clientCredentials:
-          tokenUrl: /token
-          refreshUrl: /token
-          scopes:
-            admin_rtp_send: Administrative permission to manage RTP lifecycle
-            read_rtp_send: Permission to read RTP data
-            write_rtp_send: Permission to write/manage RTP data
-            process_rtp_send: Permission to process GPD messages into RTP operations
-            payee_read_rtp: Allows payee to read RTP delivery status for its own debt positions
-
     oauth2:
       type: oauth2
       description: >
         OAuth 2.0 authorization using JWT access tokens.
-        Tokens must include the required scopes to invoke RTP processing APIs.
       flows:
         clientCredentials:
           tokenUrl: /token
           refreshUrl: /token
-          scopes:
-            admin_rtp_send: Administrative permission to manage RTP lifecycle
-            process_rtp_send: Permission to process GPD messages into RTP operations
+          scopes: {}
