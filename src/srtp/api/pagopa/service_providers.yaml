@@ -61,7 +61,7 @@ paths:
           # description: Unauthorized. The API key or JWT token is missing, expired, or invalid.
           $ref: '#/components/responses/UnauthorizedError'
         "404":
-          # description: Not Found. Target TSP is not configured or Service Provider is not found in TSP.
+          # description: Not Found. Target TSP is not configured.
           $ref: '#/components/responses/NotFoundError'
         "429":
           # description: Too Many Requests. The client has exceeded the rate limit.
@@ -131,26 +131,13 @@ components:
     ErrorDescription:
       description: Error description.
       type: string
-      pattern: "^[ -~]{0,256}$"
-      minLength: 0
-      maxLength: 256
       example: "Wrong party identifier"
-    StatusCode:
-      description: HTTP status code.
-      type: integer
-      format: int32
-      minimum: 0
-      maximum: 999
-      example: 401
     # --------------------------------------------------------------------------
     # Basic types for technical stuff.
     # --------------------------------------------------------------------------
     WebhookNotificationId:
-      description: Unique notification ID assigned by SelfCare, used as idempotency key.
+      description: Unique notification ID assigned by SelfCare, used as idempotency key. Value validated by APIM policy.
       type: string
-      pattern: "^[ -~]{1,128}$"
-      minLength: 1
-      maxLength: 128
       example: "6710c3d2a8f1b47e9c0d6b35"
     RequestId:
       description: Identifier of the request.
@@ -179,15 +166,7 @@ components:
         code: "01000000F"
         description: "Wrong party identifier"
     Errors:
-      description: |
-        Error details.
-        The format depends on the component which returns it.
-      oneOf:
-        - $ref: '#/components/schemas/Type1Error'
-        - $ref: '#/components/schemas/Type2Error'
-        - $ref: '#/components/schemas/Type3Error'
-    Type1Error:
-      description: List of errors returned by the application.
+      description: List of errors.
       type: object
       additionalProperties: false
       properties:
@@ -203,59 +182,6 @@ components:
         errors:
           - code: "01000000F"
             description: "Wrong party identifier"
-    Type2Error:
-      description: Error details returned by the APIM.
-      type: object
-      additionalProperties: false
-      properties:
-        statusCode:
-          $ref: '#/components/schemas/StatusCode'
-        message:
-          $ref: '#/components/schemas/ErrorDescription'
-      required:
-        - statusCode
-        - message
-      example:
-        statusCode: 401
-        message: "Invalid JWT."
-    Type3Error:
-      description: Error details returned by the framework.
-      type: object
-      additionalProperties: false
-      properties:
-        timestamp:
-          description: Timestamp the error occurred.
-          type: string
-          format: date-time
-          pattern: "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}(Z|([+-]\\d{2}:\\d{2}))$"
-        path:
-          description: API path where the error occurred.
-          type: string
-          pattern: "^[ -~]{1,1024}$"
-          minLength: 1
-          maxLength: 1024
-        status:
-          $ref: '#/components/schemas/StatusCode'
-        error:
-          $ref: '#/components/schemas/ErrorDescription'
-        requestId:
-          description: ID of the request.
-          type: string
-          pattern: "^[ -~]{1,128}$"
-          minLength: 1
-          maxLength: 128
-      required:
-        - timestamp
-        - path
-        - status
-        - error
-        - requestId
-      example:
-        timestamp: "2024-12-31T09:54:01.763+00:00"
-        path: "/selfcare/webhook"
-        status: 415
-        error: "Unsupported Media Type"
-        requestId: "3fb00d0f-416"
     # --------------------------------------------------------------------------
     # Domain specific complex types (SelfCare Webhook v0.2).
     # --------------------------------------------------------------------------
@@ -543,7 +469,7 @@ components:
             pattern: "^[ -~]{0,65535}$"
             maxLength: 65535
     NotFoundError:
-      description: Not Found. The target TSP is not configured or the Service Provider is not found in the TSP.
+      description: Not Found. The target TSP is not configured.
       headers:
         Access-Control-Allow-Origin:
           $ref: '#/components/headers/AccessControlAllowOrigin'
