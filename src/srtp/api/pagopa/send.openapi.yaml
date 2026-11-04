@@ -1647,7 +1647,7 @@ components:
         $ref: "#/components/schemas/PayeeId"
 
   securitySchemes:
-    oauth2:
+    oAuth2:
       type: oauth2
       description: >
         OAuth 2.0 authorization using JWT access tokens.
@@ -1655,4 +1655,4 @@ components:
         clientCredentials:
           tokenUrl: /token
           refreshUrl: /token
-          scopes: {}
+          scopes: { }
