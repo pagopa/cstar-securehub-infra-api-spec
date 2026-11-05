@@ -33,8 +33,8 @@ locals {
   # SelfCare Webhook
   selfcare_issuer            = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
   selfcare_openid_config_url = "https://${data.azurerm_storage_account.share_storage.primary_web_host}/selfcare/openid-configuration.json"
-  selfcare_product_id        = "all"
-  selfcare_subject           = "all"
+  selfcare_product_id        = "prod-rtp"
+  selfcare_subject           = "prod-rtp"
 
   # rtp-service-provider (v1) must not expose the EPC 4.0-only paths, so we derive its
   # import content by stripping them from the parsed v2 spec, instead of templating
