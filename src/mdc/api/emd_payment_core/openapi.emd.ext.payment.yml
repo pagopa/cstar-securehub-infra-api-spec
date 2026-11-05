@@ -112,14 +112,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/RetryAfter'
         '401':
-          description: Authentication failed
+          description: |
+            Authentication failed. The `message` field indicates the cause
+            (e.g. `JWT not present.`, `Invalid JWT.`).
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RetrievalErrorDTO'
+                $ref: '#/components/schemas/RetrievalAuthorizationErrorDTO'
               example:
-                code: AUTHENTICATION_FAILED
-                message: Something went wrong with authentication
+                statusCode: 401
+                message: Invalid JWT.
           headers:
             Access-Control-Allow-Origin:
               description: Indicates whether the response can be shared with requesting code from the given origin
@@ -325,14 +327,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/RetryAfter'
         '401':
-          description: Authentication failed
+          description: |
+            Authentication failed. The `message` field indicates the cause
+            (e.g. `JWT not present.`, `Invalid JWT.`).
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RetrievalErrorDTO'
+                $ref: '#/components/schemas/RetrievalAuthorizationErrorDTO'
               example:
-                code: AUTHENTICATION_FAILED
-                message: Something went wrong with authentication
+                statusCode: 401
+                message: Invalid JWT.
           headers:
             Access-Control-Allow-Origin:
               description: Indicates whether the response can be shared with requesting code from the given origin
@@ -560,14 +564,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/RetryAfter'
         '401':
-          description: Authentication failed
-          content:
+          description: |
+            Authentication failed. The `message` field indicates the cause
+            (e.g. `JWT not present.`, `Invalid JWT.`).
+            content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RetrievalErrorDTO'
+                $ref: '#/components/schemas/RetrievalAuthorizationErrorDTO'
               example:
-                code: AUTHENTICATION_FAILED
-                message: Something went wrong with authentication
+                statusCode: 401
+                message: Invalid JWT.
           headers:
             Access-Control-Allow-Origin:
               description: Indicates whether the response can be shared with requesting code from the given origin
@@ -800,9 +806,21 @@ components:
           description: "ENG: Flag indicating whether the TPP is integrated with the payment system. - IT: Flag che indica se il TPP è integrato con il sistema di pagamento."
           example: true
 
-
-
-
+    RetrievalAuthorizationErrorDTO:
+      type: object
+      required:
+        - statusCode
+        - message
+      properties:
+        statusCode:
+          type: integer
+          description: |-
+            "ENG: Authentication failed. The `message` field indicates the cause (e.g. `JWT not present.`, `Invalid JWT.`)."
+        message:
+          type: string
+          description: 'ENG: Error message - IT: Messaggio di errore'
+          maxLength: 250
+          pattern: "^[\\w\\s.,!?'\"-]+$"
 
     RetrievalErrorDTO:
       type: object
