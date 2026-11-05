@@ -81,4 +81,3 @@ components:
           tokenUrl: /token
           refreshUrl: /token
           scopes: {}
-

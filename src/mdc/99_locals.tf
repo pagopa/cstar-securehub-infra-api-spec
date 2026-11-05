@@ -663,6 +663,13 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_retryNotifierMessage = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "retryNotifierMessage"
+      xml_content = templatefile("./api/emd_backoffice_internal/post-retry-notifier-message.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
     emd_backoffice_internal_getSearchCitizen = {
       api_name     = "emd_backoffice_internal"
       operation_id = "getSearchCitizen"
