@@ -571,6 +571,47 @@ paths:
                 traceId: trace-id
         default:
           description: Other error status and response body returned by the BFF, passed through unchanged.
+  '/api/v1/notifier-sender/messages/retry':
+    post:
+      tags:
+        - message-backoffice-internal
+      operationId: retryNotifierMessage
+      summary: Retry sending a message
+      description: >
+        Requests a retry through the notifier sender service. Restricted to operator-write and operator-admin
+        roles. The X-API-Version header and JSON request body are forwarded unchanged.
+      parameters:
+        - name: X-API-Version
+          in: header
+          required: true
+          description: API version required by the notifier sender service.
+          schema:
+            type: string
+            enum: ['1']
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetryMessageRequestDTOV1'
+            example:
+              messageId: MESSAGE_ID
+              entityId: ENTITY_ID
+      responses:
+        '200':
+          description: Request processed successfully.
+        '400':
+          description: Bad request returned by the notifier sender service.
+        '401':
+          description: Unauthorized - missing or invalid internal Keycloak token
+        '403':
+          description: Forbidden - operator-write or operator-admin role required
+        '429':
+          description: Too many requests.
+        '500':
+          description: Internal server error returned by the notifier sender service.
+        default:
+          description: Other response returned by the notifier sender service.
   '/api/v1/payment-core/attempts/search':
     get:
       tags:
@@ -861,6 +902,18 @@ components:
           type: string
         traceId:
           type: string
+    RetryMessageRequestDTOV1:
+      type: object
+      required:
+        - messageId
+        - entityId
+      properties:
+        messageId:
+          type: string
+          description: Identifier of the message to retry.
+        entityId:
+          type: string
+          description: Identifier of the entity associated with the message.
     PaymentAttemptDetailsDTOV1:
       type: object
       description: Single payment attempt returned by the BFF without renaming or reshaping its fields.
