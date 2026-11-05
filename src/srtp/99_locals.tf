@@ -385,7 +385,7 @@ locals {
         product               = "srtp"
         import_descriptor = {
           content_format = "openapi"
-          content_value  = templatefile("./api/epc/EPC133-22 v1.0 SRTP API YAML V4.0.yaml", {})
+          content_value  = templatefile("./api/epc/EPC133-22 v4.0.1 - SRTP API YAML.yaml", {})
         }
       }
 

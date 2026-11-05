@@ -2,35 +2,64 @@ openapi: 3.0.3
 info:
   title: |
     SEPA Request-To-Pay (SRTP) inter-SP (Service Providers) API
-    Version V4.0 202500620
+    RB V4.0 - API v4.0.1 - 2026-10-27
   description: |
     Technical specification for the SEPA REQUEST TO PAY (SRTP) Application Programming Interface
     # Overview
-    Please refer to §5 of SEPA Request-to-Pay scheme rulebook as a glossary of useful terms and abbreviation being used.
 
+    Please refer to chapter 5 of SEPA Request-to-Pay scheme rulebook as a glossary of useful terms and abbreviation being used.
     This API specification aims to describe the different interactions between two actors:
     * the Payee's SRTP-SP being the API client
     * the Payer's SRTP-SP being the API server
-
     Since some interactions may not be completed synchronously, a callback URL must be set by the API client in order to allow the API server to send back an asynchronous response.
+
     # Technical choices
+
     ## Character case
     the following character case conventions are used:
     * UpperCamelCase for Components Definitions name
     * lowerCamelCase for Properties name
     * spinal-case for Path components
+
     ## API Resource Structure
     Each API resource declared within this specification may include the following elements:
     * A resource Identifier that can only be set by the API server
     * A callback URL that must be set by the API client before posting the relevant resource
     * A wrapper embedding the relevant SRTP-scheme dataset
     * A HATEOAS block providing further possible API interactions
-    Other Documentation:
+
+    # Other Documentation:
+
     * SEPA Request-To-Pay Scheme Rulebook - Version 4.0 - EPC014-20
     * SEPA Request-To-Pay Inter-SRTP SP API Specifications - EPC013-25
     * SEPA Request-To-Pay Implementation Guidelines - Inter-RTP Service Provider SRTP - Version 4.0 - EPC259-22
     * EPC API Security Framework - EPC164-22
-    url: https://www.europeanpaymentscouncil.eu/what-we-do/other-schemes/sepa-request-pay
+    * SEPA Request-To-Pay Trust and Security Model - EPC207-26 - version 1.1.0  
+    * url: https://www.europeanpaymentscouncil.eu/what-we-do/other-schemes/sepa-request-pay
+
+    # Change Log
+
+    ## API v4.0.1 - 2026-10-27
+
+    ### Trust & Security / Message Signing
+    * Implemented the JWS-based message signing approach defined in the SRTP Trust and Security Model v1.1.0.
+    * Added reusable HTTP header components for the detached JWS signature (x-jws-signature) and the SHA-256 message body digest (Digest).
+    * Applied the JWS signature and digest headers to SRTP API requests and responses, including callbacks and error responses.
+    * Added an HTTPS URL constraint (pattern: '^https://') to the callback URL definitions, in line with the secure communication requirements of the SRTP Trust and Security Model.
+
+    ### Alignment with the SRTP Implementation Guidelines
+    * Updated the API specification to address identified discrepancies and improve alignment with the SRTP Implementation Guidelines v4.0 and the corresponding ISO 20022 XML schemas.
+    * Updated the representation of monetary amounts to include both the amount and its associated currency, and aligned applicable amount limits and decimal precision requirements.
+    * Aligned mandatory and optional elements in party, account and financial institution identification structures.
+    * Extended the postal address structures to support the structured and hybrid address elements defined in the Implementation Guidelines.
+    * Aligned date and time representations with the timestamp formatting rules defined in the SRTP Implementation Guidelines, including the handling of fractional seconds, trailing zeros and applicable exceptions.
+    * Corrected the mandatory nature and cardinality of selected payment, cancellation, transaction status and remittance information elements.
+    * Aligned selected identification formats, validation patterns and field constraints with the corresponding XML definitions.
+
+    ### API Response Handling
+    * Added a reusable UnprocessableEntity response component for HTTP 422 responses.
+    * Reused the BadRequest response component for callback HTTP 400 responses.    
+    
   contact:
     name: European Payment Council
     url: 'https://www.europeanpaymentscouncil.eu/'
@@ -38,9 +67,9 @@ info:
   license:
     name: 'CC-BY'
     url: 'https://wellcome.org/grant-funding/guidance/open-access-guidance/creative-commons-attribution-licence-cc'
-  version: "4.0"
+  version: "4.0.1"
 servers:
-- url: 'http://server/v1'
+- url: 'https://server/v1'
 paths:
   /sepa-request-to-pay-requests:
     post:
@@ -59,12 +88,14 @@ paths:
 
         However the API server, when unable to reject immediately a SEPA Request-To-Pay that it cannot process, is able to use the callback URL provided by the API client in order to forward later this reject.
       externalDocs:
-        description: § 2.1 in SRTP Implementation guidelines 4.0
+        description: Chapter 2.1 in SRTP Implementation guidelines 4.0
         url: ''
       operationId: postRequestToPayRequests
       parameters:
       - $ref: '#/components/parameters/Idempotency'
       - $ref: '#/components/parameters/Correlation'
+      - $ref: '#/components/parameters/Digest'
+      - $ref: '#/components/parameters/JwsSignature'
       requestBody:
         description: ISO20022 based SEPA Request-To-Pay
         content:
@@ -82,6 +113,10 @@ paths:
               $ref: '#/components/headers/Location'
             Correlation:
               $ref: '#/components/headers/X-Request-ID'
+            Digest:
+              $ref: '#/components/headers/Digest'
+            x-jws-signature:
+              $ref: '#/components/headers/JwsSignature'
           content:
             application/json:
               schema:
@@ -89,9 +124,7 @@ paths:
         400:
           description: |
             This response states that the resource creation has been rejected by the server.
-
-            § 2.2 in SRTP Implementation guidelines 4.0
-
+            chapter 2.2 in SRTP Implementation guidelines 4.0
             Possible errors:
             * the posted content does not match a valid SEPA Request-To-Pay structure.
             * the posted content does match a valid SEPA Request-To-Pay structure but is not compliant with the SRTP scheme.
@@ -99,6 +132,10 @@ paths:
           headers:
             Correlation:
               $ref: '#/components/headers/X-Request-ID'
+            Digest:
+              $ref: '#/components/headers/Digest'
+            x-jws-signature:
+              $ref: '#/components/headers/JwsSignature'
           content:
             application/json:
               schema:
@@ -112,7 +149,7 @@ paths:
         415:
           $ref: '#/components/responses/UnsupportedMediaType'
         422:
-          description: Unprocessable Entity
+          $ref: '#/components/responses/UnprocessableEntity'
         429:
           $ref: '#/components/responses/TooManyRequests'
       callbacks:
@@ -120,7 +157,11 @@ paths:
           "{$request.body#/callbackUrl}":
             post:
               summary: 'Forwarding of a SEPA Request-To-Pay Response to the Payee''s SRTP Service Provider'
-              description: § 2.2, 2.3, 2.5 & 2.6 in SRTP Implementation guidelines 4.0
+              description: Chapters 2.2, 2.3, 2.5 & 2.6 in SRTP Implementation guidelines 4.0
+              parameters:
+              - $ref: '#/components/parameters/Correlation'
+              - $ref: '#/components/parameters/Digest'
+              - $ref: '#/components/parameters/JwsSignature'
               requestBody:
                 description: ISO20022 based SEPA Request-To-Pay Response
                 content:
@@ -129,29 +170,42 @@ paths:
                       $ref: '#/components/schemas/AsynchronousSepaRequestToPayResponseResource'
                 required: true
               responses:
-                400:
-                  description: Bad Request
                 200:
                   description: the callback server accepts the callback
+                  headers:
+                    Correlation:
+                      $ref: '#/components/headers/X-Request-ID'
+                    Digest:
+                      $ref: '#/components/headers/Digest'
+                    x-jws-signature:
+                      $ref: '#/components/headers/JwsSignature'
+                400:
+                  $ref: '#/components/responses/BadRequest'
   /sepa-request-to-pay-requests/{sepaRequestToPayRequestResourceId}:
     get:
       summary: 'Retrieving of a SEPA Payment Request from the Payer''s SRTP-Service Provider'
       description: |
         The Payee's SRTP-SP, acting as an API client, request the retrieval of a given SEPA-Request-To-Pay to the API server of the Payer's SRTP-SP.
         The API server, if it can retrieve the relevant resource, answers with this resource.
-        This request could be useful for the API client in case of conflict when trying to post a SEPA Request-To-Pay. Actually the API-client is then able to check the pre-existing SEPA Request-To-Pay with the one it intended to post.
-
+        This request could be useful for the API client in case of conflict when trying to post a SEPA Request-To-Pay. 
+        Actually the API-client is then able to check the pre-existing SEPA- Request-To-Pay with the one it intended to post.
         >CAUTION: This is NOT a SRTP Implementation guidelines 4.0 interaction.
       operationId: getPaymentRequest
       parameters:
       - $ref: '#/components/parameters/Correlation'
       - $ref: '#/components/parameters/SepaRequestToPayRequestResourceId'
+      - $ref: '#/components/parameters/Digest'
+      - $ref: '#/components/parameters/JwsSignature'
       responses:
         200:
           description: The response contains the requested SEPA Payment Request Resource
           headers:
             Correlation:
               $ref: '#/components/headers/X-Request-ID'
+            Digest:
+              $ref: '#/components/headers/Digest'
+            x-jws-signature:
+              $ref: '#/components/headers/JwsSignature'
           content:
             application/json:
               schema:
@@ -175,13 +229,15 @@ paths:
         The Payee's SRTP-SP, acting as an API client, request a status update on a given SEPA-Request-To-Pay to the API server of the Payer's SRTP-SP.
         When possible, the API server may respond immediately with the status update. Otherwise, it will send later the update through the callback URL provided by the API client.
       externalDocs:
-        description: § 2.9 in SRTP Implementation guidelines 4.0
+        description: Chapter 2.9 in SRTP Implementation guidelines 4.0
         url: ''
       operationId: getRequestToPayStatusUpdate
       parameters:
       - $ref: '#/components/parameters/Idempotency'
       - $ref: '#/components/parameters/Correlation'
       - $ref: '#/components/parameters/SepaRequestToPayRequestResourceId'
+      - $ref: '#/components/parameters/Digest'
+      - $ref: '#/components/parameters/JwsSignature'
       requestBody:
         description: |
           ISO20022 based SEPA Request-To-Pay status update request
@@ -198,6 +254,10 @@ paths:
           headers:
             Correlation:
               $ref: '#/components/headers/X-Request-ID'
+            Digest:
+              $ref: '#/components/headers/Digest'
+            x-jws-signature:
+              $ref: '#/components/headers/JwsSignature'
           content:
             application/json:
               schema:
@@ -215,7 +275,7 @@ paths:
         415:
           $ref: '#/components/responses/UnsupportedMediaType'
         422:
-          description: Unprocessable Entity
+          $ref: '#/components/responses/UnprocessableEntity'
         429:
           $ref: '#/components/responses/TooManyRequests'
       callbacks:
@@ -223,7 +283,11 @@ paths:
           "{$request.body#/callbackUrl}":
             post:
               summary: 'Forwarding of a SEPA Request-To-Pay Response to the Payee''s SRTP Service Provider'
-              description: § 2.2, 2.3, 2.5 & 2.3 in SRTP Implementation guidelines 4.0
+              description: Chapters 2.2, 2.3, 2.5 & 2.3 in SRTP Implementation guidelines 4.0
+              parameters:
+              - $ref: '#/components/parameters/Correlation'
+              - $ref: '#/components/parameters/Digest'
+              - $ref: '#/components/parameters/JwsSignature'
               requestBody:
                 description: ISO20022 based SEPA Request-To-Pay Response
                 content:
@@ -232,24 +296,34 @@ paths:
                       $ref: '#/components/schemas/SepaRequestToPayStatusUpdateResponseResource'
                 required: true
               responses:
-                400:
-                  description: Bad Request
                 200:
                   description: the callback server accepts the callback
+                  headers:
+                    Correlation:
+                      $ref: '#/components/headers/X-Request-ID'
+                    Digest:
+                      $ref: '#/components/headers/Digest'
+                    x-jws-signature:
+                      $ref: '#/components/headers/JwsSignature'
+                400:
+                  $ref: '#/components/responses/BadRequest'
   /sepa-request-to-pay-requests/{sepaRequestToPayRequestResourceId}/cancellation-requests:
     post:
       summary: 'Sending of a SEPA Request-To-Pay Cancellation Request to the Payer''s SRTP-Service Provider'
       description: |
         The Payee's SRTP-SP, acting as an API client, request the cancellation of a given SEPA-Request-To-Pay to the API server of the Payer's SRTP-SP.
-        When possible, the API server may respond immediately with the cancellation response. Otherwise, it will send later the response through the callback URL provided by the API client.
+        When possible, the API server may respond immediately with the cancellation response. 
+        Otherwise, it will send later the response through the callback URL provided by the API client.
       externalDocs:
-        description: § 2.6 in SRTP Implementation guidelines 4.0
+        description: Chapter 2.6 in SRTP Implementation guidelines 4.0
         url: ''
       operationId: postRequestToPayCancellationRequest
       parameters:
       - $ref: '#/components/parameters/Idempotency'
       - $ref: '#/components/parameters/Correlation'
       - $ref: '#/components/parameters/SepaRequestToPayRequestResourceId'
+      - $ref: '#/components/parameters/Digest'
+      - $ref: '#/components/parameters/JwsSignature'
       requestBody:
         description: |
           ISO20022 based SEPA Request-To-Pay cancellation request
@@ -268,6 +342,10 @@ paths:
               $ref: '#/components/headers/Location'
             Correlation:
               $ref: '#/components/headers/X-Request-ID'
+            Digest:
+              $ref: '#/components/headers/Digest'
+            x-jws-signature:
+              $ref: '#/components/headers/JwsSignature'
           content:
             application/json:
               schema:
@@ -285,7 +363,7 @@ paths:
         415:
           $ref: '#/components/responses/UnsupportedMediaType'
         422:
-          description: Unprocessable Entity
+          $ref: '#/components/responses/UnprocessableEntity'
         429:
           $ref: '#/components/responses/TooManyRequests'
       callbacks:
@@ -293,7 +371,11 @@ paths:
           "{$request.body#/callbackUrl}":
             post:
               summary: 'Posting of a SEPA Request-To-Pay Cancellation Response to the Payee''s SRTP Service Provider'
-              description: § 2.8 & 2.9 in SRTP Implementation guidelines 4.0
+              description: Chapters 2.8 & 2.9 in SRTP Implementation guidelines 4.0
+              parameters:
+              - $ref: '#/components/parameters/Correlation'
+              - $ref: '#/components/parameters/Digest'
+              - $ref: '#/components/parameters/JwsSignature'
               requestBody:
                 description: ISO20022 based SEPA Request-To-Pay Cancellation Response
                 content:
@@ -302,24 +384,33 @@ paths:
                       $ref: '#/components/schemas/SepaRequestToPayCancellationResponseResource'
                 required: true
               responses:
-                400:
-                  description: Bad Request
                 200:
                   description: the callback server accepts the callback
-  /sepa-request-to-pay-requests/{sepaRequestToPayRequestResourceId}/cancellation-requests/{sepaRequestToPayCancellationResourceId}/status-update:
-    post:
+                  headers:
+                    Correlation:
+                      $ref: '#/components/headers/X-Request-ID'
+                    Digest:
+                      $ref: '#/components/headers/Digest'
+                    x-jws-signature:
+                      $ref: '#/components/headers/JwsSignature'
+                400:
+                  $ref: '#/components/responses/BadRequest'
+  ? /sepa-request-to-pay-requests/{sepaRequestToPayRequestResourceId}/cancellation-requests/{sepaRequestToPayCancellationResourceId}/status-update
+  : post:
       summary: 'Requesting a SEPA Request-To-Pay Cancellation Request Status Update from the Payer''s SRTP-Service Provider'
       description: |
         The Payee's SRTP-SP, acting as an API client, request a status update on a given SEPA-Request-To-Pay Cancellation Request to the API server of the Payer's SRTP-SP.
         When possible, the API server may respond immediately with the status update. Otherwise, it will send later the update through the callback URL provided by the API client.
         This request is idempotent since requesting twice the cancellation of a given SEPA-request-to-pay will obviously get the same result.
       externalDocs:
-        description: § 2.10 in SRTP Implementation guidelines 4.0
+        description: Chapter 2.10 in SRTP Implementation guidelines 4.0
         url: ''
       operationId: getRequestToPayCancellationStatusUpdate
       parameters:
       - $ref: '#/components/parameters/Idempotency'
       - $ref: '#/components/parameters/Correlation'
+      - $ref: '#/components/parameters/Digest'
+      - $ref: '#/components/parameters/JwsSignature'
       - $ref: '#/components/parameters/SepaRequestToPayRequestResourceId'
       - $ref: '#/components/parameters/SepaRequestToPayCancellationResourceId'
       requestBody:
@@ -338,6 +429,10 @@ paths:
           headers:
             Correlation:
               $ref: '#/components/headers/X-Request-ID'
+            Digest:
+              $ref: '#/components/headers/Digest'
+            x-jws-signature:
+              $ref: '#/components/headers/JwsSignature'
           content:
             application/json:
               schema:
@@ -355,7 +450,7 @@ paths:
         415:
           $ref: '#/components/responses/UnsupportedMediaType'
         422:
-          description: Unprocessable Entity
+          $ref: '#/components/responses/UnprocessableEntity'
         429:
           $ref: '#/components/responses/TooManyRequests'
       callbacks:
@@ -363,7 +458,11 @@ paths:
           "{$request.body#/callbackUrl}":
             post:
               summary: 'Forwarding of a SEPA Request-To-Pay Cancellation Status Update Response to the Payee''s SRTP Service Provider'
-              description: § 2.13 in SRTP Implementation guidelines 4.0
+              description: Chapter 2.13 in SRTP Implementation guidelines 4.0
+              parameters:
+              - $ref: '#/components/parameters/Correlation'
+              - $ref: '#/components/parameters/Digest'
+              - $ref: '#/components/parameters/JwsSignature'
               requestBody:
                 description: ISO20022 based SEPA Request-To-Pay Cancellation Status Update
                 content:
@@ -372,10 +471,17 @@ paths:
                       $ref: '#/components/schemas/SepaRequestToPayCancellationStatusUpdateResponseResource'
                 required: true
               responses:
-                400:
-                  description: Bad Request
                 200:
                   description: the callback server accepts the callback
+                  headers:
+                    Correlation:
+                      $ref: '#/components/headers/X-Request-ID'
+                    Digest:
+                      $ref: '#/components/headers/Digest'
+                    x-jws-signature:
+                      $ref: '#/components/headers/JwsSignature'
+                400:
+                  $ref: '#/components/responses/BadRequest'
 components:
   schemas:
     SynchronousSepaRequestToPayErrorResponse:
@@ -474,6 +580,10 @@ components:
       - href
     VoidResponse:
       type: string
+      description: >
+        Represents a response without a business payload.
+        When the HTTP message body is empty, the Digest is calculated over the zero-length body, 
+        in accordance with the SRTP Trust and Security Model.
     NegativeSepaRequestToPayResponse_DS08N:
       type: object
       properties:
@@ -512,6 +622,7 @@ components:
         callbackUrl:
           type: string
           format: uri
+          pattern: '^https://'
         _links:
           type: object
           properties:
@@ -543,6 +654,7 @@ components:
         callbackUrl:
           type: string
           format: uri
+          pattern: '^https://'
         _links:
           type: object
           properties:
@@ -576,6 +688,7 @@ components:
         callbackUrl:
           type: string
           format: uri
+          pattern: '^https://'
         _links:
           type: object
           properties:
@@ -609,6 +722,7 @@ components:
         callbackUrl:
           type: string
           format: uri
+          pattern: '^https://'
         _links:
           type: object
           properties:
@@ -734,12 +848,14 @@ components:
           $ref: '#/components/schemas/OriginalGroupInformation30_EPC259-22_V4.0_DS04b'
         OrgnlPmtInfAndSts:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/OriginalPaymentInstruction31_EPC259-22_V4.0_DS04b'
           maxItems: 2
       required:
       - GrpHdr
       - OrgnlGrpInfAndSts
+      - OrgnlPmtInfAndSts
     CreditorPaymentActivationRequestStatusReportV07_EPC259-22_V4.0_DS08N:
       type: object
       properties:
@@ -749,12 +865,14 @@ components:
           $ref: '#/components/schemas/OriginalGroupInformation30_EPC259-22_V4.0_DS04b'
         OrgnlPmtInfAndSts:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/OriginalPaymentInstruction31_EPC259-22_V4.0_DS08N'
           maxItems: 2
       required:
       - GrpHdr
       - OrgnlGrpInfAndSts
+      - OrgnlPmtInfAndSts
     CreditorPaymentActivationRequestStatusReportV07_EPC259-22_V4.0_DS08P:
       type: object
       properties:
@@ -777,12 +895,14 @@ components:
           $ref: '#/components/schemas/OriginalGroupInformation29_EPC259-22_V4.0_DS16RTP'
         OrgnlPmtInfAndSts:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/OriginalPaymentInstruction31_EPC259-22_V4.0_DS16RTP'
           maxItems: 2
       required:
       - GrpHdr
       - OrgnlGrpInfAndSts
+      - OrgnlPmtInfAndSts
     CreditorPaymentActivationRequestV10_EPC259-22_V4.0_DS02:
       type: object
       properties:
@@ -792,9 +912,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PaymentInstruction42_EPC259-22_V4.0_DS02'
+          minItems: 1
           maxItems: 2
       required:
       - GrpHdr
+      - PmtInf
     CustomerPaymentCancellationRequestV08_EPC259-22_V4.0_DS11:
       type: object
       properties:
@@ -850,10 +972,12 @@ components:
           $ref: '#/components/schemas/GroupHeader91_EPC259-22_V4.0_DS15RTP'
         TxInf:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/PaymentTransaction113_EPC259-22_V4.0_DS15RTP'
       required:
       - GrpHdr
+      - TxInf
     ResolutionOfInvestigationV09_EPC259-22_V4.0_DS16RFC:
       type: object
       properties:
@@ -907,12 +1031,14 @@ components:
           $ref: '#/components/schemas/OriginalGroupInformation30_EPC259-22_V4.0_DS04b'
         OrgnlPmtInfAndSts:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/OriginalPaymentInstruction31_EPC259-22_V4.0_REDIRECT'
           maxItems: 2
       required:
       - GrpHdr
       - OrgnlGrpInfAndSts
+      - OrgnlPmtInfAndSts
     GroupHeader105_EPC259-22_V4.0_DS02:
       type: object
       properties:
@@ -921,7 +1047,11 @@ components:
         CreDtTm:
           $ref: '#/components/schemas/UtcIsoDateTimeWithMilliseconds'
         NbOfTxs:
-          $ref: '#/components/schemas/Max15NumericText'
+          type: string
+          enum:
+          - '1'
+          description: |
+            SEPA Usage Rule: The number of transactions is limited to "1".
         InitgPty:
           $ref: '#/components/schemas/PartyIdentification135_EPC259-22_V4.0_DS02'
       required:
@@ -983,7 +1113,7 @@ components:
       required:
       - OrgnlMsgId
       - OrgnlMsgNmId
-      - OrgnlCreDtTm'
+      - OrgnlCreDtTm
     OriginalPaymentInstruction31_EPC259-22_V4.0_DS04b:
       type: object
       properties:
@@ -1011,10 +1141,12 @@ components:
           $ref: '#/components/schemas/Max35Text'
         TxInfAndSts:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/PaymentTransaction104_EPC259-22_V4.0_DS08P'
       required:
       - OrgnlPmtInfId
+      - TxInfAndSts
     OriginalPaymentInstruction31_EPC259-22_V4.0_DS16RTP:
       type: object
       properties:
@@ -1022,10 +1154,12 @@ components:
           $ref: '#/components/schemas/Max35Text'
         TxInfAndSts:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/PaymentTransaction104_EPC259-22_V4.0_DS16RTP'
       required:
       - OrgnlPmtInfId
+      - TxInfAndSts
     PaymentInstruction42_EPC259-22_V4.0_DS02:
       type: object
       properties:
@@ -1036,9 +1170,22 @@ components:
         ReqdAdvcTp:
           $ref: '#/components/schemas/AdviceType1'
         ReqdExctnDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-T013 - Requested Execution Date/Time of the payment
+            to be initiated.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         XpryDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-S005 - Expiry Date/Time of the RTP.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         Dbtr:
           $ref: '#/components/schemas/PartyIdentification135_EPC259-22_V4.0_DS02_2'
         DbtrAcct:
@@ -1047,6 +1194,7 @@ components:
           $ref: '#/components/schemas/BranchAndFinancialInstitutionIdentification6_EPC259-22_V4.0_DS02'
         CdtTrfTx:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/CreditTransferTransaction57_EPC259-22_V4.0_DS02'
       required:
@@ -1055,6 +1203,7 @@ components:
       - XpryDt
       - Dbtr
       - DbtrAgt
+      - CdtTrfTx
     PaymentTransaction113_EPC259-22_V4.0_DS15RTP:
       type: object
       properties:
@@ -1112,24 +1261,33 @@ components:
           maxItems: 2
         TxInfAndSts:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/PaymentTransaction102_EPC259-22_V4.0_DS16RFC'
+      required:
+      - TxInfAndSts
     UnderlyingTransaction24_EPC259-22_V4.0_DS11:
       type: object
       properties:
         OrgnlPmtInfAndCxl:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/OriginalPaymentInstruction34_EPC259-22_V4.0_DS11'
           maxItems: 2
+      required:
+      - OrgnlPmtInfAndCxl
     UnderlyingTransaction24_EPC259-22_V4.0_DS15RFC:
       type: object
       properties:
         OrgnlPmtInfAndCxl:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/OriginalPaymentInstruction34_EPC259-22_V4.0_DS15RFC'
           maxItems: 2
+      required:
+      - OrgnlPmtInfAndCxl
     AdviceType1:
       type: object
       properties:
@@ -1170,7 +1328,14 @@ components:
         PmtCond:
           $ref: '#/components/schemas/PaymentCondition1_EPC259-22_V4.0_DS02'
         ReqdExctnDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-T013 - Requested Execution Date/Time of the payment
+            to be initiated.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         Amt:
           $ref: '#/components/schemas/AmountType4Choice_EPC259-22_V4.0_DS02'
         ChrgBr:
@@ -1210,6 +1375,10 @@ components:
       oneOf:
       - $ref: '#/components/schemas/ISODate_Wrapper'
       - $ref: '#/components/schemas/ISODateTime_Wrapper'
+    DateAndDateTime2ChoiceWithOptionalMilliseconds:
+      oneOf:
+      - $ref: '#/components/schemas/ISODate_Wrapper'
+      - $ref: '#/components/schemas/ISODateTimeWithOptionalMilliseconds_Wrapper'
     GroupHeader87:
       type: object
       properties:
@@ -1225,6 +1394,7 @@ components:
       - InitgPty
     ISODateTime:
       type: string
+      format: date-time
     InvestigationStatus5Choice_EPC259-22_V4.0_DS12N:
       oneOf:
       - $ref: '#/components/schemas/ExternalInvestigationExecutionConfirmation1Code_Wrapper'
@@ -1232,7 +1402,7 @@ components:
       oneOf:
       - $ref: '#/components/schemas/ExternalInvestigationExecutionConfirmation1Code_II_Wrapper'
     Max15NumericText:
-      pattern: '[0-9]{1,15}'
+      pattern: '^[0-9]{1,15}$'
       type: string
     Max35Text:
       maxLength: 35
@@ -1244,21 +1414,21 @@ components:
       minLength: 1
       description: |
         SEPA Usage Rule:
-        - Must begin with ‘pain.013’. The addition of a variant number and version number is optional.
+        - Must begin with 'pain.013'. The addition of a variant number and version number is optional.
     Max35Text_OrgnlMsgNmId_DS15RFC:
       type: string
       maxLength: 35
       minLength: 1
       description: |
         SEPA Usage Rule:
-        - Must begin with ‘camt.055’. The addition of a variant number and version number is optional.
+        - Must begin with 'camt.055'. The addition of a variant number and version number is optional.
     Max35Text_OrgnlMsgNmId_DS16RTP:
       type: string
       maxLength: 35
       minLength: 1
       description: |
         SEPA Usage Rule:
-        - Must begin with ‘pacs.028’. The addition of a variant number and version number is optional.
+        - Must begin with 'pacs.028'. The addition of a variant number and version number is optional.
     OriginalGroupInformation29_EPC259-22_V4.0_DS15RFC:
       type: object
       properties:
@@ -1305,10 +1475,12 @@ components:
           $ref: '#/components/schemas/Max35Text'
         TxInfAndSts:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/PaymentTransaction103_EPC259-22_V4.0_DS16RFC'
       required:
       - OrgnlPmtInfId
+      - TxInfAndSts
     OriginalPaymentInstruction31:
       type: object
       properties:
@@ -1326,10 +1498,12 @@ components:
           $ref: '#/components/schemas/Max35Text'
         TxInfAndSts:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/PaymentTransaction104_EPC259-22_V4.0_REDIRECT'
       required:
       - OrgnlPmtInfId
+      - TxInfAndSts
     OriginalPaymentInstruction34_EPC259-22_V4.0_DS11:
       type: object
       properties:
@@ -1341,10 +1515,12 @@ components:
           $ref: '#/components/schemas/OriginalGroupInformation29_EPC259-22_V4.0_DS15RTP'
         TxInf:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/PaymentTransaction109_EPC259-22_V4.0_DS11'
       required:
       - OrgnlPmtInfId
+      - TxInf
     OriginalPaymentInstruction34_EPC259-22_V4.0_DS15RFC:
       type: object
       properties:
@@ -1356,17 +1532,26 @@ components:
           $ref: '#/components/schemas/OriginalGroupInformation29_EPC259-22_V4.0_DS15RFC'
         TxInf:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/PaymentTransaction109_EPC259-22_V4.0_DS15RFC'
       required:
       - OrgnlPmtInfId
+      - TxInf
     OriginalTransactionReference28_EPC259-22_V4.0_DS15RTP:
       type: object
       properties:
         Amt:
           $ref: '#/components/schemas/AmountType4Choice_EPC259-22_V4.0_DS02'
         ReqdExctnDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-T013 - Requested Execution Date/Time of the payment
+            to be initiated.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         PmtTpInf:
           $ref: '#/components/schemas/PaymentTypeInformation27_EPC259-22_V4.0_DS15RTP'
         RmtInf:
@@ -1418,6 +1603,8 @@ components:
     PartyIdentification135_EPC259-22_V4.0_DS08N:
       type: object
       properties:
+        Nm:
+          $ref: '#/components/schemas/Max140Text_EPC259-22_V4.0_DS02'
         Id:
           $ref: '#/components/schemas/Party38Choice_II'
     PaymentMethod7Code:
@@ -1520,7 +1707,13 @@ components:
         DbtrDcsnDtTm:
           $ref: '#/components/schemas/UtcIsoDateTimeWithMilliseconds'
         AccptncDtTm:
-          $ref: '#/components/schemas/UtcIsoDateTimeWithMilliseconds'
+          description: >
+            AT-R092 - Payment date/time (as decided by the Payer).
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/UtcIsoDateTimeWithOptionalMilliseconds'
         OrgnlTxRef:
           $ref: '#/components/schemas/OriginalTransactionReference29_EPC259-22_V4.0_DS08P'
       required:
@@ -1573,8 +1766,11 @@ components:
           maxItems: 2
         TxInfAndSts:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/PaymentTransaction102_EPC259-22_V4.0_DS12P'
+      required:
+      - TxInfAndSts
     YesNoIndicator:
       type: boolean
     AccountIdentification4Choice_EPC259-22_V4.0_DS02:
@@ -1597,12 +1793,14 @@ components:
           $ref: '#/components/schemas/CancellationStatusReason3Choice_EPC259-22_V4.0_DS16RFC'
         AddtlInf:
           type: array
+          minItems: 1
+          maxItems: 4
           items:
             $ref: '#/components/schemas/Max105Text'
-          maxItems: 4
       required:
       - Orgtr
       - Rsn
+      - AddtlInf
     CashAccount38:
       type: object
       properties:
@@ -1615,6 +1813,8 @@ components:
       properties:
         Id:
           $ref: '#/components/schemas/AccountIdentification4Choice'
+      required:
+      - Id
     ChargeBearerType1Code:
       type: string
       description: |
@@ -1705,17 +1905,18 @@ components:
           $ref: '#/components/schemas/GenericFinancialIdentification1'
     ISODate:
       type: string
+      format: date
     InstructionForCreditorAgent3_EPC259-22_V4.0_DS02:
       type: object
       properties:
         InstrInf:
           allOf:
-            - $ref: '#/components/schemas/Max140Text'
-            - description: |
-                SEPA Rulebook Reference:
-                - AT-B037 Activation Reference (Mandatory if provided in DS-01)
-                SEPA Usage Rule:
-                - One occurrence starting with "ATB037/" followed by the activation reference.
+          - $ref: '#/components/schemas/Max140Text'
+          - description: |
+              SEPA Rulebook Reference:
+              - AT-B037 Activation Reference (Mandatory if provided in DS-01)
+              SEPA Usage Rule:
+              - One occurrence starting with "ATB037/" followed by the activation reference.
       required:
       - InstrInf
     Max140Text_CreditorName_DS02:
@@ -1739,7 +1940,7 @@ components:
         SEPA Usage Rule:
         - Only allowed if the Payee is the Originator of the RfC, and then mandatory.
         - For a natural person, the first and last name must be provided.
-        - 'Name’ is limited to 70 characters in length.
+        - 'Name' is limited to 70 characters in length.
     Max140Text_CreditorName_DSXX:
       type: string
       maxLength: 70
@@ -1782,7 +1983,14 @@ components:
         Amt:
           $ref: '#/components/schemas/AmountType4Choice_EPC259-22_V4.0_DS02'
         ReqdExctnDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-T013 - Requested Execution Date/Time of the payment
+            to be initiated.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         PmtTpInf:
           $ref: '#/components/schemas/PaymentTypeInformation27_EPC259-22_V4.0_DS15RTP'
         RmtInf:
@@ -1809,9 +2017,22 @@ components:
         Amt:
           $ref: '#/components/schemas/AmountType4Choice_EPC259-22_V4.0_DS02'
         ReqdExctnDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-T013 - Requested Execution Date/Time of the payment
+            to be initiated.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         XpryDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-S005 - Expiry Date/Time of the RTP.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         PmtTpInf:
           $ref: '#/components/schemas/PaymentTypeInformation26_EPC259-22_V4.0_DS04b'
         RmtInf:
@@ -1839,9 +2060,22 @@ components:
         Amt:
           $ref: '#/components/schemas/AmountType4Choice_EPC259-22_V4.0_DS02'
         ReqdExctnDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-T013 - Requested Execution Date/Time of the payment
+            to be initiated.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         XpryDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-S005 - Expiry Date/Time of the RTP.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         PmtTpInf:
           $ref: '#/components/schemas/PaymentTypeInformation26_EPC259-22_V4.0_DS04b'
         RmtInf:
@@ -1873,9 +2107,22 @@ components:
         Amt:
           $ref: '#/components/schemas/AmountType4Choice_EPC259-22_V4.0_DS02'
         ReqdExctnDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-T013 - Requested Execution Date/Time of the payment
+            to be initiated.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         XpryDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-S005 - Expiry Date/Time of the RTP.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         PmtTpInf:
           $ref: '#/components/schemas/PaymentTypeInformation26_EPC259-22_V4.0_DS04b'
         RmtInf:
@@ -1907,9 +2154,22 @@ components:
         Amt:
           $ref: '#/components/schemas/AmountType4Choice_EPC259-22_V4.0_DS02'
         ReqdExctnDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-T013 - Requested Execution Date/Time of the payment
+            to be initiated.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         XpryDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-S005 - Expiry Date/Time of the RTP.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         PmtTpInf:
           $ref: '#/components/schemas/PaymentTypeInformation26_EPC259-22_V4.0_DS04b'
         RmtInf:
@@ -2191,27 +2451,51 @@ components:
     PostalAddress24_EPC259-22_V4.0_DS02:
       type: object
       description: >
-            Postal address of the debtor (EPC SRTP Guidelines v4.0).
-            SEPA Usage Rules:
-            - Town Name (TwnNm) and Country (Ctry) are mandatory in both Structured and Hybrid formats.
-            - Structured Address (Recommended): AdrLine must NOT be used. TwnNm and Ctry must be present.
-            - Hybrid Address (Alternative): TwnNm and Ctry must be present; AdrLine must contain at least one occurrence, up to two allowed
-            Additional recommendations:
-            - It is recommended to provide as many structured elements as possible.
-            - These rules apply equally to Debtor and Creditor addresses.
-            - These rules must be enforced at business layer; JSON Schema cannot enforce conditional branching (Structured vs Hybrid) alone.
+        Postal address of the debtor (EPC SRTP Guidelines v4.0).
+        SEPA Usage Rules:
+        - Town Name (TwnNm) and Country (Ctry) are mandatory in both Structured and Hybrid formats.
+        - Structured Address (Recommended): AdrLine must NOT be used. TwnNm and Ctry must be present.
+        - Hybrid Address (Alternative): TwnNm and Ctry must be present; AdrLine must contain at least one occurrence, up to two allowed
+        Additional recommendations:
+        - It is recommended to provide as many structured elements as possible.
+        - These rules apply equally to Debtor and Creditor addresses.
+        - These rules must be enforced at business layer; JSON Schema cannot enforce conditional branching (Structured vs Hybrid) alone.            
       properties:
+        Dept:
+          $ref: '#/components/schemas/Max70Text'
+        SubDept:
+          $ref: '#/components/schemas/Max70Text'
+        StrtNm:
+          $ref: '#/components/schemas/Max70Text'
+        BldgNb:
+          $ref: '#/components/schemas/Max16Text'
+        BldgNm:
+          $ref: '#/components/schemas/Max35Text'
+        Flr:
+          $ref: '#/components/schemas/Max70Text'
+        PstBx:
+          $ref: '#/components/schemas/Max16Text'
+        Room:
+          $ref: '#/components/schemas/Max70Text'
+        PstCd:
+          $ref: '#/components/schemas/Max16Text'
         TwnNm:
-          type: string
+          $ref: '#/components/schemas/Max35Text'
           description: >
-            Town name of the debtor’s postal address.
+            Town name of the debtor's postal address.
             SEPA Usage Rule: Mandatory (Multiplicity: [1..1])
+        TwnLctnNm:
+          $ref: '#/components/schemas/Max35Text'
+        DstrctNm:
+          $ref: '#/components/schemas/Max35Text'
+        CtrySubDvsn:
+          $ref: '#/components/schemas/Max35Text'
         Ctry:
           allOf:
-            - $ref: '#/components/schemas/CountryCode'
-            - description: >
-                Country code of the address (ISO 3166-1 alpha-2).
-                SEPA Usage Rule: Mandatory (Multiplicity: [1..1])
+          - $ref: '#/components/schemas/CountryCode'
+          - description: >
+              Country code of the address (ISO 3166-1 alpha-2).
+              SEPA Usage Rule: Mandatory (Multiplicity: [1..1])
         AdrLine:
           type: array
           items:
@@ -2224,8 +2508,8 @@ components:
                 - Up to 2 occurrences allowed.
                 - Not allowed in Structured Address.
       required:
-        - TwnNm
-        - Ctry
+      - TwnNm
+      - Ctry
     ProxyAccountIdentification1_EPC259-22_V4.0_DS02:
       type: object
       properties:
@@ -2242,13 +2526,12 @@ components:
       type: object
       description: >
         SEPA Rulebook:
-        - AT-T009 RTP Remittance Information to be inserted in the payment (containing possibly AT-S002 Payee’s end-to-end reference of the RTP and AT-T019 Credit note amount*), mandatory if provided in DS-02.
+        - AT-T009 RTP Remittance Information to be inserted in the payment (containing possibly AT-S002 Payee's end-to-end reference of the RTP and AT-T019 Credit note amount*), mandatory if provided in DS-02.
         - AT-S005 Expiry Date/Time of the RTP.
         - AT-S013 Placeholder for Charges.
-        SEPA Usage Rule:
-        - Mandatory.
-        - Both ‘Unstructured’ and ‘Structured’ can be present:
-        - AT-T009 can be present either in ‘Unstructured’ or ‘Structured’ and may also contain AT-S002, and in 'Structured', also AT-T019.
+        SEPA Usage Rule:  - Mandatory.
+        - Both 'Unstructured' and 'Structured' can be present:
+        - AT-T009 can be present either in 'Unstructured' or 'Structured' and may also contain AT-S002, and in 'Structured', also AT-T019.
         - AT-S005, AT-T019 and AT-S013 can be present only in 'Structured'.
         - Only the occurrence (Unstructured or Structured) containing AT-T009 is to be provided in the payment.
       properties:
@@ -2256,20 +2539,22 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Max140Text'
-          maxItems: 3
+          maxItems: 1
           description: |
             SEPA Usage Rules:
             - Only one occurrence is allowed.
             - Must include AT-T009 if this path is chosen.
             - May also include:
-              - AT-S002 (Payee’s end-to-end reference),
+              - AT-S002 (Payee's end-to-end reference),
               - AT-E002 (commercial trade name if different from AT-E001),
               - location and date/time of transaction.
             - Elements must be delimited by slashes (or another consistent delimiter if slash is reserved).
             - Example: The Shopping Paradise/Boulevard des Marchands 123/2020-12-24T11:37/Purchase Nr1234567890AZ - Merry Christmas.
-            - For further information, please refer to “EPC088-22 EPC Guidance Document – Improve Transparency for Retail Payment End-Users”
+            - For further information, please refer to "EPC088-22 EPC Guidance Document - Improve Transparency for Retail Payment End-Users"
         Strd:
           $ref: '#/components/schemas/StructuredRemittanceInformation16_EPC259-22_V4.0_DS15RTP'
+      required:
+      - Strd
     RemittanceInformation21_EPC259-22_V4.0_DS02:
       type: object
       properties:
@@ -2335,13 +2620,13 @@ components:
             - AT-R114 Payment initiation status related information* (mandatory if provided in DS-07).
             SEPA Usage Rule:
             - Up to three occurrences are allowed. One for AT-R094, one for AT-R096 (including if applicable AT-R095) and one for AT-R114.
-            - The occurrence dedicated to the payment instrument is mandatory if ‘Local Instrument’ code “CTP”or “ITP” is included in the original pain.013 message. It specifies which payment instrument is accepted by the Payer and must begin with “ATR094/” followed by one of the codes below:
-                - If related to SEPA payments (i.e. if ‘Service Level’ is “SEPA”), either "SCT" or "SCT Inst" is allowed.
-                - If related to other payments within SEPA (i.e. if ‘Service Level’ is “SRTP”),“TRF” or “INST” is allowed and the use of other ISO codes may be agreed bilaterally or multilaterally.
-            - The occurrence dedicated to the payment guarantee must begin with “ATR096/”and followed either by:
+            - The occurrence dedicated to the payment instrument is mandatory if 'Local Instrument' code "CTP"or "ITP" is included in the original pain.013 message. It specifies which payment instrument is accepted by the Payer and must begin with "ATR094/" followed by one of the codes below:
+                - If related to SEPA payments (i.e. if 'Service Level' is "SEPA"), either "SCT" or "SCT Inst" is allowed.
+                - If related to other payments within SEPA (i.e. if 'Service Level' is "SRTP"),"TRF" or "INST" is allowed and the use of other ISO codes may be agreed bilaterally or multilaterally.
+            - The occurrence dedicated to the payment guarantee must begin with "ATR096/"and followed either by:
                 - The identifier of the payment guarantee provider (AT-R095) in case the payment guarantee request is accepted by the Payer; or
-                - “NOPG” (No Payment Guarantee) in case the payment guarantee request is refused by the Payer.
-            - The occurrence dedicated to payment initiation status must begin with “ATR114/” followed by the payment initiation status (or payment execution status in case of an instant payment) related information (e.g., the PSP identification, the payment reference).
+                - "NOPG" (No Payment Guarantee) in case the payment guarantee request is refused by the Payer.
+            - The occurrence dedicated to payment initiation status must begin with "ATR114/" followed by the payment initiation status (or payment execution status in case of an instant payment) related information (e.g., the PSP identification, the payment reference).
       required:
       - Orgtr
     StatusReasonInformation12_EPC259-22_V4.0_DS16RTP:
@@ -2358,24 +2643,70 @@ components:
       oneOf:
       - $ref: '#/components/schemas/IBAN2007Identifier_Wrapper'
     ActiveCurrencyAndAmount_EPC259-22_V4.0_DS08P:
-      minimum: 0.01
-      type: number
+      type: object
+      properties:
+        amt:
+          type: number
+          minimum: 0.01
+          description: >
+            SEPA Format Rule: The fractional part has a maximum
+            of two digits. Implementations must validate decimal
+            precision using exact decimal arithmetic.
+        Ccy:
+          $ref: '#/components/schemas/ActiveCurrencyCode'
+      required:
+      - amt
+      - Ccy
     ActiveOrHistoricCurrencyAndAmount_EPC259-22_V4.0_DS02:
-      minimum: 0.01
-      maximum: 999999999.99
-      type: number
+      type: object
+      properties:
+        amt:
+          type: number
+          minimum: 0
+          maximum: 999999999.99
+          description: >
+            SEPA Format Rule: The fractional part has a maximum
+            of two digits. Implementations must validate decimal
+            precision using exact decimal arithmetic.
+        Ccy:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyCode'
+      required:
+      - amt
+      - Ccy
       description: |
-        SEPA Usage Rule: V4.0 In case of SCT and SCT Inst: Amount must be 0.01 or more and 999999999.99 or less.
+        SEPA Usage Rules:
+        - In case of SCT and SCT Inst, Amount must be 0.01 or more and 999999999.99 or less.
+        - In case of a credit note, Amount must be 0.
+    ActiveCurrencyCode:
+      type: string
+      pattern: '^[A-Z]{3}$'
+      description: ISO 4217 active currency code.
+    ActiveOrHistoricCurrencyCode:
+      type: string
+      pattern: '^[A-Z]{3}$'
+      description: ISO 4217 currency code.
     ActiveOrHistoricCurrencyAndAmount_EPC259-22_V4.0_DS04b:
-      minimum: 0.01
-      type: number
+      type: object
+      properties:
+        amt:
+          type: number
+          minimum: 0.01
+          description: >
+            SEPA Format Rule: The fractional part has a maximum
+            of two digits. Implementations must validate decimal
+            precision using exact decimal arithmetic.
+        Ccy:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyCode'
+      required:
+      - amt
+      - Ccy
     AdviceType1Code:
       enum:
       - ADND
       - ADWD
       type: string
     BICFIDec2014Identifier:
-      pattern: '[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}'
+      pattern: '^[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}$'
       type: string
     CancellationIndividualStatus1Code:
       enum:
@@ -2397,12 +2728,14 @@ components:
           $ref: '#/components/schemas/CancellationStatusReason3Choice_EPC259-22_V4.0_DS12N'
         AddtlInf:
           type: array
+          minItems: 1
+          maxItems: 4
           items:
             $ref: '#/components/schemas/Max105Text'
-          maxItems: 4
       required:
       - Orgtr
       - Rsn
+      - AddtlInf
     CancellationStatusReason4_EPC259-22_V4.0_DS12P:
       type: object
       properties:
@@ -2410,11 +2743,13 @@ components:
           $ref: '#/components/schemas/PartyIdentification135_EPC259-22_V4.0_DS04b'
         AddtlInf:
           type: array
+          minItems: 1
+          maxItems: 4
           items:
             $ref: '#/components/schemas/Max105Text'
-          maxItems: 4
       required:
       - Orgtr
+      - AddtlInf
     CashAccount38_EPC259-22_V4.0_DS08N:
       type: object
       properties:
@@ -2441,7 +2776,7 @@ components:
       - Amt
       - Agt
     CountryCode:
-      pattern: '[A-Z]{2,2}'
+      pattern: '^[A-Z]{2,2}$'
       type: string
     DocumentFormat1Choice_EPC259-22_V4.0_DS02:
       oneOf:
@@ -2453,7 +2788,6 @@ components:
       maxLength: 4
       minLength: 1
       enum:
-      - ""
       - ACTC
       type: string
     ExternalPurpose1Code:
@@ -2483,10 +2817,10 @@ components:
       required:
       - Id
     IBAN2007Identifier:
-      pattern: '[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}'
+      pattern: '^[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}$'
       type: string
     LEIIdentifier:
-      pattern: '[A-Z0-9]{18,18}[0-9]{2,2}'
+      pattern: '^[A-Z0-9]{18,18}[0-9]{2,2}$'
       type: string
     LocalInstrument2Choice:
       oneOf:
@@ -2557,7 +2891,14 @@ components:
         Amt:
           $ref: '#/components/schemas/AmountType4Choice_EPC259-22_V4.0_DS02'
         ReqdExctnDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-T013 - Requested Execution Date/Time of the payment
+            to be initiated.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         PmtTpInf:
           $ref: '#/components/schemas/PaymentTypeInformation27_EPC259-22_V4.0_DS15RTP'
         RmtInf:
@@ -2584,9 +2925,22 @@ components:
         Amt:
           $ref: '#/components/schemas/AmountType4Choice_EPC259-22_V4.0_DS02'
         ReqdExctnDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-T013 - Requested Execution Date/Time of the payment
+            to be initiated.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         XpryDt:
-          $ref: '#/components/schemas/DateAndDateTime2Choice_EPC259-22_V4.0_DS02'
+          description: >
+            AT-S005 - Expiry Date/Time of the RTP.
+            The mandatory milliseconds SEPA usage rule does not apply
+            to this attribute, as specified in section 1.5.2,
+            footnote 3, of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          allOf:
+          - $ref: '#/components/schemas/DateAndDateTime2ChoiceWithOptionalMilliseconds'
         PmtTpInf:
           $ref: '#/components/schemas/PaymentTypeInformation26_EPC259-22_V4.0_DS04b'
         RmtInf:
@@ -2653,12 +3007,9 @@ components:
     PartyIdentification135_EPC259-22_V4.0_DS08N_2:
       type: object
       properties:
-        Nm:
-          $ref: '#/components/schemas/Max140Text_CreditorName_DSXX'
         Id:
           $ref: '#/components/schemas/Party38Choice_EPC259-22_V4.0_DS04b_2'
       required:
-      - Nm
       - Id
     PartyIdentification135_EPC259-22_V4.0_DS15RTP:
       type: object
@@ -2678,49 +3029,50 @@ components:
         Id:
           $ref: '#/components/schemas/Party38Choice_EPC259-22_V4.0_DS15RTP'
       required:
+      - Nm
       - Id
     PaymentCancellationReason5_EPC259-22_V4.0_DS11:
       type: object
       properties:
         Orgtr:
           allOf:
-            - $ref: '#/components/schemas/PartyIdentification135_EPC259-22_V4.0_DS11_3'
-            - description: |
-                SEPA Rulebook Reference:
-                - AT-R002 Identification of the party initiating the response or “R” message.
-                SEPA Usage Rules:
-                - Mandatory.
-                - The Payee or the Payee's RTP Service Provider is the Originator of the RfC.
-                - If the Payee is the Originator of the RfC, only 'Name' and 'Identification' are allowed.
-                - If the Payee's RTP Service Provider is the Originator of the RfC, only 'Identification' is allowed.
+          - $ref: '#/components/schemas/PartyIdentification135_EPC259-22_V4.0_DS11_3'
+          - description: |
+              SEPA Rulebook Reference:
+              - AT-R002 Identification of the party initiating the response or "R" message.
+              SEPA Usage Rules:
+              - Mandatory.
+              - The Payee or the Payee's RTP Service Provider is the Originator of the RfC.
+              - If the Payee is the Originator of the RfC, only 'Name' and 'Identification' are allowed.
+              - If the Payee's RTP Service Provider is the Originator of the RfC, only 'Identification' is allowed.
         Rsn:
           allOf:
-            - $ref: '#/components/schemas/CancellationReason33Choice_EPC259-22_V4.0_DS11'
-            - description: |
-                SEPA Rulebook Reference:
-                - AT-R106 Reason code for the Request for Cancellation of the RTP.
-                SEPA Usage Rule:
-                - Mandatory.
+          - $ref: '#/components/schemas/CancellationReason33Choice_EPC259-22_V4.0_DS11'
+          - description: |
+              SEPA Rulebook Reference:
+              - AT-R106 Reason code for the Request for Cancellation of the RTP.
+              SEPA Usage Rule:
+              - Mandatory.
         AddtlInf:
           type: array
           items:
             $ref: '#/components/schemas/Max105Text'
+          minItems: 1
           maxItems: 3
           description: |
-           SEPA Rulebook References:
-           - AT-S005 Expiry Date/Time of the RTP.
-           - AT-R107 Additional information to AT-R106 Reason code for the Request for Cancellation (RfC) of the RTP.
-           - AT-S013 Placeholder for charges.
-           - AT-T002 Amount of the RTP.
-           SEPA Usage Rules:
-           - Mandatory.
-           - EITHER up to three occurrences are allowed:
-               - One mandatory occurrence starting with “ATS005/” followed by the Expiry Date/time of the RTP.
-               - One optional occurrence starting with “ATR107/” followed by the description of the attribute.
-               - One optional occurrence starting with “ATS013/” followed by charges related to the processing of the RfC.
-           - OR, in the first occurrence of ‘Transaction Information’ and only in case of instalment payments,
-             one mandatory occurrence of ‘Additional Information’ must be provided, mentioning “ATT002 Amount of the RTP”.
-
+            SEPA Rulebook References:
+            - AT-S005 Expiry Date/Time of the RTP.
+            - AT-R107 Additional information to AT-R106 Reason code for the Request for Cancellation (RfC) of the RTP.
+            - AT-S013 Placeholder for charges.
+            - AT-T002 Amount of the RTP.
+            SEPA Usage Rules:
+            - Mandatory.
+            - EITHER up to three occurrences are allowed:
+                - One mandatory occurrence starting with "ATS005/" followed by the Expiry Date/time of the RTP.
+                - One optional occurrence starting with "ATR107/" followed by the description of the attribute.
+                - One optional occurrence starting with "ATS013/" followed by charges related to the processing of the RfC.
+            - OR, in the first occurrence of 'Transaction Information' and only in case of instalment payments,
+              one mandatory occurrence of 'Additional Information' must be provided, mentioning "ATT002 Amount of the RTP".
       required:
       - Orgtr
       - Rsn
@@ -2734,12 +3086,14 @@ components:
           $ref: '#/components/schemas/CancellationReason33Choice_EPC259-22_V4.0_DS11'
         AddtlInf:
           type: array
+          minItems: 1
+          maxItems: 5
           items:
             $ref: '#/components/schemas/Max105Text'
-          maxItems: 5
       required:
       - Orgtr
       - Rsn
+      - AddtlInf
     PaymentTypeInformation26_EPC259-22_V4.0_DS04b:
       type: object
       properties:
@@ -2766,7 +3120,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GenericPersonIdentification1_EPC259-22_V4.0_DS02'
+          minItems: 1
           maxItems: 2
+      required:
+      - Othr
     PersonIdentification13_II:
       type: object
       properties:
@@ -2794,20 +3151,20 @@ components:
           $ref: '#/components/schemas/RemittanceLocationMethod2Code'
         ElctrncAdr:
           allOf:
-            - $ref: '#/components/schemas/Max2048Text'
-            - description: |
-                SEPA Rulebook references:
-                - AT-S008: URL sent by the Payee to the Payer in the RTP
-                - AT-S010: Required URL flag
-                - AT-S015: Return to merchant URL
-                SEPA Usage Rules:
-                - Mandatory if provided in DS-01
-                - One optional occurrence containing AT-S008 or AT-S010 as follows:
-                  - "ATS008/" followed by a space and then the URL sent by the Payee to the Payer in the RTP.
-                  - "ATS010/" followed by a space and then the URL sent by the Payee to the Payer in the RTP.
-                - One optional occurrence containing AT-S015 as follows:
-                  - "ATS015/" followed by a space and the return to merchant URL.
-                  In case of multiple URLs a space shall be used as a separator.
+          - $ref: '#/components/schemas/Max2048Text'
+          - description: |
+              SEPA Rulebook references:
+              - AT-S008: URL sent by the Payee to the Payer in the RTP
+              - AT-S010: Required URL flag
+              - AT-S015: Return to merchant URL
+              SEPA Usage Rules:
+              - Mandatory if provided in DS-01
+              - One optional occurrence containing AT-S008 or AT-S010 as follows:
+                - "ATS008/" followed by a space and then the URL sent by the Payee to the Payer in the RTP.
+                - "ATS010/" followed by a space and then the URL sent by the Payee to the Payer in the RTP.
+              - One optional occurrence containing AT-S015 as follows:
+                - "ATS015/" followed by a space and the return to merchant URL.
+                In case of multiple URLs a space shall be used as a separator.
       required:
       - Mtd
     ServiceLevel8Choice:
@@ -2816,7 +3173,7 @@ components:
     StatusReason6Choice_EPC259-22_V4.0_DS04b:
       oneOf:
       - $ref: '#/components/schemas/ExternalStatusReason1Code_Wrapper'
-      - $ref: '#/components/schemas/Max35Text_URLN_Reason_DS04b_Prtry'
+      - $ref: '#/components/schemas/Max35Text_URLN_Reason_DS04b_Prtry_Wrapper'
     StatusReason6Choice_EPC259-22_V4.0_DS08N:
       oneOf:
       - $ref: '#/components/schemas/ExternalStatusReason1Code_II_Wrapper'
@@ -2849,13 +3206,13 @@ components:
       description: |
         SEPA Rulebook:
         - AT-S005 Expiry Date/Time of the RTP
-        - AT-T009 RTP Remittance Information to be inserted in the payment (containing possibly AT-S002 Payee’s end-to-end reference of the RTP and AT-T019 Credit note amount*)
+        - AT-T009 RTP Remittance Information to be inserted in the payment (containing possibly AT-S002 Payee's end-to-end reference of the RTP and AT-T019 Credit note amount*)
         SEPA Usage Rule:
         - Mandatory if Structured path is used.
         - Only one occurrence is allowed.
         - The Payee has to check with its counterparty if this element can be used, otherwise it cannot be guaranteed that this information will be included in the payment.
         SEPA Format Rule:
-        - ‘Structured’ can be used, provided the tags and the data within the ‘Structured’ element (i.e. excluding &lt;Strd&gt; and &lt;/Strd&gt;) do not exceed 140 characters in length.
+        - 'Structured' can be used, provided the tags and the data within the 'Structured' element (i.e. excluding &lt;Strd&gt; and &lt;/Strd&gt;) do not exceed 140 characters in length.
       properties:
         RfrdDocAmt:
           $ref: '#/components/schemas/RemittanceAmount2_EPC259-22_V4.0_DS15RTP'
@@ -2863,6 +3220,8 @@ components:
           $ref: '#/components/schemas/CreditorReferenceInformation2_EPC259-22_V4.0_DS02'
         AddtlRmtInf:
           type: array
+          minItems: 1
+          maxItems: 2
           description: |
             SEPA Rulebook:
             - AT-S005 Expiry Date/Time of the RTP.
@@ -2870,11 +3229,12 @@ components:
             SEPA Usage Rule:
             - Mandatory.
             - Up to two occurrences are allowed:
-            - A first mandatory occurrence starting with “ATS005/” followed by the Expiry Date/time of the RTP.
-            - A second optional occurrence starting with “ATS013/” followed by charges related to the processing of the RTP
+            - A first mandatory occurrence starting with "ATS005/" followed by the Expiry Date/time of the RTP. 
+            - A second optional occurrence starting with "ATS013/" followed by charges related to the processing of the RTP   
           items:
             $ref: '#/components/schemas/Max140Text'
-          maxItems: 2
+      required:
+      - AddtlRmtInf
     StructuredRemittanceInformation17_EPC259-22_V4.0_DS02:
       type: object
       properties:
@@ -2893,7 +3253,7 @@ components:
       - $ref: '#/components/schemas/ExternalAccountIdentification1Code_Wrapper'
       - $ref: '#/components/schemas/Max35Text_Wrapper'
     AnyBICDec2014Identifier:
-      pattern: '[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}'
+      pattern: '^[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}$'
       type: string
     CancellationReason33Choice_EPC259-22_V4.0_DS11:
       oneOf:
@@ -3131,10 +3491,10 @@ components:
       properties:
         Nm:
           allOf:
-            - $ref: '#/components/schemas/Max140Text_CreditorName_DSXX_2'
-            - description: |
-                SEPA Usage Rule:
-                - For a natural person, the first and last name must be provided.
+          - $ref: '#/components/schemas/Max140Text_CreditorName_DSXX_2'
+          - description: |
+              SEPA Usage Rule: 
+              - For a natural person, the first and last name must be provided.
         Id:
           $ref: '#/components/schemas/Party38Choice_EPC259-22_V4.0_DS11_3'
       required:
@@ -3159,7 +3519,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GenericPersonIdentification1_EPC259-22_V4.0_DS02_2'
+          minItems: 1
           maxItems: 2
+      required:
+      - Othr
     PersonIdentification13_IV:
       type: object
       properties:
@@ -3220,9 +3583,21 @@ components:
         CdtrRefInf:
           $ref: '#/components/schemas/CreditorReferenceInformation2_EPC259-22_V4.0_DS02'
     ActiveOrHistoricCurrencyAndAmount_EPC259-22_V4.0_DS02_2:
-      maximum: 999999999.99
-      minimum: 0.01
-      type: number
+      type: object
+      properties:
+        amt:
+          type: number
+          minimum: 0.01
+          maximum: 999999999.99
+          description: >
+            SEPA Format Rule: The fractional part has a maximum
+            of two digits. Implementations must validate decimal
+            precision using exact decimal arithmetic.
+        Ccy:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyCode'
+      required:
+      - amt
+      - Ccy
     Contact4:
       type: object
       properties:
@@ -3597,7 +3972,7 @@ components:
       oneOf:
       - $ref: '#/components/schemas/ExternalPersonIdentification1Code_EPC259-22_V4.0_DS02_Wrapper'
     PhoneNumber:
-      pattern: \+[0-9]{1,3}-[0-9()+\-]{1,30}
+      pattern: '^\+[0-9]{1,3}-[0-9()+\-]{1,30}$'
       type: string
     PreferredContactMethod1Code:
       enum:
@@ -3684,343 +4059,496 @@ components:
       oneOf:
       - $ref: '#/components/schemas/ExternalPersonIdentification1Code_II_Wrapper'
     Exact4AlphaNumericText:
-      pattern: '[a-zA-Z0-9]{4}'
+      pattern: '^[a-zA-Z0-9]{4}$'
       type: string
     YesNoIndicator_Wrapper:
       type: object
       properties:
         AssgnmtCxlConf:
           $ref: '#/components/schemas/YesNoIndicator'
+      required:
+      - AssgnmtCxlConf
     ISODate_Wrapper:
       type: object
       properties:
         Dt:
           $ref: '#/components/schemas/ISODate'
+      required:
+      - Dt
     ISODateTime_Wrapper:
       type: object
       properties:
         DtTm:
           $ref: '#/components/schemas/UtcIsoDateTimeWithMilliseconds'
+      required:
+      - DtTm
+    ISODateTimeWithOptionalMilliseconds_Wrapper:
+      type: object
+      properties:
+        DtTm:
+          $ref: '#/components/schemas/UtcIsoDateTimeWithOptionalMilliseconds'
+      required:
+      - DtTm
     ExternalInvestigationExecutionConfirmation1Code_Wrapper:
       type: object
       properties:
         Conf:
           $ref: '#/components/schemas/ExternalInvestigationExecutionConfirmation1Code'
+      required:
+      - Conf
     ExternalInvestigationExecutionConfirmation1Code_II_Wrapper:
       type: object
       properties:
         Conf:
           $ref: '#/components/schemas/ExternalInvestigationExecutionConfirmation1Code_II'
+      required:
+      - Conf
     PartyIdentification135_EPC259-22_V4.0_DS04b_Wrapper:
       type: object
       properties:
         Pty:
           $ref: '#/components/schemas/PartyIdentification135_EPC259-22_V4.0_DS04b'
+      required:
+      - Pty
     BranchAndFinancialInstitutionIdentification6_EPC259-22_V4.0_DS02_Wrapper:
       type: object
       properties:
         Agt:
           $ref: '#/components/schemas/BranchAndFinancialInstitutionIdentification6_EPC259-22_V4.0_DS02'
+      required:
+      - Agt
     IBAN2007Identifier_Wrapper:
       type: object
       properties:
         IBAN:
           $ref: '#/components/schemas/IBAN2007Identifier'
+      required:
+      - IBAN
     GenericAccountIdentification1_EPC259-22_V4.0_DS02_Wrapper:
       type: object
       properties:
         Othr:
           $ref: '#/components/schemas/GenericAccountIdentification1_EPC259-22_V4.0_DS02'
+      required:
+      - Othr
     AdviceType1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/AdviceType1Code'
+      required:
+      - Cd
     Max35Text_Wrapper:
       type: object
       properties:
         Prtry:
           $ref: '#/components/schemas/Max35Text'
+      required:
+      - Prtry
     Max35Text_URLN_Reason_DS04b_Prtry:
       type: string
       maxLength: 35
       minLength: 1
       enum:
-        - "URLN/ATS010"
+      - "URLN/ATS010"
       description: |
-       SEPA Usage Rule:
-        Only "URLN/ATS010" (URL to the Payer not supported) is allowed,
-        in case “ATS010/ URL” was included in DS-01.
+        SEPA Usage Rule:
+         Only "URLN/ATS010" (URL to the Payer not supported) is allowed,
+         in case "ATS010/ URL" was included in DS-01.
+    Max35Text_URLN_Reason_DS04b_Prtry_Wrapper:
+      type: object
+      properties:
+        Prtry:
+          $ref: '#/components/schemas/Max35Text_URLN_Reason_DS04b_Prtry'
+      required:
+      - Prtry
     ActiveOrHistoricCurrencyAndAmount_EPC259-22_V4.0_DS02_Wrapper:
       type: object
       properties:
         InstdAmt:
           $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount_EPC259-22_V4.0_DS02'
+      required:
+      - InstdAmt
     OrganisationIdentification29_Wrapper:
       type: object
       properties:
         OrgId:
           $ref: '#/components/schemas/OrganisationIdentification29'
+      required:
+      - OrgId
     PersonIdentification13_Wrapper:
       type: object
       properties:
         PrvtId:
           $ref: '#/components/schemas/PersonIdentification13'
+      required:
+      - PrvtId
     OrganisationIdentification29_EPC259-22_V4.0_DS02_Wrapper:
       type: object
       properties:
         OrgId:
           $ref: '#/components/schemas/OrganisationIdentification29_EPC259-22_V4.0_DS02'
+      required:
+      - OrgId
     PersonIdentification13_EPC259-22_V4.0_DS02_Wrapper:
       type: object
       properties:
         PrvtId:
           $ref: '#/components/schemas/PersonIdentification13_EPC259-22_V4.0_DS02'
+      required:
+      - PrvtId
     OrganisationIdentification29_EPC259-22_V4.0_DS04b_Wrapper:
       type: object
       properties:
         OrgId:
           $ref: '#/components/schemas/OrganisationIdentification29_EPC259-22_V4.0_DS04b'
+      required:
+      - OrgId
     OrganisationIdentification29_II_Wrapper:
       type: object
       properties:
         OrgId:
           $ref: '#/components/schemas/OrganisationIdentification29_II'
+      required:
+      - OrgId
     PersonIdentification13_II_Wrapper:
       type: object
       properties:
         PrvtId:
           $ref: '#/components/schemas/PersonIdentification13_II'
+      required:
+      - PrvtId
     PartyIdentification135_EPC259-22_V4.0_DS15RTP_Wrapper:
       type: object
       properties:
         Pty:
           $ref: '#/components/schemas/PartyIdentification135_EPC259-22_V4.0_DS15RTP'
+      required:
+      - Pty
     ExternalPurpose1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalPurpose1Code'
+      required:
+      - Cd
     ExternalPaymentCancellationRejection1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalPaymentCancellationRejection1Code'
+      required:
+      - Cd
     ExternalCategoryPurpose1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalCategoryPurpose1Code'
+      required:
+      - Cd
     ExternalDocumentFormat1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalDocumentFormat1Code'
+      required:
+      - Cd
     ExternalDocumentType1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalDocumentType1Code'
+      required:
+      - Cd
     ExternalLocalInstrument1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalLocalInstrument1Code'
+      required:
+      - Cd
     OrganisationIdentification29_EPC259-22_V4.0_DS02_2_Wrapper:
       type: object
       properties:
         OrgId:
           $ref: '#/components/schemas/OrganisationIdentification29_EPC259-22_V4.0_DS02_2'
+      required:
+      - OrgId
     PersonIdentification13_EPC259-22_V4.0_DS02_2_Wrapper:
       type: object
       properties:
         PrvtId:
           $ref: '#/components/schemas/PersonIdentification13_EPC259-22_V4.0_DS02_2'
+      required:
+      - PrvtId
     PersonIdentification13_IV_Wrapper:
       type: object
       properties:
         PrvtId:
           $ref: '#/components/schemas/PersonIdentification13_IV'
+      required:
+      - PrvtId
     ExternalProxyAccountType1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalProxyAccountType1Code'
+      required:
+      - Cd
     ExternalServiceLevel1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalServiceLevel1Code'
+      required:
+      - Cd
     ExternalStatusReason1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalStatusReason1Code'
+      required:
+      - Cd
     ExternalStatusReason1Code_II_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalStatusReason1Code_II'
+      required:
+      - Cd
     ExternalStatusReason1Code_III_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalStatusReason1Code_III'
+      required:
+      - Cd
     GenericAccountIdentification1_EPC259-22_V4.0_DS08N_Wrapper:
       type: object
       properties:
         Othr:
           $ref: '#/components/schemas/GenericAccountIdentification1_EPC259-22_V4.0_DS08N'
+      required:
+      - Othr
     ExternalAccountIdentification1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalAccountIdentification1Code'
+      required:
+      - Cd
     ExternalCancellationReason1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalCancellationReason1Code'
+      required:
+      - Cd
     ExternalPaymentCancellationRejection1Code_II_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalPaymentCancellationRejection1Code_II'
+      required:
+      - Cd
     ExternalFinancialInstitutionIdentification1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalFinancialInstitutionIdentification1Code'
+      required:
+      - Cd
     OrganisationIdentification29_EPC259-22_V4.0_DS04b_2_Wrapper:
       type: object
       properties:
         OrgId:
           $ref: '#/components/schemas/OrganisationIdentification29_EPC259-22_V4.0_DS04b_2'
+      required:
+      - OrgId
     OrganisationIdentification29_EPC259-22_V4.0_DS15RTP_Wrapper:
       type: object
       properties:
         OrgId:
           $ref: '#/components/schemas/OrganisationIdentification29_EPC259-22_V4.0_DS15RTP'
+      required:
+      - OrgId
     PersonIdentification13_EPC259-22_V4.0_DS15RTP_Wrapper:
       type: object
       properties:
         PrvtId:
           $ref: '#/components/schemas/PersonIdentification13_EPC259-22_V4.0_DS15RTP'
+      required:
+      - PrvtId
     PartyIdentification135_EPC259-22_V4.0_DS04b_3_Wrapper:
       type: object
       properties:
         Pty:
           $ref: '#/components/schemas/PartyIdentification135_EPC259-22_V4.0_DS04b_3'
+      required:
+      - Pty
     ExternalOrganisationIdentification1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalOrganisationIdentification1Code'
+      required:
+      - Cd
     ExternalOrganisationIdentification1Code_EPC259-22_V4.0_DS02_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalOrganisationIdentification1Code_EPC259-22_V4.0_DS02'
+      required:
+      - Cd
     Max35Text_EPC259-22_V4.0_DS02_Wrapper:
       type: object
       properties:
         Prtry:
           $ref: '#/components/schemas/Max35Text_EPC259-22_V4.0_DS02'
+      required:
+      - Prtry
     ExternalOrganisationIdentification1Code_II_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalOrganisationIdentification1Code_II'
+      required:
+      - Cd
     OrganisationIdentification29_EPC259-22_V4.0_DS11_2_Wrapper:
       type: object
       properties:
         OrgId:
           $ref: '#/components/schemas/OrganisationIdentification29_EPC259-22_V4.0_DS11_2'
+      required:
+      - OrgId
     ExternalPersonIdentification1Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalPersonIdentification1Code'
+      required:
+      - Cd
     ExternalPersonIdentification1Code_EPC259-22_V4.0_DS02_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalPersonIdentification1Code_EPC259-22_V4.0_DS02'
+      required:
+      - Cd
     Max35Text_EPC259-22_V4.0_DS02_2_Wrapper:
       type: object
       properties:
         Prtry:
           $ref: '#/components/schemas/Max35Text_EPC259-22_V4.0_DS02_2'
+      required:
+      - Prtry
     ExternalPersonIdentification1Code_II_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalPersonIdentification1Code_II'
+      required:
+      - Cd
     ExternalProxyAccountType1Code_II_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalProxyAccountType1Code_II'
+      required:
+      - Cd
     ExternalAccountIdentification1Code_II_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalAccountIdentification1Code_II'
+      required:
+      - Cd
     AddressType2Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/AddressType2Code'
+      required:
+      - Cd
     GenericIdentification30_Wrapper:
       type: object
       properties:
         Prtry:
           $ref: '#/components/schemas/GenericIdentification30'
+      required:
+      - Prtry
     DocumentType3Code_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/DocumentType3Code'
+      required:
+      - Cd
     ExternalOrganisationIdentification1Code_EPC259-22_V4.0_DS02_2_Wrapper:
       type: object
       properties:
         Cd:
           $ref: '#/components/schemas/ExternalOrganisationIdentification1Code_EPC259-22_V4.0_DS02_2'
+      required:
+      - Cd
     UtcIsoDateTimeWithMilliseconds:
       type: string
       format: date-time
-      pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}(Z|([+-]\d{2}:\d{2}))$'
+      pattern: '^[0-9]{4}(-[0-9]{2}){2}T[0-9]{2}(:[0-9]{2}){2}(\.[0-9]{0,2}[1-9])?(Z|([-+][0-9]{2}(:[0-9]{2})?))$'      
       description: >
-          ISO 8601 date-time with milliseconds and mandatory UTC ('Z') or UTC offset.
-          SEPA Usage Rule:
-            - Timestamps must be unambiguous and include milliseconds.
-            - Only UTC time format ('Z') or local time with UTC offset format are allowed.
-            - The representation of milliseconds must follow the W3C recommendation (format: YYYY-MM-DDTHH:MM:SS.sssZ).
-            Example: 2025-06-12T15:30:45.123Z or 2025-06-12T15:30:45.123+02:00.
-          SEPA Rulebook Reference (for Redirect Message - DS05):
-            - AT-R116 Date and Time Stamp of the interim technical redirect message.
+        ISO 8601 date-time with mandatory UTC ('Z') or UTC offset.
+        SEPA Usage Rule:
+          - Timestamps must be unambiguous and include milliseconds, except for the attributes specified in section 1.5.2 of the SRTP Implementation Guidelines v4.0 (EPC259-22).
+          - Only UTC time format ('Z') or local time with UTC offset format are allowed.
+          - The representation of milliseconds must follow the W3C recommendation and the timestamp pattern defined in section 1.5.2 of the SRTP Implementation Guidelines v4.0.
+          - Trailing zeros in fractional seconds are not permitted. When the millisecond value is zero, the fractional second component is omitted.
+        Examples:
+          - 2026-10-22T10:15:30.123Z
+          - 2026-10-22T10:15:30.12Z
+          - 2026-10-22T10:15:30.1Z
+          - 2026-10-22T10:15:30Z
+        SEPA Rulebook Reference (for Redirect Message - DS05):
+          - AT-R116 Date and Time Stamp of the interim technical redirect message.      
+    UtcIsoDateTimeWithOptionalMilliseconds:
+      type: string
+      description: |
+        Date and time representation for the attributes exempted
+        from the mandatory milliseconds SEPA usage rule: AT-R092, AT-S005 and AT-T013.
+        The format follows the timestamp pattern defined in section 1.5.2 
+        of the SRTP Implementation Guidelines v4.0 (EPC259-22), 
+        including the exceptions specified in footnote 3.
+      pattern: '^[0-9]{4}(-[0-9]{2}){2}T[0-9]{2}(:[0-9]{2}){2}(\.[0-9]{0,2}[1-9])?(Z|([-+][0-9]{2}(:[0-9]{2})?))$'
     Max320Text:
       type: string
       maxLength: 320
       minLength: 1
       description: |
-          SEPA Usage Rule: 'Identification' is limited to 320 characters in length.
-          SEPA length updated to 320 (instead of 2048).
+        SEPA Usage Rule: 'Identification' is limited to 320 characters in length.
+        SEPA length updated to 320 (instead of 2048).
   responses:
     BadRequest:
       description: The request could not be parsed or processed (HTTP400).
       headers:
         Correlation:
           $ref: '#/components/headers/X-Request-ID'
+        Digest:
+          $ref: '#/components/headers/Digest'
+        x-jws-signature:
+          $ref: '#/components/headers/JwsSignature'
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorModel'
     Unauthorized:
-      description: Indicates that the request requires user authentication information. The client MAY repeat the request with a suitable Authorization header field (HTTP401).
+      description: >
+        The request could not be authenticated in accordance with the SRTP Trust and Security Model (HTTP401).      
       headers:
         Correlation:
           $ref: '#/components/headers/X-Request-ID'
+        Digest:
+          $ref: '#/components/headers/Digest'
+        x-jws-signature:
+          $ref: '#/components/headers/JwsSignature'
       content:
         application/json:
           schema:
@@ -4030,15 +4558,23 @@ components:
       headers:
         Correlation:
           $ref: '#/components/headers/X-Request-ID'
+        Digest:
+          $ref: '#/components/headers/Digest'
+        x-jws-signature:
+          $ref: '#/components/headers/JwsSignature'
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorModel'
     NotAcceptable:
-      description: The server doesn’t find any content that conforms to the criteria given by the user agent in the Accept header sent in the request. (HTTP406).
+      description: The server does not find any content that conforms to the criteria given by the user agent in the Accept header sent in the request. (HTTP406).
       headers:
         Correlation:
           $ref: '#/components/headers/X-Request-ID'
+        Digest:
+          $ref: '#/components/headers/Digest'
+        x-jws-signature:
+          $ref: '#/components/headers/JwsSignature'
       content:
         application/json:
           schema:
@@ -4046,13 +4582,16 @@ components:
     Conflict:
       description: |
         The request could not be completed due to a conflict with the current state of the resource (e.g. pre-existing resource). (HTTP409)
-
         The location header aims to provide the location of the pre-existing resource.
       headers:
         location:
           $ref: '#/components/headers/Location'
         Correlation:
           $ref: '#/components/headers/X-Request-ID'
+        Digest:
+          $ref: '#/components/headers/Digest'
+        x-jws-signature:
+          $ref: '#/components/headers/JwsSignature'
       content:
         application/json:
           schema:
@@ -4064,6 +4603,10 @@ components:
       headers:
         Correlation:
           $ref: '#/components/headers/X-Request-ID'
+        Digest:
+          $ref: '#/components/headers/Digest'
+        x-jws-signature:
+          $ref: '#/components/headers/JwsSignature'
       content:
         application/json:
           schema:
@@ -4073,15 +4616,36 @@ components:
       headers:
         Correlation:
           $ref: '#/components/headers/X-Request-ID'
+        Digest:
+          $ref: '#/components/headers/Digest'
+        x-jws-signature:
+          $ref: '#/components/headers/JwsSignature'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
+    UnprocessableEntity:
+      description: Unprocessable Entity
+      headers:
+        Correlation:
+          $ref: '#/components/headers/X-Request-ID'
+        Digest:
+          $ref: '#/components/headers/Digest'
+        x-jws-signature:
+          $ref: '#/components/headers/JwsSignature'
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorModel'
     TooManyRequests:
-      description: The client has sent too many requests in a given amount of time (“rate limiting”) (HTTP429)
+      description: The client has sent too many requests in a given amount of time ("rate limiting") (HTTP429)
       headers:
         Correlation:
           $ref: '#/components/headers/X-Request-ID'
+        Digest:
+          $ref: '#/components/headers/Digest'
+        x-jws-signature:
+          $ref: '#/components/headers/JwsSignature'
       content:
         application/json:
           schema:
@@ -4092,11 +4656,9 @@ components:
       in: header
       description: |
         Idempotency key header to be used with every POST operation.
-
         The API client for one given payload has to generate a UUID (RFC4122) et set the header value with this UUID.
         When, for instance in the absence of response to the POST request from the API server, the API client has to retry the request, it must use the same UUID value.
         On the other side, the API client must not reuse this UUID for posting another payload.
-
         The API server, when receiving a POST request, must ensure that the idempotency key header is present. If not the API server must respond with a HTTP400 (BAD REQUEST) code.
         When present, the idempotency key value must be checked against previously received idempotency key:
         - if the value is not found, the API server shall process the request normally.
@@ -4105,7 +4667,6 @@ components:
           - when this is really a retry to post the same request:
             - if the original one still being processed, the API server must respond with a HTTP409 (CONFLICT) code.
           - if the original request processing was completed, the API server must answer with the result of this original request processing.
-
         It is up to the API server to manage the life-cycle of the idempotency key.
       required: true
       deprecated: false
@@ -4149,6 +4710,40 @@ components:
       schema:
         maxLength: 70
         type: string
+    JwsSignature:
+      name: x-jws-signature
+      in: header
+      description: |
+        Detached JSON Web Signature (JWS) protecting the SRTP HTTP message.
+        The JWS shall use compact serialisation with a detached payload.
+        The JWS Protected Header shall contain the parameters required by
+        the SRTP Trust and Security Model, including alg=PS256, b64=false,
+        crit, sigD, iat and x5c.
+      required: true
+      deprecated: false
+      allowEmptyValue: false
+      explode: false
+      allowReserved: false
+      schema:
+        type: string
+        pattern: '^[A-Za-z0-9_-]+\.\.[A-Za-z0-9_-]+$'
+    Digest:
+      name: Digest
+      in: header
+      description: |
+        SHA-256 digest of the complete HTTP message body, including
+        an empty message body where applicable.
+        The digest value shall be encoded using standard Base64 encoding
+        with padding and prefixed with the SHA-256 algorithm identifier.
+        The Digest header is included in the JWS signature scope.
+      required: true
+      deprecated: false
+      allowEmptyValue: false
+      explode: false
+      allowReserved: false
+      schema:
+        type: string
+        pattern: '^SHA-256=[A-Za-z0-9+/]{43}=$'
   headers:
     Location:
       description: |
@@ -4164,7 +4759,12 @@ components:
         type: string
         format: uri
     X-Request-ID:
-      description: Correlation header to be set in a request and retrieved in the relevant response
+      description: |
+        Correlation identifier associated with the original HTTP request.
+        In HTTP responses, this component is referenced under the header
+        field name "Correlation", as defined in the SRTP OpenAPI specification.
+        The actual HTTP header field name shall be used when determining
+        the headers covered by the JWS signature.
       required: false
       deprecated: false
       allowEmptyValue: false
@@ -4172,3 +4772,25 @@ components:
       allowReserved: false
       schema:
         type: string
+    JwsSignature:
+      description: |
+        Detached JSON Web Signature (JWS) protecting the SRTP HTTP message.
+        The JWS shall use compact serialisation with a detached payload.
+        The JWS Protected Header shall contain the parameters required by
+        the SRTP Trust and Security Model, including alg=PS256, b64=false,
+        crit, sigD, iat and x5c.
+      required: true
+      schema:
+        type: string
+        pattern: '^[A-Za-z0-9_-]+\.\.[A-Za-z0-9_-]+$'
+    Digest:
+      description: |
+        SHA-256 digest of the complete HTTP message body, including
+        an empty message body where applicable.
+        The digest value shall be encoded using standard Base64 encoding
+        with padding and prefixed with the SHA-256 algorithm identifier.
+        The Digest header is included in the JWS signature scope.
+      required: true
+      schema:
+        type: string
+        pattern: '^SHA-256=[A-Za-z0-9+/]{43}=$'
