@@ -642,6 +642,13 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_validateTemplate = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getValidateTemplate"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-validate-template.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
     emd_backoffice_internal_getSearchMessage = {
       api_name     = "emd_backoffice_internal"
       operation_id = "getSearchMessage"

@@ -77,6 +77,34 @@ paths:
           description: Unauthorized - missing or invalid token
         '403':
           description: Forbidden - insufficient operator role
+  '/api/v1/tpp/template/validate':
+    post:
+      tags:
+        - tpp-backoffice-internal
+      operationId: getValidateTemplate
+      summary: Validate and preview a FreeMarker template
+      description: Validates a raw FreeMarker template source provided by the user and returns the rendered preview using mock data.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TppTemplateValidationRequestDTOV1'
+      responses:
+        '200':
+          description: OK - Template rendered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TppTemplatePreviewDTOV1'
+        '400':
+          description: Bad Request - Invalid template syntax
+        '401':
+          description: Unauthorized - missing or invalid token
+        '403':
+          description: Forbidden - insufficient operator role
+        '502':
+          description: Bad Gateway - Downstream service unreachable
   '/api/v1/tpp/{tppId}/state':
     put:
       tags:
@@ -1182,6 +1210,8 @@ components:
           type: boolean
         messageTemplate:
           type: string
+        messageTemplateRendered:
+          type: string
         whitelistRecipient:
           type: array
           items:
@@ -1299,6 +1329,25 @@ components:
           type: string
           description: Human-readable description of the test result or error details
           example: "Connection established successfully"
+        TppTemplateValidationRequestDTOV1:
+      type: object
+      description: Request payload containing the raw FreeMarker template to validate.
+      required:
+        - rawTemplate
+      properties:
+        rawTemplate:
+          type: string
+          description: The FreeMarker template source code.
+    TppTemplatePreviewDTOV1:
+      type: object
+      description: Result of the template validation and rendering.
+      properties:
+        rawTemplate:
+          type: string
+          description: The original raw template provided.
+        renderedMessage:
+          type: string
+          description: The final message rendered with mock data.
     MessageSearchResponseDTOV1:
       type: object
       description: Paginated response for message search
