@@ -372,10 +372,10 @@ locals {
         }
       }
 
-      # RTP Mock v2 (EPC V4.0)
+      # RTP Mock v2 (EPC V4.0.1)
       rtp-mock-v4 = var.env_short == "p" ? null : {
-        description           = "RTP ITN MOCK API EPC V4.0"
-        display_name          = "RTP ITN MOCK API EPC V4.0"
+        description           = "RTP ITN MOCK API EPC V4.0.1"
+        display_name          = "RTP ITN MOCK API EPC V4.0.1"
         path                  = "${local.api_context_path}/mock"
         revision              = "1"
         version               = "v2"
@@ -531,16 +531,6 @@ locals {
         xml_content = templatefile("./api/pagopa/service_providers_policy.xml", {
           jwt_fragment_id = "rtp-validate-token-selfcare"
         })
-      }
-      statusUpdateCallback-v2 = {
-        api_name     = "rtp-callback-v2"
-        operation_id = "statusUpdateCallback"
-        xml_content  = file("./api/epc/callback_policy.xml")
-      }
-      statusUpdateCancelCallback-v2 = {
-        api_name     = "rtp-callback-v2"
-        operation_id = "statusUpdateCancelCallback"
-        xml_content  = file("./api/epc/callback_policy.xml")
       }
     },
     { for k, v in {
