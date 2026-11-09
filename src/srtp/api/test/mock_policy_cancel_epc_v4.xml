@@ -127,7 +127,7 @@
               },
               "RsltnRltdInf": {
                 "Chrgs": {
-                  "Amt": 0.01,
+                  "Amt": { "amt": 0.01, "Ccy": "EUR" },
                   "Agt": {
                     "FinInstnId": {
                       "BICFI": "4B57ZXNU",
@@ -145,10 +145,10 @@
               },
               "OrgnlTxRef": {
                 "Amt": {
-                  "InstdAmt": 999999999.99
+                  "InstdAmt": { "amt": 999999999.99, "Ccy": "EUR" }
                 },
                 "ReqdExctnDt": {
-                  "Dt": "string"
+                  "Dt": "2026-07-20"
                 },
                 "PmtTpInf": {
                   "SvcLvl": {
@@ -162,7 +162,7 @@
                   "Ustrd": "string",
                   "Strd": {
                     "RfrdDocAmt": {
-                      "CdtNoteAmt": 999999999.99
+                      "CdtNoteAmt": { "amt": 999999999.99, "Ccy": "EUR" }
                     },
                     "CdtrRefInf": {
                       "Tp": {
@@ -334,7 +334,7 @@
               },
               "RsltnRltdInf": {
                 "Chrgs": {
-                  "Amt": 0.01,
+                  "Amt": { "amt": 0.01, "Ccy": "EUR" },
                   "Agt": {
                     "FinInstnId": {
                       "BICFI": "4B57ZXNU",
@@ -352,10 +352,10 @@
               },
               "OrgnlTxRef": {
                 "Amt": {
-                  "InstdAmt": 999999999.99
+                  "InstdAmt": { "amt": 999999999.99, "Ccy": "EUR" }
                 },
                 "ReqdExctnDt": {
-                  "Dt": "string"
+                  "Dt": "2026-07-20"
                 },
                 "PmtTpInf": {
                   "SvcLvl": {
@@ -369,7 +369,7 @@
                   "Ustrd": "string",
                   "Strd": {
                     "RfrdDocAmt": {
-                      "CdtNoteAmt": 999999999.99
+                      "CdtNoteAmt": { "amt": 999999999.99, "Ccy": "EUR" }
                     },
                     "CdtrRefInf": {
                       "Tp": {
@@ -544,7 +544,7 @@
               },
               "RsltnRltdInf": {
                 "Chrgs": {
-                  "Amt": 0.01,
+                  "Amt": { "amt": 0.01, "Ccy": "EUR" },
                   "Agt": {
                     "FinInstnId": {
                       "BICFI": "4B57ZXNU",
@@ -562,10 +562,10 @@
               },
               "OrgnlTxRef": {
                 "Amt": {
-                  "InstdAmt": 999999999.99
+                  "InstdAmt": { "amt": 999999999.99, "Ccy": "EUR" }
                 },
                 "ReqdExctnDt": {
-                  "Dt": "string"
+                  "Dt": "2026-07-20"
                 },
                 "PmtTpInf": {
                   "SvcLvl": {
@@ -579,7 +579,7 @@
                   "Ustrd": "string",
                   "Strd": {
                     "RfrdDocAmt": {
-                      "CdtNoteAmt": 999999999.99
+                      "CdtNoteAmt": { "amt": 999999999.99, "Ccy": "EUR" }
                     },
                     "CdtrRefInf": {
                       "Tp": {
@@ -1042,7 +1042,7 @@
               },
               "RsltnRltdInf": {
                 "Chrgs": {
-                  "Amt": 0.01,
+                  "Amt": { "amt": 0.01, "Ccy": "EUR" },
                   "Agt": {
                     "FinInstnId": {
                       "BICFI": "4B57ZXNU",
@@ -1060,10 +1060,10 @@
               },
               "OrgnlTxRef": {
                 "Amt": {
-                  "InstdAmt": 999999999.99
+                  "InstdAmt": { "amt": 999999999.99, "Ccy": "EUR" }
                 },
                 "ReqdExctnDt": {
-                  "Dt": "string"
+                  "Dt": "2026-07-20"
                 },
                 "PmtTpInf": {
                   "SvcLvl": {
@@ -1077,7 +1077,7 @@
                   "Ustrd": "string",
                   "Strd": {
                     "RfrdDocAmt": {
-                      "CdtNoteAmt": 999999999.99
+                      "CdtNoteAmt": { "amt": 999999999.99, "Ccy": "EUR" }
                     },
                     "CdtrRefInf": {
                       "Tp": {
@@ -1253,7 +1253,7 @@
               },
               "RsltnRltdInf": {
                 "Chrgs": {
-                  "Amt": 0.01,
+                  "Amt": { "amt": 0.01, "Ccy": "EUR" },
                   "Agt": {
                     "FinInstnId": {
                       "BICFI": "4B57ZXNU",
@@ -1271,10 +1271,10 @@
               },
               "OrgnlTxRef": {
                 "Amt": {
-                  "InstdAmt": 999999999.99
+                  "InstdAmt": { "amt": 999999999.99, "Ccy": "EUR" }
                 },
                 "ReqdExctnDt": {
-                  "Dt": "string"
+                  "Dt": "2026-07-20"
                 },
                 "PmtTpInf": {
                   "SvcLvl": {
@@ -1288,7 +1288,7 @@
                   "Ustrd": "string",
                   "Strd": {
                     "RfrdDocAmt": {
-                      "CdtNoteAmt": 999999999.99
+                      "CdtNoteAmt": { "amt": 999999999.99, "Ccy": "EUR" }
                     },
                     "CdtrRefInf": {
                       "Tp": {
