@@ -7,7 +7,7 @@ resource "azurerm_api_management_api_policy" "this" {
   api_management_name = local.apim_name
   resource_group_name = local.apim_rg_name
 
-  xml_content = templatefile("./apim/api/base_policy.xml", {})
+  xml_content = each.value.api_policy.xml_content
 
   depends_on = [
     azurerm_api_management_api.this,
