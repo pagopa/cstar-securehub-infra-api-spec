@@ -108,6 +108,49 @@ paths:
               example:
                 code: "INITIATIVE_GENERIC_ERROR"
                 message: "Application error"
+  '/series/{initiativeSeries}':
+    get:
+      tags:
+        - initiative
+      summary: Returns the initiative IDs belonging to the given initiative series
+      description: Returns the initiative IDs belonging to the given initiative series
+      operationId: getInitiativeIdsByInitiativeSeries
+      parameters:
+        - name: initiativeSeries
+          in: path
+          description: The initiative series
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '401':
+          description: Authentication failed
+        '429':
+          description: Too many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_TOO_MANY_REQUESTS"
+                message: "Too many requests"
+        '500':
+          description: Server ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiativeErrorDTO'
+              example:
+                code: "INITIATIVE_GENERIC_ERROR"
+                message: "Application error"
   /summary:
     get:
       tags:
@@ -3071,6 +3114,13 @@ components:
           type: boolean
         descriptionMap:
           $ref: '#/components/schemas/DescriptionMap'
+        voucherDurationDays:
+          type: integer
+          format: int32
+          minimum: 1
+          nullable: true
+          description: Validity in days of the extended-authorization voucher; when absent the payment default applies
+          example: 30
     AutomatedCriteriaDTO:
       type: object
       properties:
