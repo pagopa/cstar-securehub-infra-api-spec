@@ -827,7 +827,7 @@ components:
       type: object
       required:
         - scart
-        - ipConnection
+        - connectivity
         - technicalSheetUrl
       properties:
         initiativeId:
@@ -940,7 +940,7 @@ components:
           type: boolean
           description: 'ENG: Indicates whether the decoder has a SCART socket <br> IT: Indica se il decoder dispone di una presa SCART'
           nullable: false
-        ipConnection:
+        connectivity:
           type: string
           description: 'ENG: Decoder IP connectivity support <br> IT: Connessione IP supportata dal decoder'
           enum:
@@ -951,7 +951,7 @@ components:
           nullable: false
         technicalSheetUrl:
           type: string
-          description: 'ENG: Required decoder technical sheet URL. HTTP/HTTPS URLs and addresses starting with www. are accepted; www. addresses are normalized to HTTPS. <br> IT: URL obbligatorio della scheda tecnica del decoder. Sono accettati URL HTTP/HTTPS e indirizzi che iniziano con www.; gli indirizzi www. sono normalizzati in HTTPS.'
+          description: 'ENG: Required decoder technical sheet URL. HTTP/HTTPS URLs and addresses starting with www. are accepted. <br> IT: URL obbligatorio della scheda tecnica del decoder. Sono accettati URL HTTP/HTTPS e indirizzi che iniziano con www.'
           maxLength: 255
           format: uri
           nullable: false
