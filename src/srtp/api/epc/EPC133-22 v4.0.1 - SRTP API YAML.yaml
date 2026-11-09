@@ -34,7 +34,7 @@ info:
     * SEPA Request-To-Pay Inter-SRTP SP API Specifications - EPC013-25
     * SEPA Request-To-Pay Implementation Guidelines - Inter-RTP Service Provider SRTP - Version 4.0 - EPC259-22
     * EPC API Security Framework - EPC164-22
-    * SEPA Request-To-Pay Trust and Security Model - EPC207-26 - version 1.1.0  
+    * SEPA Request-To-Pay Trust and Security Model - EPC207-26 - version 1.1.0
     * url: https://www.europeanpaymentscouncil.eu/what-we-do/other-schemes/sepa-request-pay
 
     # Change Log
@@ -58,8 +58,8 @@ info:
 
     ### API Response Handling
     * Added a reusable UnprocessableEntity response component for HTTP 422 responses.
-    * Reused the BadRequest response component for callback HTTP 400 responses.    
-    
+    * Reused the BadRequest response component for callback HTTP 400 responses.
+
   contact:
     name: European Payment Council
     url: 'https://www.europeanpaymentscouncil.eu/'
@@ -187,7 +187,7 @@ paths:
       description: |
         The Payee's SRTP-SP, acting as an API client, request the retrieval of a given SEPA-Request-To-Pay to the API server of the Payer's SRTP-SP.
         The API server, if it can retrieve the relevant resource, answers with this resource.
-        This request could be useful for the API client in case of conflict when trying to post a SEPA Request-To-Pay. 
+        This request could be useful for the API client in case of conflict when trying to post a SEPA Request-To-Pay.
         Actually the API-client is then able to check the pre-existing SEPA- Request-To-Pay with the one it intended to post.
         >CAUTION: This is NOT a SRTP Implementation guidelines 4.0 interaction.
       operationId: getPaymentRequest
@@ -312,7 +312,7 @@ paths:
       summary: 'Sending of a SEPA Request-To-Pay Cancellation Request to the Payer''s SRTP-Service Provider'
       description: |
         The Payee's SRTP-SP, acting as an API client, request the cancellation of a given SEPA-Request-To-Pay to the API server of the Payer's SRTP-SP.
-        When possible, the API server may respond immediately with the cancellation response. 
+        When possible, the API server may respond immediately with the cancellation response.
         Otherwise, it will send later the response through the callback URL provided by the API client.
       externalDocs:
         description: Chapter 2.6 in SRTP Implementation guidelines 4.0
@@ -582,7 +582,7 @@ components:
       type: string
       description: >
         Represents a response without a business payload.
-        When the HTTP message body is empty, the Digest is calculated over the zero-length body, 
+        When the HTTP message body is empty, the Digest is calculated over the zero-length body,
         in accordance with the SRTP Trust and Security Model.
     NegativeSepaRequestToPayResponse_DS08N:
       type: object
@@ -2459,7 +2459,7 @@ components:
         Additional recommendations:
         - It is recommended to provide as many structured elements as possible.
         - These rules apply equally to Debtor and Creditor addresses.
-        - These rules must be enforced at business layer; JSON Schema cannot enforce conditional branching (Structured vs Hybrid) alone.            
+        - These rules must be enforced at business layer; JSON Schema cannot enforce conditional branching (Structured vs Hybrid) alone.
       properties:
         Dept:
           $ref: '#/components/schemas/Max70Text'
@@ -3229,8 +3229,8 @@ components:
             SEPA Usage Rule:
             - Mandatory.
             - Up to two occurrences are allowed:
-            - A first mandatory occurrence starting with "ATS005/" followed by the Expiry Date/time of the RTP. 
-            - A second optional occurrence starting with "ATS013/" followed by charges related to the processing of the RTP   
+            - A first mandatory occurrence starting with "ATS005/" followed by the Expiry Date/time of the RTP.
+            - A second optional occurrence starting with "ATS013/" followed by charges related to the processing of the RTP
           items:
             $ref: '#/components/schemas/Max140Text'
       required:
@@ -3493,7 +3493,7 @@ components:
           allOf:
           - $ref: '#/components/schemas/Max140Text_CreditorName_DSXX_2'
           - description: |
-              SEPA Usage Rule: 
+              SEPA Usage Rule:
               - For a natural person, the first and last name must be provided.
         Id:
           $ref: '#/components/schemas/Party38Choice_EPC259-22_V4.0_DS11_3'
@@ -4494,7 +4494,7 @@ components:
     UtcIsoDateTimeWithMilliseconds:
       type: string
       format: date-time
-      pattern: '^[0-9]{4}(-[0-9]{2}){2}T[0-9]{2}(:[0-9]{2}){2}(\.[0-9]{0,2}[1-9])?(Z|([-+][0-9]{2}(:[0-9]{2})?))$'      
+      pattern: '^[0-9]{4}(-[0-9]{2}){2}T[0-9]{2}(:[0-9]{2}){2}(\.[0-9]{0,2}[1-9])?(Z|([-+][0-9]{2}(:[0-9]{2})?))$'
       description: >
         ISO 8601 date-time with mandatory UTC ('Z') or UTC offset.
         SEPA Usage Rule:
@@ -4508,14 +4508,14 @@ components:
           - 2026-10-22T10:15:30.1Z
           - 2026-10-22T10:15:30Z
         SEPA Rulebook Reference (for Redirect Message - DS05):
-          - AT-R116 Date and Time Stamp of the interim technical redirect message.      
+          - AT-R116 Date and Time Stamp of the interim technical redirect message.
     UtcIsoDateTimeWithOptionalMilliseconds:
       type: string
       description: |
         Date and time representation for the attributes exempted
         from the mandatory milliseconds SEPA usage rule: AT-R092, AT-S005 and AT-T013.
-        The format follows the timestamp pattern defined in section 1.5.2 
-        of the SRTP Implementation Guidelines v4.0 (EPC259-22), 
+        The format follows the timestamp pattern defined in section 1.5.2
+        of the SRTP Implementation Guidelines v4.0 (EPC259-22),
         including the exceptions specified in footnote 3.
       pattern: '^[0-9]{4}(-[0-9]{2}){2}T[0-9]{2}(:[0-9]{2}){2}(\.[0-9]{0,2}[1-9])?(Z|([-+][0-9]{2}(:[0-9]{2})?))$'
     Max320Text:
@@ -4541,7 +4541,7 @@ components:
             $ref: '#/components/schemas/ErrorModel'
     Unauthorized:
       description: >
-        The request could not be authenticated in accordance with the SRTP Trust and Security Model (HTTP401).      
+        The request could not be authenticated in accordance with the SRTP Trust and Security Model (HTTP401).
       headers:
         Correlation:
           $ref: '#/components/headers/X-Request-ID'

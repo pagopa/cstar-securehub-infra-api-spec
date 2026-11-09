@@ -2213,7 +2213,7 @@ components:
     UtcIsoDateTimeWithMilliseconds:
       type: string
       format: date-time
-      pattern: '^[0-9]{4}(-[0-9]{2}){2}T[0-9]{2}(:[0-9]{2}){2}(\.[0-9]{0,2}[1-9])?(Z|([-+][0-9]{2}(:[0-9]{2})?))$'      
+      pattern: '^[0-9]{4}(-[0-9]{2}){2}T[0-9]{2}(:[0-9]{2}){2}(\.[0-9]{0,2}[1-9])?(Z|([-+][0-9]{2}(:[0-9]{2})?))$'
       description: >
         ISO 8601 date-time with mandatory UTC ('Z') or UTC offset.
         SEPA Usage Rule:
@@ -2227,7 +2227,7 @@ components:
           - 2026-10-22T10:15:30.1Z
           - 2026-10-22T10:15:30Z
         SEPA Rulebook Reference (for Redirect Message - DS05):
-          - AT-R116 Date and Time Stamp of the interim technical redirect message.      
+          - AT-R116 Date and Time Stamp of the interim technical redirect message.
     Max320Text:
       type: string
       maxLength: 320
@@ -2588,8 +2588,8 @@ components:
       description: |
         Date and time representation for the attributes exempted
         from the mandatory milliseconds SEPA usage rule: AT-R092, AT-S005 and AT-T013.
-        The format follows the timestamp pattern defined in section 1.5.2 
-        of the SRTP Implementation Guidelines v4.0 (EPC259-22), 
+        The format follows the timestamp pattern defined in section 1.5.2
+        of the SRTP Implementation Guidelines v4.0 (EPC259-22),
         including the exceptions specified in footnote 3.
       pattern: '^[0-9]{4}(-[0-9]{2}){2}T[0-9]{2}(:[0-9]{2}){2}(\.[0-9]{0,2}[1-9])?(Z|([-+][0-9]{2}(:[0-9]{2})?))$'
   responses:
