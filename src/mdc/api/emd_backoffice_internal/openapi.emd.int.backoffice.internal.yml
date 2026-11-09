@@ -894,6 +894,59 @@ paths:
           description: Unauthorized - missing or invalid token
         '500':
           description: Internal Server Error - failed to fetch users from Keycloak
+  '/api/v1/roles':
+    get:
+      tags:
+        - auth-backoffice-internal
+      operationId: getAvailableRoles
+      summary: Retrieve all available Keycloak roles
+      description: Fetches the complete list of available roles for the configured target Keycloak client.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KeycloakRoleDTOV1'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '502':
+          description: Bad Gateway - Downstream service unreachable
+  '/api/v1/users/{userId}/roles':
+    post:
+      tags:
+        - auth-backoffice-internal
+      operationId: replaceUserRoles
+      summary: Replace user roles in Keycloak
+      description: Completely replaces the current client roles of a specific user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The internal Keycloak UUID of the target user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/KeycloakRoleDTOV1'
+      responses:
+        '204':
+          description: No Content - Roles replaced successfully
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - Insufficient privileges (requires admin)
+        '502':
+          description: Bad Gateway
 components:
   schemas:
     CitizenConsentSearchRequestDTOV1:
@@ -1472,3 +1525,16 @@ components:
             items:
               type: string
           description: Roles mapped at the client level, grouped by client ID
+    KeycloakRoleDTOV1:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: UUID interno del ruolo
+        name:
+          type: string
+        description:
+          type: string

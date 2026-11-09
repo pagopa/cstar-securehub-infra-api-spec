@@ -726,5 +726,19 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_getAvailableRoles = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getAvailableRoles"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-user-roles.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_replaceUserRoles = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "replaceUserRoles"
+      xml_content = templatefile("./api/emd_backoffice_internal/post-replace-roles.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
   }
 }
