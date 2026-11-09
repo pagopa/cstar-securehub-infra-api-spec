@@ -2013,6 +2013,25 @@ components:
           description: 'ENG: The name of the product with GTIN (for merchant)  <br> IT: Nome del prodotto con GTIN (per esercenti)'
           maxLength: 255
           pattern: .*
+        scart:
+          type: boolean
+          description: 'ENG: Indicates whether the decoder has a SCART socket <br> IT: Indica se il decoder dispone di una presa SCART'
+          nullable: true
+        ipConnection:
+          type: string
+          description: 'ENG: Decoder IP connectivity support <br> IT: Connessione IP supportata dal decoder'
+          enum:
+            - LAN
+            - WI-FI
+            - LAN e WI-FI
+            - Nessuna
+          nullable: true
+        technicalSheetUrl:
+          type: string
+          description: 'ENG: Optional decoder technical sheet URL (HTTP or HTTPS) <br> IT: URL opzionale della scheda tecnica del decoder (HTTP o HTTPS)'
+          maxLength: 255
+          format: uri
+          nullable: true
         motivation:
           type: string
           maxLength: 200

@@ -934,23 +934,23 @@ components:
           pattern: .*
         scart:
           type: boolean
-          description: 'ENG: Optional SCART socket <br> IT: Eventuale presa SCART'
-          nullable: false
-        connectivity:
+          description: 'ENG: Indicates whether the decoder has a SCART socket <br> IT: Indica se il decoder dispone di una presa SCART'
+          nullable: true
+        ipConnection:
           type: string
-          description: 'ENG: IP connectivity support <br> IT: Eventuale connessione IP'
+          description: 'ENG: Decoder IP connectivity support <br> IT: Connessione IP supportata dal decoder'
           enum:
             - LAN
             - WI-FI
             - LAN e WI-FI
             - Nessuna
-          nullable: false
+          nullable: true
         technicalSheetUrl:
           type: string
-          description: 'ENG: Technical sheet link <br> IT: Eventuale link alla scheda tecnica del prodotto'
+          description: 'ENG: Optional decoder technical sheet URL (HTTP or HTTPS) <br> IT: URL opzionale della scheda tecnica del decoder (HTTP o HTTPS)'
           maxLength: 255
           format: uri
-          nullable: false
+          nullable: true
         statusChangeChronology:
           type: array
           items:
