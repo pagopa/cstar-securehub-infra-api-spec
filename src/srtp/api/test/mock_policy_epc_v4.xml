@@ -8,54 +8,111 @@
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body>@{
-            return @"{
-            ""resourceId"": ""TestRtpMessageA1B2C3D4E5F6G7H8"",
-            ""Document"": {
-            ""CdtrPmtActvtnReqStsRpt"": {
-            ""GrpHdr"": {
-            ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
-            ""CreDtTm"": ""2026-02-11T14:00:00.000Z"",
-            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } }
-            },
-            ""OrgnlGrpInfAndSts"": {
-            ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
-            ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00.000Z""
-            },
-            ""OrgnlPmtInfAndSts"": [
+          <set-body template="none">{
+  "resourceId": "TestRtpMessageA1B2C3D4E5F6G7H8",
+  "Document": {
+    "CdtrPmtActvtnReqStsRpt": {
+      "GrpHdr": {
+        "MsgId": "550e8400-e29b-41d4-a716-446655440000",
+        "CreDtTm": "2026-02-11T14:00:00Z",
+        "InitgPty": {
+          "Id": {
+            "OrgId": {
+              "AnyBIC": "MOCKSP05"
+            }
+          }
+        }
+      },
+      "OrgnlGrpInfAndSts": {
+        "OrgnlMsgId": "TestRtpMessageKJ9283KSL01928374650",
+        "OrgnlMsgNmId": "pain.013.001.07",
+        "OrgnlCreDtTm": "2026-02-12T09:30:00Z"
+      },
+      "OrgnlPmtInfAndSts": [
+        {
+          "OrgnlPmtInfId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+          "TxInfAndSts": [
             {
-            ""OrgnlPmtInfId"": ""f47ac10b-58cc-4372-a567-0e02b2c3d479"",
-            ""TxInfAndSts"": [{
-            ""StsId"": ""550e8400-e29b-41d4-a716-446655440000"",
-            ""OrgnlInstrId"": ""TestRtpMessagePL098765432109876543"",
-            ""OrgnlEndToEndId"": ""123456789012345678"",
-            ""TxSts"": ""ACTC"",
-            ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } },
-            ""AddtlInf"": ""Redirect pending""
-            },
-            ""OrgnlTxRef"": {
-            ""PmtTpInf"": {
-            ""SvcLvl"": { ""Cd"": ""SRTP"" },
-            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
-            },
-            ""RmtInf"": { ""Ustrd"": ""Payment for invoice 12345."" },
-            ""Cdtr"": {
-            ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-ID-112233"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
-            ""Nm"": ""Azienda Creditrice S.p.A.""
-            },
-            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
-            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
-            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
-            ""Amt"": { ""InstdAmt"": 450.75 },
-            ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } }] } ] } },
-            ""_links"": {
-            ""initialSepaRequestToPayUri"": {
-            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
-            ""templated"": false } } }";
-            }</set-body>
+              "StsId": "550e8400-e29b-41d4-a716-446655440000",
+              "OrgnlInstrId": "TestRtpMessagePL098765432109876543",
+              "OrgnlEndToEndId": "123456789012345678",
+              "TxSts": "ACTC",
+              "StsRsnInf": {
+                "Orgtr": {
+                  "Id": {
+                    "OrgId": {
+                      "AnyBIC": "MOCKSP05"
+                    }
+                  }
+                },
+                "AddtlInf": "Redirect pending"
+              },
+              "OrgnlTxRef": {
+                "PmtTpInf": {
+                  "SvcLvl": {
+                    "Cd": "SRTP"
+                  },
+                  "LclInstrm": {
+                    "Prtry": "NOTPROVIDED"
+                  }
+                },
+                "RmtInf": {
+                  "Ustrd": "Payment for invoice 12345."
+                },
+                "Cdtr": {
+                  "Id": {
+                    "OrgId": {
+                      "Othr": {
+                        "Id": "TRX-ID-112233",
+                        "SchmeNm": {
+                          "Cd": "BOID"
+                        }
+                      }
+                    }
+                  },
+                  "Nm": "Azienda Creditrice S.p.A."
+                },
+                "DbtrAgt": {
+                  "FinInstnId": {
+                    "BICFI": "MOCKSP05"
+                  }
+                },
+                "CdtrAgt": {
+                  "FinInstnId": {
+                    "BICFI": "MOCKSP05"
+                  }
+                },
+                "CdtrAcct": {
+                  "Id": {
+                    "IBAN": "IT12L0123456789012345678901"
+                  }
+                },
+                "Amt": {
+                  "InstdAmt": {
+                    "amt": 450.75,
+                    "Ccy": "EUR"
+                  }
+                },
+                "ReqdExctnDt": {
+                  "Dt": "2026-02-20"
+                },
+                "XpryDt": {
+                  "Dt": "2026-03-10"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_links": {
+    "initialSepaRequestToPayUri": {
+      "href": "https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123",
+      "templated": false
+    }
+  }
+}</set-body>
         </return-response>
       </when>
       <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;WCZQJA98L17M134D&quot;))">
@@ -64,57 +121,123 @@
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body>@{
-            return @"{
-            ""resourceId"": ""TestRtpMessageREJ1234567890XYZ"",
-            ""Document"": {
-            ""CdtrPmtActvtnReqStsRpt"": {
-            ""GrpHdr"": {
-            ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
-            ""CreDtTm"": ""2026-02-11T14:05:00.000Z"",
-            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } }
+          <set-body template="none">{
+  "resourceId": "TestRtpMessageREJ1234567890XYZ",
+  "Document": {
+    "CdtrPmtActvtnReqStsRpt": {
+      "GrpHdr": {
+        "MsgId": "990e8400-e29b-41d4-a716-446655449999",
+        "CreDtTm": "2026-02-11T14:05:00Z",
+        "InitgPty": {
+          "Id": {
+            "OrgId": {
+              "AnyBIC": "MOCKSP05"
+            }
+          }
+        }
+      },
+      "OrgnlGrpInfAndSts": {
+        "OrgnlMsgId": "TestRtpMessageREJ-ORIG-ID",
+        "OrgnlMsgNmId": "pain.013.001.07",
+        "OrgnlCreDtTm": "2026-02-12T10:00:00Z"
+      },
+      "OrgnlPmtInfAndSts": [
+        {
+          "OrgnlPmtInfId": "a1b2c3d4-e5f6-4789-8901-23456789abcd",
+          "TxInfAndSts": {
+            "StsId": "990e8400-e29b-41d4-a716-446655449999",
+            "OrgnlInstrId": "TestRtpMessageINSTR-REJECTED",
+            "OrgnlEndToEndId": "987654321098765432",
+            "TxSts": "RJCT",
+            "StsRsnInf": {
+              "Orgtr": {
+                "Id": {
+                  "OrgId": {
+                    "AnyBIC": "MOCKSP05"
+                  }
+                }
+              },
+              "Rsn": {
+                "Cd": "MS03"
+              }
             },
-            ""OrgnlGrpInfAndSts"": {
-            ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
-            ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00.000Z""
-            },
-            ""OrgnlPmtInfAndSts"": [
-            {
-            ""OrgnlPmtInfId"": ""a1b2c3d4-e5f6-4789-8901-23456789abcd"",
-            ""TxInfAndSts"": {
-            ""StsId"": ""990e8400-e29b-41d4-a716-446655449999"",
-            ""OrgnlInstrId"": ""TestRtpMessageINSTR-REJECTED"",
-            ""OrgnlEndToEndId"": ""987654321098765432"",
-            ""TxSts"": ""RJCT"",
-            ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } },
-            ""Rsn"": { ""Cd"": ""MS03"" }
-            },
-            ""OrgnlTxRef"": {
-            ""PmtTpInf"": {
-            ""SvcLvl"": { ""Cd"": ""SRTP"" },
-            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
-            },
-            ""RmtInf"": { ""Ustrd"": ""Rifiuto tecnico transazione."" },
-            ""Cdtr"": {
-            ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
-            ""Nm"": ""Azienda Creditrice S.p.A.""
-            },
-            ""Dbtr"": {
-            ""Id"": { ""PrvtId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""POID"" } } } }
-            },
-            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
-            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
-            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } },
-            ""Amt"": { ""InstdAmt"": 120.0 },
-            ""ReqdExctnDt"": { ""Dt"": ""2026-02-15Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" } } } } ] } },
-            ""_links"": {
-            ""initialSepaRequestToPayUri"": {
-            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
-            ""templated"": false } } }";
-            }</set-body>
+            "OrgnlTxRef": {
+              "PmtTpInf": {
+                "SvcLvl": {
+                  "Cd": "SRTP"
+                },
+                "LclInstrm": {
+                  "Prtry": "NOTPROVIDED"
+                }
+              },
+              "RmtInf": {
+                "Ustrd": "Rifiuto tecnico transazione."
+              },
+              "Cdtr": {
+                "Id": {
+                  "OrgId": {
+                    "Othr": {
+                      "Id": "TRX-REJ-999",
+                      "SchmeNm": {
+                        "Cd": "BOID"
+                      }
+                    }
+                  }
+                },
+                "Nm": "Azienda Creditrice S.p.A."
+              },
+              "Dbtr": {
+                "Id": {
+                  "PrvtId": {
+                    "Othr": {
+                      "Id": "TRX-REJ-999",
+                      "SchmeNm": {
+                        "Cd": "POID"
+                      }
+                    }
+                  }
+                }
+              },
+              "DbtrAgt": {
+                "FinInstnId": {
+                  "BICFI": "MOCKSP05"
+                }
+              },
+              "CdtrAgt": {
+                "FinInstnId": {
+                  "BICFI": "MOCKSP05"
+                }
+              },
+              "CdtrAcct": {
+                "Id": {
+                  "IBAN": "IT00X0123456789012345678901"
+                }
+              },
+              "Amt": {
+                "InstdAmt": {
+                  "amt": 120,
+                  "Ccy": "EUR"
+                }
+              },
+              "ReqdExctnDt": {
+                "Dt": "2026-02-15"
+              },
+              "XpryDt": {
+                "Dt": "2026-03-01"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "_links": {
+    "initialSepaRequestToPayUri": {
+      "href": "https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123",
+      "templated": false
+    }
+  }
+}</set-body>
         </return-response>
       </when>
       <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;JWTGXY60H04A867N&quot;))">
@@ -149,7 +272,7 @@
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body>InvalidResponse</set-body>
+          <set-body template="none">InvalidResponse</set-body>
         </return-response>
       </when>
       <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;XZLNHT75H27K606T&quot;))">
@@ -176,50 +299,105 @@
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body>@{
-            return @"{
-            ""resourceId"": ""TestRtpMessageA1B2C3D4E5F6G7H8"",
-            ""Document"": {
-            ""CdtrPmtActvtnReqStsRpt"": {
-            ""GrpHdr"": {
-            ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
-            ""CreDtTm"": ""2026-02-11T14:00:00.000Z"",
-            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } }
-            },
-            ""OrgnlGrpInfAndSts"": {
-            ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
-            ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00.000Z""
-            },
-            ""OrgnlPmtInfAndSts"": [
+          <set-body template="none">{
+  "resourceId": "TestRtpMessageA1B2C3D4E5F6G7H8",
+  "Document": {
+    "CdtrPmtActvtnReqStsRpt": {
+      "GrpHdr": {
+        "MsgId": "550e8400-e29b-41d4-a716-446655440000",
+        "CreDtTm": "2026-02-11T14:00:00Z",
+        "InitgPty": {
+          "Id": {
+            "OrgId": {
+              "AnyBIC": "MOCKSP05"
+            }
+          }
+        }
+      },
+      "OrgnlGrpInfAndSts": {
+        "OrgnlMsgId": "TestRtpMessageKJ9283KSL01928374650",
+        "OrgnlMsgNmId": "pain.013.001.07",
+        "OrgnlCreDtTm": "2026-02-12T09:30:00Z"
+      },
+      "OrgnlPmtInfAndSts": [
+        {
+          "OrgnlPmtInfId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+          "TxInfAndSts": [
             {
-            ""OrgnlPmtInfId"": ""f47ac10b-58cc-4372-a567-0e02b2c3d479"",
-            ""TxInfAndSts"": [{
-            ""StsId"": ""550e8400-e29b-41d4-a716-446655440000"",
-            ""OrgnlInstrId"": ""TestRtpMessagePL098765432109876543"",
-            ""OrgnlEndToEndId"": ""123456789012345678"",
-            ""TxSts"": ""ACTC"",
-            ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } },
-            ""AddtlInf"": ""Redirect pending""
-            },
-            ""OrgnlTxRef"": {
-            ""PmtTpInf"": {
-            ""SvcLvl"": { ""Cd"": ""SRTP"" },
-            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
-            },
-            ""RmtInf"": { ""Ustrd"": ""Payment for invoice 12345."" },
-            ""Cdtr"": {
-            ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-ID-112233"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
-            ""Nm"": ""Azienda Creditrice S.p.A.""
-            },
-            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
-            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
-            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
-            ""Amt"": { ""InstdAmt"": 450.75 },
-            ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } }] } ] } } }";
-            }</set-body>
+              "StsId": "550e8400-e29b-41d4-a716-446655440000",
+              "OrgnlInstrId": "TestRtpMessagePL098765432109876543",
+              "OrgnlEndToEndId": "123456789012345678",
+              "TxSts": "ACTC",
+              "StsRsnInf": {
+                "Orgtr": {
+                  "Id": {
+                    "OrgId": {
+                      "AnyBIC": "MOCKSP05"
+                    }
+                  }
+                },
+                "AddtlInf": "Redirect pending"
+              },
+              "OrgnlTxRef": {
+                "PmtTpInf": {
+                  "SvcLvl": {
+                    "Cd": "SRTP"
+                  },
+                  "LclInstrm": {
+                    "Prtry": "NOTPROVIDED"
+                  }
+                },
+                "RmtInf": {
+                  "Ustrd": "Payment for invoice 12345."
+                },
+                "Cdtr": {
+                  "Id": {
+                    "OrgId": {
+                      "Othr": {
+                        "Id": "TRX-ID-112233",
+                        "SchmeNm": {
+                          "Cd": "BOID"
+                        }
+                      }
+                    }
+                  },
+                  "Nm": "Azienda Creditrice S.p.A."
+                },
+                "DbtrAgt": {
+                  "FinInstnId": {
+                    "BICFI": "MOCKSP05"
+                  }
+                },
+                "CdtrAgt": {
+                  "FinInstnId": {
+                    "BICFI": "MOCKSP05"
+                  }
+                },
+                "CdtrAcct": {
+                  "Id": {
+                    "IBAN": "IT12L0123456789012345678901"
+                  }
+                },
+                "Amt": {
+                  "InstdAmt": {
+                    "amt": 450.75,
+                    "Ccy": "EUR"
+                  }
+                },
+                "ReqdExctnDt": {
+                  "Dt": "2026-02-20"
+                },
+                "XpryDt": {
+                  "Dt": "2026-03-10"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}</set-body>
         </return-response>
       </when>
       <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;CYHBXW83S01M976B&quot;))">
@@ -228,55 +406,112 @@
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body>@{
-            return @"{
-            ""resourceId"": ""TestRtpMessageA1B2C3D4E5F6G7H8"",
-            ""Document"": {
-            ""CdtrPmtActvtnReqStsRpt"": {
-            ""GrpHdr"": {
-            ""MsgId"": ""550e8400-e29b-41d4-a716-446655440000"",
-            ""CreDtTm"": ""2026-02-11T14:00:00.000Z"",
-            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } }
-            },
-            ""OrgnlGrpInfAndSts"": {
-            ""OrgnlMsgId"": ""TestRtpMessageKJ9283KSL01928374650"",
-            ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T09:30:00.000Z""
-            },
-            ""OrgnlPmtInfAndSts"": [
+          <set-body template="none">{
+  "resourceId": "TestRtpMessageA1B2C3D4E5F6G7H8",
+  "Document": {
+    "CdtrPmtActvtnReqStsRpt": {
+      "GrpHdr": {
+        "MsgId": "550e8400-e29b-41d4-a716-446655440000",
+        "CreDtTm": "2026-02-11T14:00:00Z",
+        "InitgPty": {
+          "Id": {
+            "OrgId": {
+              "AnyBIC": "MOCKSP05"
+            }
+          }
+        }
+      },
+      "OrgnlGrpInfAndSts": {
+        "OrgnlMsgId": "TestRtpMessageKJ9283KSL01928374650",
+        "OrgnlMsgNmId": "pain.013.001.07",
+        "OrgnlCreDtTm": "2026-02-12T09:30:00Z"
+      },
+      "OrgnlPmtInfAndSts": [
+        {
+          "OrgnlPmtInfId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+          "TxInfAndSts": [
             {
-            ""OrgnlPmtInfId"": ""f47ac10b-58cc-4372-a567-0e02b2c3d479"",
-            ""TxInfAndSts"": [{
-            ""StsId"": ""550e8400-e29b-41d4-a716-446655440000"",
-            ""OrgnlInstrId"": ""TestRtpMessagePL098765432109876543"",
-            ""OrgnlEndToEndId"": ""123456789012345678"",
-            ""TxSts"": ""ACTC"",
-            ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } },
-            ""AddtlInf"": ""Redirect pending""
-            },
-            ""OrgnlTxRef"": {
-            ""PmtTpInf"": {
-            ""SvcLvl"": { ""Cd"": ""SRTP"" },
-            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
-            },
-            ""RmtInf"": { ""Ustrd"": ""Payment for invoice 12345."" },
-            ""Cdtr"": {
-            ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-ID-112233"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
-            ""Nm"": ""Azienda Creditrice S.p.A.""
-            },
-            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
-            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
-            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT12L0123456789012345678901"" } },
-            ""Amt"": { ""InstdAmt"": 450.75 },
-            ""ReqdExctnDt"": { ""Dt"": ""2026-02-20Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-10Z"" } } }] } ] } },
-            ""_links"": {
-            ""initialSepaRequestToPayUri"": {
-            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
-            ""templated"": false } },
-            ""invalidField"": ""test"" }";
-            }</set-body>
+              "StsId": "550e8400-e29b-41d4-a716-446655440000",
+              "OrgnlInstrId": "TestRtpMessagePL098765432109876543",
+              "OrgnlEndToEndId": "123456789012345678",
+              "TxSts": "ACTC",
+              "StsRsnInf": {
+                "Orgtr": {
+                  "Id": {
+                    "OrgId": {
+                      "AnyBIC": "MOCKSP05"
+                    }
+                  }
+                },
+                "AddtlInf": "Redirect pending"
+              },
+              "OrgnlTxRef": {
+                "PmtTpInf": {
+                  "SvcLvl": {
+                    "Cd": "SRTP"
+                  },
+                  "LclInstrm": {
+                    "Prtry": "NOTPROVIDED"
+                  }
+                },
+                "RmtInf": {
+                  "Ustrd": "Payment for invoice 12345."
+                },
+                "Cdtr": {
+                  "Id": {
+                    "OrgId": {
+                      "Othr": {
+                        "Id": "TRX-ID-112233",
+                        "SchmeNm": {
+                          "Cd": "BOID"
+                        }
+                      }
+                    }
+                  },
+                  "Nm": "Azienda Creditrice S.p.A."
+                },
+                "DbtrAgt": {
+                  "FinInstnId": {
+                    "BICFI": "MOCKSP05"
+                  }
+                },
+                "CdtrAgt": {
+                  "FinInstnId": {
+                    "BICFI": "MOCKSP05"
+                  }
+                },
+                "CdtrAcct": {
+                  "Id": {
+                    "IBAN": "IT12L0123456789012345678901"
+                  }
+                },
+                "Amt": {
+                  "InstdAmt": {
+                    "amt": 450.75,
+                    "Ccy": "EUR"
+                  }
+                },
+                "ReqdExctnDt": {
+                  "Dt": "2026-02-20"
+                },
+                "XpryDt": {
+                  "Dt": "2026-03-10"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "_links": {
+    "initialSepaRequestToPayUri": {
+      "href": "https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123",
+      "templated": false
+    }
+  },
+  "invalidField": "test"
+}</set-body>
         </return-response>
       </when>
       <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;LMIMDH38M28I573U&quot;))">
@@ -285,58 +520,124 @@
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body>@{
-            return @"{
-            ""resourceId"": ""TestRtpMessageREJ1234567890XYZ"",
-            ""Document"": {
-            ""CdtrPmtActvtnReqStsRpt"": {
-            ""GrpHdr"": {
-            ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
-            ""CreDtTm"": ""2026-02-11T14:05:00.000Z"",
-            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } }
+          <set-body template="none">{
+  "resourceId": "TestRtpMessageREJ1234567890XYZ",
+  "Document": {
+    "CdtrPmtActvtnReqStsRpt": {
+      "GrpHdr": {
+        "MsgId": "990e8400-e29b-41d4-a716-446655449999",
+        "CreDtTm": "2026-02-11T14:05:00Z",
+        "InitgPty": {
+          "Id": {
+            "OrgId": {
+              "AnyBIC": "MOCKSP05"
+            }
+          }
+        }
+      },
+      "OrgnlGrpInfAndSts": {
+        "OrgnlMsgId": "TestRtpMessageREJ-ORIG-ID",
+        "OrgnlMsgNmId": "pain.013.001.07",
+        "OrgnlCreDtTm": "2026-02-12T10:00:00Z"
+      },
+      "OrgnlPmtInfAndSts": [
+        {
+          "OrgnlPmtInfId": "a1b2c3d4-e5f6-4789-8901-23456789abcd",
+          "TxInfAndSts": {
+            "StsId": "990e8400-e29b-41d4-a716-446655449999",
+            "OrgnlInstrId": "TestRtpMessageINSTR-REJECTED",
+            "OrgnlEndToEndId": "987654321098765432",
+            "TxSts": "RJCT",
+            "StsRsnInf": {
+              "Orgtr": {
+                "Id": {
+                  "OrgId": {
+                    "AnyBIC": "MOCKSP05"
+                  }
+                }
+              },
+              "Rsn": {
+                "Cd": "MS03"
+              }
             },
-            ""OrgnlGrpInfAndSts"": {
-            ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
-            ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00.000Z""
-            },
-            ""OrgnlPmtInfAndSts"": [
-            {
-            ""OrgnlPmtInfId"": ""a1b2c3d4-e5f6-4789-8901-23456789abcd"",
-            ""TxInfAndSts"": {
-            ""StsId"": ""990e8400-e29b-41d4-a716-446655449999"",
-            ""OrgnlInstrId"": ""TestRtpMessageINSTR-REJECTED"",
-            ""OrgnlEndToEndId"": ""987654321098765432"",
-            ""TxSts"": ""RJCT"",
-            ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } },
-            ""Rsn"": { ""Cd"": ""MS03"" }
-            },
-            ""OrgnlTxRef"": {
-            ""PmtTpInf"": {
-            ""SvcLvl"": { ""Cd"": ""SRTP"" },
-            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
-            },
-            ""RmtInf"": { ""Ustrd"": ""Rifiuto tecnico transazione."" },
-            ""Cdtr"": {
-            ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
-            ""Nm"": ""Azienda Creditrice S.p.A.""
-            },
-            ""Dbtr"": {
-            ""Id"": { ""PrvtId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""POID"" } } } }
-            },
-            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
-            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
-            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } },
-            ""Amt"": { ""InstdAmt"": 120.0 },
-            ""ReqdExctnDt"": { ""Dt"": ""2026-02-15Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" } } } } ] } },
-            ""_links"": {
-            ""initialSepaRequestToPayUri"": {
-            ""href"": ""https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123"",
-            ""templated"": false } },
-            ""invalidField"": ""test"" }";
-            }</set-body>
+            "OrgnlTxRef": {
+              "PmtTpInf": {
+                "SvcLvl": {
+                  "Cd": "SRTP"
+                },
+                "LclInstrm": {
+                  "Prtry": "NOTPROVIDED"
+                }
+              },
+              "RmtInf": {
+                "Ustrd": "Rifiuto tecnico transazione."
+              },
+              "Cdtr": {
+                "Id": {
+                  "OrgId": {
+                    "Othr": {
+                      "Id": "TRX-REJ-999",
+                      "SchmeNm": {
+                        "Cd": "BOID"
+                      }
+                    }
+                  }
+                },
+                "Nm": "Azienda Creditrice S.p.A."
+              },
+              "Dbtr": {
+                "Id": {
+                  "PrvtId": {
+                    "Othr": {
+                      "Id": "TRX-REJ-999",
+                      "SchmeNm": {
+                        "Cd": "POID"
+                      }
+                    }
+                  }
+                }
+              },
+              "DbtrAgt": {
+                "FinInstnId": {
+                  "BICFI": "MOCKSP05"
+                }
+              },
+              "CdtrAgt": {
+                "FinInstnId": {
+                  "BICFI": "MOCKSP05"
+                }
+              },
+              "CdtrAcct": {
+                "Id": {
+                  "IBAN": "IT00X0123456789012345678901"
+                }
+              },
+              "Amt": {
+                "InstdAmt": {
+                  "amt": 120,
+                  "Ccy": "EUR"
+                }
+              },
+              "ReqdExctnDt": {
+                "Dt": "2026-02-15"
+              },
+              "XpryDt": {
+                "Dt": "2026-03-01"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "_links": {
+    "initialSepaRequestToPayUri": {
+      "href": "https://api-rtp-cb.cstar.pagopa.it/rtp/cb/requests/123",
+      "templated": false
+    }
+  },
+  "invalidField": "test"
+}</set-body>
         </return-response>
       </when>
       <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;PCSRFO44D22G286S&quot;))">
@@ -345,53 +646,117 @@
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body>@{
-            return @"{
-            ""resourceId"": ""TestRtpMessageREJ1234567890XYZ"",
-            ""Document"": {
-            ""CdtrPmtActvtnReqStsRpt"": {
-            ""GrpHdr"": {
-            ""MsgId"": ""990e8400-e29b-41d4-a716-446655449999"",
-            ""CreDtTm"": ""2026-02-11T14:05:00.000Z"",
-            ""InitgPty"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } }
+          <set-body template="none">{
+  "resourceId": "TestRtpMessageREJ1234567890XYZ",
+  "Document": {
+    "CdtrPmtActvtnReqStsRpt": {
+      "GrpHdr": {
+        "MsgId": "990e8400-e29b-41d4-a716-446655449999",
+        "CreDtTm": "2026-02-11T14:05:00Z",
+        "InitgPty": {
+          "Id": {
+            "OrgId": {
+              "AnyBIC": "MOCKSP05"
+            }
+          }
+        }
+      },
+      "OrgnlGrpInfAndSts": {
+        "OrgnlMsgId": "TestRtpMessageREJ-ORIG-ID",
+        "OrgnlMsgNmId": "pain.013.001.07",
+        "OrgnlCreDtTm": "2026-02-12T10:00:00Z"
+      },
+      "OrgnlPmtInfAndSts": [
+        {
+          "OrgnlPmtInfId": "a1b2c3d4-e5f6-4789-8901-23456789abcd",
+          "TxInfAndSts": {
+            "StsId": "990e8400-e29b-41d4-a716-446655449999",
+            "OrgnlInstrId": "TestRtpMessageINSTR-REJECTED",
+            "OrgnlEndToEndId": "987654321098765432",
+            "TxSts": "RJCT",
+            "StsRsnInf": {
+              "Orgtr": {
+                "Id": {
+                  "OrgId": {
+                    "AnyBIC": "MOCKSP05"
+                  }
+                }
+              },
+              "Rsn": {
+                "Cd": "MS03"
+              }
             },
-            ""OrgnlGrpInfAndSts"": {
-            ""OrgnlMsgId"": ""TestRtpMessageREJ-ORIG-ID"",
-            ""OrgnlMsgNmId"": ""pain.013.001.07"",
-            ""OrgnlCreDtTm"": ""2026-02-12T10:00:00.000Z""
-            },
-            ""OrgnlPmtInfAndSts"": [
-            {
-            ""OrgnlPmtInfId"": ""a1b2c3d4-e5f6-4789-8901-23456789abcd"",
-            ""TxInfAndSts"": {
-            ""StsId"": ""990e8400-e29b-41d4-a716-446655449999"",
-            ""OrgnlInstrId"": ""TestRtpMessageINSTR-REJECTED"",
-            ""OrgnlEndToEndId"": ""987654321098765432"",
-            ""TxSts"": ""RJCT"",
-            ""StsRsnInf"": {
-            ""Orgtr"": { ""Id"": { ""OrgId"": { ""AnyBIC"": ""MOCKSP05"" } } },
-            ""Rsn"": { ""Cd"": ""MS03"" }
-            },
-            ""OrgnlTxRef"": {
-            ""PmtTpInf"": {
-            ""SvcLvl"": { ""Cd"": ""SRTP"" },
-            ""LclInstrm"": { ""Prtry"": ""NOTPROVIDED"" }
-            },
-            ""RmtInf"": { ""Ustrd"": ""Rifiuto tecnico transazione."" },
-            ""Cdtr"": {
-            ""Id"": { ""OrgId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""BOID"" } } } },
-            ""Nm"": ""Azienda Creditrice S.p.A.""
-            },
-            ""Dbtr"": {
-            ""Id"": { ""PrvtId"": { ""Othr"": { ""Id"": ""TRX-REJ-999"", ""SchmeNm"": { ""Cd"": ""POID"" } } } }
-            },
-            ""DbtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
-            ""CdtrAgt"": { ""FinInstnId"": { ""BICFI"": ""MOCKSP05"" } },
-            ""CdtrAcct"": { ""Id"": { ""IBAN"": ""IT00X0123456789012345678901"" } },
-            ""Amt"": { ""InstdAmt"": 120.0 },
-            ""ReqdExctnDt"": { ""Dt"": ""2026-02-15Z"" },
-            ""XpryDt"": { ""Dt"": ""2026-03-01Z"" } } } } ] } } }";
-            }</set-body>
+            "OrgnlTxRef": {
+              "PmtTpInf": {
+                "SvcLvl": {
+                  "Cd": "SRTP"
+                },
+                "LclInstrm": {
+                  "Prtry": "NOTPROVIDED"
+                }
+              },
+              "RmtInf": {
+                "Ustrd": "Rifiuto tecnico transazione."
+              },
+              "Cdtr": {
+                "Id": {
+                  "OrgId": {
+                    "Othr": {
+                      "Id": "TRX-REJ-999",
+                      "SchmeNm": {
+                        "Cd": "BOID"
+                      }
+                    }
+                  }
+                },
+                "Nm": "Azienda Creditrice S.p.A."
+              },
+              "Dbtr": {
+                "Id": {
+                  "PrvtId": {
+                    "Othr": {
+                      "Id": "TRX-REJ-999",
+                      "SchmeNm": {
+                        "Cd": "POID"
+                      }
+                    }
+                  }
+                }
+              },
+              "DbtrAgt": {
+                "FinInstnId": {
+                  "BICFI": "MOCKSP05"
+                }
+              },
+              "CdtrAgt": {
+                "FinInstnId": {
+                  "BICFI": "MOCKSP05"
+                }
+              },
+              "CdtrAcct": {
+                "Id": {
+                  "IBAN": "IT00X0123456789012345678901"
+                }
+              },
+              "Amt": {
+                "InstdAmt": {
+                  "amt": 120,
+                  "Ccy": "EUR"
+                }
+              },
+              "ReqdExctnDt": {
+                "Dt": "2026-02-15"
+              },
+              "XpryDt": {
+                "Dt": "2026-03-01"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}</set-body>
         </return-response>
       </when>
       <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;QGJVWV87B01C628F&quot;))">
@@ -403,13 +768,445 @@
           <set-body template="none">{"status":500,"error":"RTP_05.CHK.A0007","message":"Unexpected status code received by rtp system"}</set-body>
         </return-response>
       </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MCKERR80A01H400Z&quot;))">
+        <return-response>
+          <set-status code="400" reason="Bad Request" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Malformed or invalid request body",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MCKERR80A01H401Z&quot;))">
+        <return-response>
+          <set-status code="401" reason="Unauthorized" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 401,
+  "error": "Unauthorized",
+  "message": "Missing or invalid authentication credentials",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MCKERR80A01H404Z&quot;))">
+        <return-response>
+          <set-status code="404" reason="Not Found" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Requested resource could not be found",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MCKERR80A01H406Z&quot;))">
+        <return-response>
+          <set-status code="406" reason="Not Acceptable" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 406,
+  "error": "Not Acceptable",
+  "message": "Requested media type is not supported",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MCKERR80A01H410Z&quot;))">
+        <return-response>
+          <set-status code="410" reason="Gone" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 410,
+  "error": "Gone",
+  "message": "Requested resource is no longer available",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MCKERR80A01H415Z&quot;))">
+        <return-response>
+          <set-status code="415" reason="Unsupported Media Type" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 415,
+  "error": "Unsupported Media Type",
+  "message": "Request payload media type is not supported",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MCKERR80A01H422Z&quot;))">
+        <return-response>
+          <set-status code="422" reason="Unprocessable Entity" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 422,
+  "error": "Unprocessable Entity",
+  "message": "Request payload failed semantic validation",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MCKERR80A01H429Z&quot;))">
+        <return-response>
+          <set-status code="429" reason="Too Many Requests" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 429,
+  "error": "Too Many Requests",
+  "message": "Request rate limit exceeded",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MCKERR80A01H500Z&quot;))">
+        <return-response>
+          <set-status code="500" reason="Internal Server Error" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "An unexpected error occurred while processing the request",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MCKERR80A01H502Z&quot;))">
+        <return-response>
+          <set-status code="502" reason="Bad Gateway" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 502,
+  "error": "Bad Gateway",
+  "message": "Invalid response received from an upstream server",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MCKERR80A01H503Z&quot;))">
+        <return-response>
+          <set-status code="503" reason="Service Unavailable" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 503,
+  "error": "Service Unavailable",
+  "message": "The server is temporarily unable to handle the request",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;MCKERR80A01H504Z&quot;))">
+        <return-response>
+          <set-status code="504" reason="Gateway Timeout" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 504,
+  "error": "Gateway Timeout",
+  "message": "Timeout communicating with the Debtor Service Provider",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
       <otherwise>
         <return-response>
           <set-status code="201" reason="Created" />
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body>@("{}")</set-body>
+          <set-body template="none">{}</set-body>
         </return-response>
       </otherwise>
     </choose>
