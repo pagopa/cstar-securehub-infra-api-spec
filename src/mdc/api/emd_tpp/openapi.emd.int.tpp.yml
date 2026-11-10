@@ -3165,11 +3165,6 @@ components:
           minLength: 11
           maxLength: 16
           example: "86363574890"
-          description: "Id of Payment Service Provider"
-          pattern: "^[A-Za-z0-9 ]+$"
-          minLength: 1
-          maxLength: 50
-          example: "MasterCard 123"
         businessName:
           type: string
           description: "Company Name"
