@@ -46,6 +46,7 @@ paths:
       operationId: statusUpdateCallback
       tags: [callback-status-update]
       parameters:
+        - $ref: '#/components/parameters/Correlation'
         - $ref: '#/components/parameters/Digest'
         - $ref: '#/components/parameters/JwsSignature'
       # --- Client's Request Body ---
@@ -63,6 +64,8 @@ paths:
         "200":
           description: OK - Our server has received and accepted the client's notification.
           headers:
+            Correlation:
+              $ref: '#/components/headers/X-Request-ID'
             Digest:
               $ref: '#/components/headers/Digest'
             x-jws-signature:
@@ -86,6 +89,7 @@ paths:
       operationId: statusUpdateCancelCallback
       tags: [callback-status-update-cancel]
       parameters:
+        - $ref: '#/components/parameters/Correlation'
         - $ref: '#/components/parameters/Digest'
         - $ref: '#/components/parameters/JwsSignature'
       # --- Client's Request Body ---
@@ -103,6 +107,8 @@ paths:
         "200":
           description: OK - Our server has received and accepted the client's notification.
           headers:
+            Correlation:
+              $ref: '#/components/headers/X-Request-ID'
             Digest:
               $ref: '#/components/headers/Digest'
             x-jws-signature:
@@ -128,6 +134,7 @@ paths:
       operationId: sendCallback
       tags: [callback]
       parameters:
+        - $ref: '#/components/parameters/Correlation'
         - $ref: '#/components/parameters/Digest'
         - $ref: '#/components/parameters/JwsSignature'
       # --- Client's Request Body ---
@@ -145,6 +152,8 @@ paths:
         "200":
           description: OK - Our server has received and accepted the client's notification.
           headers:
+            Correlation:
+              $ref: '#/components/headers/X-Request-ID'
             Digest:
               $ref: '#/components/headers/Digest'
             x-jws-signature:
@@ -166,6 +175,7 @@ paths:
       operationId: sendCallbackCancel
       tags: [callback-cancel]
       parameters:
+        - $ref: '#/components/parameters/Correlation'
         - $ref: '#/components/parameters/Digest'
         - $ref: '#/components/parameters/JwsSignature'
       requestBody:
@@ -179,6 +189,8 @@ paths:
         "200":
           description: OK - the callback server accepts the callback.
           headers:
+            Correlation:
+              $ref: '#/components/headers/X-Request-ID'
             Digest:
               $ref: '#/components/headers/Digest'
             x-jws-signature:
@@ -2854,7 +2866,12 @@ components:
         type: string
         format: uri
     X-Request-ID:
-      description: Correlation header to be set in a request and retrieved in the relevant response
+      description: |
+        Correlation identifier associated with the original HTTP request.
+        In HTTP responses, this component is referenced under the header
+        field name "Correlation", as defined in the SRTP OpenAPI specification.
+        The actual HTTP header field name shall be used when determining
+        the headers covered by the JWS signature.
       required: false
       deprecated: false
       allowEmptyValue: false
