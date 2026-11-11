@@ -153,17 +153,6 @@ components:
       type: string
       enum:
       - OAUTH2
-    ContactV1:
-      type: object
-      properties:
-        name:
-          type: string
-        number:
-          type: string
-          pattern: "^\\d{9,10}$"
-        email:
-          type: string
-          format: email
     TokenSectionV1:
       type: object
       properties:
@@ -191,8 +180,6 @@ components:
           pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
         authenticationType:
           $ref: "#/components/schemas/AuthenticationTypeV1"
-        contact:
-          $ref: "#/components/schemas/ContactV1"
         tokenSection:
           $ref: "#/components/schemas/TokenSectionV1"
         pspDenomination:
@@ -221,8 +208,6 @@ components:
           pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
         authenticationType:
           $ref: "#/components/schemas/AuthenticationTypeV1"
-        contact:
-          $ref: "#/components/schemas/ContactV1"
         tokenSection:
           $ref: "#/components/schemas/TokenSectionV1"
         pspDenomination:
@@ -256,8 +241,6 @@ components:
           pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
         authenticationType:
           $ref: "#/components/schemas/AuthenticationTypeV1"
-        contact:
-          $ref: "#/components/schemas/ContactV1"
         pspDenomination:
           type: string
         agentLinks:

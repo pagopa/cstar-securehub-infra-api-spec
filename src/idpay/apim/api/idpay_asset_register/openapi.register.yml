@@ -825,6 +825,10 @@ components:
         - UPLOADED
     ProductDTO:
       type: object
+      required:
+        - scart
+        - connectivity
+        - technicalSheetUrl
       properties:
         initiativeId:
           type: string
@@ -934,20 +938,20 @@ components:
           pattern: .*
         scart:
           type: boolean
-          description: 'ENG: Optional SCART socket <br> IT: Eventuale presa SCART'
+          description: 'ENG: Indicates whether the decoder has a SCART socket <br> IT: Indica se il decoder dispone di una presa SCART'
           nullable: false
         connectivity:
           type: string
-          description: 'ENG: IP connectivity support <br> IT: Eventuale connessione IP'
+          description: 'ENG: Decoder IP connectivity support <br> IT: Connessione IP supportata dal decoder'
           enum:
             - LAN
-            - WI-FI
-            - LAN e WI-FI
+            - WIFI
+            - LAN e WIFI
             - Nessuna
           nullable: false
         technicalSheetUrl:
           type: string
-          description: 'ENG: Technical sheet link <br> IT: Eventuale link alla scheda tecnica del prodotto'
+          description: 'ENG: Required decoder technical sheet URL. HTTP/HTTPS URLs and addresses starting with www. are accepted. <br> IT: URL obbligatorio della scheda tecnica del decoder. Sono accettati URL HTTP/HTTPS e indirizzi che iniziano con www.'
           maxLength: 255
           format: uri
           nullable: false
