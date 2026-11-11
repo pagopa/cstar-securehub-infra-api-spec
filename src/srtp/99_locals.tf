@@ -205,7 +205,7 @@ locals {
         content_value  = local.callback_openapi_v2
       }
       api_policy = {
-        xml_content = file("./api/epc/callback_v4_policy.xml")
+        xml_content = file("./api/epc/callback_policy.xml")
       }
     }
 
