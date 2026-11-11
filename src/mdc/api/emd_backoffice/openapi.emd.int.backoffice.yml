@@ -231,6 +231,8 @@ components:
           type: object
           additionalProperties:
             $ref: "#/components/schemas/AgentLinkV1"
+        messageTemplate:
+          type: string
       required:
       - agentLinks
       - authenticationType
@@ -262,6 +264,8 @@ components:
           type: object
           additionalProperties:
             $ref: "#/components/schemas/AgentLinkV1"
+        messageTemplate:
+          type: string
     ResponseDTO:
       type: object
       properties:

@@ -39,6 +39,28 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+    patch:
+      tags:
+      - tpp-controller-impl-v-1
+      operationId: patchTpp
+      summary: Partially update TPP using entityId extracted from token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TppPatchDTOV1"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TppResponseDTOV1"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
   '/api/v1/tpp/search':
     get:
       tags:
@@ -1350,6 +1372,30 @@ components:
         isPaymentEnabled:
           type: boolean
           description: Flag to enable or disable payment execution
+    TppPatchDTOV1:
+      type: object
+      properties:
+        businessName:
+          type: string
+          minLength: 1
+        messageUrl:
+          type: string
+          pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
+        authenticationUrl:
+          type: string
+          pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
+        authenticationType:
+          $ref: "#/components/schemas/AuthenticationTypeV1"
+        contact:
+          $ref: "#/components/schemas/ContactV1"
+        pspDenomination:
+          type: string
+        agentLinks:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/AgentLinkV1"
+        messageTemplate:
+          type: string
     RecipientIdOnWhitelistDTOV1:
       type: object
       description: Data Transfer Object containing the recipient identifier to be added to the whitelist
@@ -1382,7 +1428,7 @@ components:
           type: string
           description: Human-readable description of the test result or error details
           example: "Connection established successfully"
-        TppTemplateValidationRequestDTOV1:
+    TppTemplateValidationRequestDTOV1:
       type: object
       description: Request payload containing the raw FreeMarker template to validate.
       required:
