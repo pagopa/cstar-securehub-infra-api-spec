@@ -740,5 +740,12 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_patchTpp = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "patchTpp"
+      xml_content = templatefile("./api/emd_backoffice_internal/patch-tpp.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
   }
 }

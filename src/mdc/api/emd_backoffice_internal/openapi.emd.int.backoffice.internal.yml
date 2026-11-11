@@ -9,18 +9,19 @@ servers:
     x-internal: true
 paths:
   '/api/v1/tpp/{entityId}':
+    parameters:
+      - name: entityId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Unique identifier of the entity
     get:
       tags:
         - tpp-backoffice-internal
       operationId: getTppByEntityId
       summary: Retrieve TPP details by entityId
       parameters:
-        - name: entityId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Unique identifier of the entity
         - name: detailed
           in: query
           required: false
@@ -41,7 +42,7 @@ paths:
           description: Not Found
     patch:
       tags:
-      - tpp-controller-impl-v-1
+      - tpp-backoffice-internal
       operationId: patchTpp
       summary: Partially update TPP using entityId extracted from token
       requestBody:
