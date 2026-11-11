@@ -1366,8 +1366,6 @@ components:
           pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
         authenticationType:
           $ref: "#/components/schemas/AuthenticationTypeV1"
-        contact:
-          $ref: "#/components/schemas/ContactV1"
         pspDenomination:
           type: string
         agentLinks:
