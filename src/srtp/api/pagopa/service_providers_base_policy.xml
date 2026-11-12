@@ -1,13 +1,13 @@
 <!--
     Base policy for RTP Service Providers API.
-    Requires a validated subscription even when accessed through the open SRTP product,
-    and provides backend retry across all operations in this specification.
+    Requires a validated subscription only for the SelfCare webhook and provides
+    backend retry across all operations in this specification.
 -->
 <policies>
   <inbound>
     <base />
     <choose>
-      <when condition='@(context.Request.Url.Query.ContainsKey("subscription-key"))'>
+      <when condition='@(context.Operation.Id == "handleSelfcareWebhook" &amp;&amp; context.Request.Url.Query.ContainsKey("subscription-key"))'>
         <return-response>
           <set-status code="401" reason="Unauthorized" />
           <set-header name="Content-Type" exists-action="override">
@@ -16,7 +16,7 @@
           <set-body>{"statusCode": 401, "message": "Provide the subscription key in the x-api-key header, not the query string."}</set-body>
         </return-response>
       </when>
-      <when condition='@(string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault("x-api-key", "")) || context.Subscription == null)'>
+      <when condition='@(context.Operation.Id == "handleSelfcareWebhook" &amp;&amp; (string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault("x-api-key", "")) || context.Subscription == null))'>
         <return-response>
           <set-status code="401" reason="Unauthorized" />
           <set-header name="Content-Type" exists-action="override">
