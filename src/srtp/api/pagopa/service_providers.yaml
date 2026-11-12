@@ -24,8 +24,41 @@ servers:
 tags:
   - name: selfcare-webhook
     description: Webhook endpoint for receiving SelfCare Area Riservata notifications.
+  - name: service-providers
+    description: Query Technical Service Providers and Service Providers.
 
 paths:
+  /:
+    get:
+      tags:
+        - service-providers
+      operationId: getServiceProviders
+      summary: Returns Service Providers.
+      description: |
+        The operation returns all Technical Service Providers (TSPs) and Service Providers (SPs)
+        which use PagoPA as RTP Service Provider.
+      security:
+        - oAuth2:
+            - read_rtp_service_providers
+            - read_service_registry
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/Version'
+      responses:
+        "200":
+          $ref: '#/components/responses/ServiceProvidersResponse'
+        "400":
+          $ref: '#/components/responses/BadRequestError'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "403":
+          $ref: '#/components/responses/ForbiddenError'
+        "429":
+          $ref: '#/components/responses/TooManyRequestsError'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/Error'
   /selfcare/webhook:
     post:
       tags:
@@ -205,10 +238,10 @@ components:
         productId:
           description: Product identifier to which the event belongs.
           type: string
-          pattern: "^[ -~]{1,64}$"
+          pattern: "^prod-rtp$"
           minLength: 1
           maxLength: 64
-          example: "prod-pagopa"
+          example: "prod-rtp"
         topic:
           description: Category of the notified event.
           type: string
@@ -367,10 +400,227 @@ components:
             - UPDATE
           example: "ADD"
 
+    # --------------------------------------------------------------------------
+    # Service Providers Registry types.
+    # --------------------------------------------------------------------------
+    Version:
+      description: Version of the required API.
+      type: string
+      pattern: "^[ -~]{1,64}$"
+      minLength: 1
+      maxLength: 64
+      example: "v1"
+
+    Name:
+      description: Name of the service provider.
+      type: string
+      pattern: "^[ -~]{1,64}$"
+      minLength: 1
+      maxLength: 64
+      example: "Example Provider"
+
+    ProviderId:
+      description: ID of the service provider.
+      type: string
+      pattern: "^[ -~]{1,64}$"
+      minLength: 1
+      maxLength: 64
+      example: "PROVIDER123"
+
+    ServiceEndpoint:
+      description: Endpoint URL for the service.
+      type: string
+      format: uri
+      pattern: "^https://[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\\.[a-zA-Z]{2,})+(/[a-zA-Z0-9._~:/?#[\\]@!$&'()*+,;=]*)?$"
+      minLength: 1
+      maxLength: 256
+      example: "https://api.example.org/v1/service"
+
+    CertificateSerialNumber:
+      description: |
+        Hexadecimal certificate serial number. Its length is variable; X.509
+        certificate serial numbers are limited to 20 octets (40 hexadecimal characters).
+      type: string
+      pattern: "^[A-F0-9]{1,40}$"
+      minLength: 1
+      maxLength: 40
+      example: "A1B2C3D4E5F67890"
+
+    MtlsEnabled:
+      description: Flag indicating if MTLS is enabled for a service provider.
+      type: boolean
+      example: true
+
+    QsealcEnabled:
+      description: Flag indicating if QSEALC signature verification is enabled for the TSP.
+      type: boolean
+      example: false
+
+    PspTaxCode:
+      description: Tax code of the Payment Service Provider.
+      type: string
+      pattern: "\\d{11}|\\d{16}"
+      minLength: 11
+      maxLength: 16
+      example: "02438750586"
+
+    OAuth2Config:
+      description: OAuth2 configuration.
+      type: object
+      additionalProperties: false
+      properties:
+        token_endpoint:
+          description: OAuth2 token endpoint.
+          type: string
+          format: uri
+          pattern: "^https://[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\\.[a-zA-Z]{2,})+(/[a-zA-Z0-9._~:/?#[\\]@!$&'()*+,;=\\-]*)?$"
+          minLength: 1
+          maxLength: 256
+          example: "https://auth.example.org/oauth2/token"
+        method:
+          description: HTTP method for token request.
+          type: string
+          enum: ["GET", "POST"]
+          example: "POST"
+        credentials_transport_mode:
+          description: Mode of transporting credentials.
+          type: string
+          enum: ["BASIC_AUTHENTICATION", "REQUEST_BODY"]
+          example: "BASIC_AUTHENTICATION"
+        client_id:
+          description: OAuth2 client ID.
+          type: string
+          minLength: 1
+          maxLength: 128
+          pattern: "^[ -~]{1,128}$"
+          example: "example-client-id"
+        client_secret_kv_url:
+          description: KeyVault URL for client secret.
+          type: string
+          format: uri
+          pattern: "^https://[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\\.[a-zA-Z]{2,})+(/[a-zA-Z0-9._~:/?#[\\]@!$&'()*+,;=\\-]*)?$"
+          maxLength: 256
+          example: "https://example-keyvault.vault.azure.net/secrets/example-secret"
+        client_secret_env_var:
+          description: Environment variable name for client secret.
+          type: string
+          minLength: 1
+          maxLength: 128
+          pattern: "^[A-Za-z0-9_-]{1,128}$"
+          example: "CLIENT_SECRET_ENV_VAR"
+        scope:
+          description: OAuth2 scope.
+          type: string
+          minLength: 1
+          maxLength: 128
+          pattern: "^[ -~]{1,128}$"
+          example: "read write"
+        mtls_enabled:
+          description: Flag indicating if MTLS is enabled for OAuth2.
+          type: boolean
+          example: true
+      required:
+        - token_endpoint
+        - method
+
+    TSP:
+      description: Technical Service Provider data.
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: "#/components/schemas/ProviderId"
+        name:
+          $ref: "#/components/schemas/Name"
+        service_endpoint:
+          $ref: "#/components/schemas/ServiceEndpoint"
+        takeover_endpoint:
+          $ref: "#/components/schemas/ServiceEndpoint"
+        certificate_serial_number:
+          $ref: "#/components/schemas/CertificateSerialNumber"
+        mtls_enabled:
+          $ref: "#/components/schemas/MtlsEnabled"
+        qsealc_enabled:
+          $ref: "#/components/schemas/QsealcEnabled"
+        oauth2:
+          $ref: "#/components/schemas/OAuth2Config"
+      required:
+        - id
+        - name
+        - service_endpoint
+        - certificate_serial_number
+        - mtls_enabled
+      example:
+        id: "TSP001"
+        name: "Example TSP"
+        service_endpoint: "https://api.example.org/v1/service"
+        takeover_endpoint: "https://api.example.org/v1/takeover"
+        certificate_serial_number: "A1B2C3D4E5F67890"
+        mtls_enabled: true
+        qsealc_enabled: false
+
+    TSPs:
+      description: List of Technical Service Providers.
+      type: array
+      minItems: 0
+      maxItems: 128
+      items:
+        $ref: "#/components/schemas/TSP"
+
+    SP:
+      description: Service Provider data.
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: "#/components/schemas/ProviderId"
+        name:
+          $ref: "#/components/schemas/Name"
+        tsp_id:
+          $ref: "#/components/schemas/ProviderId"
+        psp_tax_code:
+          $ref: "#/components/schemas/PspTaxCode"
+      required:
+        - id
+        - name
+        - tsp_id
+      example:
+        id: "SP001"
+        name: "Example Service Provider"
+        tsp_id: "TSP001"
+
+    SPs:
+      description: List of Service Providers.
+      type: array
+      minItems: 0
+      maxItems: 128
+      items:
+        $ref: "#/components/schemas/SP"
+
+    ServiceProviders:
+      description: Combined Technical Service Providers and Service Providers.
+      type: object
+      additionalProperties: false
+      properties:
+        tsps:
+          $ref: "#/components/schemas/TSPs"
+        sps:
+          $ref: "#/components/schemas/SPs"
+      required:
+        - tsps
+        - sps
+
   # ============================================================================
   # Parameters.
   # ============================================================================
   parameters:
+    Version:
+      name: Version
+      in: header
+      description: Version of the required API.
+      required: true
+      schema:
+        $ref: '#/components/schemas/Version'
     WebhookNotificationId:
       name: X-Webhook-Notification-Id
       in: header
@@ -424,6 +674,19 @@ components:
   # Responses.
   # ============================================================================
   responses:
+    ServiceProvidersResponse:
+      description: Response to the request to get Service Providers.
+      headers:
+        AccessControlAllowOrigin:
+          $ref: '#/components/headers/AccessControlAllowOrigin'
+        RateLimit-Limit:
+          $ref: '#/components/headers/RateLimitLimit'
+        RateLimit-Reset:
+          $ref: '#/components/headers/RateLimitReset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServiceProviders'
     BadRequestError:
       description: Bad Request. The request was malformed, missing mandatory fields, or contained unexpected status/eventType.
       headers:
@@ -545,3 +808,12 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: RS256-signed JWT issued by SelfCare.
+    oAuth2:
+      description: |
+        A bearer token in the format of a JWS conforming to RFC8725.
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /token
+          refreshUrl: /token
+          scopes: {}
