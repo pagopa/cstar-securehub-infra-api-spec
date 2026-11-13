@@ -8,7 +8,6 @@ Public newsletter routes are managed by `src/mcshared`, alongside Keycloak ITN.
 The OpenAPI contract and API-specific policy are in `src/mcshared/apim/api/listmonk/`.
 The API reuses the existing `mcshared` product and review/deploy pipelines.
 
-Run `python scripts/validate_listmonk.py` for offline route/policy checks (Python + PyYAML).
 Workload/database configuration and the deployment runbook remain in
 `cstar-securehub-infra/docs/LISTMONK_AKS_DEPLOYMENT_ANALYSIS.md`; the gateway allowlist
 belongs to `cstar-infrastructure` and certificate definitions to `cstar-platform-azure-devops`.
