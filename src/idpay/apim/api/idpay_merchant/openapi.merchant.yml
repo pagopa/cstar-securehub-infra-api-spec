@@ -735,14 +735,20 @@ paths:
               schema:
                 $ref: "#/components/schemas/RewardBatchDTO"
         "400":
-          description: Stato del lotto non valido per l’operazione di promozione
+          description: Stato del lotto non valido o soglia minima di controllo non raggiunta
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RewardBatchErrorDTO"
-              example:
-                code: "REWARD_BATCH_INVALID_REQUEST"
-                message: "Reward batch not in a valid state"
+              examples:
+                invalidState:
+                  value:
+                    code: "REWARD_BATCH_INVALID_REQUEST"
+                    message: "Reward batch not in a valid state"
+                thresholdNotMet:
+                  value:
+                    code: "BATCH_CONTROL_THRESHOLD_NOT_MET"
+                    message: "At least 50% of transactions must be elaborated"
         "404":
           description: Lotto inesistente
           content:
@@ -778,14 +784,20 @@ paths:
               schema:
                 $ref: "#/components/schemas/RewardBatchDTO"
         "400":
-          description: Stato del lotto non valido per l’operazione di promozione
+          description: Stato del lotto non valido o soglia minima di controllo non raggiunta
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RewardBatchErrorDTO"
-              example:
-                code: "INVALID_BATCH_STATE_FOR_PROMOTION"
-                message: "Invalid state for batch promotion"
+              examples:
+                invalidState:
+                  value:
+                    code: "INVALID_BATCH_STATE_FOR_PROMOTION"
+                    message: "Invalid state for batch promotion"
+                thresholdNotMet:
+                  value:
+                    code: "BATCH_CONTROL_THRESHOLD_NOT_MET"
+                    message: "At least 50% of transactions must be elaborated"
         "403":
           description: Operatore non autorizzato a eseguire la promozione del lotto
           content:
@@ -2301,7 +2313,7 @@ components:
             - REWARD_BATCH_CSV_NOT_GENERATED
             - ROLE_NOT_ALLOWED_FOR_L1_PROMOTION
             - ROLE_NOT_ALLOWED_FOR_L2_PROMOTION
-            - BATCH_NOT_ELABORATED_15_PERCENT
+            - BATCH_CONTROL_THRESHOLD_NOT_MET
             - INVALID_BATCH_STATE_FOR_PROMOTION
           description: |-
             "ENG: Error code: REWARD_BATCH_NOT_FOUND: Reward Batch not found,
@@ -2312,7 +2324,7 @@ components:
              REWARD_BATCH_CSV_NOT_GENERATED: The reward batch CSV is not generated yet and cannot be downloaded,
              ROLE_NOT_ALLOWED_FOR_L1_PROMOTION: L1 operator not authorized to promote the batch,
              ROLE_NOT_ALLOWED_FOR_L2_PROMOTION: L2 operator not authorized to promote the batch,
-             BATCH_NOT_ELABORATED_15_PERCENT: Processed transactions percentage below 15%,
+              BATCH_CONTROL_THRESHOLD_NOT_MET: Processed transactions percentage below the initiative control threshold,
              INVALID_BATCH_STATE_FOR_PROMOTION: Batch state not valid for promotion - IT: Codice di errore:
              REWARD_BATCH_NOT_FOUND: lotto non trovato,
              REWARD_BATCH_INVALID_REQUEST: Qualcosa è andato storto durante l'invio della richiesta,
@@ -2322,7 +2334,7 @@ components:
              REWARD_BATCH_CSV_NOT_GENERATED: Il CSV del reward batch non è ancora stato generato e non può essere scaricato,
              ROLE_NOT_ALLOWED_FOR_L1_PROMOTION: Operatore L1 non autorizzato alla promozione del lotto,
              ROLE_NOT_ALLOWED_FOR_L2_PROMOTION: Operatore L2 non autorizzato alla promozione del lotto,
-             BATCH_NOT_ELABORATED_15_PERCENT: Percentuale di transazioni elaborate inferiore al 15%,
+              BATCH_CONTROL_THRESHOLD_NOT_MET: Percentuale di transazioni elaborate inferiore alla soglia di controllo dell'iniziativa,
              INVALID_BATCH_STATE_FOR_PROMOTION: Stato del lotto non valido per la promozione
         message:
           type: string
