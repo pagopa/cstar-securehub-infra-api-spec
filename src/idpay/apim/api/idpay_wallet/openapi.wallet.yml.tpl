@@ -2172,14 +2172,6 @@ components:
         serviceId:
           type: string
           description: 'ENG: The service ID - IT: Identificativo del service'
-        rewardBatchControlThreshold:
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 100
-          nullable: true
-          description: 'ENG: The threshold for the reward batch control - IT: La soglia per il controllo del batch dei premi'
-          example: 50
     InitiativeRefundRuleDTO:
       type: object
       properties:
