@@ -1,0 +1,319 @@
+openapi: 3.0.3
+info:
+  title: Listmonk public newsletter endpoints
+  version: 1.0.0
+  description: Explicit public routes verified against Listmonk v6.2.0. Administrative APIs, login, public
+    signup, opt-in, archives, exports and uploads are excluded. Subscriber/campaign UUIDs identify newsletter
+    recipients; do not log or share complete URLs.
+servers:
+- url: https://api-mcshared.dev.cstar.pagopa.it/listmonk
+  description: DEV
+- url: https://api-mcshared.uat.cstar.pagopa.it/listmonk
+  description: UAT
+- url: https://api-mcshared.cstar.pagopa.it/listmonk
+  description: PROD
+security: []
+tags:
+- name: Newsletter
+  description: Public subscriber newsletter routes and required assets.
+paths:
+  /subscription/{campUUID}/{subUUID}:
+    parameters:
+    - $ref: '#/components/parameters/campUUID'
+    - $ref: '#/components/parameters/subUUID'
+    get:
+      operationId: unsubscribe-page
+      tags:
+      - Newsletter
+      summary: Unsubscribe page
+      responses:
+        '200':
+          $ref: '#/components/responses/HTML'
+        '400':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      description: Shows the unsubscribe form; GET does not unsubscribe. No administrator session is required.
+      parameters:
+      - name: manage
+        in: query
+        required: false
+        description: Show native preference management when enabled.
+        schema:
+          type: boolean
+    post:
+      operationId: unsubscribe
+      tags:
+      - Newsletter
+      summary: Unsubscribe
+      responses:
+        '200':
+          $ref: '#/components/responses/HTML'
+        '400':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      description: Confirms unsubscription, or saves native preferences when manage=true. The body is forwarded
+        unchanged.
+      requestBody:
+        required: false
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                manage:
+                  type: boolean
+                blocklist:
+                  type: boolean
+                name:
+                  type: string
+                  maxLength: 256
+                l:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              additionalProperties: true
+  /link/{linkUUID}/{campUUID}/{subUUID}:
+    parameters:
+    - $ref: '#/components/parameters/linkUUID'
+    - $ref: '#/components/parameters/campUUID'
+    - $ref: '#/components/parameters/subUUID'
+    get:
+      operationId: tracked-link
+      tags:
+      - Newsletter
+      summary: Tracked link
+      responses:
+        '302':
+          description: Redirect to the newsletter link destination.
+          headers:
+            Location:
+              description: Destination URL configured in the newsletter.
+              schema:
+                type: string
+                format: uri
+        '400':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+  /campaign/{campUUID}/{subUUID}:
+    parameters:
+    - $ref: '#/components/parameters/campUUID'
+    - $ref: '#/components/parameters/subUUID'
+    get:
+      operationId: campaign-view
+      tags:
+      - Newsletter
+      summary: Campaign view
+      responses:
+        '200':
+          $ref: '#/components/responses/HTML'
+        '400':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+  /campaign/{campUUID}/{subUUID}/px.png:
+    parameters:
+    - $ref: '#/components/parameters/campUUID'
+    - $ref: '#/components/parameters/subUUID'
+    get:
+      operationId: campaign-pixel
+      tags:
+      - Newsletter
+      summary: Campaign pixel
+      responses:
+        '200':
+          description: Public newsletter asset.
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+  /public/static/style.css:
+    get:
+      operationId: public-style
+      tags:
+      - Newsletter
+      summary: Public style
+      responses:
+        '200':
+          description: Public newsletter asset.
+          content:
+            text/css:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: v
+        in: query
+        required: false
+        description: Upstream asset version.
+        schema:
+          type: string
+  /public/static/logo.svg:
+    get:
+      operationId: public-logo
+      tags:
+      - Newsletter
+      summary: Public logo
+      responses:
+        '200':
+          description: Public newsletter asset.
+          content:
+            image/svg+xml:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: v
+        in: query
+        required: false
+        description: Upstream asset version.
+        schema:
+          type: string
+  /public/static/favicon.png:
+    get:
+      operationId: public-favicon
+      tags:
+      - Newsletter
+      summary: Public favicon
+      responses:
+        '200':
+          description: Public newsletter asset.
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: v
+        in: query
+        required: false
+        description: Upstream asset version.
+        schema:
+          type: string
+  /public/custom.css:
+    get:
+      operationId: custom-style
+      tags:
+      - Newsletter
+      summary: Custom style
+      responses:
+        '200':
+          description: Public newsletter asset.
+          content:
+            text/css:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: v
+        in: query
+        required: false
+        description: Upstream asset version.
+        schema:
+          type: string
+  /public/custom.js:
+    get:
+      operationId: custom-script
+      tags:
+      - Newsletter
+      summary: Custom script
+      responses:
+        '200':
+          description: Public newsletter asset.
+          content:
+            application/javascript:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+      parameters:
+      - name: v
+        in: query
+        required: false
+        description: Upstream asset version.
+        schema:
+          type: string
+components:
+  parameters:
+    campUUID:
+      name: campUUID
+      in: path
+      required: true
+      description: Listmonk UUID from the subscriber newsletter link. Treat as a bearer token.
+      schema:
+        type: string
+        format: uuid
+        minLength: 36
+        maxLength: 36
+    subUUID:
+      name: subUUID
+      in: path
+      required: true
+      description: Listmonk UUID from the subscriber newsletter link. Treat as a bearer token.
+      schema:
+        type: string
+        format: uuid
+        minLength: 36
+        maxLength: 36
+    linkUUID:
+      name: linkUUID
+      in: path
+      required: true
+      description: Listmonk UUID from the subscriber newsletter link. Treat as a bearer token.
+      schema:
+        type: string
+        format: uuid
+        minLength: 36
+        maxLength: 36
+  responses:
+    HTML:
+      description: Public Listmonk HTML page.
+      content:
+        text/html:
+          schema:
+            type: string
+    Error:
+      description: Invalid newsletter link, missing subscriber, malformed form or service error.
