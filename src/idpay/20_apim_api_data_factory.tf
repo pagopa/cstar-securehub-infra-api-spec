@@ -91,6 +91,28 @@ resource "azurerm_api_management_api_operation_policy" "idpay_df_import_producer
   })
 }
 
+resource "azurerm_api_management_api_operation" "idpay_df_put_tokens" {
+  operation_id        = "idpay-df-put-tokens"
+  api_name            = azurerm_api_management_api.idpay_data_factory.name
+  api_management_name = data.azurerm_api_management.apim_core.name
+  resource_group_name = data.azurerm_resource_group.apim_rg.name
+  display_name        = "IDPAY DF Tokenize Fiscal Code"
+  method              = "PUT"
+  url_template        = "/tokens"
+  description         = "Endpoint for DF in order to tokenize a fiscal code via mcshared-datavault (onboarding census pipeline)"
+}
+
+resource "azurerm_api_management_api_operation_policy" "idpay_df_put_tokens_policy" {
+  api_name            = azurerm_api_management_api_operation.idpay_df_put_tokens.api_name
+  api_management_name = azurerm_api_management_api_operation.idpay_df_put_tokens.api_management_name
+  resource_group_name = azurerm_api_management_api_operation.idpay_df_put_tokens.resource_group_name
+  operation_id        = azurerm_api_management_api_operation.idpay_df_put_tokens.operation_id
+
+  xml_content = templatefile("./apim/api/idpay_data_factory/put-tokens-policy.xml.tpl", {
+    mcshared_datavault_url = local.mcshared-datavault-url
+  })
+}
+
 resource "azurerm_api_management_product_api" "idpay_df_product_api" {
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
