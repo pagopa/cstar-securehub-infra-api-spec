@@ -914,6 +914,29 @@ paths:
               example:
                 code: REWARD_BATCH_GENERIC_ERROR
                 message: Application error
+  /initiatives/{initiativeId}/reward-batches/months:
+    get:
+      tags:
+        - reward-batches
+      summary: "ENG: Get the available reward batch months for an initiative - IT: Recupero dei mesi disponibili per i lotti di un'iniziativa"
+      description: "ENG: Returns the distinct months (yyyy-MM) for which at least one reward batch exists for the given initiative, together with the label stored on the batch. IT: Restituisce i mesi distinti (yyyy-MM) per cui esiste almeno un lotto per l'iniziativa indicata, insieme all'etichetta memorizzata sul lotto."
+      operationId: getAvailableRewardBatchMonths
+      parameters:
+        - name: initiativeId
+          in: path
+          description: The initiative ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response with the available reward batch months
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardBatchMonthListDTO"
+        "401":
+          description: Authentication failed
   /initiatives/{initiativeId}/reward-batches/{rewardBatchId}/approved/download:
     get:
       tags:
@@ -2146,6 +2169,25 @@ components:
           description: "ENG: The total number of the pages <br> IT: Il numero totale delle pagine"
           minimum: 0
           maximum: 1000000
+    RewardBatchMonthListDTO:
+      type: object
+      properties:
+        months:
+          type: array
+          items:
+            $ref: "#/components/schemas/RewardBatchMonthDTO"
+          maxItems: 1000
+    RewardBatchMonthDTO:
+      type: object
+      properties:
+        label:
+          type: string
+          description: "ENG: Month label, taken as-is from the batch name <br> IT: Etichetta del mese, presa così com'è dal nome del lotto"
+          example: "febbraio 2026"
+        value:
+          type: string
+          description: "ENG: Batch reference month (format yyyy-MM) <br> IT: Mese di riferimento del lotto (formato yyyy-MM)"
+          example: "2026-02"
     RewardBatchDTO:
       type: object
       properties:
