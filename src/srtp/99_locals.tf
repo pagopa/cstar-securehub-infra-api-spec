@@ -319,7 +319,7 @@ locals {
     rtp-service-providers = {
       description           = "RTP ITN Service Providers API"
       display_name          = "RTP ITN Service Providers API"
-      path                  = "${local.api_context_path}/service-providers"
+      path                  = local.api_context_path
       revision              = "1"
       protocols             = ["https"]
       service_url           = "${local.api_service_url}/rtpregistry/"
