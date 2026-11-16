@@ -937,6 +937,24 @@ paths:
                 $ref: "#/components/schemas/RewardBatchMonthListDTO"
         "401":
           description: Authentication failed
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardBatchErrorDTO"
+              example:
+                code: REWARD_BATCH_TOO_MANY_REQUESTS
+                message: Too many requests
+        "500":
+          description: Generic error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardBatchErrorDTO"
+              example:
+                code: REWARD_BATCH_GENERIC_ERROR
+                message: Application error
   /initiatives/{initiativeId}/reward-batches/{rewardBatchId}/approved/download:
     get:
       tags:
