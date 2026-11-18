@@ -33,8 +33,8 @@ locals {
   # SelfCare Webhook
   selfcare_issuer            = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
   selfcare_openid_config_url = "https://${data.azurerm_storage_account.share_storage.primary_web_host}/selfcare/openid-configuration.json"
-  selfcare_product_id        = "all"
-  selfcare_subject           = "all"
+  selfcare_product_id        = "prod-rtp"
+  selfcare_subject           = "prod-rtp"
 
   # rtp-service-provider (v1) must not expose the EPC 4.0-only paths, so we derive its
   # import content by stripping them from the parsed v2 spec, instead of templating
@@ -372,10 +372,10 @@ locals {
         }
       }
 
-      # RTP Mock v2 (EPC V4.0)
+      # RTP Mock v2 (EPC V4.0.1)
       rtp-mock-v4 = var.env_short == "p" ? null : {
-        description           = "RTP ITN MOCK API EPC V4.0"
-        display_name          = "RTP ITN MOCK API EPC V4.0"
+        description           = "RTP ITN MOCK API EPC V4.0.1"
+        display_name          = "RTP ITN MOCK API EPC V4.0.1"
         path                  = "${local.api_context_path}/mock"
         revision              = "1"
         version               = "v2"
@@ -385,7 +385,7 @@ locals {
         product               = "srtp"
         import_descriptor = {
           content_format = "openapi"
-          content_value  = templatefile("./api/epc/EPC133-22 v1.0 SRTP API YAML V4.0.yaml", {})
+          content_value  = templatefile("./api/epc/EPC133-22 v4.0.1 - SRTP API YAML.yaml", {})
         }
       }
 
@@ -531,16 +531,6 @@ locals {
         xml_content = templatefile("./api/pagopa/service_providers_policy.xml", {
           jwt_fragment_id = "rtp-validate-token-selfcare"
         })
-      }
-      statusUpdateCallback-v2 = {
-        api_name     = "rtp-callback-v2"
-        operation_id = "statusUpdateCallback"
-        xml_content  = file("./api/epc/callback_policy.xml")
-      }
-      statusUpdateCancelCallback-v2 = {
-        api_name     = "rtp-callback-v2"
-        operation_id = "statusUpdateCancelCallback"
-        xml_content  = file("./api/epc/callback_policy.xml")
       }
     },
     { for k, v in {

@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: EMD Notifier Sender API
+  description: API for retrying messages through the EMD notifier sender service.
+  version: '1.0.0'
+servers:
+  - url: https://api-emd.dev.cstar.pagopa.it/emd/notifier-sender
+    description: Development
+    x-internal: true
+  - url: https://api-emd.uat.cstar.pagopa.it/emd/notifier-sender
+    description: User Acceptance Test
+    x-internal: true
+  - url: https://api-emd.cstar.pagopa.it/emd/notifier-sender
+    description: Production
+    x-internal: false
+tags:
+  - name: Messages
+    description: Message retry operations.
+paths:
+  /messages/retry:
+    post:
+      tags:
+        - Messages
+      operationId: retryMessage
+      summary: Retry sending a message
+      description: Requests a retry for the message identified by messageId and entityId.
+      security:
+        - oAuth2: []
+      parameters:
+        - name: X-API-Version
+          in: header
+          required: true
+          description: API version required by the notifier sender service.
+          schema:
+            type: string
+            enum: ['1']
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetryMessageRequest'
+            example:
+              messageId: MESSAGE_ID
+              entityId: ENTITY_ID
+      responses:
+        '200':
+          description: Request processed successfully.
+        '400':
+          description: Bad request returned by the notifier sender service.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '429':
+          description: Too many requests.
+        '500':
+          description: Internal server error returned by the notifier sender service.
+        default:
+          description: Other response returned by the notifier sender service.
+components:
+  schemas:
+    RetryMessageRequest:
+      type: object
+      required:
+        - messageId
+        - entityId
+      properties:
+        messageId:
+          type: string
+          description: Identifier of the message to retry.
+        entityId:
+          type: string
+          description: Identifier of the entity associated with the message.
+  securitySchemes:
+    oAuth2:
+      description: Bearer token validated by the EMD PagoPA product policy.
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /token
+          refreshUrl: /token
+          scopes: {}

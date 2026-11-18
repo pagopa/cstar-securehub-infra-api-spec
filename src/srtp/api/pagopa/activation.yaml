@@ -1391,7 +1391,6 @@ components:
   # ============================================================================
   securitySchemes:
     # This API uses the OAuth2 Client Credentials flow for server-to-server authentication.
-    # Clients must obtain a bearer token with the appropriate scopes to access the endpoints.
     oAuth2:
       description: |
         A bearer token in the format of a JWS and conforms to the specifications
@@ -1401,8 +1400,4 @@ components:
         clientCredentials:
           tokenUrl: https://api-mcshared.cstar.pagopa.it/auth-itn/realms/srtp/protocol/openid-connect/token
           refreshUrl: https://api-mcshared.cstar.pagopa.it/auth-itn/realms/srtp/protocol/openid-connect/token
-          scopes:
-            admin_rtp_activations: Grants full administrative access to all activations.
-            write_rtp_activations: Grants permission to create, update, or delete activations.
-            read_rtp_activations: Read RTP activation belonging to the requesting subject.
-            read_rtp_all: Read all RTP activations.
+          scopes: {}

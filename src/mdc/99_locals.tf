@@ -166,6 +166,25 @@ locals {
       }
       api_diagnostic = local.default_api_diagnostic
     }
+    emd_notifier_sender = {
+      name                  = "${var.env_short}-emd-notifier-sender"
+      description           = "EMD NOTIFIER SENDER"
+      display_name          = "EMD NOTIFIER SENDER API"
+      path                  = "emd/notifier-sender"
+      protocols             = ["https"]
+      revision              = "1"
+      subscription_required = false
+      products              = ["emd_api_pagopa_product"]
+      service_url           = "${local.ingress_load_balancer_https}/emdnotifiersender/emd/notifier-sender"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = file("./api/emd_notifier_sender/openapi.emd.notifier.sender.yml")
+      }
+      api_policy = {
+        xml_content = file("./api/base_policy.xml")
+      }
+      api_diagnostic = local.default_api_diagnostic
+    }
     emd_payment_core = {
       name                  = "${var.env_short}-emd-payment-core"
       description           = "EMD PAYMENT CORE"
@@ -308,6 +327,13 @@ locals {
   }
 
   api_operation_policy = {
+    emd_notifier_sender_retryMessage = {
+      api_name     = "emd_notifier_sender"
+      operation_id = "retryMessage"
+      xml_content = templatefile("./api/emd_notifier_sender/post-retry-message.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
     emd_tpp_save = {
       api_name     = "emd_tpp"
       operation_id = "save"
@@ -616,6 +642,13 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_validateTemplate = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getValidateTemplate"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-validate-template.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
     emd_backoffice_internal_getSearchMessage = {
       api_name     = "emd_backoffice_internal"
       operation_id = "getSearchMessage"
@@ -634,6 +667,13 @@ locals {
       api_name     = "emd_backoffice_internal"
       operation_id = "getPaymentAttemptByTppIdAndIun"
       xml_content = templatefile("./api/emd_backoffice_internal/get-payment-attempt-by-tpp-id-and-iun.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_retryNotifierMessage = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "retryNotifierMessage"
+      xml_content = templatefile("./api/emd_backoffice_internal/post-retry-notifier-message.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
@@ -676,6 +716,34 @@ locals {
       api_name     = "emd_backoffice_internal"
       operation_id = "deleteMessageByEntityIdAndMessageId"
       xml_content = templatefile("./api/emd_backoffice_internal/delete-message-by-entityId-and-messageId.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_getUsers = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getUsers"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-user.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_getAvailableRoles = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "getAvailableRoles"
+      xml_content = templatefile("./api/emd_backoffice_internal/get-user-roles.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_replaceUserRoles = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "replaceUserRoles"
+      xml_content = templatefile("./api/emd_backoffice_internal/post-replace-roles.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+      })
+    }
+    emd_backoffice_internal_patchTpp = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "patchTpp"
+      xml_content = templatefile("./api/emd_backoffice_internal/patch-tpp.xml.tpl", {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }

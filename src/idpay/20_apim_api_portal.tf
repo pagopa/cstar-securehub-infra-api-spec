@@ -116,6 +116,13 @@ module "idpay_itn_initiative_portal" {
       })
     },
     {
+      operation_id = "getInitiativeIdsByInitiativeSeries"
+
+      xml_content = templatefile("./apim/api/idpay_initiative/get-initiative-series.xml.tpl", {
+        ingress_load_balancer_hostname = local.domain_aks_ingress_hostname
+      })
+    },
+    {
       operation_id = "getInitiativeDetail"
 
       xml_content = templatefile("./apim/api/idpay_initiative/get-initiative-detail.xml.tpl", {
