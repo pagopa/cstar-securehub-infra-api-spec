@@ -747,5 +747,14 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_saveTpp = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "saveTpp"
+      xml_content = templatefile("./api/emd_backoffice_internal/post-save-tpp.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+        # Environments where the operation is enabled; elsewhere it answers 404. Add "uat" to extend it.
+        enabled = contains(["dev"], var.env)
+      })
+    }
   }
 }

@@ -62,6 +62,31 @@ paths:
           description: Unauthorized
         "404":
           description: Not Found
+    post:
+      tags:
+        - tpp-backoffice-internal
+      operationId: saveTpp
+      summary: Save a new TPP for the given entityId (enabled only on selected environments)
+      description: Creates a TPP for the entityId in the path. Requires operator-write or operator-admin role. The operation answers 404 on environments where it is not enabled.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TppSaveRequestDTOV1'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TppResponseDTOV1'
+        '401':
+          description: Unauthorized - missing or invalid token
+        '403':
+          description: Forbidden - insufficient operator role
+        '404':
+          description: Not Found - operation not available on this environment
   '/api/v1/tpp/search':
     get:
       tags:
@@ -1383,6 +1408,60 @@ components:
         recipientId:
           type: string
           description: The identifier of the recipient
+    TppSaveRequestDTOV1:
+      type: object
+      description: Payload to create a new TPP
+      required:
+        - agentLinks
+        - authenticationType
+        - businessName
+      properties:
+        businessName:
+          type: string
+          minLength: 1
+        messageUrl:
+          type: string
+          pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
+        authenticationUrl:
+          type: string
+          pattern: "^(https?|ftp)://[^ /$.?#].[^ ]*$"
+        authenticationType:
+          $ref: '#/components/schemas/AuthenticationTypeV1'
+        tokenSection:
+          $ref: '#/components/schemas/TppSaveTokenSectionV1'
+        pspDenomination:
+          type: string
+        agentLinks:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/TppSaveAgentLinkV1'
+    TppSaveTokenSectionV1:
+      type: object
+      properties:
+        contentType:
+          type: string
+        pathAdditionalProperties:
+          type: object
+          additionalProperties:
+            type: string
+        bodyAdditionalProperties:
+          type: object
+          additionalProperties:
+            type: string
+    TppSaveAgentLinkV1:
+      type: object
+      properties:
+        fallBackLink:
+          type: string
+        versions:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/TppSaveVersionDetailsV1'
+    TppSaveVersionDetailsV1:
+      type: object
+      properties:
+        link:
+          type: string
     AuthenticationTypeV1:
       type: string
       enum: [OAUTH2]
