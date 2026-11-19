@@ -47,6 +47,8 @@ paths:
       responses:
         "200":
           $ref: '#/components/responses/ServiceProvidersResponse'
+        "404":
+          $ref: '#/components/responses/UnsupportedApiVersionError'
         "400":
           $ref: '#/components/responses/BadRequestError'
         "401":
@@ -215,6 +217,27 @@ components:
         errors:
           - code: "01000000F"
             description: "Wrong party identifier"
+    UnsupportedApiVersion:
+      description: APIM gateway response when the Version header is missing or is not supported.
+      type: object
+      additionalProperties: false
+      properties:
+        statusCode:
+          type: integer
+          enum:
+            - 404
+          description: HTTP status code.
+        message:
+          type: string
+          enum:
+            - Resource not found
+          description: No API resource matches the requested version.
+      required:
+        - statusCode
+        - message
+      example:
+        statusCode: 404
+        message: Resource not found
     # --------------------------------------------------------------------------
     # Domain specific complex types (SelfCare Webhook v0.2).
     # --------------------------------------------------------------------------
@@ -760,6 +783,14 @@ components:
             type: string
             pattern: "^[ -~]{0,65535}$"
             maxLength: 65535
+    UnsupportedApiVersionError:
+      description: |
+        APIM returns this gateway-level response when the Version header is missing
+        or is not v1 or v2. It is distinct from a registry resource not being found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnsupportedApiVersion'
     TooManyRequestsError:
       description: Too Many Requests. The client has exceeded the rate limit.
       headers:
