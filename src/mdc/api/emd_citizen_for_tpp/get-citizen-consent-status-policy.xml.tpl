@@ -14,6 +14,17 @@
     <inbound>
         <base />
         <choose>
+            <when condition="@((string)context.Request.MatchedParameters["fiscalCode"] == "filter")">
+                <return-response>
+                    <set-status code="404" reason="Not Found" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>{"code":"NOT_FOUND","message":"Resource not found"}</set-body>
+                </return-response>
+            </when>
+        </choose>
+        <choose>
             <when condition="@(!System.Text.RegularExpressions.Regex.IsMatch((string)context.Request.MatchedParameters["fiscalCode"], "^[A-Za-z0-9]{11,16}$") || !System.Text.RegularExpressions.Regex.IsMatch((string)context.Request.MatchedParameters["tppId"], "^[ -~]{1,50}$"))">
                 <return-response>
                     <set-status code="400" reason="Bad Request" />
