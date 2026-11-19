@@ -1,11 +1,20 @@
 <!--
-    Operation policy for handleSelfcareWebhook.
-    The inherited API policy requires an x-api-key and an APIM-validated subscription;
-    this operation policy additionally validates the SelfCare JWT token.
+    Operation policy for Service Providers API operations.
 -->
 <policies>
   <inbound>
     <base />
+    <choose>
+      <when condition='@(context.Operation.Id == "getServiceProviders" &amp;&amp; context.Request.Headers.GetValueOrDefault("Version", "") != "v1" &amp;&amp; context.Request.Headers.GetValueOrDefault("Version", "") != "v2")'>
+        <return-response>
+          <set-status code="404" reason="Resource Not Found" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>{"statusCode": 404, "message": "Resource not found"}</set-body>
+        </return-response>
+      </when>
+    </choose>
     <include-fragment fragment-id="${jwt_fragment_id}" />
   </inbound>
   <backend>
