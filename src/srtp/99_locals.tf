@@ -315,16 +315,16 @@ locals {
       }
     }
 
-    # RTP Service Providers Webhook
+    # RTP Service Providers API and SelfCare Webhook
     rtp-service-providers = {
-      description           = "RTP ITN Service Providers Webhook API"
-      display_name          = "RTP ITN Service Providers Webhook API"
+      description           = "RTP ITN Service Providers API"
+      display_name          = "RTP ITN Service Providers API"
       path                  = "${local.api_context_path}/service-providers"
       revision              = "1"
       protocols             = ["https"]
       service_url           = "${local.api_service_url}/rtpregistry/"
-      subscription_required = true
-      # AzureRM requires both parameter names; the API policy rejects query-string authentication.
+      subscription_required = false
+      # The SelfCare webhook operation requires this subscription; other operations do not.
       subscription_key_parameter_names = {
         header = "x-api-key"
         query  = "subscription-key"
@@ -346,7 +346,7 @@ locals {
         log_client_ip             = true
         verbosity                 = "information"
         http_correlation_protocol = "W3C"
-        headers_to_log            = ["X-Webhook-Notification-Id"]
+        headers_to_log            = ["RequestId", "X-JWT-Subject", "Version", "X-Webhook-Notification-Id"]
       }
     }
     },
@@ -524,6 +524,13 @@ locals {
         api_name = "rtp-service_providers-registry"
         xml_content = templatefile("./api/pagopa/service_providers_registry_get_policy.xml", {
           storage_account_name = local.rtp_storage_account_name
+        })
+      }
+      getServiceProvidersBackend = {
+        api_name     = "rtp-service-providers"
+        operation_id = "getServiceProviders"
+        xml_content = templatefile("./api/pagopa/service_providers_policy.xml", {
+          jwt_fragment_id = "rtp-validate-token-mcshared-v2"
         })
       }
       handleSelfcareWebhook = {
