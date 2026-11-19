@@ -756,5 +756,14 @@ locals {
         enabled = contains(["dev", "uat"], var.env)
       })
     }
+    emd_backoffice_internal_updateTppCredentials = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "updateTppCredentials"
+      xml_content = templatefile("./api/emd_backoffice_internal/put-tpp-credentials.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+        # Environments where the operation is enabled; elsewhere it answers 404.
+        enabled = contains(["dev", "uat"], var.env)
+      })
+    }
   }
 }

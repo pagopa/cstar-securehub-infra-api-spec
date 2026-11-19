@@ -3,7 +3,7 @@
         <base />
 %{ if enabled ~}
         <!-- Authorization delegated to fragment: operator-write or operator-admin roles only.
-             Operation enabled only on the environments listed in 99_locals.tf (emd_backoffice_internal_saveTpp). -->
+             Operation enabled only on the environments. -->
         <include-fragment fragment-id="emd-backoffice-internal-authorize-operator-write" />
         <set-backend-service base-url="${ingress_load_balancer_hostname}/emd-ar-backoffice-bff" />
         <rewrite-uri template="/emd/backoffice/api/v1/tpp/{entityId}" />

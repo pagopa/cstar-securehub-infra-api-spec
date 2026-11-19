@@ -87,6 +87,39 @@ paths:
           description: Forbidden - insufficient operator role
         '404':
           description: Not Found - operation not available on this environment
+  '/api/v1/tpp/{entityId}/credentials':
+    parameters:
+      - name: entityId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Unique identifier of the entity
+    put:
+      tags:
+        - tpp-backoffice-internal
+      operationId: updateTppCredentials
+      summary: Update TPP credentials for the given entityId (enabled only on selected environments)
+      description: Updates the credentials of the TPP identified by the entityId in the path. Requires operator-write or operator-admin role. The operation answers 404 on environments where it is not enabled.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized - missing or invalid token
+        '403':
+          description: Forbidden - insufficient operator role
+        '404':
+          description: Not Found - TPP not found or operation not available on this environment
   '/api/v1/tpp/search':
     get:
       tags:
