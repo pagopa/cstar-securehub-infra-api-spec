@@ -87,6 +87,23 @@ paths:
           description: Forbidden - insufficient operator role
         '404':
           description: Not Found - operation not available on this environment
+    delete:
+      tags:
+        - tpp-backoffice-internal
+      operationId: deleteTpp
+      summary: Delete the TPP identified by entityId (enabled only on selected environments)
+      description: Deletes the TPP identified by the entityId in the path. Requires operator-write or operator-admin role. The operation answers 404 on environments where it is not enabled.
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized - missing or invalid token
+        '403':
+          description: Forbidden - insufficient operator role
+        '404':
+          description: Not Found - TPP not found or operation not available on this environment
   '/api/v1/tpp/{entityId}/credentials':
     parameters:
       - name: entityId
