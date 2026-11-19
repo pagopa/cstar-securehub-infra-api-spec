@@ -1373,6 +1373,150 @@
           <set-body template="none">Test string</set-body>
         </return-response>
       </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999017&quot;))">
+        <return-response>
+          <set-status code="500" reason="Internal Server Error" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "An unexpected error occurred while processing the request",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999018&quot;))">
+        <return-response>
+          <set-status code="502" reason="Bad Gateway" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 502,
+  "error": "Bad Gateway",
+  "message": "Invalid response received from an upstream server",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999019&quot;))">
+        <return-response>
+          <set-status code="503" reason="Service Unavailable" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 503,
+  "error": "Service Unavailable",
+  "message": "The server is temporarily unable to handle the request",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.Request.Body.As<string>(preserveContent: true).Contains(&quot;999999999999999020&quot;))">
+        <return-response>
+          <set-status code="504" reason="Gateway Timeout" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body template="none">{
+  "timestamp": "2026-07-07T12:24:46.230Z",
+  "status": 504,
+  "error": "Gateway Timeout",
+  "message": "Timeout communicating with the Debtor Service Provider",
+  "path": "string",
+  "details": [
+    {
+      "location": "header",
+      "name": "string",
+      "path": "string",
+      "erroneousValue": "string",
+      "message": "string",
+      "expectedPattern": "string",
+      "expectedValueRange": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedValueCount": {
+        "minValue": 0,
+        "maxValue": 0
+      },
+      "expectedEnumeration": [
+        "string"
+      ]
+    }
+  ]
+}</set-body>
+        </return-response>
+      </when>
       <otherwise>
         <return-response>
           <set-status code="201" reason="Created" />
