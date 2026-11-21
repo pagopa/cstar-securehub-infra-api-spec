@@ -21,6 +21,24 @@ locals {
 
 locals {
   apis = {
+    listmonk = {
+      display_name          = "Listmonk public newsletter endpoints"
+      description           = "Public newsletter routes only; administrative access remains private."
+      path                  = "listmonk"
+      revision              = "1"
+      protocols             = ["https"]
+      service_url           = "https://listmonk.${var.location_short}.${local.dns_zone_internal}"
+      subscription_required = false
+      product               = "mcshared"
+      import_descriptor = {
+        content_format = "openapi"
+        content_value  = file("${path.module}/apim/api/listmonk/openapi.yaml")
+      }
+      api_policy = {
+        xml_content = file("${path.module}/apim/api/listmonk/base_policy.xml")
+      }
+    }
+
     # Keycloak ITN
     auth = {
       display_name          = "McShared Keycloak Auth ITN"

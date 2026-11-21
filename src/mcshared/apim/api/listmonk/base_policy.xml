@@ -1,0 +1,38 @@
+<policies>
+  <inbound>
+    <base />
+    <!-- All route parameters are UUIDs, as in Listmonk's own hasUUID middleware. -->
+    <choose>
+      <when condition='@(context.Request.MatchedParameters.Any(p => (p.Key == "campUUID" || p.Key == "subUUID" || p.Key == "linkUUID") &amp;&amp; !System.Text.RegularExpressions.Regex.IsMatch(p.Value, "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")))'>
+        <return-response>
+          <set-status code="404" reason="Not Found" />
+        </return-response>
+      </when>
+    </choose>
+    <!-- Preserve the complete query, including parameters declared in OpenAPI. POST bodies are untouched. -->
+    <rewrite-uri template='@(new System.Uri(context.Request.OriginalUrl.ToString()).PathAndQuery.Substring("/listmonk".Length))' copy-unmatched-params="false" />
+    <!-- The HTML asset rewrite below requires an uncompressed backend response. -->
+    <set-header name="Accept-Encoding" exists-action="delete" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+    <set-header name="Referrer-Policy" exists-action="override">
+      <value>no-referrer</value>
+    </set-header>
+    <set-header name="Cache-Control" exists-action="override">
+      <value>no-store</value>
+    </set-header>
+    <choose>
+      <when condition='@(context.Response.Headers.GetValueOrDefault("Content-Type", "").StartsWith("text/html"))'>
+        <!-- v6.2.0 templates use host-root asset URLs despite app.root_url. -->
+        <find-and-replace from="&quot;/public/" to="&quot;/listmonk/public/" />
+      </when>
+    </choose>
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
