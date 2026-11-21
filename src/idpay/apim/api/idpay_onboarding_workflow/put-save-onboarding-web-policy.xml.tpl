@@ -53,7 +53,7 @@
             </when>
         </choose>
         <choose>
-            <when condition="@(context.Timestamp < new DateTime(2026, 1, 1, 0, 0, 0))">
+            <when condition="@(context.Timestamp < new DateTime(2027, 1, 1, 0, 0, 0))">
                 <set-backend-service base-url="https://${ingress_load_balancer_hostname}/idpayonboardingworkflow" />
                 <rewrite-uri template="@("idpay/onboarding/"+ (string)context.Variables["userId"])" />
             </when>
@@ -69,7 +69,7 @@
                     <set-body>@{
                     var payload = new JObject(
                         new JProperty("code", "ONBOARDING_INITIATIVE_ENDED"),
-                        new JProperty("message", "Operation not allowed after 01/01/2026")
+                        new JProperty("message", "Operation not allowed after 01/01/2027")
                     );
                     return payload.ToString(Newtonsoft.Json.Formatting.None);
                     }</set-body>

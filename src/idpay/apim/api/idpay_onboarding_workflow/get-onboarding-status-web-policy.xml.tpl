@@ -25,7 +25,7 @@
             <!-- handle 404 - user not onboarded -->
             <when condition="@(
                 ((int)context.Response.StatusCode == 404)
-                && (context.Timestamp >= new DateTime(2026, 1, 1, 0, 0, 0))
+                && (context.Timestamp >= new DateTime(2027, 1, 1, 0, 0, 0))
             )">
                 <return-response>
                 <set-status code="400" reason="Bad Request" />
@@ -38,7 +38,7 @@
                 <set-body>@{
                     var payload = new JObject(
                     new JProperty("code", "ONBOARDING_INITIATIVE_ENDED"),
-                    new JProperty("message", "Onboarding not allowed after 01/01/2026")
+                    new JProperty("message", "Onboarding not allowed after 01/01/2027")
                     );
                     return payload.ToString(Newtonsoft.Json.Formatting.None);
                 }</set-body>
