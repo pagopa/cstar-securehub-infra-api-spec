@@ -12,6 +12,22 @@
 -->
 <policies>
     <inbound>
+        <cors allow-credentials="true">
+            <allowed-origins>
+              %{ for origin in origins ~}
+              <origin>${origin}</origin>
+              %{ endfor ~}
+            </allowed-origins>
+            <allowed-methods preflight-result-max-age="300">
+                <method>*</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>*</header>
+            </allowed-headers>
+            <expose-headers>
+                <header>*</header>
+            </expose-headers>
+        </cors>
         %{ if ecommerce_disabled ~}
         <return-response>
             <set-status code="503" reason="Service Unavailable" />
@@ -44,22 +60,6 @@
         </set-header>
 
         <rate-limit calls="${rate_limit_merchants_portal}" renewal-period="60" />
-        <cors allow-credentials="true">
-            <allowed-origins>
-              %{ for origin in origins ~}
-              <origin>${origin}</origin>
-              %{ endfor ~}
-            </allowed-origins>
-            <allowed-methods preflight-result-max-age="300">
-                <method>*</method>
-            </allowed-methods>
-            <allowed-headers>
-                <header>*</header>
-            </allowed-headers>
-            <expose-headers>
-                <header>*</header>
-            </expose-headers>
-        </cors>
     </inbound>
     <backend>
         <base />
