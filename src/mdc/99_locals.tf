@@ -383,13 +383,6 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
-    emd_tpp_getNetworkConnection = {
-      api_name     = "emd_tpp"
-      operation_id = "getNetworkConnection"
-      xml_content = templatefile("./api/emd_tpp/get-network-connection.xml.tpl", {
-        ingress_load_balancer_hostname = local.ingress_load_balancer_https
-      })
-    }
     emd_tpp_updateIsPaymentEnabled = {
       api_name     = "emd_tpp"
       operation_id = "updateIsPaymentEnabled"
