@@ -740,6 +740,15 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_retrievalTokens = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "retrievalTokens"
+      xml_content = templatefile("./api/emd_backoffice_internal/post-save-retrieval-payload.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+        # Environments where the operation is enabled; elsewhere it answers 404.
+        enabled = contains(["dev", "uat"], var.env)
+      })
+    }
     emd_backoffice_internal_saveTpp = {
       api_name     = "emd_backoffice_internal"
       operation_id = "saveTpp"

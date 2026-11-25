@@ -156,6 +156,64 @@ paths:
           description: Forbidden - insufficient operator role
         '404':
           description: Not Found - TPP not found or operation not available on this environment
+  '/api/v1/payment-core/retrievalTokens/{entityId}':
+    parameters:
+      - name: entityId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Unique identifier of the entity
+    post:
+      tags:
+        - payment-backoffice-internal
+      operationId: retrievalTokens
+      summary: Create a retrieval token for the given entityId (enabled only on selected environments)
+      description: Creates a retrieval token for the TPP identified by the entityId in the path. Requires operator-write or operator-admin role. The operation answers 404 on environments where it is not enabled.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - agent
+                - originId
+              properties:
+                agent:
+                  type: string
+                originId:
+                  type: string
+                linkVersion:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  retrievalId:
+                    type: string
+                  deeplink:
+                    type: string
+                  pspDenomination:
+                    type: string
+                  originId:
+                    type: string
+                  tppId:
+                    type: string
+                  isPaymentEnabled:
+                    type: boolean
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized - missing or invalid token
+        '403':
+          description: Forbidden - insufficient operator role
+        '404':
+          description: Not Found - operation not available on this environment
   '/api/v1/tpp/search':
     get:
       tags:
