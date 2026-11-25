@@ -98,6 +98,8 @@ paths:
         "404":
           # description: Not Found. Target TSP is not configured.
           $ref: '#/components/responses/NotFoundError'
+        "409":
+          $ref: '#/components/responses/ConflictError'
         "429":
           # description: Too Many Requests. The client has exceeded the rate limit.
           $ref: '#/components/responses/TooManyRequestsError'
@@ -787,6 +789,12 @@ components:
             type: string
             pattern: "^[ -~]{0,65535}$"
             maxLength: 65535
+    ConflictError:
+      description: Conflict. A notification with the same ID is already being processed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
     UnsupportedApiVersionError:
       description: |
         APIM returns this gateway-level response when the Version header is missing
