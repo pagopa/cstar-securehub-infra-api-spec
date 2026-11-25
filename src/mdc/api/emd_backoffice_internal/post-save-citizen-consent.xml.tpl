@@ -18,7 +18,7 @@
         <include-fragment fragment-id="emd-backoffice-internal-authorize-operator-write" />
         <set-backend-service base-url="${ingress_load_balancer_hostname}/emd-ar-backoffice-bff" />
         <!-- Escape each path segment while preserving the BFF route. -->
-        <rewrite-uri template="@("/emd/backoffice/api/v1/citizen/{fiscalCode}/{tppId}")" />
+        <rewrite-uri template="@("/emd/backoffice/api/v1/citizen/{fiscalCode}/consents/{tppId}")" />
 %{ else ~}
         <!-- Operation not enabled on this environment: always answer 404 without reaching the backend. -->
         <return-response>
