@@ -454,6 +454,72 @@ paths:
                 message: The request could not be completed
                 traceId: trace-id
   '/api/v1/citizen/{fiscalCode}/consents/{tppId}':
+    post:
+      tags:
+        - citizen-backoffice-internal
+      operationId: saveCitizenConsent
+      summary: Create a citizen's consent for a TPP
+      description: >
+        Creates the consent for the specified citizen and TPP, or reuses it if it already exists.
+        This operation has no request body, is restricted to operator-write and operator-admin roles
+        and is enabled only in dev and uat environments (404 elsewhere).
+      parameters:
+        - name: fiscalCode
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9]{11,16}$'
+          description: Fiscal code of the citizen
+        - name: tppId
+          in: path
+          required: true
+          schema:
+            type: string
+            maxLength: 50
+          description: Identifier of the TPP for which the consent is created
+      responses:
+        '200':
+          description: OK - Consent created or already existing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CitizenConsentSearchResponseDTOV1'
+              example:
+                fiscalCode: RSSMRA85T10A562S
+                consents:
+                  TPP_XYZ_123:
+                    tppState: true
+                    tcDate: '2025-10-17T13:18:37.313'
+                    entityId: entity-123
+                    businessName: Nome Azienda TPP
+        '400':
+          description: Bad Request - fiscalCode or tppId is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+              example:
+                code: BAD_REQUEST
+                message: Invalid fiscalCode format
+        '401':
+          description: Unauthorized - missing or invalid internal Keycloak token
+        '403':
+          description: Forbidden - operator-write or operator-admin role required
+        '404':
+          description: Not Found - TPP does not exist or is not active
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '429':
+          description: Too Many Requests - product rate limit exceeded
+        '502':
+          description: Bad Gateway - Citizen service returned an unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
     put:
       tags:
         - citizen-backoffice-internal

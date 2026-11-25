@@ -740,5 +740,14 @@ locals {
         ingress_load_balancer_hostname = local.ingress_load_balancer_https
       })
     }
+    emd_backoffice_internal_saveCitizenConsent = {
+      api_name     = "emd_backoffice_internal"
+      operation_id = "saveCitizenConsent"
+      xml_content = templatefile("./api/emd_backoffice_internal/post-save-citizen-consent.xml.tpl", {
+        ingress_load_balancer_hostname = local.ingress_load_balancer_https
+        # Operation enabled only in dev and uat: elsewhere the policy answers 404.
+        enabled = contains(["dev", "uat"], var.env)
+      })
+    }
   }
 }
