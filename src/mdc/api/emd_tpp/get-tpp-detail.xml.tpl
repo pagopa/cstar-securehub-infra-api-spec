@@ -14,6 +14,21 @@
     <inbound>
         <base />
         <choose>
+            <when condition="@(context.Request.MatchedParameters["tppId"] == "search")">
+                <return-response>
+                    <set-status code="404" reason="Resource not found" />
+                    <set-body>
+                        @{
+                        var responseJson = new JObject();
+                        responseJson["statusCode"] = 404;
+                        responseJson["message"] = "Resource not found";
+                        return responseJson.ToString();
+                        }
+                    </set-body>
+                </return-response>
+            </when>
+        </choose>
+        <choose>
             <when condition="@(((string)context.Variables["groups"]).Contains("emd-pagopa"))">
                 <set-backend-service base-url="${ingress_load_balancer_hostname}/emdtpp" />
                 <rewrite-uri template="@("/emd/tpp/{tppId}")" />
